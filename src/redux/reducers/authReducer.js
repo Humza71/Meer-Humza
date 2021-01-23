@@ -1,0 +1,111 @@
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  signIn as authSignIn,
+  signUp as authSignUp,
+  resetPassword as authResetPassword,
+} from "../../services/authService";
+import { setMessage } from "./messageReducer";
+
+const initialState = {
+  user: undefined,
+  loading: false,
+};
+
+// export default function reducer(state = {}, actions) {
+//   switch (actions.type) {
+//     case types.AUTH_SIGN_IN_SUCCESS:
+//       return {
+//         ...state,
+//         user: {
+//           id: actions.id,
+//           email: actions.email,
+//           name: actions.name,
+//         },
+//       };
+
+//     case types.AUTH_SIGN_OUT:
+//       return {
+//         ...state,
+//         user: undefined,
+//       };
+
+//     default:
+//       return state;
+//   }
+// }
+
+export const slice = createSlice({
+  name: "authReducer",
+  initialState,
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
+  },
+});
+
+const { setUser, setLoading } = slice.actions;
+
+export const signIn = (credentials) => async (dispatch) => {
+  dispatch(setLoading(true));
+
+  try {
+    const response = await authSignIn(credentials);
+    dispatch(
+      setUser({
+        id: response.id,
+        email: response.email,
+        name: response.name,
+      })
+    );
+  } catch (error) {
+    dispatch(setMessage({ message: error.message }));
+  }
+  dispatch(setLoading(false));
+};
+
+export const signUp = (credentials) => async (dispatch) => {
+  dispatch(setLoading(true));
+
+  try {
+    const response = await authSignUp(credentials);
+    dispatch(
+      setUser({
+        id: response.id,
+        email: response.email,
+        name: response.name,
+      })
+    );
+  } catch (error) {
+    dispatch(setMessage({ message: error.message }));
+  }
+
+  dispatch(setLoading(false));
+};
+
+export const signOut = () => (dispatch) => {
+  dispatch(setUser(undefined));
+};
+
+export const resetPassword = (credentials) => async (dispatch) => {
+  dispatch(setLoading(true));
+  try {
+    const response = await authResetPassword(credentials);
+
+    // Just temporarily
+    dispatch(
+      setUser({
+        email: response.email,
+      })
+    );
+  } catch (error) {
+    dispatch(setMessage({ message: error.message }));
+  }
+
+  dispatch(setLoading(false));
+};
+
+export default slice.reducer;
