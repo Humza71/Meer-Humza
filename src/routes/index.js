@@ -13,7 +13,6 @@ import {
   Layout,
   List,
   Map,
-  Monitor,
   ShoppingCart,
   PieChart,
   Sliders,
@@ -105,33 +104,30 @@ const ESLintAndPrettier = async(() =>
 const Support = async(() => import("../pages/docs/Support"));
 const Changelog = async(() => import("../pages/docs/Changelog"));
 
-// Landing
-const Landing = async(() => import("../pages/presentation/Landing"));
-
-// Protected routes
-const ProtectedPage = async(() => import("../pages/protected/ProtectedPage"));
-
 const dashboardsRoutes = {
   id: "Dashboard",
-  path: "/dashboard",
+  path: "/",
   header: "Pages",
   icon: <Sliders />,
   containsHome: true,
   children: [
     {
-      path: "/dashboard/default",
+      path: "/",
       name: "Default",
       component: Default,
+      guard: AuthGuard,
     },
     {
-      path: "/dashboard/analytics",
+      path: "/analytics",
       name: "Analytics",
       component: Analytics,
+      guard: AuthGuard,
     },
     {
-      path: "/dashboard/saas",
+      path: "/saas",
       name: "SaaS",
       component: SaaS,
+      guard: AuthGuard,
     },
   ],
   component: null,
@@ -146,26 +142,31 @@ const pagesRoutes = {
       path: "/pages/profile",
       name: "Profile",
       component: Profile,
+      guard: AuthGuard,
     },
     {
       path: "/pages/settings",
       name: "Settings",
       component: Settings,
+      guard: AuthGuard,
     },
     {
       path: "/pages/pricing",
       name: "Pricing",
       component: Pricing,
+      guard: AuthGuard,
     },
     {
       path: "/pages/chat",
       name: "Chat",
       component: Chat,
+      guard: AuthGuard,
     },
     {
       path: "/pages/blank",
       name: "Blank Page",
       component: Blank,
+      guard: AuthGuard,
     },
   ],
   component: null,
@@ -178,6 +179,7 @@ const projectsRoutes = {
   badge: "8",
   component: Projects,
   children: null,
+  guard: AuthGuard,
 };
 
 const invoiceRoutes = {
@@ -189,11 +191,13 @@ const invoiceRoutes = {
       path: "/invoices",
       name: "List",
       component: InvoiceList,
+      guard: AuthGuard,
     },
     {
       path: "/invoices/detail",
       name: "Details",
       component: InvoiceDetails,
+      guard: AuthGuard,
     },
   ],
   component: null,
@@ -204,6 +208,7 @@ const orderRoutes = {
   path: "/orders",
   icon: <ShoppingCart />,
   component: Orders,
+  guard: AuthGuard,
   children: null,
 };
 
@@ -213,6 +218,7 @@ const tasksRoutes = {
   icon: <CheckSquare />,
   badge: "17",
   component: Tasks,
+  guard: AuthGuard,
   children: null,
 };
 
@@ -221,6 +227,7 @@ const calendarRoutes = {
   path: "/calendar",
   icon: <CalendarIcon />,
   component: Calendar,
+  guard: AuthGuard,
   children: null,
 };
 
@@ -268,71 +275,85 @@ const componentsRoutes = {
       path: "/components/alerts",
       name: "Alerts",
       component: Alerts,
+      guard: AuthGuard,
     },
     {
       path: "/components/avatars",
       name: "Avatars",
       component: Avatars,
+      guard: AuthGuard,
     },
     {
       path: "/components/badges",
       name: "Badges",
       component: Badges,
+      guard: AuthGuard,
     },
     {
       path: "/components/buttons",
       name: "Buttons",
       component: Buttons,
+      guard: AuthGuard,
     },
     {
       path: "/components/cards",
       name: "Cards",
       component: Cards,
+      guard: AuthGuard,
     },
     {
       path: "/components/chips",
       name: "Chips",
       component: Chips,
+      guard: AuthGuard,
     },
     {
       path: "/components/dialogs",
       name: "Dialogs",
       component: Dialogs,
+      guard: AuthGuard,
     },
     {
       path: "/components/expansion-panels",
       name: "Expansion Panels",
       component: ExpPanels,
+      guard: AuthGuard,
     },
     {
       path: "/components/lists",
       name: "Lists",
       component: Lists,
+      guard: AuthGuard,
     },
     {
       path: "/components/menus",
       name: "Menus",
       component: Menus,
+      guard: AuthGuard,
     },
     {
       path: "/components/pagination",
       name: "Pagination",
       component: Pagination,
+      guard: AuthGuard,
     },
     {
       path: "/components/progress",
       name: "Progress",
       component: Progress,
+      guard: AuthGuard,
     },
     {
       path: "/components/snackbars",
       name: "Snackbars",
       component: Snackbars,
+      guard: AuthGuard,
     },
     {
       path: "/components/tooltips",
       name: "Tooltips",
       component: Tooltips,
+      guard: AuthGuard,
     },
   ],
   component: null,
@@ -347,36 +368,43 @@ const formsRoutes = {
       path: "/forms/pickers",
       name: "Pickers",
       component: Pickers,
+      guard: AuthGuard,
     },
     {
       path: "/forms/selection-controls",
       name: "Selection Controls",
       component: SelectionCtrls,
+      guard: AuthGuard,
     },
     {
       path: "/forms/selects",
       name: "Selects",
       component: Selects,
+      guard: AuthGuard,
     },
     {
       path: "/forms/text-fields",
       name: "Text Fields",
       component: TextFields,
+      guard: AuthGuard,
     },
     {
       path: "/forms/dropzone",
       name: "Dropzone",
       component: Dropzone,
+      guard: AuthGuard,
     },
     {
       path: "/forms/editors",
       name: "Editors",
       component: Editors,
+      guard: AuthGuard,
     },
     {
       path: "/forms/formik",
       name: "Formik",
       component: Formik,
+      guard: AuthGuard,
     },
   ],
   component: null,
@@ -391,16 +419,19 @@ const tablesRoutes = {
       path: "/tables/simple-table",
       name: "Simple Table",
       component: SimpleTable,
+      guard: AuthGuard,
     },
     {
       path: "/tables/advanced-table",
       name: "Advanced Table",
       component: AdvancedTable,
+      guard: AuthGuard,
     },
     {
       path: "/tables/data-grid",
       name: "Data Grid",
       component: DataGrid,
+      guard: AuthGuard,
     },
   ],
   component: null,
@@ -415,11 +446,13 @@ const iconsRoutes = {
       path: "/icons/material-icons",
       name: "Material Icons",
       component: MaterialIcons,
+      guard: AuthGuard,
     },
     {
       path: "/icons/feather-icons",
       name: "Feather Icons",
       component: FeatherIcons,
+      guard: AuthGuard,
     },
   ],
   component: null,
@@ -431,6 +464,7 @@ const chartRoutes = {
   icon: <PieChart />,
   component: Chartjs,
   children: null,
+  guard: AuthGuard,
 };
 
 const mapsRoutes = {
@@ -442,23 +476,16 @@ const mapsRoutes = {
       path: "/maps/google-maps",
       name: "Google Maps",
       component: GoogleMaps,
+      guard: AuthGuard,
     },
     {
       path: "/maps/vector-maps",
       name: "Vector Maps",
       component: VectorMaps,
+      guard: AuthGuard,
     },
   ],
   component: null,
-};
-
-const landingRoutes = {
-  id: "Landing Page",
-  path: "/",
-  header: "Docs",
-  icon: <Monitor />,
-  component: Landing,
-  children: null,
 };
 
 const documentationRoutes = {
@@ -471,46 +498,55 @@ const documentationRoutes = {
       path: "/documentation/welcome",
       name: "Welcome",
       component: Welcome,
+      guard: AuthGuard,
     },
     {
       path: "/documentation/getting-started",
       name: "Getting Started",
       component: GettingStarted,
+      guard: AuthGuard,
     },
     {
       path: "/documentation/environment-variables",
       name: "Environment Variables",
       component: EnvironmentVariables,
+      guard: AuthGuard,
     },
     {
       path: "/documentation/deployment",
       name: "Deployment",
       component: Deployment,
+      guard: AuthGuard,
     },
     {
       path: "/documentation/theming",
       name: "Theming",
       component: Theming,
+      guard: AuthGuard,
     },
     {
       path: "/documentation/state-management",
       name: "State Management",
       component: StateManagement,
+      guard: AuthGuard,
     },
     {
       path: "/documentation/api-calls",
       name: "API Calls",
       component: APICalls,
+      guard: AuthGuard,
     },
     {
       path: "/documentation/eslint-and-prettier",
       name: "ESLint & Prettier",
       component: ESLintAndPrettier,
+      guard: AuthGuard,
     },
     {
       path: "/documentation/support",
       name: "Support",
       component: Support,
+      guard: AuthGuard,
     },
   ],
   component: null,
@@ -522,14 +558,6 @@ const changelogRoutes = {
   badge: "v2.0.0",
   icon: <List />,
   component: Changelog,
-  children: null,
-};
-
-// This route is only visible while signed in
-const protectedPageRoutes = {
-  id: "Private",
-  path: "/private",
-  component: ProtectedPage,
   children: null,
   guard: AuthGuard,
 };
@@ -555,12 +583,6 @@ export const dashboardLayoutRoutes = [
 
 // Routes using the Auth layout
 export const authLayoutRoutes = [authRoutes];
-
-// Routes using the Presentation layout
-export const presentationLayoutRoutes = [landingRoutes];
-
-// Routes that are protected
-export const protectedRoutes = [protectedPageRoutes];
 
 // Routes visible in the sidebar
 export const sidebarRoutes = [

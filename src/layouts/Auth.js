@@ -2,6 +2,8 @@ import React from "react";
 import styled, { createGlobalStyle } from "styled-components/macro";
 import { CssBaseline } from "@material-ui/core";
 
+import AuthBackground from "components/AuthBackground";
+
 const GlobalStyle = createGlobalStyle`
   html,
   body,
@@ -14,12 +16,11 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Root = styled.div`
-  max-width: 520px;
-  margin: 0 auto;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  min-height: 100%;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 5% 15%;
+  overflow: hidden;
 `;
 
 const Auth = ({ children }) => {
@@ -27,6 +28,7 @@ const Auth = ({ children }) => {
     <Root>
       <CssBaseline />
       <GlobalStyle />
+      <AuthBackground />
       {children}
     </Root>
   );

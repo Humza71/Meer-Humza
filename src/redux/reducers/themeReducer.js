@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { THEMES } from "../../constants";
 
 const initialState = {
-  currentTheme: THEMES.DEFAULT,
+  currentTheme: THEMES.BLUE,
 };
 
 // export default function reducer(state = initialState, actions) {

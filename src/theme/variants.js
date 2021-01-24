@@ -13,6 +13,7 @@ const customBlue = {
   700: "#376fd0",
   800: "#2f65cb",
   900: "#2052c2 ",
+  1000: "#09539E",
 };
 
 const defaultVariant = {
@@ -139,20 +140,24 @@ const blueVariant = merge(defaultVariant, {
   name: THEMES.BLUE,
   palette: {
     type: "light",
+    primary: {
+      main: customBlue[1000],
+      contrastText: "#FFF",
+    },
   },
   sidebar: {
     color: "#FFF",
-    background: customBlue[700],
+    background: customBlue[1000],
     header: {
       color: "#FFF",
-      background: customBlue[800],
+      background: customBlue[1000],
       brand: {
         color: "#FFFFFF",
       },
     },
     footer: {
       color: "#FFF",
-      background: customBlue[800],
+      background: customBlue[1000],
       online: {
         background: "#FFF",
       },

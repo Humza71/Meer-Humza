@@ -1,22 +1,28 @@
 import React from "react";
+import clsx from "clsx";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { signIn } from "../../redux/reducers/authReducer";
+import { makeStyles } from "@material-ui/core/styles";
 
 import {
-  Avatar,
-  Checkbox,
-  FormControlLabel,
   Button,
   Paper,
   TextField as MuiTextField,
   Typography,
+  InputAdornment,
+  IconButton,
+  Box,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
 } from "@material-ui/core";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { spacing } from "@material-ui/system";
 import { Alert as MuiAlert } from "@material-ui/lab";
 
@@ -24,34 +30,79 @@ const Alert = styled(MuiAlert)(spacing);
 
 const TextField = styled(MuiTextField)(spacing);
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  margin: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+  withoutLabel: {
+    marginTop: theme.spacing(3),
+  },
+  textField: {
+    width: "100%",
+  },
+}));
+
 const Wrapper = styled(Paper)`
   padding: ${(props) => props.theme.spacing(6)}px;
   ${(props) => props.theme.breakpoints.up("md")} {
     padding: ${(props) => props.theme.spacing(10)}px;
   }
+  position: absolute;
+  right: 15%;
+  top: calc(50% - 266px);
+  width: 300px;
+  ${(props) => props.theme.breakpoints.up("md")} {
+    width: 500px;
+  }
 `;
-
-const BigAvatar = styled(Avatar)`
-  width: 92px;
-  height: 92px;
-  text-align: center;
-  margin: 0 auto ${(props) => props.theme.spacing(5)}px;
+const SignInButton = styled(Button)`
+  margin-top: ${(props) => props.theme.spacing(props.my)}px;
+  margin-bottom: ${(props) => props.theme.spacing(props.my)}px;
+`;
+const ImageInButton = styled.img`
+  height: ${(props) => props.height}px;
+  width: ${(props) => props.width}px;
+  margin-top: ${(props) => props.mt}px;
+  margin-right: 10px;
+`;
+const Bar = styled(Box)`
+  height: 1px;
+  background: #ccc;
+  flex-grow: 1;
+  margin: auto 0;
 `;
 
 function SignIn() {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   return (
     <Wrapper>
       <Helmet title="Sign In" />
-      <BigAvatar alt="Lucy" src="/static/img/avatars/avatar-1.jpg" />
 
-      <Typography component="h1" variant="h4" align="center" gutterBottom>
-        Welcome back, Lucy!
+      <Typography component="h1" variant="h3" gutterBottom>
+        Sign in
       </Typography>
-      <Typography component="h2" variant="body1" align="center">
-        Sign in to your account to continue
+      <Typography component="h2" variant="body1">
+        Don't have an account?
+        <Button component={RouterLink} to="/auth/sign-up" color="primary">
+          Create an account
+        </Button>
       </Typography>
 
       <Formik
@@ -72,7 +123,7 @@ function SignIn() {
             await dispatch(
               signIn({ email: values.email, password: values.password })
             );
-            history.push("/private");
+            history.push("/");
           } catch (error) {
             const message = error.message || "Something went wrong";
 
@@ -92,10 +143,6 @@ function SignIn() {
           values,
         }) => (
           <form noValidate onSubmit={handleSubmit}>
-            <Alert mt={3} mb={1} severity="info">
-              Use <strong>demo@bootlab.io</strong> and{" "}
-              <strong>unsafepassword</strong> to sign in
-            </Alert>
             {errors.submit && (
               <Alert mt={2} mb={1} severity="warning">
                 {errors.submit}
@@ -105,6 +152,7 @@ function SignIn() {
               type="email"
               name="email"
               label="Email Address"
+              variant="outlined"
               value={values.email}
               error={Boolean(touched.email && errors.email)}
               fullWidth
@@ -113,39 +161,102 @@ function SignIn() {
               onChange={handleChange}
               my={2}
             />
-            <TextField
-              type="password"
-              name="password"
-              label="Password"
-              value={values.password}
-              error={Boolean(touched.password && errors.password)}
-              fullWidth
-              helperText={touched.password && errors.password}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              my={2}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+            <FormControl
+              className={clsx(classes.margin, classes.textField)}
+              variant="outlined"
+            >
+              <InputLabel htmlFor="outlined-adornment-password">
+                Password
+              </InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-password"
+                type={showPassword ? "text" : "password"}
+                value={values.password}
+                onChange={handleChange}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                labelWidth={70}
+              />
+            </FormControl>
             <Button
+              component={RouterLink}
+              to="/auth/reset-password"
+              color="primary"
+            >
+              Forgot password?
+            </Button>
+            <SignInButton
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
               disabled={isSubmitting}
+              my={5}
             >
               Sign in
-            </Button>
-            <Button
-              component={Link}
-              to="/auth/reset-password"
+            </SignInButton>
+            <Box display="flex" mb={3}>
+              <Bar />
+              <Box mx={3} color="#999999" fontWeight={500}>
+                or
+              </Box>
+              <Bar />
+            </Box>
+            <SignInButton
               fullWidth
-              color="primary"
+              variant="outlined"
+              color="default"
+              disabled={isSubmitting}
+              my={2}
             >
-              Forgot password
-            </Button>
+              <ImageInButton
+                src="/static/img/auth/google-icon.png"
+                width="12"
+                height="12"
+                mt="0"
+              />
+              Continue with Google
+            </SignInButton>
+            <SignInButton
+              fullWidth
+              variant="outlined"
+              color="default"
+              disabled={isSubmitting}
+              my={2}
+            >
+              <ImageInButton
+                src="/static/img/auth/facebook-icon.png"
+                width="14"
+                height="14"
+                mt="0"
+              />
+              Continue with Facebook
+            </SignInButton>
+            <SignInButton
+              fullWidth
+              variant="outlined"
+              color="default"
+              disabled={isSubmitting}
+              my={2}
+            >
+              <ImageInButton
+                src="/static/img/auth/amazon-icon.png"
+                width="40"
+                height="12"
+                mt="6"
+              />
+              Continue with Amazon
+            </SignInButton>
           </form>
         )}
       </Formik>

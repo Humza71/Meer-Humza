@@ -28,8 +28,6 @@ import { green } from "@material-ui/core/colors";
 
 import { sidebarRoutes as routes } from "../routes/index";
 
-import { ReactComponent as Logo } from "../vendor/logo.svg";
-
 const Box = styled(MuiBox)(spacing);
 
 const Drawer = styled(MuiDrawer)`
@@ -75,29 +73,30 @@ const Brand = styled(ListItem)`
   }
 `;
 
-const BrandIcon = styled(Logo)`
+const BrandIcon = styled.div`
+  background: url("/static/img/logo.png");
   margin-right: ${(props) => props.theme.spacing(2)}px;
   color: ${(props) => props.theme.sidebar.header.brand.color};
   fill: ${(props) => props.theme.sidebar.header.brand.color};
-  width: 32px;
-  height: 32px;
+  width: 29px;
+  height: 36px;
 `;
 
-const BrandChip = styled(Chip)`
-  background-color: ${green[700]};
-  border-radius: 5px;
-  color: ${(props) => props.theme.palette.common.white};
-  font-size: 55%;
-  height: 18px;
-  margin-left: 2px;
-  margin-top: -16px;
-  padding: 3px 0;
+// const BrandChip = styled(Chip)`
+//   background-color: ${green[700]};
+//   border-radius: 5px;
+//   color: ${(props) => props.theme.palette.common.white};
+//   font-size: 55%;
+//   height: 18px;
+//   margin-left: 2px;
+//   margin-top: -16px;
+//   padding: 3px 0;
 
-  span {
-    padding-left: ${(props) => props.theme.spacing(1.375)}px;
-    padding-right: ${(props) => props.theme.spacing(1.375)}px;
-  }
-`;
+//   span {
+//     padding-left: ${(props) => props.theme.spacing(1.375)}px;
+//     padding-right: ${(props) => props.theme.spacing(1.375)}px;
+//   }
+// `;
 
 const Category = styled(ListItem)`
   padding-top: ${(props) => props.theme.spacing(3)}px;
@@ -326,10 +325,7 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
   return (
     <Drawer variant="permanent" {...rest}>
       <Brand component={NavLink} to="/" button>
-        <BrandIcon />{" "}
-        <Box ml={1}>
-          Material App <BrandChip label="PRO" />
-        </Box>
+        <BrandIcon /> <Box ml={1}>AIB Report Writing</Box>
       </Brand>
       <Scrollbar>
         <List disablePadding>

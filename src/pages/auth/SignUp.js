@@ -26,6 +26,13 @@ const Wrapper = styled(Paper)`
   ${(props) => props.theme.breakpoints.up("md")} {
     padding: ${(props) => props.theme.spacing(10)}px;
   }
+  position: absolute;
+  right: 15%;
+  top: calc(50% - 266px);
+  width: 300px;
+  ${(props) => props.theme.breakpoints.up("md")} {
+    width: 500px;
+  }
 `;
 
 function SignUp() {
