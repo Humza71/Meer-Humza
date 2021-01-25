@@ -15,10 +15,12 @@ import authReducer from "./authReducer";
 import themeReducer from "./themeReducer";
 import messageReducer from "./messageReducer";
 
-export default (history) =>
+const reducers = (history) =>
   combineReducers({
     router: connectRouter(history),
     authReducer,
     themeReducer,
     messageReducer,
   });
+
+export default reducers;

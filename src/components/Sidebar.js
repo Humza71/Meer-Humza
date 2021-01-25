@@ -24,8 +24,6 @@ import {
 
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
 
-import { green } from "@material-ui/core/colors";
-
 import { sidebarRoutes as routes } from "../routes/index";
 
 const Box = styled(MuiBox)(spacing);

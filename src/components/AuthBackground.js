@@ -17,6 +17,7 @@ const Wrapper = styled(Paper)`
 
 const AuthLogo = styled.div`
   background: url("/static/img/auth/auth-logo.png") no-repeat;
+  background-size: 100% 100%;
   height: 60px;
   width: 138px;
   ${(props) => props.theme.breakpoints.up("md")} {
