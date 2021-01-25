@@ -186,7 +186,6 @@ function SignUp() {
                 className={clsx(classes.margin, classes.textField)}
                 variant="outlined"
                 error={Boolean(touched.password && errors.password)}
-                helperText={touched.password && errors.password}
               >
                 <InputLabel htmlFor="password">Password</InputLabel>
                 <OutlinedInput
@@ -219,7 +218,6 @@ function SignUp() {
                 className={clsx(classes.margin, classes.textField)}
                 variant="outlined"
                 error={Boolean(touched.password && errors.confirmPassword)}
-                helperText={touched.password && errors.confirmPassword}
               >
                 <InputLabel htmlFor="confirmPassword">
                   Re-enter password

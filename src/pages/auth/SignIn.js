@@ -170,7 +170,6 @@ function SignIn() {
               className={clsx(classes.margin, classes.textField)}
               variant="outlined"
               error={Boolean(touched.password && errors.password)}
-              helperText={touched.password && errors.password}
             >
               <InputLabel htmlFor="password">Password</InputLabel>
               <OutlinedInput
