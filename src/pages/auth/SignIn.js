@@ -21,6 +21,7 @@ import {
   FormControl,
   InputLabel,
   OutlinedInput,
+  FormHelperText,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { spacing } from "@material-ui/system";
@@ -54,7 +55,7 @@ const Wrapper = styled(Paper)`
   }
   position: absolute;
   right: 15%;
-  top: calc(50% - 266px);
+  top: calc(50% - 289px);
   width: 300px;
   ${(props) => props.theme.breakpoints.up("md")} {
     width: 500px;
@@ -75,6 +76,10 @@ const Bar = styled(Box)`
   background: #ccc;
   flex-grow: 1;
   margin: auto 0;
+`;
+const TextButton = styled(Button)`
+  padding-left: 0;
+  paddint-right: 0;
 `;
 
 function SignIn() {
@@ -164,14 +169,16 @@ function SignIn() {
             <FormControl
               className={clsx(classes.margin, classes.textField)}
               variant="outlined"
+              error={Boolean(touched.password && errors.password)}
+              helperText={touched.password && errors.password}
             >
-              <InputLabel htmlFor="outlined-adornment-password">
-                Password
-              </InputLabel>
+              <InputLabel htmlFor="password">Password</InputLabel>
               <OutlinedInput
-                id="outlined-adornment-password"
+                id="password"
+                name="password"
                 type={showPassword ? "text" : "password"}
                 value={values.password}
+                onBlur={handleBlur}
                 onChange={handleChange}
                 endAdornment={
                   <InputAdornment position="end">
@@ -187,14 +194,17 @@ function SignIn() {
                 }
                 labelWidth={70}
               />
+              <FormHelperText id="password-helper-text">
+                {errors.password}
+              </FormHelperText>
             </FormControl>
-            <Button
+            <TextButton
               component={RouterLink}
               to="/auth/reset-password"
               color="primary"
             >
               Forgot password?
-            </Button>
+            </TextButton>
             <SignInButton
               type="submit"
               fullWidth
