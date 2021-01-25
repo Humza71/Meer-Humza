@@ -1,10 +1,13 @@
 import React from "react";
+import clsx from "clsx";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import { useHistory, Link as RouterLink } from "react-router-dom";
 import styled from "styled-components/macro";
 import { Helmet } from "react-helmet";
 import * as Yup from "yup";
 import { Formik } from "formik";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { signUp } from "../../redux/reducers/authReducer";
 
 import {
@@ -12,6 +15,13 @@ import {
   Paper,
   TextField as MuiTextField,
   Typography,
+  Box,
+  InputAdornment,
+  IconButton,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  FormHelperText,
 } from "@material-ui/core";
 import { spacing } from "@material-ui/system";
 import { Alert as MuiAlert } from "@material-ui/lab";
@@ -28,32 +38,65 @@ const Wrapper = styled(Paper)`
   }
   position: absolute;
   right: 15%;
-  top: calc(50% - 266px);
+  top: calc(50% - 225px);
   width: 300px;
   ${(props) => props.theme.breakpoints.up("md")} {
     width: 500px;
   }
 `;
+const SignUpButton = styled(Button)`
+  margin-top: ${(props) => props.theme.spacing(props.my)}px;
+  margin-bottom: ${(props) => props.theme.spacing(props.my)}px;
+`;
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  margin: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+  withoutLabel: {
+    marginTop: theme.spacing(3),
+  },
+  textField: {
+    width: "48%",
+  },
+}));
 
 function SignUp() {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   return (
     <Wrapper>
       <Helmet title="Sign Up" />
 
-      <Typography component="h1" variant="h4" align="center" gutterBottom>
-        Get started
+      <Typography component="h1" variant="h3" gutterBottom>
+        Create an account
       </Typography>
-      <Typography component="h2" variant="body1" align="center">
-        Start creating the best possible user experience for you customers
+      <Typography component="h2" variant="body1">
+        Already hve an account?
+        <Button component={RouterLink} to="/auth/sign-in" color="primary">
+          Sign in
+        </Button>
       </Typography>
 
       <Formik
         initialValues={{
           name: "",
-          company: "",
           email: "",
           password: "",
           confirmPassword: "",
@@ -115,7 +158,8 @@ function SignUp() {
             <TextField
               type="text"
               name="name"
-              label="Name"
+              label="Your name"
+              variant="outlined"
               value={values.name}
               error={Boolean(touched.name && errors.name)}
               fullWidth
@@ -125,21 +169,10 @@ function SignUp() {
               my={3}
             />
             <TextField
-              type="text"
-              name="company"
-              label="Company"
-              value={values.company}
-              error={Boolean(touched.company && errors.company)}
-              fullWidth
-              helperText={touched.company && errors.company}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              my={3}
-            />
-            <TextField
               type="email"
               name="email"
               label="Email Address"
+              variant="outlined"
               value={values.email}
               error={Boolean(touched.email && errors.email)}
               fullWidth
@@ -148,39 +181,86 @@ function SignUp() {
               onChange={handleChange}
               my={3}
             />
-            <TextField
-              type="password"
-              name="password"
-              label="Password"
-              value={values.password}
-              error={Boolean(touched.password && errors.password)}
-              fullWidth
-              helperText={touched.password && errors.password}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              my={3}
-            />
-            <TextField
-              type="password"
-              name="confirmPassword"
-              label="Confirm Password"
-              value={values.confirmPassword}
-              error={Boolean(touched.confirmPassword && errors.confirmPassword)}
-              fullWidth
-              helperText={touched.confirmPassword && errors.confirmPassword}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              my={3}
-            />
-            <Button
+            <Box display="flex" justifyContent="space-between">
+              <FormControl
+                className={clsx(classes.margin, classes.textField)}
+                variant="outlined"
+                error={Boolean(touched.password && errors.password)}
+                helperText={touched.password && errors.password}
+              >
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <OutlinedInput
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  value={values.password}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  labelWidth={70}
+                />
+                <FormHelperText id="password-helper-text">
+                  {errors.password}
+                </FormHelperText>
+              </FormControl>
+
+              <FormControl
+                className={clsx(classes.margin, classes.textField)}
+                variant="outlined"
+                error={Boolean(touched.password && errors.confirmPassword)}
+                helperText={touched.password && errors.confirmPassword}
+              >
+                <InputLabel htmlFor="confirmPassword">
+                  Re-enter password
+                </InputLabel>
+                <OutlinedInput
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type={showPassword ? "text" : "password"}
+                  value={values.confirmPassword}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  labelWidth={120}
+                />
+                <FormHelperText id="confirm-password-helper-text">
+                  {errors.confirmPassword}
+                </FormHelperText>
+              </FormControl>
+            </Box>
+
+            <SignUpButton
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
               disabled={isSubmitting}
+              my={5}
             >
               Sign up
-            </Button>
+            </SignUpButton>
           </form>
         )}
       </Formik>
