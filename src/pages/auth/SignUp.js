@@ -88,7 +88,7 @@ function SignUp() {
         Create an account
       </Typography>
       <Typography component="h2" variant="body1">
-        Already hve an account?
+        Already have an account?
         <Button component={RouterLink} to="/auth/sign-in" color="primary">
           Sign in
         </Button>
