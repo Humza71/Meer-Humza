@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
-import { signUp } from "../../redux/reducers/authReducer";
+import { signIn, signUp } from "../../redux/reducers/authReducer";
 
 import {
   Button,
@@ -124,14 +124,17 @@ function SignUp() {
           try {
             await dispatch(
               signUp({
-                name: "test",
+                name: values.name,
                 company: "test",
                 email: values.email,
                 password: values.password,
                 password_confirmation: values.password_confirmation,
               })
             );
-            history.push("/auth/sign-in");
+            await dispatch(
+              signIn({ email: values.email, password: values.password })
+            );
+            history.push("/");
           } catch (error) {
             const message = error.message || "Something went wrong";
 
