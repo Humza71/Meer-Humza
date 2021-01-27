@@ -6,7 +6,12 @@ import { Redirect } from "react-router-dom";
 function AuthGuard({ children }) {
   const auth = useSelector((state) => state.authReducer);
 
-  if (!auth.user) {
+  const sessionCookieName = "laravel_session";
+  const sessionExist = document.cookie.match(
+    new RegExp("(^| )" + sessionCookieName + "=([^;]+)")
+  );
+
+  if (!auth.user && !sessionExist) {
     return <Redirect to="/auth/sign-in" />;
   }
 
