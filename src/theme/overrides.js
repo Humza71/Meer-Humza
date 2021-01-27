@@ -86,6 +86,29 @@ const overrides = {
       borderRadius: "6px",
     },
   },
+  MuiTableCell: {
+    stickyHeader: {
+      backgroundColor: "#09539E",
+    },
+  },
+  MuiTableSortLabel: {
+    color: "white",
+    root: {
+      color: "white",
+      "&:hover": {
+        color: "white",
+      },
+    },
+    active: {
+      color: "white !important",
+    },
+    hover: {
+      color: "white !important",
+    },
+    icon: {
+      color: "white !important",
+    },
+  },
 };
 
 export default overrides;

@@ -2,7 +2,11 @@ import React from "react";
 
 import async from "../components/Async";
 
-import { Dashboard, CreditCard, Contacts } from "@material-ui/icons";
+import {
+  Dashboard as DashboardIcon,
+  CreditCard,
+  Contacts,
+} from "@material-ui/icons";
 import { List, Users } from "react-feather";
 
 // Guards
@@ -16,7 +20,7 @@ const Page404 = async(() => import("../pages/auth/Page404"));
 const Page500 = async(() => import("../pages/auth/Page500"));
 
 // Dashboards components
-const Default = async(() => import("../pages/dashboards/Default"));
+const Dashboard = async(() => import("../pages/dashboard"));
 const Formik = async(() => import("../pages/forms/Formik"));
 
 const Pricing = async(() => import("../pages/pages/Pricing"));
@@ -61,10 +65,10 @@ const authRoutes = {
 const dashboardsRoutes = {
   id: "Dashboard",
   path: "/",
-  icon: <Dashboard />,
+  icon: <DashboardIcon />,
   containsHome: true,
-  name: "Default",
-  component: Default,
+  name: "Dashboard",
+  component: Dashboard,
   guard: AuthGuard,
 };
 

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components/macro";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/AppBar";
-import Footer from "../components/Footer";
 
 import { spacing } from "@material-ui/system";
 import { CssBaseline, Paper as MuiPaper, withWidth } from "@material-ui/core";
@@ -89,7 +88,6 @@ const Dashboard = ({ children, routes, width }) => {
         <MainContent p={isWidthUp("lg", width) ? 12 : 5}>
           {children}
         </MainContent>
-        <Footer />
       </AppContent>
     </Root>
   );
