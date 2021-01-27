@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import { signIn } from "../../redux/reducers/authReducer";
 import { makeStyles } from "@material-ui/core/styles";
+import config from "../../config";
 
 import {
   Button,
@@ -221,7 +222,7 @@ function SignIn() {
               </Box>
               <Bar />
             </Box>
-            <a href="http://localhost:8080/auth/google/redirect">
+            <a href={process.env.REACT_APP_GOOGLE_REDIRECT_URI}>
               <SignInButton
                 fullWidth
                 variant="outlined"
@@ -238,7 +239,7 @@ function SignIn() {
                 Continue with Google
               </SignInButton>
             </a>
-            <a href="http://localhost:8080/auth/facebook/redirect">
+            <a href={config.facebookRedirectURI}>
               <SignInButton
                 fullWidth
                 variant="outlined"
