@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
-import { signUp } from "../../redux/reducers/authReducer";
+import { signIn, signUp } from "../../redux/reducers/authReducer";
 
 import {
   Button,
@@ -88,7 +88,7 @@ function SignUp() {
         Create an account
       </Typography>
       <Typography component="h2" variant="body1">
-        Already hve an account?
+        Already have an account?
         <Button component={RouterLink} to="/auth/sign-in" color="primary">
           Sign in
         </Button>
@@ -99,7 +99,7 @@ function SignUp() {
           name: "",
           email: "",
           password: "",
-          confirmPassword: "",
+          password_confirmation: "",
           submit: false,
         }}
         validationSchema={Yup.object().shape({
@@ -112,7 +112,7 @@ function SignUp() {
             .min(12, "Must be at least 12 characters")
             .max(255)
             .required("Required"),
-          confirmPassword: Yup.string().when("password", {
+          password_confirmation: Yup.string().when("password", {
             is: (val) => (val && val.length > 0 ? true : false),
             then: Yup.string().oneOf(
               [Yup.ref("password")],
@@ -124,13 +124,17 @@ function SignUp() {
           try {
             await dispatch(
               signUp({
-                name: "test",
+                name: values.name,
                 company: "test",
                 email: values.email,
                 password: values.password,
+                password_confirmation: values.password_confirmation,
               })
             );
-            history.push("/auth/sign-in");
+            await dispatch(
+              signIn({ email: values.email, password: values.password })
+            );
+            history.push("/");
           } catch (error) {
             const message = error.message || "Something went wrong";
 
@@ -186,6 +190,7 @@ function SignUp() {
                 className={clsx(classes.margin, classes.textField)}
                 variant="outlined"
                 error={Boolean(touched.password && errors.password)}
+                helperText={touched.password && errors.password}
               >
                 <InputLabel htmlFor="password">Password</InputLabel>
                 <OutlinedInput
@@ -217,16 +222,19 @@ function SignUp() {
               <FormControl
                 className={clsx(classes.margin, classes.textField)}
                 variant="outlined"
-                error={Boolean(touched.password && errors.confirmPassword)}
+                error={Boolean(
+                  touched.password && errors.password_confirmation
+                )}
+                helperText={touched.password && errors.password_confirmation}
               >
-                <InputLabel htmlFor="confirmPassword">
+                <InputLabel htmlFor="password_confirmation">
                   Re-enter password
                 </InputLabel>
                 <OutlinedInput
-                  id="confirmPassword"
-                  name="confirmPassword"
+                  id="password_confirmation"
+                  name="password_confirmation"
                   type={showPassword ? "text" : "password"}
-                  value={values.confirmPassword}
+                  value={values.password_confirmation}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   endAdornment={
@@ -244,7 +252,7 @@ function SignUp() {
                   labelWidth={120}
                 />
                 <FormHelperText id="confirm-password-helper-text">
-                  {errors.confirmPassword}
+                  {errors.password_confirmation}
                 </FormHelperText>
               </FormControl>
             </Box>

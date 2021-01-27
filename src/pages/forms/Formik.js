@@ -43,7 +43,7 @@ const initialValues = {
   lastName: "Lavender",
   email: "lucylavender@gmail.com",
   password: "mypassword123",
-  confirmPassword: "mypassword123",
+  password_confirmation: "mypassword123",
 };
 
 const validationSchema = Yup.object().shape({
@@ -54,7 +54,7 @@ const validationSchema = Yup.object().shape({
     .min(12, "Must be at least 12 characters")
     .max(255)
     .required("Required"),
-  confirmPassword: Yup.string().when("password", {
+  password_confirmation: Yup.string().when("password", {
     is: (val) => (val && val.length > 0 ? true : false),
     then: Yup.string().oneOf(
       [Yup.ref("password")],
@@ -177,14 +177,18 @@ function BasicForm() {
                 />
 
                 <TextField
-                  name="confirmPassword"
+                  name="password_confirmation"
                   label="Confirm password"
-                  value={values.confirmPassword}
+                  value={values.password_confirmation}
                   error={Boolean(
-                    touched.confirmPassword && errors.confirmPassword
+                    touched.password_confirmation &&
+                      errors.password_confirmation
                   )}
                   fullWidth
-                  helperText={touched.confirmPassword && errors.confirmPassword}
+                  helperText={
+                    touched.password_confirmation &&
+                    errors.password_confirmation
+                  }
                   onBlur={handleBlur}
                   onChange={handleChange}
                   type="password"
