@@ -222,37 +222,41 @@ function SignIn() {
               </Box>
               <Bar />
             </Box>
-            <SignInButton
-              fullWidth
-              variant="outlined"
-              color="default"
-              disabled={isSubmitting}
-              my={2}
-            >
-              <ImageInButton
-                src="/static/img/auth/google-icon.png"
-                width="12"
-                height="12"
-                mt="0"
-              />
-              Continue with Google
-            </SignInButton>
-            <SignInButton
-              fullWidth
-              variant="outlined"
-              color="default"
-              disabled={isSubmitting}
-              my={2}
-            >
-              <ImageInButton
-                src="/static/img/auth/facebook-icon.png"
-                width="14"
-                height="14"
-                mt="0"
-              />
-              Continue with Facebook
-            </SignInButton>
-            <SignInButton
+            <a href="http://localhost:8080/auth/google/redirect">
+              <SignInButton
+                fullWidth
+                variant="outlined"
+                color="default"
+                disabled={isSubmitting}
+                my={2}
+              >
+                <ImageInButton
+                  src="/static/img/auth/google-icon.png"
+                  width="12"
+                  height="12"
+                  mt="0"
+                />
+                Continue with Google
+              </SignInButton>
+            </a>
+            <a href="http://localhost:8080/auth/facebook/redirect">
+              <SignInButton
+                fullWidth
+                variant="outlined"
+                color="default"
+                disabled={isSubmitting}
+                my={2}
+              >
+                <ImageInButton
+                  src="/static/img/auth/facebook-icon.png"
+                  width="14"
+                  height="14"
+                  mt="0"
+                />
+                Continue with Facebook
+              </SignInButton>
+            </a>
+            {/*<SignInButton
               fullWidth
               variant="outlined"
               color="default"
@@ -266,7 +270,7 @@ function SignIn() {
                 mt="6"
               />
               Continue with Amazon
-            </SignInButton>
+            </SignInButton>*/}
           </form>
         )}
       </Formik>
