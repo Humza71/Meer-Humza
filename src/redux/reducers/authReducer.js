@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   signIn as authSignIn,
   signUp as authSignUp,
+  userInfo as authUserInfo,
   resetPassword as authResetPassword,
 } from "../../services/authService";
 import { setMessage } from "./messageReducer";
@@ -84,6 +85,24 @@ export const signUp = (credentials) => async (dispatch) => {
   }
 
   dispatch(setLoading(false));
+};
+
+export const userInfo = () => async (dispatch) => {
+  dispatch(setLoading(true));
+
+  try {
+    const response = await authUserInfo();
+
+    if (response) {
+      dispatch(
+        setUser({
+          id: response.id,
+          email: response.email,
+          name: response.name,
+        })
+      );
+    }
+  } catch (error) {}
 };
 
 export const signOut = () => (dispatch) => {
