@@ -1,24 +1,11 @@
 import React from "react";
-import styled from "styled-components/macro";
-import { Power } from "react-feather";
+// import styled from "styled-components/macro";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import {
-  Tooltip,
-  Menu,
-  MenuItem,
-  IconButton as MuiIconButton,
-} from "@material-ui/core";
+import { Tooltip, Avatar, Menu, MenuItem, Box } from "@material-ui/core";
 
 import { signOut } from "../redux/reducers/authReducer";
-
-const IconButton = styled(MuiIconButton)`
-  svg {
-    width: 22px;
-    height: 22px;
-  }
-`;
 
 function UserDropdown() {
   const [anchorMenu, setAnchorMenu] = React.useState(null);
@@ -40,16 +27,18 @@ function UserDropdown() {
 
   return (
     <React.Fragment>
-      <Tooltip title="Account">
-        <IconButton
-          aria-owns={Boolean(anchorMenu) ? "menu-appbar" : undefined}
-          aria-haspopup="true"
-          onClick={toggleMenu}
-          color="inherit"
-        >
-          <Power />
-        </IconButton>
-      </Tooltip>
+      <Box display="flex">
+        <Box display="flex" alignItems="center" mr={2}>
+          Lucy Lavender
+        </Box>
+        <Tooltip title="Account">
+          <Avatar
+            alt="Lucy Lavender"
+            src="/static/img/avatars/avatar-1.jpg"
+            onClick={toggleMenu}
+          />
+        </Tooltip>
+      </Box>
       <Menu
         id="menu-appbar"
         anchorEl={anchorMenu}

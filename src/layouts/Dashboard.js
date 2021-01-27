@@ -3,19 +3,14 @@ import styled, { createGlobalStyle } from "styled-components/macro";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/AppBar";
 import Footer from "../components/Footer";
-import Settings from "../components/Settings";
 
 import { spacing } from "@material-ui/system";
-import {
-  Hidden,
-  CssBaseline,
-  Paper as MuiPaper,
-  withWidth,
-} from "@material-ui/core";
+import { CssBaseline, Paper as MuiPaper, withWidth } from "@material-ui/core";
 
 import { isWidthUp } from "@material-ui/core/withWidth";
 
-const drawerWidth = 258;
+const drawerWidth = 288;
+const drawerMiniWidth = 122;
 
 const GlobalStyle = createGlobalStyle`
   html,
@@ -42,7 +37,7 @@ const Root = styled.div`
 
 const Drawer = styled.div`
   ${(props) => props.theme.breakpoints.up("md")} {
-    width: ${drawerWidth}px;
+    width: ${(props) => (props.navExpand ? drawerWidth : drawerMiniWidth)}px;
     flex-shrink: 0;
   }
 `;
@@ -69,41 +64,33 @@ const MainContent = styled(Paper)`
 `;
 
 const Dashboard = ({ children, routes, width }) => {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [navExpand, setNavExpand] = useState(true);
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+    console.log(navExpand);
+    setNavExpand(!navExpand);
   };
 
   return (
     <Root>
       <CssBaseline />
       <GlobalStyle />
-      <Drawer>
-        <Hidden mdUp implementation="js">
-          <Sidebar
-            routes={routes}
-            PaperProps={{ style: { width: drawerWidth } }}
-            variant="temporary"
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-          />
-        </Hidden>
-        <Hidden smDown implementation="css">
-          <Sidebar
-            routes={routes}
-            PaperProps={{ style: { width: drawerWidth } }}
-          />
-        </Hidden>
+      <Drawer navExpand={navExpand}>
+        <Sidebar
+          routes={routes}
+          PaperProps={{
+            style: { width: navExpand ? drawerWidth : drawerMiniWidth },
+          }}
+          navExpand={navExpand}
+        />
       </Drawer>
       <AppContent>
-        <Header onDrawerToggle={handleDrawerToggle} />
+        <Header navExpand={navExpand} onDrawerToggle={handleDrawerToggle} />
         <MainContent p={isWidthUp("lg", width) ? 12 : 5}>
           {children}
         </MainContent>
         <Footer />
       </AppContent>
-      <Settings />
     </Root>
   );
 };
