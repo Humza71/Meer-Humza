@@ -92,7 +92,6 @@ const overrides = {
     },
   },
   MuiTableSortLabel: {
-    color: "white",
     root: {
       color: "white",
       "&:hover": {
@@ -100,9 +99,6 @@ const overrides = {
       },
     },
     active: {
-      color: "white !important",
-    },
-    hover: {
       color: "white !important",
     },
     icon: {

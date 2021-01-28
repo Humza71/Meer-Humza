@@ -69,7 +69,7 @@ const dashboardsRoutes = {
   containsHome: true,
   name: "Dashboard",
   component: Dashboard,
-  guard: AuthGuard,
+  // guard: AuthGuard,
 };
 
 const billingRoutes = {
