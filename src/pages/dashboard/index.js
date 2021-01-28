@@ -430,39 +430,6 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-function ReportTableHead(props) {
-  const { columns, filteredColumns, order, orderBy, onRequestSort } = props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
-
-  return (
-    <TableHead>
-      <TableRow>
-        {columns.map(
-          (headCell) =>
-            filteredColumns.indexOf(headCell.label) !== -1 && (
-              <TableCell
-                key={headCell.id}
-                align={headCell.numeric ? "right" : "left"}
-                padding={headCell.disablePadding ? "none" : "default"}
-                sortDirection={orderBy === headCell.id ? order : false}
-              >
-                <TableSortLabel
-                  active={orderBy === headCell.id}
-                  direction={orderBy === headCell.id ? order : "asc"}
-                  onClick={createSortHandler(headCell.id)}
-                >
-                  {headCell.label}
-                </TableSortLabel>
-              </TableCell>
-            )
-        )}
-      </TableRow>
-    </TableHead>
-  );
-}
-
 let TableToolbar = (props) => {
   const {
     data,
@@ -500,7 +467,7 @@ let TableToolbar = (props) => {
 
   return (
     <Toolbar>
-      <Grid container alignItems="center">
+      <Grid container alignItems="center" justify="space-between">
         <Grid item>
           <Search>
             <SearchIconWrapper>
@@ -527,14 +494,16 @@ let TableToolbar = (props) => {
               MenuProps={MenuProps}
             >
               <FormLabel component="legend">SELECT COLUMNS</FormLabel>
-              {columns.map((column) => (
-                <MenuItem key={column.id} value={column.label}>
-                  <Checkbox
-                    checked={filteredColumns.indexOf(column.label) > -1}
-                  />
-                  <ListItemText primary={column.label} />
-                </MenuItem>
-              ))}
+              {columns
+                .filter((item) => item.id !== "actions")
+                .map((column) => (
+                  <MenuItem key={column.id} value={column.label}>
+                    <Checkbox
+                      checked={filteredColumns.indexOf(column.label) > -1}
+                    />
+                    <ListItemText primary={column.label} />
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
         </Grid>
@@ -586,6 +555,40 @@ let TableToolbar = (props) => {
         </Grid>
       </Grid>
     </Toolbar>
+  );
+};
+
+const ReportTableHead = (props) => {
+  const { columns, filteredColumns, order, orderBy, onRequestSort } = props;
+  const createSortHandler = (property) => (event) => {
+    onRequestSort(event, property);
+  };
+
+  return (
+    <TableHead>
+      <TableRow>
+        {columns.map(
+          (headCell) =>
+            (filteredColumns.indexOf(headCell.label) !== -1 ||
+              headCell.id === "actions") && (
+              <TableCell
+                key={headCell.id}
+                align={headCell.numeric ? "right" : "left"}
+                padding={headCell.disablePadding ? "none" : "default"}
+                sortDirection={orderBy === headCell.id ? order : false}
+              >
+                <TableSortLabel
+                  active={orderBy === headCell.id}
+                  direction={orderBy === headCell.id ? order : "asc"}
+                  onClick={createSortHandler(headCell.id)}
+                >
+                  {headCell.label}
+                </TableSortLabel>
+              </TableCell>
+            )
+        )}
+      </TableRow>
+    </TableHead>
   );
 };
 
