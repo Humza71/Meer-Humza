@@ -1,6 +1,4 @@
-# Material App Pro - React Admin & Dashboard Template
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# AIB
 
 ## Prerequisites
 
@@ -26,8 +24,8 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-## Learn More
+## Deployment
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Copy and paste server.pem into your project directory and run the command below:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+scp -r -i server.pem ./build/\* ubuntu@ec2-18-217-167-57.us-east-2.compute.amazonaws.com:/var/www/aib-frontend/build
