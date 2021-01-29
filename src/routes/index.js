@@ -5,7 +5,7 @@ import async from "../components/Async";
 import {
   Dashboard as DashboardIcon,
   CreditCard,
-  Contacts,
+  Contacts as ContactIcon,
 } from "@material-ui/icons";
 import { List, Users } from "react-feather";
 
@@ -21,12 +21,10 @@ const Page500 = async(() => import("../pages/auth/Page500"));
 
 // Dashboards components
 const Dashboard = async(() => import("../pages/dashboard"));
-const Formik = async(() => import("../pages/forms/Formik"));
-
-const Pricing = async(() => import("../pages/pages/Pricing"));
-// Tables components
-const SimpleTable = async(() => import("../pages/tables/SimpleTable"));
-const AdvancedTable = async(() => import("../pages/tables/AdvancedTable"));
+const Contact = async(() => import("../pages/contact"));
+const Billing = async(() => import("../pages/billing"));
+const Licenses = async(() => import("../pages/licenses"));
+const Clients = async(() => import("../pages/clients"));
 
 const authRoutes = {
   id: "Auth",
@@ -76,7 +74,7 @@ const billingRoutes = {
   id: "Billing Settings",
   path: "/billing",
   icon: <CreditCard />,
-  component: Pricing,
+  component: Billing,
   guard: AuthGuard,
 };
 
@@ -84,22 +82,22 @@ const clientsRoutes = {
   id: "Manage Clients",
   path: "/clients",
   icon: <Users />,
-  component: AdvancedTable,
+  component: Clients,
   guard: AuthGuard,
 };
 const licenseRoutes = {
   id: "Manage Licences",
   path: "/licenses",
   icon: <List />,
-  component: SimpleTable,
+  component: Licenses,
   guard: AuthGuard,
 };
 
 const contactRoutes = {
   id: "Contact Support",
-  path: "/contacts",
-  icon: <Contacts />,
-  component: Formik,
+  path: "/contact",
+  icon: <ContactIcon />,
+  component: Contact,
   guard: AuthGuard,
 };
 
