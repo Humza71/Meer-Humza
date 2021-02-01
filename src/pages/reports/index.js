@@ -72,11 +72,11 @@ const Reports = () => {
   }, []);
 
   return (
-    <React.Fragment>
+    <Box p={12}>
       <Helmet title="Dashboard" />
       <ReportHeader />
       <ReportTable data={rows} columns={headCells} />
-    </React.Fragment>
+    </Box>
   );
 };
 

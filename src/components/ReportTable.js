@@ -332,7 +332,7 @@ const ReportTable = (props) => {
   const { data, columns } = props;
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
+  const [orderBy, setOrderBy] = React.useState("date");
   const [tableFormat, setTableFormat] = React.useState("padding");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);

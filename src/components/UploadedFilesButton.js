@@ -18,7 +18,7 @@ import {
 
 import { Alert } from "@material-ui/lab";
 
-import { Palette as PaletteIcon } from "@material-ui/icons";
+import { FolderOpen as FolderIcon } from "@material-ui/icons";
 
 const DemoButton = styled.div`
   cursor: pointer;
@@ -84,7 +84,7 @@ const DemoTitle = styled(Typography)`
 const Fab = styled(MuiFab)`
   position: fixed;
   right: ${(props) => props.theme.spacing(8)}px;
-  bottom: ${(props) => props.theme.spacing(8)}px;
+  bottom: ${(props) => props.theme.spacing(20)}px;
   z-index: 1;
 `;
 
@@ -104,7 +104,7 @@ const Heading = styled(ListItem)`
   }
 `;
 
-function Demo({ title, theme }) {
+const Demo = ({ title, theme }) => {
   const dispatch = useDispatch();
   const currentTheme = useSelector((state) => state.themeReducer);
 
@@ -121,9 +121,9 @@ function Demo({ title, theme }) {
       </DemoTitle>
     </Grid>
   );
-}
+};
 
-function Demos() {
+const Demos = () => {
   return (
     <Wrapper>
       <Heading button={true}>Select a demo</Heading>
@@ -173,9 +173,9 @@ function Demos() {
       </Box>
     </Wrapper>
   );
-}
+};
 
-function Settings() {
+const UploadedFilesButton = () => {
   const [state, setState] = useState({
     isOpen: false,
   });
@@ -187,13 +187,13 @@ function Settings() {
   return (
     <React.Fragment>
       <Fab color="primary" aria-label="Edit" onClick={toggleDrawer(true)}>
-        <PaletteIcon />
+        <FolderIcon />
       </Fab>
       <Drawer anchor="right" open={state.isOpen} onClose={toggleDrawer(false)}>
         <Demos />
       </Drawer>
     </React.Fragment>
   );
-}
+};
 
-export default Settings;
+export default UploadedFilesButton;

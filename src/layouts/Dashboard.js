@@ -6,8 +6,6 @@ import Header from "../components/AppBar";
 import { spacing } from "@material-ui/system";
 import { CssBaseline, Paper as MuiPaper, withWidth } from "@material-ui/core";
 
-import { isWidthUp } from "@material-ui/core/withWidth";
-
 const drawerWidth = 288;
 const drawerMiniWidth = 122;
 
@@ -65,7 +63,7 @@ const MainContent = styled(Paper)`
   }
 `;
 
-const Dashboard = ({ children, routes, width }) => {
+const Dashboard = ({ children, routes }) => {
   const [navExpand, setNavExpand] = useState(true);
 
   const handleDrawerToggle = () => {
@@ -88,9 +86,7 @@ const Dashboard = ({ children, routes, width }) => {
       </Drawer>
       <AppContent>
         <Header navExpand={navExpand} onDrawerToggle={handleDrawerToggle} />
-        <MainContent p={isWidthUp("lg", width) ? 12 : 5}>
-          {children}
-        </MainContent>
+        <MainContent>{children}</MainContent>
       </AppContent>
     </Root>
   );

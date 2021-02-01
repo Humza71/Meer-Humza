@@ -22,40 +22,44 @@ import {
   Activity as ActivityIcon,
 } from "react-feather";
 
-import BasicForm from "forms/BasicForm";
+import UploadedFilesButton from "components/UploadedFilesButton";
+import PatientForm from "forms/PatientForm";
+import FilesForm from "forms/FilesForm";
 import { setHeaderTitle } from "redux/reducers/uiReducer";
 
-function a11yProps(index) {
+const a11yProps = (index) => {
   return {
     id: `create-report-tab-${index}`,
     "aria-controls": `create-report-tabpanel-${index}`,
   };
-}
+};
 
 const TabContent = styled(Box)`
   background: ${(props) => props.theme.palette.background.default};
+  height: calc(100% - 120px);
 `;
-// const Tab = styled(MuiTab)`
-//   background: ${(props) => props.backgroundColor};
-//   border-color: ${(props) => props.backgroundColor};
-//   margin-right: ${(props) => props.theme.spacing(props.mr)}px;
-//   min-width: ${(props) => props.theme.spacing(props.width)}px;
-//   opacity: 1;
-//   "&.mui-selected": {
-//     color: ${(props) => props.backgroundColor};
-//     border: 1px 1px 0 1px;
-//     background-color: "transparent";
-//   }
-// `;
 const Tab = styled(MuiTab)`
-  background: ${(props) => props.backgroundColor};
-  border-color: ${(props) => props.backgroundColor};
+  border-color: ;
   margin-right: ${(props) => props.theme.spacing(props.mr)}px;
   min-width: ${(props) => props.theme.spacing(props.width)}px;
+  color: ${(props) => props.tabcolor};
+  border: 1px solid ${(props) => props.tabcolor};
+  border-bottom: 0px;
+  background-color: transparent;
   opacity: 1;
+  &:not(.Mui-selected) {
+    color: white;
+    background-color: ${(props) => props.tabcolor};
+  }
+  &:first-child {
+    margin-left: ${(props) => props.theme.spacing(5)}px;
+  }
+  &:last-child {
+    margin-right: ${(props) => props.theme.spacing(5)}px;
+  }
 `;
 
-function TabPanel(props) {
+const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -69,86 +73,86 @@ function TabPanel(props) {
       {value === index && <>{children}</>}
     </TabContent>
   );
-}
+};
 
 const tabsInfo = [
   {
     label: "PATIENT DEMOGRAPHICS",
     icon: UserIcon,
     backgroundColor: "#09539E",
-    component: BasicForm,
+    component: PatientForm,
   },
   {
     label: "FILES",
     icon: FileIcon,
     backgroundColor: "#7A54FF",
-    component: BasicForm,
+    component: FilesForm,
   },
   {
     label: "HISTORY",
     icon: HistoryIcon,
     backgroundColor: "#36B2F9",
-    component: BasicForm,
+    component: PatientForm,
   },
   {
     label: "POSTURAL STABILITY",
     icon: DirectionsWalkIcon,
     backgroundColor: "#12D9DB",
-    component: BasicForm,
+    component: PatientForm,
   },
   {
     label: "VNG",
     icon: YoutubeSearchedForIcon,
     backgroundColor: "#1CCBB0",
-    component: BasicForm,
+    component: PatientForm,
   },
   {
     label: "ROTARY CHAIR",
     icon: AirlineSeatLegroomNormalIcon,
     backgroundColor: "#32D74B",
-    component: BasicForm,
+    component: PatientForm,
   },
   {
     label: "vHIT",
     icon: TimelapseIcon,
     backgroundColor: "#96DA45",
-    component: BasicForm,
+    component: PatientForm,
   },
   {
     label: "VAT/VORTEQ",
     icon: SlidersIcon,
     backgroundColor: "#FF8F61",
-    component: BasicForm,
+    component: PatientForm,
   },
   {
     label: "ELECTROPHYS",
     icon: ActivityIcon,
     backgroundColor: "#FF6968",
-    component: BasicForm,
+    component: PatientForm,
   },
   {
     label: "AUDIOMETRY",
     icon: RecordVoiceOverIcon,
     backgroundColor: "#DFAD00",
-    component: BasicForm,
+    component: PatientForm,
   },
   {
     label: "SCREENINGS",
     icon: ScreenShareIcon,
     backgroundColor: "#F08115",
-    component: BasicForm,
+    component: PatientForm,
   },
   {
     label: "ADD.TESTS & COMMENTS",
     icon: AddCommentIcon,
     backgroundColor: "#EC524B",
-    component: BasicForm,
+    component: PatientForm,
   },
   {
     label: "IMPRESSION & PLAN",
     icon: SentimentVerySatisfiedIcon,
     backgroundColor: "#EF3175",
-    component: BasicForm,
+    component: PatientForm,
   },
 ];
 
@@ -161,7 +165,7 @@ const CreateReport = () => {
   }, []);
 
   return (
-    <React.Fragment>
+    <Box pt={10} display="flex" flexDirection="column" height="100%">
       <Helmet title="Create Report" />
       <AppBar position="static" color="default">
         <Tabs
@@ -175,7 +179,7 @@ const CreateReport = () => {
             <Tab
               label={tabItem.label}
               icon={<tabItem.icon />}
-              backgroundColor={tabItem.backgroundColor}
+              tabcolor={tabItem.backgroundColor}
               width={55}
               mr={index < tabsInfo.length - 1 ? 1 : 0}
               {...a11yProps(index)}
@@ -189,7 +193,8 @@ const CreateReport = () => {
           <tabItem.component />
         </TabPanel>
       ))}
-    </React.Fragment>
+      <UploadedFilesButton />
+    </Box>
   );
 };
 
