@@ -105,6 +105,65 @@ const overrides = {
       color: "white !important",
     },
   },
+  MuiAppBar: {
+    colorDefault: {
+      color: "white",
+      backgroundColor: "transparent",
+    },
+  },
+  MuiTabs: {
+    scroller: {},
+    root: {
+      position: "relative",
+    },
+    indicator: {
+      display: "none",
+    },
+    scrollButtons: {
+      position: "absolute",
+    },
+  },
+  MuiTabScrollButton: {
+    root: {
+      color: "black",
+      zIndex: 1,
+      opacity: 1,
+      height: "100%",
+      width: "100px",
+      top: "0",
+      "&:first-child": {
+        left: "0",
+        backgroundImage:
+          "linear-gradient(to right, rgba(255, 255, 255, 0.9) , rgba(255, 255, 255, 0))",
+      },
+      "&:last-child": {
+        right: "0",
+        backgroundImage:
+          "linear-gradient(to right, rgba(255, 255, 255, 0) , rgba(255, 255, 255, 0.9))",
+      },
+      "&> .MuiSvgIcon-root": {
+        width: "1.5em",
+        height: "1.5em",
+        padding: "4px",
+        borderRadius: "100%",
+        background: "white",
+        boxShadow: "rgb(0 0 0 / 20%) 1px 2px 2px 2px",
+      },
+    },
+  },
+  MuiTab: {
+    root: {},
+    labelIcon: {
+      minHeight: "60px",
+      borderRadius: "6px 6px 0 0",
+    },
+    wrapper: {
+      flexDirection: "row",
+      "&> *:first-child": {
+        margin: "0 6px 0 0 !important",
+      },
+    },
+  },
 };
 
 export default overrides;

@@ -68,7 +68,7 @@ const landingRoute = {
   path: "/",
   name: "Landing",
   component: () => <Redirect to="/report" />,
-  guard: AuthGuard,
+  // guard: AuthGuard,
 };
 const reportRoutes = {
   id: "Dashboard",
@@ -77,7 +77,7 @@ const reportRoutes = {
   containsHome: true,
   name: "Dashboard",
   component: Reports,
-  guard: AuthGuard,
+  // guard: AuthGuard,
 };
 const reportChildrenRoutes = {
   id: "Report Children",
@@ -89,7 +89,7 @@ const reportChildrenRoutes = {
       component: CreateReport,
     },
   ],
-  guard: AuthGuard,
+  // guard: AuthGuard,
 };
 
 const billingRoutes = {
@@ -97,7 +97,7 @@ const billingRoutes = {
   path: "/billing",
   icon: <CreditCard />,
   component: Billing,
-  guard: AuthGuard,
+  // guard: AuthGuard,
 };
 
 const clientsRoutes = {
@@ -105,14 +105,14 @@ const clientsRoutes = {
   path: "/clients",
   icon: <Users />,
   component: Clients,
-  guard: AuthGuard,
+  // guard: AuthGuard,
 };
 const licenseRoutes = {
   id: "Manage Licences",
   path: "/licenses",
   icon: <List />,
   component: Licenses,
-  guard: AuthGuard,
+  // guard: AuthGuard,
 };
 
 const contactRoutes = {
@@ -120,7 +120,7 @@ const contactRoutes = {
   path: "/contact",
   icon: <ContactIcon />,
   component: Contact,
-  guard: AuthGuard,
+  // guard: AuthGuard,
 };
 
 // Routes using the Dashboard layout
