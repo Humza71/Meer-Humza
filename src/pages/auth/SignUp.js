@@ -1,17 +1,17 @@
 import React from "react";
 import clsx from "clsx";
 import { useDispatch } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
 import { useHistory, Link as RouterLink } from "react-router-dom";
 import styled from "styled-components/macro";
 import { Helmet } from "react-helmet";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
-import { signIn, signUp } from "../../redux/reducers/authReducer";
 
+import { spacing } from "@material-ui/system";
+import { Alert as MuiAlert } from "@material-ui/lab";
+import { makeStyles } from "@material-ui/core/styles";
 import {
-  Button,
+  Button as MuiButton,
   Paper,
   TextField as MuiTextField,
   Typography,
@@ -23,12 +23,13 @@ import {
   OutlinedInput,
   FormHelperText,
 } from "@material-ui/core";
-import { spacing } from "@material-ui/system";
-import { Alert as MuiAlert } from "@material-ui/lab";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
+
+import { signIn, signUp } from "redux/reducers/authReducer";
 
 const Alert = styled(MuiAlert)(spacing);
-
 const TextField = styled(MuiTextField)(spacing);
+const Button = styled(MuiButton)(spacing);
 
 const Wrapper = styled(Paper)`
   padding: ${(props) => props.theme.spacing(6)}px;
@@ -43,10 +44,6 @@ const Wrapper = styled(Paper)`
   ${(props) => props.theme.breakpoints.up("md")} {
     width: 500px;
   }
-`;
-const SignUpButton = styled(Button)`
-  margin-top: ${(props) => props.theme.spacing(props.my)}px;
-  margin-bottom: ${(props) => props.theme.spacing(props.my)}px;
 `;
 
 const useStyles = makeStyles((theme) => ({
@@ -255,7 +252,7 @@ function SignUp() {
               </FormControl>
             </Box>
 
-            <SignUpButton
+            <Button
               type="submit"
               fullWidth
               variant="contained"
@@ -264,7 +261,7 @@ function SignUp() {
               my={5}
             >
               Sign up
-            </SignUpButton>
+            </Button>
           </form>
         )}
       </Formik>

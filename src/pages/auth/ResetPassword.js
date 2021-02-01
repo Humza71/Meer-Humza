@@ -8,7 +8,7 @@ import { Formik } from "formik";
 import { resetPassword } from "../../redux/reducers/authReducer";
 
 import {
-  Button,
+  Button as MuiButton,
   Box,
   Paper,
   TextField as MuiTextField,
@@ -18,8 +18,8 @@ import { spacing } from "@material-ui/system";
 import { Alert as MuiAlert } from "@material-ui/lab";
 
 const Alert = styled(MuiAlert)(spacing);
-
 const TextField = styled(MuiTextField)(spacing);
+const Button = styled(MuiButton)(spacing);
 
 const Wrapper = styled(Paper)`
   padding: ${(props) => props.theme.spacing(6)}px;
@@ -36,11 +36,6 @@ const Wrapper = styled(Paper)`
   }
 `;
 
-const TextButton = styled(Button)`
-  padding-left: 0;
-  paddint-right: 0;
-`;
-
 function ResetPassword() {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -53,9 +48,9 @@ function ResetPassword() {
         Reset your password
       </Typography>
 
-      <TextButton component={RouterLink} to="/auth/sign-in" color="primary">
+      <Button component={RouterLink} to="/auth/sign-in" color="primary" px={0}>
         Sign in instead
-      </TextButton>
+      </Button>
 
       <Typography component="h2" variant="body2">
         Enter your email address and we'll send you a link to reset your

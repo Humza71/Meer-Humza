@@ -5,19 +5,6 @@ const initialState = {
   currentTheme: THEMES.BLUE,
 };
 
-// export default function reducer(state = initialState, actions) {
-//   switch (actions.type) {
-//     case types.THEME_SET:
-//       return {
-//         ...state,
-//         currentTheme: actions.payload,
-//       };
-
-//     default:
-//       return state;
-//   }
-// }
-
 export const slice = createSlice({
   name: "themeReducer",
   initialState,

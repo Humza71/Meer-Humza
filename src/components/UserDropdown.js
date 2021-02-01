@@ -1,11 +1,23 @@
 import React from "react";
-// import styled from "styled-components/macro";
+import styled from "styled-components/macro";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { Tooltip, Avatar, Menu, MenuItem, Box } from "@material-ui/core";
+import {
+  Tooltip,
+  Avatar,
+  Menu,
+  MenuItem,
+  Box,
+  Typography,
+} from "@material-ui/core";
 
 import { signOut } from "../redux/reducers/authReducer";
+
+const SmallAvatar = styled(Avatar)`
+  width: 30px;
+  height: 30px;
+`;
 
 function UserDropdown() {
   const [anchorMenu, setAnchorMenu] = React.useState(null);
@@ -27,12 +39,19 @@ function UserDropdown() {
 
   return (
     <React.Fragment>
-      <Box display="flex">
+      <Box
+        display="flex"
+        border={1}
+        borderColor="grey.500"
+        borderRadius={50}
+        p={1}
+        pl={3}
+      >
         <Box display="flex" alignItems="center" mr={2}>
-          Lucy Lavender
+          <Typography variant="subtitle2">Lucy Lavender</Typography>
         </Box>
         <Tooltip title="Account">
-          <Avatar
+          <SmallAvatar
             alt="Lucy Lavender"
             src="/static/img/avatars/avatar-1.jpg"
             onClick={toggleMenu}

@@ -3,7 +3,6 @@ import styled from "styled-components/macro";
 import { darken } from "polished";
 
 import { makeStyles } from "@material-ui/core/styles";
-import Helmet from "react-helmet";
 
 import {
   Grid,
@@ -17,9 +16,7 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
-  Toolbar,
-  Typography,
-  Box,
+  Toolbar as MuiToolbar,
   InputBase,
   FormControl,
   Select,
@@ -30,10 +27,12 @@ import {
   Button,
 } from "@material-ui/core";
 
+import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
+
 import {
   MoreVert as MoreVertIcon,
-  ViewList as ViewListIcon,
-  List as ListIcon,
+  Menu as MenuIcon,
+  ViewHeadline as ViewHeadlineIcon,
 } from "@material-ui/icons";
 import { Search as SearchIcon } from "react-feather";
 
@@ -43,7 +42,8 @@ const Paper = styled(MuiPaper)(spacing);
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    maxHeight: 550,
+    maxHeight: 500,
+    overflow: "auto",
   },
   columnsSelect: {
     margin: theme.spacing(1),
@@ -91,9 +91,11 @@ const Input = styled(InputBase)`
     width: 280px;
   }
 `;
+const Toolbar = styled(MuiToolbar)(spacing);
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
+
 const MenuProps = {
   PaperProps: {
     style: {
@@ -102,284 +104,6 @@ const MenuProps = {
     },
   },
 };
-
-function createData(
-  date,
-  lastName,
-  firstName,
-  birthday,
-  physician,
-  technician,
-  headDoctor,
-  impression,
-  updatedAt,
-  clinic,
-  user
-) {
-  return {
-    date,
-    lastName,
-    firstName,
-    birthday,
-    physician,
-    technician,
-    headDoctor,
-    impression,
-    updatedAt,
-    clinic,
-    user,
-  };
-}
-
-const rows = [
-  createData(
-    "9/15/19",
-    "John",
-    "Doe",
-    "2/10/67",
-    "John Johnson",
-    "John Johnson",
-    "John Johnson",
-    "NORMAL",
-    "10/14/19 22:49",
-    "Audiology Center of Maine",
-    "John"
-  ),
-  createData(
-    "9/15/19",
-    "John",
-    "Doe",
-    "2/10/67",
-    "John Johnson",
-    "John Johnson",
-    "John Johnson",
-    "NORMAL",
-    "10/14/19 22:49",
-    "Audiology Center of Maine",
-    "John"
-  ),
-  createData(
-    "9/15/19",
-    "John",
-    "Doe",
-    "2/10/67",
-    "John Johnson",
-    "John Johnson",
-    "John Johnson",
-    "NORMAL",
-    "10/14/19 22:49",
-    "Audiology Center of Maine",
-    "John"
-  ),
-  createData(
-    "9/15/19",
-    "John",
-    "Doe",
-    "2/10/67",
-    "John Johnson",
-    "John Johnson",
-    "John Johnson",
-    "NORMAL",
-    "10/14/19 22:49",
-    "Audiology Center of Maine",
-    "John"
-  ),
-  createData(
-    "9/15/19",
-    "John",
-    "Doe",
-    "2/10/67",
-    "John Johnson",
-    "John Johnson",
-    "John Johnson",
-    "NORMAL",
-    "10/14/19 22:49",
-    "Audiology Center of Maine",
-    "John"
-  ),
-  createData(
-    "9/15/19",
-    "John",
-    "Doe",
-    "2/10/67",
-    "John Johnson",
-    "John Johnson",
-    "John Johnson",
-    "NORMAL",
-    "10/14/19 22:49",
-    "Audiology Center of Maine",
-    "John"
-  ),
-  createData(
-    "9/15/19",
-    "John",
-    "Doe",
-    "2/10/67",
-    "John Johnson",
-    "John Johnson",
-    "John Johnson",
-    "NORMAL",
-    "10/14/19 22:49",
-    "Audiology Center of Maine",
-    "John"
-  ),
-  createData(
-    "9/15/19",
-    "John",
-    "Doe",
-    "2/10/67",
-    "John Johnson",
-    "John Johnson",
-    "John Johnson",
-    "NORMAL",
-    "10/14/19 22:49",
-    "Audiology Center of Maine",
-    "John"
-  ),
-  createData(
-    "9/15/19",
-    "John",
-    "Doe",
-    "2/10/67",
-    "John Johnson",
-    "John Johnson",
-    "John Johnson",
-    "NORMAL",
-    "10/14/19 22:49",
-    "Audiology Center of Maine",
-    "John"
-  ),
-  createData(
-    "9/15/19",
-    "John",
-    "Doe",
-    "2/10/67",
-    "John Johnson",
-    "John Johnson",
-    "John Johnson",
-    "NORMAL",
-    "10/14/19 22:49",
-    "Audiology Center of Maine",
-    "John"
-  ),
-  createData(
-    "9/15/19",
-    "John",
-    "Doe",
-    "2/10/67",
-    "John Johnson",
-    "John Johnson",
-    "John Johnson",
-    "NORMAL",
-    "10/14/19 22:49",
-    "Audiology Center of Maine",
-    "John"
-  ),
-  createData(
-    "9/15/19",
-    "John",
-    "Doe",
-    "2/10/67",
-    "John Johnson",
-    "John Johnson",
-    "John Johnson",
-    "NORMAL",
-    "10/14/19 22:49",
-    "Audiology Center of Maine",
-    "John"
-  ),
-  createData(
-    "9/15/19",
-    "John",
-    "Doe",
-    "2/10/67",
-    "John Johnson",
-    "John Johnson",
-    "John Johnson",
-    "NORMAL",
-    "10/14/19 22:49",
-    "Audiology Center of Maine",
-    "John"
-  ),
-  createData(
-    "9/15/19",
-    "John",
-    "Doe",
-    "2/10/67",
-    "John Johnson",
-    "John Johnson",
-    "John Johnson",
-    "NORMAL",
-    "10/14/19 22:49",
-    "Audiology Center of Maine",
-    "John"
-  ),
-];
-
-const headCells = [
-  {
-    id: "date",
-    numeric: false,
-    disablePadding: false,
-    label: "DATE",
-  },
-  { id: "lastName", numeric: false, disablePadding: false, label: "LAST NAME" },
-  {
-    id: "firstName",
-    numeric: false,
-    disablePadding: false,
-    label: "FIRST NAME",
-  },
-  { id: "birthday", numeric: false, disablePadding: false, label: "DOB" },
-  {
-    id: "physician",
-    numeric: false,
-    disablePadding: false,
-    label: "PHYSICIAN",
-  },
-  {
-    id: "technician",
-    numeric: false,
-    disablePadding: false,
-    label: "TECHNICIAN",
-  },
-  {
-    id: "headDoctor",
-    numeric: false,
-    disablePadding: false,
-    label: "HEAD DOCTOR",
-  },
-  {
-    id: "impression",
-    numeric: false,
-    disablePadding: false,
-    label: "OVERALL IMPRESSION",
-  },
-  {
-    id: "updatedAt",
-    numeric: false,
-    disablePadding: false,
-    label: "MODIFIED",
-  },
-  {
-    id: "clinic",
-    numeric: false,
-    disablePadding: false,
-    label: "BY CLINIC",
-  },
-  {
-    id: "user",
-    numeric: false,
-    disablePadding: false,
-    label: "BY USER",
-  },
-  {
-    id: "actions",
-    numeric: false,
-    disablePadding: false,
-    label: "ACTIONS",
-  },
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -439,9 +163,11 @@ let TableToolbar = (props) => {
     filteredColumns,
     filteredClinics,
     searchString,
+    tableFormat,
     setFilteredColumns,
     setFilteredClinics,
     setSearchString,
+    setTableFormat,
     handleChangePage,
     handleChangeRowsPerPage,
   } = props;
@@ -457,6 +183,9 @@ let TableToolbar = (props) => {
   const handleSearchChange = (event) => {
     setSearchString(event.target.value);
   };
+  const handleTableFormatChange = (event, newFormat) => {
+    setTableFormat(newFormat);
+  };
 
   let initialClinics = [];
   for (let item of data) {
@@ -466,7 +195,7 @@ let TableToolbar = (props) => {
   }
 
   return (
-    <Toolbar>
+    <Toolbar p={0} mb={2}>
       <Grid container alignItems="center" justify="space-between">
         <Grid item>
           <Search>
@@ -546,12 +275,19 @@ let TableToolbar = (props) => {
           <Button variant="outlined">Inspection List</Button>
         </Grid>
         <Grid item>
-          <IconButton aria-label="Grid">
-            <ViewListIcon />
-          </IconButton>
-          <IconButton aria-label="List">
-            <ListIcon />
-          </IconButton>
+          <ToggleButtonGroup
+            size="small"
+            value={tableFormat}
+            exclusive
+            onChange={handleTableFormatChange}
+          >
+            <ToggleButton value="padding">
+              <MenuIcon />
+            </ToggleButton>
+            <ToggleButton value="noPadding">
+              <ViewHeadlineIcon />
+            </ToggleButton>
+          </ToggleButtonGroup>
         </Grid>
       </Grid>
     </Toolbar>
@@ -597,6 +333,7 @@ const ReportTable = (props) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
+  const [tableFormat, setTableFormat] = React.useState("padding");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [searchString, setSearchString] = React.useState("");
@@ -631,113 +368,84 @@ const ReportTable = (props) => {
   };
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
   return (
-    <div>
-      <Paper>
-        <TableToolbar
-          data={data}
-          columns={columns}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          handleChangePage={handleChangePage}
-          handleChangeRowsPerPage={handleChangeRowsPerPage}
-          filteredColumns={filteredColumns}
-          filteredClinics={filteredClinics}
-          searchString={searchString}
-          setFilteredColumns={setFilteredColumns}
-          setFilteredClinics={setFilteredClinics}
-          setSearchString={setSearchString}
-        />
-        <TableContainer className={classes.container}>
-          <Table
-            aria-labelledby="tableTitle"
-            size="medium"
-            aria-label="reports table"
-            stickyHeader
-          >
-            <ReportTableHead
-              columns={columns}
-              filteredColumns={filteredColumns}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
-            <TableBody>
-              {stableSort(
-                filterReports(
-                  data,
-                  searchString,
-                  filteredClinics,
-                  columns,
-                  filteredColumns
-                ),
-                getComparator(order, orderBy)
-              )
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const labelId = `report-table-${index}`;
+    <Paper>
+      <TableToolbar
+        data={data}
+        columns={columns}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+        filteredColumns={filteredColumns}
+        filteredClinics={filteredClinics}
+        searchString={searchString}
+        tableFormat={tableFormat}
+        setFilteredColumns={setFilteredColumns}
+        setFilteredClinics={setFilteredClinics}
+        setSearchString={setSearchString}
+        setTableFormat={setTableFormat}
+      />
+      <TableContainer className={classes.container}>
+        <Table
+          aria-labelledby="tableTitle"
+          size="medium"
+          aria-label="reports table"
+          stickyHeader
+        >
+          <ReportTableHead
+            columns={columns}
+            filteredColumns={filteredColumns}
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
+          <TableBody>
+            {stableSort(
+              filterReports(
+                data,
+                searchString,
+                filteredClinics,
+                columns,
+                filteredColumns
+              ),
+              getComparator(order, orderBy)
+            )
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row, index) => {
+                const labelId = `report-table-${index}`;
 
-                  return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={labelId}>
-                      {columns.map(
-                        (headCell) =>
-                          filteredColumns.indexOf(headCell.label) !== -1 &&
-                          headCell.id !== "actions" && (
-                            <TableCell align="left" key={headCell.id}>
-                              {row[headCell.id]}
-                            </TableCell>
-                          )
-                      )}
-                      <TableCell align="left">
-                        <IconButton aria-label="actions">
-                          <MoreVertIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
-    </div>
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={labelId}>
+                    {columns.map(
+                      (headCell) =>
+                        filteredColumns.indexOf(headCell.label) !== -1 &&
+                        headCell.id !== "actions" && (
+                          <TableCell align="left" key={headCell.id}>
+                            {row[headCell.id]}
+                          </TableCell>
+                        )
+                    )}
+                    <TableCell align="left">
+                      <IconButton aria-label="actions">
+                        <MoreVertIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
   );
 };
 
-const Dashboard = () => {
-  return (
-    <React.Fragment>
-      <Helmet title="Dashboard" />
-      <Grid container justify="space-between">
-        <Grid item>
-          <Typography variant="h3" gutterBottom display="inline">
-            View and manage reports
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Button variant="outlined" size="small" color="primary">
-            Reporting View
-          </Button>
-          <Button variant="contained" size="small" color="primary">
-            New Report
-          </Button>
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={6}>
-        <Grid item xs={12}>
-          <ReportTable data={rows} columns={headCells} />
-        </Grid>
-      </Grid>
-    </React.Fragment>
-  );
-};
-
-export default Dashboard;
+export default ReportTable;

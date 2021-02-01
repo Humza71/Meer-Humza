@@ -1,18 +1,15 @@
 import React from "react";
-import clsx from "clsx";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import styled from "styled-components/macro";
-import { Link as RouterLink } from "react-router-dom";
-import { Helmet } from "react-helmet";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { signIn } from "../../redux/reducers/authReducer";
-import { makeStyles } from "@material-ui/core/styles";
-import config from "../../config";
+import clsx from "clsx";
+import styled from "styled-components/macro";
+import { Helmet } from "react-helmet";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import {
-  Button,
+  Button as MuiButton,
   Paper,
   TextField as MuiTextField,
   Typography,
@@ -25,8 +22,12 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
+import { makeStyles } from "@material-ui/core/styles";
 import { spacing } from "@material-ui/system";
 import { Alert as MuiAlert } from "@material-ui/lab";
+
+import config from "config";
+import { signIn } from "redux/reducers/authReducer";
 
 const Alert = styled(MuiAlert)(spacing);
 
@@ -49,6 +50,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const Button = styled(MuiButton)(spacing);
+
 const Wrapper = styled(Paper)`
   padding: ${(props) => props.theme.spacing(6)}px;
   ${(props) => props.theme.breakpoints.up("md")} {
@@ -61,10 +64,6 @@ const Wrapper = styled(Paper)`
   ${(props) => props.theme.breakpoints.up("md")} {
     width: 500px;
   }
-`;
-const SignInButton = styled(Button)`
-  margin-top: ${(props) => props.theme.spacing(props.my)}px;
-  margin-bottom: ${(props) => props.theme.spacing(props.my)}px;
 `;
 const ImageInButton = styled.img`
   height: ${(props) => props.height}px;
@@ -205,7 +204,7 @@ function SignIn() {
             >
               Forgot password?
             </TextButton>
-            <SignInButton
+            <Button
               type="submit"
               fullWidth
               variant="contained"
@@ -214,7 +213,7 @@ function SignIn() {
               my={5}
             >
               Sign in
-            </SignInButton>
+            </Button>
             <Box display="flex" mb={3}>
               <Bar />
               <Box mx={3} color="#999999" fontWeight={500}>
@@ -223,7 +222,7 @@ function SignIn() {
               <Bar />
             </Box>
             <a href={process.env.REACT_APP_GOOGLE_REDIRECT_URI}>
-              <SignInButton
+              <Button
                 fullWidth
                 variant="outlined"
                 color="default"
@@ -237,10 +236,10 @@ function SignIn() {
                   mt="0"
                 />
                 Continue with Google
-              </SignInButton>
+              </Button>
             </a>
             <a href={config.facebookRedirectURI}>
-              <SignInButton
+              <Button
                 fullWidth
                 variant="outlined"
                 color="default"
@@ -254,9 +253,9 @@ function SignIn() {
                   mt="0"
                 />
                 Continue with Facebook
-              </SignInButton>
+              </Button>
             </a>
-            {/*<SignInButton
+            {/*<Button
               fullWidth
               variant="outlined"
               color="default"
@@ -270,7 +269,7 @@ function SignIn() {
                 mt="6"
               />
               Continue with Amazon
-            </SignInButton>*/}
+            </Button>*/}
           </form>
         )}
       </Formik>

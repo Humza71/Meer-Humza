@@ -144,6 +144,9 @@ const blueVariant = merge(defaultVariant, {
       main: customBlue[1000],
       contrastText: "#FFF",
     },
+    secondary: {
+      main: "#09A85B",
+    },
   },
   sidebar: {
     color: "#FFF",

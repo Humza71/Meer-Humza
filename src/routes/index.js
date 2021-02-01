@@ -1,6 +1,7 @@
 import React from "react";
 
 import async from "../components/Async";
+import { Redirect } from "react-router-dom";
 
 import {
   Dashboard as DashboardIcon,
@@ -20,7 +21,9 @@ const Page404 = async(() => import("../pages/auth/Page404"));
 const Page500 = async(() => import("../pages/auth/Page500"));
 
 // Dashboards components
-const Dashboard = async(() => import("../pages/dashboard"));
+const Reports = async(() => import("../pages/reports"));
+const CreateReport = async(() => import("../pages/reports/create"));
+
 const Contact = async(() => import("../pages/contact"));
 const Billing = async(() => import("../pages/billing"));
 const Licenses = async(() => import("../pages/licenses"));
@@ -60,13 +63,32 @@ const authRoutes = {
   component: null,
 };
 
-const dashboardsRoutes = {
-  id: "Dashboard",
+const landingRoute = {
+  id: "Landing",
   path: "/",
+  name: "Landing",
+  component: () => <Redirect to="/report" />,
+  guard: AuthGuard,
+};
+const reportRoutes = {
+  id: "Dashboard",
+  path: "/report",
   icon: <DashboardIcon />,
   containsHome: true,
   name: "Dashboard",
-  component: Dashboard,
+  component: Reports,
+  guard: AuthGuard,
+};
+const reportChildrenRoutes = {
+  id: "Report Children",
+  path: "/report",
+  children: [
+    {
+      path: "/report/create",
+      name: "Create Report",
+      component: CreateReport,
+    },
+  ],
   guard: AuthGuard,
 };
 
@@ -103,7 +125,9 @@ const contactRoutes = {
 
 // Routes using the Dashboard layout
 export const dashboardLayoutRoutes = [
-  dashboardsRoutes,
+  landingRoute,
+  reportRoutes,
+  reportChildrenRoutes,
   clientsRoutes,
   licenseRoutes,
   billingRoutes,
@@ -115,7 +139,7 @@ export const authLayoutRoutes = [authRoutes];
 
 // Routes visible in the sidebar
 export const sidebarRoutes = [
-  dashboardsRoutes,
+  reportRoutes,
   clientsRoutes,
   licenseRoutes,
   billingRoutes,

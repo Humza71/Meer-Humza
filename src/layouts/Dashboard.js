@@ -32,6 +32,7 @@ const GlobalStyle = createGlobalStyle`
 const Root = styled.div`
   display: flex;
   min-height: 100vh;
+  background: #09539e;
 `;
 
 const Drawer = styled.div`
@@ -45,13 +46,15 @@ const AppContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  margin: 10px;
+  overflow: hidden;
 `;
 
 const Paper = styled(MuiPaper)(spacing);
 
 const MainContent = styled(Paper)`
   flex: 1;
-  background: ${(props) => props.theme.palette.background.default};
+  border-radius: 0 0 10px 10px;
 
   @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
     flex: none;
