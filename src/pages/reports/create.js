@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Helmet } from "react-helmet";
 import styled from "styled-components/macro";
 
-import { AppBar, Box, Tab, Tabs } from "@material-ui/core";
+import { AppBar, Box, Tab as MuiTab, Tabs } from "@material-ui/core";
 import {
   History as HistoryIcon,
   DirectionsWalk as DirectionsWalkIcon,
@@ -35,6 +35,25 @@ function a11yProps(index) {
 const TabContent = styled(Box)`
   background: ${(props) => props.theme.palette.background.default};
 `;
+// const Tab = styled(MuiTab)`
+//   background: ${(props) => props.backgroundColor};
+//   border-color: ${(props) => props.backgroundColor};
+//   margin-right: ${(props) => props.theme.spacing(props.mr)}px;
+//   min-width: ${(props) => props.theme.spacing(props.width)}px;
+//   opacity: 1;
+//   "&.mui-selected": {
+//     color: ${(props) => props.backgroundColor};
+//     border: 1px 1px 0 1px;
+//     background-color: "transparent";
+//   }
+// `;
+const Tab = styled(MuiTab)`
+  background: ${(props) => props.backgroundColor};
+  border-color: ${(props) => props.backgroundColor};
+  margin-right: ${(props) => props.theme.spacing(props.mr)}px;
+  min-width: ${(props) => props.theme.spacing(props.width)}px;
+  opacity: 1;
+`;
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -52,6 +71,87 @@ function TabPanel(props) {
   );
 }
 
+const tabsInfo = [
+  {
+    label: "PATIENT DEMOGRAPHICS",
+    icon: UserIcon,
+    backgroundColor: "#09539E",
+    component: BasicForm,
+  },
+  {
+    label: "FILES",
+    icon: FileIcon,
+    backgroundColor: "#7A54FF",
+    component: BasicForm,
+  },
+  {
+    label: "HISTORY",
+    icon: HistoryIcon,
+    backgroundColor: "#36B2F9",
+    component: BasicForm,
+  },
+  {
+    label: "POSTURAL STABILITY",
+    icon: DirectionsWalkIcon,
+    backgroundColor: "#12D9DB",
+    component: BasicForm,
+  },
+  {
+    label: "VNG",
+    icon: YoutubeSearchedForIcon,
+    backgroundColor: "#1CCBB0",
+    component: BasicForm,
+  },
+  {
+    label: "ROTARY CHAIR",
+    icon: AirlineSeatLegroomNormalIcon,
+    backgroundColor: "#32D74B",
+    component: BasicForm,
+  },
+  {
+    label: "vHIT",
+    icon: TimelapseIcon,
+    backgroundColor: "#96DA45",
+    component: BasicForm,
+  },
+  {
+    label: "VAT/VORTEQ",
+    icon: SlidersIcon,
+    backgroundColor: "#FF8F61",
+    component: BasicForm,
+  },
+  {
+    label: "ELECTROPHYS",
+    icon: ActivityIcon,
+    backgroundColor: "#FF6968",
+    component: BasicForm,
+  },
+  {
+    label: "AUDIOMETRY",
+    icon: RecordVoiceOverIcon,
+    backgroundColor: "#DFAD00",
+    component: BasicForm,
+  },
+  {
+    label: "SCREENINGS",
+    icon: ScreenShareIcon,
+    backgroundColor: "#F08115",
+    component: BasicForm,
+  },
+  {
+    label: "ADD.TESTS & COMMENTS",
+    icon: AddCommentIcon,
+    backgroundColor: "#EC524B",
+    component: BasicForm,
+  },
+  {
+    label: "IMPRESSION & PLAN",
+    icon: SentimentVerySatisfiedIcon,
+    backgroundColor: "#EF3175",
+    component: BasicForm,
+  },
+];
+
 const CreateReport = () => {
   const dispatch = useDispatch();
   const [tabIndex, setTabIndex] = React.useState(0);
@@ -63,7 +163,7 @@ const CreateReport = () => {
   return (
     <React.Fragment>
       <Helmet title="Create Report" />
-      <AppBar position="static">
+      <AppBar position="static" color="default">
         <Tabs
           value={tabIndex}
           variant="scrollable"
@@ -71,92 +171,24 @@ const CreateReport = () => {
           onChange={(event, newValue) => setTabIndex(newValue)}
           aria-label="Tabs"
         >
-          <Tab
-            label="PATIENT DEMOGRAPHICS"
-            icon={<UserIcon />}
-            {...a11yProps(0)}
-          />
-          <Tab label="FILES" icon={<FileIcon />} {...a11yProps(1)} />
-          <Tab label="HISTORY" icon={<HistoryIcon />} {...a11yProps(2)} />
-          <Tab
-            label="POSTURAL STABILITY"
-            icon={<DirectionsWalkIcon />}
-            {...a11yProps(3)}
-          />
-          <Tab
-            label="VNG"
-            icon={<YoutubeSearchedForIcon />}
-            {...a11yProps(4)}
-          />
-          <Tab
-            label="ROTARY CHAIR"
-            icon={<AirlineSeatLegroomNormalIcon />}
-            {...a11yProps(5)}
-          />
-          <Tab label="vHIT" icon={<TimelapseIcon />} {...a11yProps(6)} />
-          <Tab label="VAT/VORTEQ" icon={<SlidersIcon />} {...a11yProps(7)} />
-          <Tab label="ELECTROPHYS" icon={<ActivityIcon />} {...a11yProps(8)} />
-          <Tab
-            label="AUDIOMETRY"
-            icon={<RecordVoiceOverIcon />}
-            {...a11yProps(9)}
-          />
-          <Tab
-            label="SCREENINGS"
-            icon={<ScreenShareIcon />}
-            {...a11yProps(10)}
-          />
-          <Tab
-            label="ADD.TESTS & COMMENTS"
-            icon={<AddCommentIcon />}
-            {...a11yProps(11)}
-          />
-          <Tab
-            label="IMPRESSION & PLAN"
-            icon={<SentimentVerySatisfiedIcon />}
-            {...a11yProps(12)}
-          />
+          {tabsInfo.map((tabItem, index) => (
+            <Tab
+              label={tabItem.label}
+              icon={<tabItem.icon />}
+              backgroundColor={tabItem.backgroundColor}
+              width={55}
+              mr={index < tabsInfo.length - 1 ? 1 : 0}
+              {...a11yProps(index)}
+              key={index}
+            />
+          ))}
         </Tabs>
       </AppBar>
-      <TabPanel value={tabIndex} index={0}>
-        <BasicForm />
-      </TabPanel>
-      <TabPanel value={tabIndex} index={1}>
-        <BasicForm />
-      </TabPanel>
-      <TabPanel value={tabIndex} index={2}>
-        <BasicForm />
-      </TabPanel>
-      <TabPanel value={tabIndex} index={3}>
-        <BasicForm />
-      </TabPanel>
-      <TabPanel value={tabIndex} index={4}>
-        <BasicForm />
-      </TabPanel>
-      <TabPanel value={tabIndex} index={5}>
-        <BasicForm />
-      </TabPanel>
-      <TabPanel value={tabIndex} index={6}>
-        <BasicForm />
-      </TabPanel>
-      <TabPanel value={tabIndex} index={7}>
-        <BasicForm />
-      </TabPanel>
-      <TabPanel value={tabIndex} index={8}>
-        <BasicForm />
-      </TabPanel>
-      <TabPanel value={tabIndex} index={9}>
-        <BasicForm />
-      </TabPanel>
-      <TabPanel value={tabIndex} index={10}>
-        <BasicForm />
-      </TabPanel>
-      <TabPanel value={tabIndex} index={11}>
-        <BasicForm />
-      </TabPanel>
-      <TabPanel value={tabIndex} index={12}>
-        <BasicForm />
-      </TabPanel>
+      {tabsInfo.map((tabItem, index) => (
+        <TabPanel value={tabIndex} index={index} key={index}>
+          <tabItem.component />
+        </TabPanel>
+      ))}
     </React.Fragment>
   );
 };
