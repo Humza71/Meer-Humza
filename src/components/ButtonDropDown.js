@@ -36,14 +36,14 @@ const ButtonDropDown = ({
 
   return (
     <React.Fragment>
-      <ButtonGroup {...props} ref={anchorRef} aria-label="new report">
+      <ButtonGroup {...props} ref={anchorRef} aria-label="button drop down">
         <Button onClick={handleMainClick}>{mainText}</Button>
         <Button
           {...props}
           size="small"
           aria-controls={open ? "split-button-menu" : undefined}
           aria-expanded={open ? "true" : undefined}
-          aria-label="select merge strategy"
+          aria-label="select one"
           aria-haspopup="menu"
           onClick={handleToggle}
         >

@@ -1,6 +1,6 @@
 import React from "react";
 import * as Yup from "yup";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import styled from "styled-components/macro";
 
 import { Alert as MuiAlert } from "@material-ui/lab";
@@ -14,6 +14,8 @@ import {
   Typography as MuiTypography,
 } from "@material-ui/core";
 import { DropzoneArea } from "material-ui-dropzone";
+
+import CreateReportFooter from "components/CreateReportFooter";
 
 const Card = styled(MuiCard)(spacing);
 const Alert = styled(MuiAlert)(spacing);
@@ -109,9 +111,12 @@ const FilesForm = () => {
         onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <form onSubmit={handleSubmit}>
-            <InnerForm {...formProps} />
-          </form>
+          <Form>
+            <Box>
+              <InnerForm {...formProps} />
+              <CreateReportFooter />
+            </Box>
+          </Form>
         )}
       </Formik>
     </React.Fragment>

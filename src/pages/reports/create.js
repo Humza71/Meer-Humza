@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
 import styled from "styled-components/macro";
 
@@ -26,7 +26,7 @@ import UploadedFilesButton from "components/UploadedFilesButton";
 import PatientForm from "forms/PatientForm";
 import FilesForm from "forms/FilesForm";
 import PosturalForm from "forms/PosturalForm";
-import { setHeaderTitle } from "redux/reducers/uiReducer";
+import { setHeaderTitle, setStepNewReport } from "redux/reducers/uiReducer";
 
 const a11yProps = (index) => {
   return {
@@ -37,7 +37,7 @@ const a11yProps = (index) => {
 
 const TabContent = styled(Box)`
   background: ${(props) => props.theme.palette.background.default};
-  height: calc(100% - 120px);
+  height: calc(100% - 70px);
 `;
 const Tab = styled(MuiTab)`
   border-color: ;
@@ -69,6 +69,7 @@ const TabPanel = (props) => {
       hidden={value !== index}
       id={`create-report-tabpanel-${index}`}
       aria-labelledby={`create-report-tab-${index}`}
+      position="relative"
       {...other}
     >
       {value === index && <>{children}</>}
@@ -159,10 +160,15 @@ const tabsInfo = [
 
 const CreateReport = () => {
   const dispatch = useDispatch();
-  const [tabIndex, setTabIndex] = React.useState(0);
+  const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
+
+  const handleTabChange = (value) => {
+    dispatch(setStepNewReport(value));
+  };
 
   useEffect(() => {
     dispatch(setHeaderTitle("Create Report"));
+    dispatch(setStepNewReport(0));
   }, []);
 
   return (
@@ -170,10 +176,10 @@ const CreateReport = () => {
       <Helmet title="Create Report" />
       <AppBar position="static" color="default">
         <Tabs
-          value={tabIndex}
+          value={stepNewReport}
           variant="scrollable"
           scrollButtons="on"
-          onChange={(event, newValue) => setTabIndex(newValue)}
+          onChange={(event, newValue) => handleTabChange(newValue)}
           aria-label="Tabs"
         >
           {tabsInfo.map((tabItem, index) => (
@@ -190,7 +196,7 @@ const CreateReport = () => {
         </Tabs>
       </AppBar>
       {tabsInfo.map((tabItem, index) => (
-        <TabPanel value={tabIndex} index={index} key={index}>
+        <TabPanel value={stepNewReport} index={index} key={index}>
           <tabItem.component />
         </TabPanel>
       ))}
