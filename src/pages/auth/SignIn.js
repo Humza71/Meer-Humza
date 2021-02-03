@@ -112,8 +112,8 @@ function SignIn() {
 
       <Formik
         initialValues={{
-          email: "demo@bootlab.io",
-          password: "unsafepassword",
+          email: "",
+          password: "",
           submit: false,
         }}
         validationSchema={Yup.object().shape({

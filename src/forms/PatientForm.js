@@ -1,7 +1,7 @@
 import React from "react";
 import "date-fns";
 import * as Yup from "yup";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import styled from "styled-components/macro";
 
 import { Alert as MuiAlert } from "@material-ui/lab";
@@ -29,6 +29,7 @@ import {
   KeyboardDatePicker as MuiKeyboardDatePicker,
 } from "@material-ui/pickers";
 
+import CreateReportFooter from "components/CreateReportFooter";
 import { providers, technicians } from "lib/dumyData";
 
 const Card = styled(MuiCard)(spacing);
@@ -313,9 +314,12 @@ const PatientForm = () => {
         onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <form onSubmit={handleSubmit}>
-            <InnerForm {...formProps} />
-          </form>
+          <Form>
+            <Box>
+              <InnerForm {...formProps} />
+              <CreateReportFooter {...formProps} />
+            </Box>
+          </Form>
         )}
       </Formik>
     </React.Fragment>
