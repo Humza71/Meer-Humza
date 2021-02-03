@@ -25,6 +25,7 @@ import {
 import UploadedFilesButton from "components/UploadedFilesButton";
 import PatientForm from "forms/PatientForm";
 import FilesForm from "forms/FilesForm";
+import PosturalForm from "forms/PosturalForm";
 import { setHeaderTitle, setStepNewReport } from "redux/reducers/uiReducer";
 import { clearNewReport } from "redux/reducers/reportReducer";
 
@@ -100,7 +101,7 @@ const tabsInfo = [
     label: "POSTURAL STABILITY",
     icon: DirectionsWalkIcon,
     backgroundColor: "#12D9DB",
-    component: PatientForm,
+    component: PosturalForm,
   },
   {
     label: "VNG",
