@@ -26,6 +26,7 @@ import UploadedFilesButton from "components/UploadedFilesButton";
 import PatientForm from "forms/PatientForm";
 import FilesForm from "forms/FilesForm";
 import { setHeaderTitle, setStepNewReport } from "redux/reducers/uiReducer";
+import { clearNewReport } from "redux/reducers/reportReducer";
 
 const a11yProps = (index) => {
   return {
@@ -168,6 +169,7 @@ const CreateReport = () => {
   useEffect(() => {
     dispatch(setHeaderTitle("Create Report"));
     dispatch(setStepNewReport(0));
+    dispatch(clearNewReport());
   }, []);
 
   return (

@@ -87,7 +87,7 @@ const reportChildrenRoutes = {
       path: "/report/create",
       name: "Create Report",
       component: CreateReport,
-      guard: AuthGuard,
+      // guard: AuthGuard,
     },
   ],
 };

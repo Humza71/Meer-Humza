@@ -2,10 +2,10 @@ import React from "react";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import styled from "styled-components/macro";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Alert as MuiAlert } from "@material-ui/lab";
 import { spacing } from "@material-ui/system";
-
 import {
   Box,
   Card as MuiCard,
@@ -16,6 +16,8 @@ import {
 import { DropzoneArea } from "material-ui-dropzone";
 
 import CreateReportFooter from "components/CreateReportFooter";
+import { setStepNewReport } from "redux/reducers/uiReducer";
+import { updateNewReport } from "redux/reducers/reportReducer";
 
 const Card = styled(MuiCard)(spacing);
 const Alert = styled(MuiAlert)(spacing);
@@ -25,10 +27,6 @@ const OutCard = styled(Card)`
   width: 500px;
   margin: 20px auto;
 `;
-
-const initialValues = {
-  files: [],
-};
 
 const validationSchema = Yup.object().shape({
   files: Yup.array(),
@@ -83,12 +81,26 @@ const InnerForm = (props) => {
 };
 
 const FilesForm = () => {
+  const newReport = useSelector((state) => state.reportReducer.newReport);
+  const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
+  const dispatch = useDispatch();
+
+  const initialValues = {
+    files: newReport.files,
+  };
+
+  const handleSave = (values) => {
+    console.log(values);
+    // dispatch(updateNewReport(values));
+  };
+
   const handleSubmit = async (
     values,
     { resetForm, setErrors, setStatus, setSubmitting }
   ) => {
     try {
-      resetForm();
+      handleSave(values);
+      dispatch(setStepNewReport(stepNewReport + 1));
       setStatus({ sent: true });
       setSubmitting(false);
     } catch (error) {
@@ -112,10 +124,11 @@ const FilesForm = () => {
       >
         {(formProps) => (
           <Form>
-            <Box>
-              <InnerForm {...formProps} />
-              <CreateReportFooter />
-            </Box>
+            <InnerForm {...formProps} />
+            <CreateReportFooter
+              {...formProps}
+              handleSave={() => handleSave(formProps.values)}
+            />
           </Form>
         )}
       </Formik>

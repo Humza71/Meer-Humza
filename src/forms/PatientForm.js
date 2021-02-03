@@ -3,11 +3,11 @@ import "date-fns";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import styled from "styled-components/macro";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Alert as MuiAlert } from "@material-ui/lab";
 import { spacing } from "@material-ui/system";
 import DateFnsUtils from "@date-io/date-fns";
-
 import {
   Box,
   Card as MuiCard,
@@ -31,6 +31,8 @@ import {
 
 import CreateReportFooter from "components/CreateReportFooter";
 import { providers, technicians } from "lib/dumyData";
+import { updateNewReport } from "redux/reducers/reportReducer";
+import { setStepNewReport } from "redux/reducers/uiReducer";
 
 const Card = styled(MuiCard)(spacing);
 const Alert = styled(MuiAlert)(spacing);
@@ -66,16 +68,6 @@ const ToggleButtonGroup = styled(MuiToggleButtonGroup)`
     min-width: 100px;
   }
 `;
-
-const initialValues = {
-  firstName: "",
-  lastName: "",
-  birthday: new Date(),
-  gender: "",
-  encounterDate: new Date(),
-  provider: "",
-  technician: "",
-};
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("Required"),
@@ -286,12 +278,39 @@ const InnerForm = (props) => {
 };
 
 const PatientForm = () => {
+  const newReport = useSelector((state) => state.reportReducer.newReport);
+  const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
+  const dispatch = useDispatch();
+
+  const initialValues = {
+    firstName: newReport.firstName,
+    lastName: newReport.lastName,
+    birthday: newReport.birthday ? new Date(newReport.birthday) : new Date(),
+    gender: newReport.gender,
+    encounterDate: newReport.encounterDate
+      ? new Date(newReport.encounterDate)
+      : new Date(),
+    provider: newReport.provider,
+    technician: newReport.technician,
+  };
+
+  const handleSave = (values) => {
+    dispatch(
+      updateNewReport({
+        ...values,
+        birthday: values.birthday.toISOString(),
+        encounterDate: values.encounterDate.toISOString(),
+      })
+    );
+  };
+
   const handleSubmit = async (
     values,
     { resetForm, setErrors, setStatus, setSubmitting }
   ) => {
     try {
-      resetForm();
+      handleSave(values);
+      dispatch(setStepNewReport(stepNewReport + 1));
       setStatus({ sent: true });
       setSubmitting(false);
     } catch (error) {
@@ -315,10 +334,11 @@ const PatientForm = () => {
       >
         {(formProps) => (
           <Form>
-            <Box>
-              <InnerForm {...formProps} />
-              <CreateReportFooter {...formProps} />
-            </Box>
+            <InnerForm {...formProps} />
+            <CreateReportFooter
+              {...formProps}
+              onSave={() => handleSave(formProps.values)}
+            />
           </Form>
         )}
       </Formik>

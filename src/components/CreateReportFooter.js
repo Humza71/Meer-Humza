@@ -41,10 +41,10 @@ const Wrapper = styled(Box)`
 `;
 
 const CreateReportFooter = (props) => {
+  const { dirty, isValid, handleSave } = props;
   const dispatch = useDispatch();
   const history = useHistory();
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
-  console.log(props);
   const handleClose = () => {
     console.log("Close");
     history.push("/report");
@@ -52,10 +52,6 @@ const CreateReportFooter = (props) => {
   const handleBack = () => {
     console.log("BackWard");
     dispatch(setStepNewReport(stepNewReport - 1));
-  };
-  const handleNext = () => {
-    console.log("Forward");
-    dispatch(setStepNewReport(stepNewReport + 1));
   };
 
   return (
@@ -87,15 +83,23 @@ const CreateReportFooter = (props) => {
         </Grid>
         <Grid item xs={12} sm={12} md={5}>
           <Box display="flex" justifyContent="flex-end">
-            <Button variant="outlined" size="medium" color="primary" mr={5}>
+            <Button
+              variant="outlined"
+              size="medium"
+              color="primary"
+              mr={5}
+              disabled={!dirty}
+              onClick={handleSave}
+            >
               Save as draft
             </Button>
             <Button
               variant="contained"
               size="medium"
               color="primary"
+              type="submit"
               endIcon={<ChevronRightIcon />}
-              onClick={handleNext}
+              disabled={!(isValid && dirty)}
             >
               Next Page
             </Button>

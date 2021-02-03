@@ -5,6 +5,7 @@ import authReducer from "./authReducer";
 import themeReducer from "./themeReducer";
 import messageReducer from "./messageReducer";
 import uiReducer from "./uiReducer";
+import reportReducer from "./reportReducer";
 
 const reducers = (history) =>
   combineReducers({
@@ -13,6 +14,7 @@ const reducers = (history) =>
     themeReducer,
     messageReducer,
     uiReducer,
+    reportReducer,
   });
 
 export default reducers;
