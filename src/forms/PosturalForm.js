@@ -6,7 +6,6 @@ import { Formik } from "formik";
 
 import { Alert as MuiAlert } from "@material-ui/lab";
 import { spacing } from "@material-ui/system";
-import DateFnsUtils from "@date-io/date-fns";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -26,7 +25,6 @@ import {
   ToggleButton,
   ToggleButtonGroup as MuiToggleButtonGroup,
 } from "@material-ui/lab";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 const Card = styled(MuiCard)(spacing);
 const Alert = styled(MuiAlert)(spacing);
@@ -164,7 +162,7 @@ const InnerForm = (props) => {
   );
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+    <>
       <OutCard mb={6}>
         <CardContent>
           <Box my={4}>
@@ -393,7 +391,7 @@ const InnerForm = (props) => {
           </TableContainer>
         </CardContent>
       </OutCard>
-    </MuiPickersUtilsProvider>
+    </>
   );
 };
 
