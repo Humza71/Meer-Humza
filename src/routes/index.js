@@ -77,7 +77,7 @@ const reportRoutes = {
   containsHome: true,
   name: "Dashboard",
   component: Reports,
-  // guard: AuthGuard,
+  guard: AuthGuard,
 };
 const reportChildrenRoutes = {
   id: "Report Children",
