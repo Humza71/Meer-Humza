@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "date-fns";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
@@ -17,21 +17,27 @@ import {
   InputAdornment,
   TextField as MuiTextField,
   Typography as MuiTypography,
-  MenuItem,
 } from "@material-ui/core";
 import {
   ToggleButton,
   ToggleButtonGroup as MuiToggleButtonGroup,
 } from "@material-ui/lab";
-import { AccountCircle } from "@material-ui/icons";
+import { User as UserIcon } from "react-feather";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker as MuiKeyboardDatePicker,
 } from "@material-ui/pickers";
 
 import CreateReportFooter from "components/CreateReportFooter";
-import { providers, technicians } from "lib/dumyData";
-import { updateNewReport } from "redux/reducers/reportReducer";
+import AdvancedSelect from "components/AdvancedSelect";
+import {
+  updateNewReport,
+  getAllProviders,
+  getAllTechnicians,
+  LoadingStates,
+  addProvider,
+  addTechnician,
+} from "redux/reducers/reportReducer";
 import { setStepNewReport } from "redux/reducers/uiReducer";
 
 const Card = styled(MuiCard)(spacing);
@@ -80,6 +86,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const InnerForm = (props) => {
+  const dispatch = useDispatch();
   const {
     errors,
     handleBlur,
@@ -90,6 +97,15 @@ const InnerForm = (props) => {
     values,
     status,
   } = props;
+  const providers = useSelector((state) => state.reportReducer.providers);
+  const technicians = useSelector((state) => state.reportReducer.technicians);
+  const reportLoading = useSelector((state) => state.reportReducer.loading);
+  const hanldeNewProvider = (newProvider, saveForFuture) => {
+    dispatch(addProvider(newProvider, saveForFuture));
+  };
+  const hanldeNewTechnician = (newTechnician, saveForFuture) => {
+    dispatch(addTechnician(newTechnician, saveForFuture));
+  };
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -105,7 +121,8 @@ const InnerForm = (props) => {
             </Alert>
           )}
 
-          {isSubmitting ? (
+          {isSubmitting ||
+          reportLoading === LoadingStates.REPORT_CREATION_LOADING ? (
             <Box display="flex" justifyContent="center" my={6}>
               <CircularProgress />
             </Box>
@@ -126,12 +143,12 @@ const InnerForm = (props) => {
                       helperText={touched.firstName && errors.firstName}
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      variant="filled"
+                      variant="outlined"
                       my={2}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
-                            <AccountCircle />
+                            <UserIcon />
                           </InputAdornment>
                         ),
                       }}
@@ -147,12 +164,12 @@ const InnerForm = (props) => {
                       helperText={touched.lastName && errors.lastName}
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      variant="filled"
+                      variant="outlined"
                       my={2}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
-                            <AccountCircle />
+                            <UserIcon />
                           </InputAdornment>
                         ),
                       }}
@@ -228,44 +245,40 @@ const InnerForm = (props) => {
                 </Typography>
                 <Grid container spacing={6}>
                   <Grid item md={6}>
-                    <TextField
-                      select
-                      name="provider"
-                      label="Provider"
+                    <AdvancedSelect
+                      error={Boolean(touched.provider && errors.provider)}
+                      helperText={touched.provider && errors.provider}
                       value={values.provider}
                       onChange={handleChange}
-                      error={Boolean(touched.provider && errors.provider)}
-                      fullWidth
-                      helperText={touched.provider && errors.provider}
                       onBlur={handleBlur}
-                      variant="filled"
-                    >
-                      {providers.map((option, index) => (
-                        <MenuItem key={index} value={index}>
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </TextField>
+                      name="provider"
+                      label="Provider"
+                      options={providers.map((item, index) => ({
+                        label: item,
+                        value: index,
+                      }))}
+                      variant="outlined"
+                      allowAdd={true}
+                      onAdd={hanldeNewProvider}
+                    />
                   </Grid>
                   <Grid item md={6}>
-                    <TextField
-                      select
-                      name="technician"
-                      label="Technician"
+                    <AdvancedSelect
+                      error={Boolean(touched.technician && errors.technician)}
+                      helperText={touched.technician && errors.technician}
                       value={values.technician}
                       onChange={handleChange}
-                      error={Boolean(touched.technician && errors.technician)}
-                      fullWidth
-                      helperText={touched.technician && errors.technician}
                       onBlur={handleBlur}
-                      variant="filled"
-                    >
-                      {technicians.map((option, index) => (
-                        <MenuItem key={index} value={index}>
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </TextField>
+                      name="technician"
+                      label="Technician"
+                      options={technicians.map((item, index) => ({
+                        label: item,
+                        value: index,
+                      }))}
+                      variant="outlined"
+                      allowAdd={true}
+                      onAdd={hanldeNewTechnician}
+                    />
                   </Grid>
                 </Grid>
               </Box>
@@ -293,6 +306,12 @@ const PatientForm = () => {
     provider: newReport.provider,
     technician: newReport.technician,
   };
+
+  useEffect(() => {
+    dispatch(getAllProviders());
+    dispatch(getAllTechnicians());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSave = (values) => {
     dispatch(

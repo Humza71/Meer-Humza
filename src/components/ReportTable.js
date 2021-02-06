@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components/macro";
-import { darken } from "polished";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -17,28 +16,21 @@ import {
   TableRow,
   TableSortLabel,
   Toolbar as MuiToolbar,
-  InputBase,
-  FormControl,
-  Select,
-  MenuItem,
-  Checkbox,
-  ListItemText,
-  FormLabel,
   Button,
 } from "@material-ui/core";
-
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
-
 import {
   MoreVert as MoreVertIcon,
   Menu as MenuIcon,
   ViewHeadline as ViewHeadlineIcon,
 } from "@material-ui/icons";
-import { Search as SearchIcon } from "react-feather";
-
 import { spacing } from "@material-ui/system";
 
+import SearchInput from "components/SearchInput";
+import AdvancedSelect from "components/AdvancedSelect";
+
 const Paper = styled(MuiPaper)(spacing);
+const Toolbar = styled(MuiToolbar)(spacing);
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -52,58 +44,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Search = styled.div`
-  border-radius: 2px;
-  background-color: ${(props) => props.theme.header.background};
-  display: none;
-  position: relative;
-  width: 100%;
-  background-color: ${(props) => darken(0.05, props.theme.header.background)};
-  ${(props) => props.theme.breakpoints.up("md")} {
-    display: block;
-  }
+const SmallAdvancedSelect = styled(AdvancedSelect)`
+  height: 36px;
+  width: 120px;
 `;
-
-const SearchIconWrapper = styled.div`
-  width: 40px;
-  height: 100%;
-  position: absolute;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #999999;
-  svg {
-    width: 15px;
-    height: 15px;
-  }
-`;
-
-const Input = styled(InputBase)`
-  color: inherit;
-  width: 100%;
-  > input {
-    color: ${(props) => props.theme.header.search.color};
-    padding-top: ${(props) => props.theme.spacing(2.5)}px;
-    padding-right: ${(props) => props.theme.spacing(2.5)}px;
-    padding-bottom: ${(props) => props.theme.spacing(2.5)}px;
-    padding-left: ${(props) => props.theme.spacing(10)}px;
-    width: 280px;
-  }
-`;
-const Toolbar = styled(MuiToolbar)(spacing);
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -171,7 +115,6 @@ let TableToolbar = (props) => {
     handleChangePage,
     handleChangeRowsPerPage,
   } = props;
-  const classes = useStyles();
 
   const handleColumnFilterChange = (event) => {
     setFilteredColumns(event.target.value);
@@ -187,78 +130,62 @@ let TableToolbar = (props) => {
     setTableFormat(newFormat);
   };
 
-  let initialClinics = [];
-  for (let item of data) {
-    if (initialClinics.indexOf(item.clinic) === -1) {
-      initialClinics.push(item.clinic);
+  const getInitialClinics = () => {
+    let initialClinics = [];
+    for (let item of data) {
+      if (initialClinics.indexOf(item.clinic) === -1) {
+        initialClinics.push(item.clinic);
+      }
     }
-  }
+    return initialClinics;
+  };
 
   return (
     <Toolbar p={0} mb={2}>
       <Grid container alignItems="center" justify="space-between">
         <Grid item>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <Input
-              placeholder="Search for a report"
-              value={searchString}
-              onChange={handleSearchChange}
-            />
-          </Search>
+          <SearchInput
+            placeholder="Search for a report"
+            value={searchString}
+            onChange={handleSearchChange}
+            grayBackground={true}
+          />
         </Grid>
 
         <Grid item>
-          <FormControl variant="filled" className={classes.columnsSelect}>
-            <Select
-              labelId="columns-filter-label"
-              id="columns-filter"
-              multiple
-              value={filteredColumns}
-              onChange={handleColumnFilterChange}
-              input={<Input />}
-              renderValue={() => "Columns"}
-              MenuProps={MenuProps}
-            >
-              <FormLabel component="legend">SELECT COLUMNS</FormLabel>
-              {columns
-                .filter((item) => item.id !== "actions")
-                .map((column) => (
-                  <MenuItem key={column.id} value={column.label}>
-                    <Checkbox
-                      checked={filteredColumns.indexOf(column.label) > -1}
-                    />
-                    <ListItemText primary={column.label} />
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
+          <SmallAdvancedSelect
+            value={filteredColumns}
+            onChange={handleColumnFilterChange}
+            name="columns"
+            label="Columns"
+            options={columns
+              .filter((item) => item.id !== "actions")
+              .map((item) => ({
+                label: item.label,
+                value: item.label,
+              }))}
+            variant="outlined"
+            renderValue={() => "Columns"}
+            multiple
+            hidelabeltop={true}
+          />
         </Grid>
 
         <Grid item>
-          <FormControl variant="filled" className={classes.columnsSelect}>
-            <Select
-              labelId="clinics-filter-label"
-              id="clinics-filter"
-              multiple
-              value={filteredClinics}
-              onChange={handleClinicFilterChange}
-              input={<Input />}
-              renderValue={() => "Clinics"}
-              MenuProps={MenuProps}
-            >
-              <FormLabel component="legend">SELECT CLINICS</FormLabel>
-              {initialClinics &&
-                initialClinics.map((clinic) => (
-                  <MenuItem key={clinic} value={clinic}>
-                    <Checkbox checked={filteredClinics.indexOf(clinic) > -1} />
-                    <ListItemText primary={clinic} />
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
+          <SmallAdvancedSelect
+            value={filteredClinics}
+            onChange={handleClinicFilterChange}
+            name="clinics"
+            label="Clinics"
+            options={getInitialClinics().map((item) => ({
+              label: item,
+              value: item,
+            }))}
+            variant="outlined"
+            renderValue={() => "Clinics"}
+            multiple
+            hidelabeltop={true}
+          />
         </Grid>
         <Grid item>
           <TablePagination
@@ -340,17 +267,18 @@ const ReportTable = (props) => {
   const [filteredColumns, setFilteredColumns] = React.useState(
     columns.filter((item) => item.id !== "actions").map((item) => item.label)
   );
-  const [filteredClinics, setFilteredClinics] = React.useState([]);
-
-  useEffect(() => {
+  const getInitialClinics = () => {
     let initialClinics = [];
     for (let item of data) {
       if (initialClinics.indexOf(item.clinic) === -1) {
         initialClinics.push(item.clinic);
       }
     }
-    setFilteredClinics(initialClinics);
-  }, []);
+    return initialClinics;
+  };
+  const [filteredClinics, setFilteredClinics] = React.useState(
+    getInitialClinics()
+  );
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";

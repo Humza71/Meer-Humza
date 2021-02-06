@@ -17,7 +17,7 @@ import { DropzoneArea } from "material-ui-dropzone";
 
 import CreateReportFooter from "components/CreateReportFooter";
 import { setStepNewReport } from "redux/reducers/uiReducer";
-import { updateNewReport } from "redux/reducers/reportReducer";
+// import { updateNewReport } from "redux/reducers/reportReducer";
 
 const Card = styled(MuiCard)(spacing);
 const Alert = styled(MuiAlert)(spacing);
@@ -36,7 +36,6 @@ const InnerForm = (props) => {
   const {
     errors,
     handleBlur,
-    handleChange,
     setFieldValue,
     isSubmitting,
     touched,

@@ -47,6 +47,14 @@ const typography = {
     fontWeight: 500,
     lineHeight: 1.25,
   },
+  subtitle1: {
+    fontSize: "1rem",
+    textTransform: "uppercase",
+  },
+  subtitle2: {
+    fontSize: "0.7rem",
+    textTransform: "uppercase",
+  },
   body1: {
     fontSize: 13,
   },

@@ -164,6 +164,12 @@ const overrides = {
       },
     },
   },
+  MuiPopover: {
+    paper: {
+      boxShadow: "rgb(0 0 0 / 10%) 0px 0 3px 3px",
+      padding: "10px",
+    },
+  },
 };
 
 export default overrides;
