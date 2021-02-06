@@ -171,6 +171,7 @@ const CreateReport = () => {
     dispatch(setHeaderTitle("Create Report"));
     dispatch(setStepNewReport(0));
     dispatch(clearNewReport());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

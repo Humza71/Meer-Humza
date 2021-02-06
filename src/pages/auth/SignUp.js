@@ -219,7 +219,7 @@ function SignUp() {
                 className={clsx(classes.margin, classes.textField)}
                 variant="outlined"
                 error={Boolean(
-                  touched.password && errors.password_confirmation
+                  touched.password_confirmation && errors.password_confirmation
                 )}
               >
                 <InputLabel htmlFor="password_confirmation">

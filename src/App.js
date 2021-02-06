@@ -33,6 +33,7 @@ function App() {
       setIsUserLoaded(true);
     }
     loadUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!isUserLoaded) {

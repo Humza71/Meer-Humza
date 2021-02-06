@@ -69,6 +69,7 @@ const Reports = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setHeaderTitle("Dashboard"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
