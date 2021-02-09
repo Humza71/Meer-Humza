@@ -26,6 +26,7 @@ import UploadedFilesButton from "components/UploadedFilesButton";
 import PatientForm from "forms/PatientForm";
 import FilesForm from "forms/FilesForm";
 import PosturalForm from "forms/PosturalForm";
+import VngForm from "forms/Vng";
 import { setHeaderTitle, setStepNewReport } from "redux/reducers/uiReducer";
 import { clearNewReport } from "redux/reducers/reportReducer";
 
@@ -107,7 +108,7 @@ const tabsInfo = [
     label: "VNG",
     icon: YoutubeSearchedForIcon,
     backgroundColor: "#1CCBB0",
-    component: PatientForm,
+    component: VngForm,
   },
   {
     label: "ROTARY CHAIR",
