@@ -1,116 +1,106 @@
 import React from "react";
+import Cell from "components/reports/Cell";
+import BodyCell from "components/reports/BodyCell";
+import ReportCard from "components/reports/ReportCard";
+import ReportTable from "components/reports/Table";
+import Toggle from "components/reports/Toggle";
+import TextArea from "components/reports/TextArea";
 
-import * as Yup from "yup";
-import { Formik } from "formik";
-
-import { Alert as MuiAlert } from "@material-ui/lab";
-import { spacing } from "@material-ui/system";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import styled from "styled-components/macro";
-
-import {
-  StyledHeader,
-  StyledCell,
-  StyledBodyCell,
-  NormalityOptions,
-  ConsentOptions,
-  OutCard,
-  TextArea,
-} from "./styledComponents";
-
-import {
-  Box,
-  Card as MuiCard,
-  CardContent,
-  CircularProgress,
-  Typography as MuiTypography,
-  TextareaAutosize,
-  Input,
-} from "@material-ui/core";
-
-const Typography = styled(MuiTypography)(spacing);
+import { Box } from "@material-ui/core";
 
 const OculuMotors = ({ formTitle, formKey, setFieldValue, values }) => {
   const data = values[formKey];
+
+  const oculuMotorsQuestions = [
+    {
+      title: "Saccades",
+      key: "saccades",
+      options: [
+        {
+          title: "Normal",
+          value: "normal",
+        },
+        {
+          title: "Abnormal",
+          value: "abnormal",
+        },
+      ],
+    },
+    {
+      title: "Vertigo",
+      key: "vertigo",
+      options: [
+        {
+          title: "Yes",
+          value: "yes",
+        },
+        {
+          title: "No",
+          value: "no",
+        },
+      ],
+    },
+    {
+      title: "Smooth Pursuit",
+      key: "smoothPursuit",
+      options: [
+        {
+          title: "Normal",
+          value: "normal",
+        },
+        {
+          title: "Abnormal",
+          value: "abnormal",
+        },
+      ],
+    },
+    {
+      title: "Optokinetic",
+      key: "optokinetic",
+      options: [
+        {
+          title: "Normal",
+          value: "normal",
+        },
+        {
+          title: "Abnormal",
+          value: "abnormal",
+        },
+      ],
+    },
+  ];
+
   return (
-    <OutCard mb={6}>
-      <CardContent>
-        <Box my={4}>
-          <Typography variant="h4" color="inherit" gutterBottom>
-            {formTitle}
-          </Typography>
-        </Box>
-        <>
-          <TableContainer>
-            <Table aria-label="simple table">
-              <StyledHeader>
-                <TableRow>
-                  <StyledCell align="center">Saccades</StyledCell>
-                  <StyledCell align="center">Vertigo</StyledCell>
-                  <StyledCell align="center">Smooth Pursuit</StyledCell>
-                  <StyledCell align="center">Optokinetic</StyledCell>
-                </TableRow>
-              </StyledHeader>
-              <TableBody>
-                <TableRow>
-                  <StyledBodyCell>
-                    <Box mb={2.5} mt={2.5}>
-                      <NormalityOptions
-                        formKey={formKey}
-                        values={data}
-                        setFieldValue={setFieldValue}
-                        fieldkey="saccades"
-                      />
-                    </Box>
-                  </StyledBodyCell>
-                  <StyledBodyCell>
-                    <Box mb={2.5} mt={2.5}>
-                      <ConsentOptions
-                        formKey={formKey}
-                        values={data}
-                        setFieldValue={setFieldValue}
-                        fieldkey="vertigo"
-                      />
-                    </Box>
-                  </StyledBodyCell>
-                  <StyledBodyCell>
-                    <Box mb={2.5} mt={2.5}>
-                      <NormalityOptions
-                        formKey={formKey}
-                        values={data}
-                        setFieldValue={setFieldValue}
-                        fieldkey="smoothPursuit"
-                      />
-                    </Box>
-                  </StyledBodyCell>
-                  <StyledBodyCell>
-                    <Box mb={2.5} mt={2.5}>
-                      <NormalityOptions
-                        formKey={formKey}
-                        values={data}
-                        setFieldValue={setFieldValue}
-                        fieldkey="optokinetic"
-                      />
-                    </Box>
-                  </StyledBodyCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TextArea
-            rowsMin={3}
-            placeholder="Notes"
-            value={data["notes"]}
-            onChange={(e) => setFieldValue(`${formKey}.notes`)}
-          />
-        </>
-      </CardContent>
-    </OutCard>
+    <ReportCard title={formTitle}>
+      <>
+        <ReportTable
+          Columns={() =>
+            oculuMotorsQuestions.map(({ title }) => (
+              <Cell align="center">{title}</Cell>
+            ))
+          }
+        >
+          {oculuMotorsQuestions.map(({ title, key, options }) => (
+            <BodyCell>
+              <Box mb={2.5} mt={2.5}>
+                <Toggle
+                  name={`${formKey}.${key}`}
+                  value={data[key]}
+                  onChange={(value) =>
+                    setFieldValue(`${formKey}.${key}`, value)
+                  }
+                  options={options}
+                />
+              </Box>
+            </BodyCell>
+          ))}
+        </ReportTable>
+      </>
+      <TextArea
+        value={data["notes"]}
+        onChange={(value) => setFieldValue(`${formKey}.notes`, value)}
+      />
+    </ReportCard>
   );
 };
 
