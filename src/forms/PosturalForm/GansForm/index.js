@@ -9,6 +9,7 @@ import TableCell from "@material-ui/core/TableCell";
 import styled from "styled-components/macro";
 import { Box } from "@material-ui/core";
 import Cell from "components/reports/Cell";
+import TableRow from "@material-ui/core/TableRow";
 
 const BodyCell = styled(TableCell)`
   text-align: center;
@@ -26,26 +27,33 @@ const GansForm = ({ values, setFieldValue }) => {
       <>
         <ReportTable
           Columns={() =>
-            gsoTestQuestion.map(({ title }) => (
-              <Cell align="center">{title}</Cell>
+            gsoTestQuestion.map(({ title }, index) => (
+              <Cell align="center" key={index}>
+                {title}
+              </Cell>
             ))
           }
         >
-          {gsoTestQuestion.map(({ title, key, options }) => (
-            <BorderCell key={key}>
-              <Box my={4}>
-                <img src={`/static/img/reports/postural/${title}.svg`} />
-              </Box>
-              <Box mb={2.5}>
-                <Toggle
-                  name={`gsoTest.${key}`}
-                  value={values["gsoTest"][key]}
-                  onChange={(value) => setFieldValue(`gsoTest.${key}`, value)}
-                  options={options}
-                />
-              </Box>
-            </BorderCell>
-          ))}
+          <TableRow>
+            {gsoTestQuestion.map(({ title, key, options }) => (
+              <BorderCell key={key}>
+                <Box my={4}>
+                  <img
+                    src={`/static/img/reports/postural/${title}.svg`}
+                    alt="img"
+                  />
+                </Box>
+                <Box mb={2.5}>
+                  <Toggle
+                    name={`gsoTest.${key}`}
+                    value={values["gsoTest"][key]}
+                    onChange={(value) => setFieldValue(`gsoTest.${key}`, value)}
+                    options={options}
+                  />
+                </Box>
+              </BorderCell>
+            ))}
+          </TableRow>
         </ReportTable>
         <TextArea
           value={values["gsoTest"]["notes"]}

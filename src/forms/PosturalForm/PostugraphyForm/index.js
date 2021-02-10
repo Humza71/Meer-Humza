@@ -7,8 +7,9 @@ import ReportTable from "components/reports/Table";
 import TextArea from "components/reports/TextArea";
 import Cell from "components/reports/Cell";
 import BodyCell from "components/reports/BodyCell";
+import TableRow from "@material-ui/core/TableRow";
 
-import { Box, Card as MuiCard, CardContent } from "@material-ui/core";
+import { Box, CardContent } from "@material-ui/core";
 
 const PostugraphyForm = ({ values, setFieldValue }) => {
   return (
@@ -17,13 +18,13 @@ const PostugraphyForm = ({ values, setFieldValue }) => {
         <ReportTable
           Columns={() => (
             <>
-              {cdpTestQuestions.map(({ title = "", key }) =>
+              {cdpTestQuestions.map(({ title = "", key }, index) =>
                 title ? (
-                  <Cell align="center" key={key}>
+                  <Cell align="center" key={index}>
                     {title}
                   </Cell>
                 ) : (
-                  <Cell align="center" width="22%" key={key}>
+                  <Cell align="center" width="22%" key={index}>
                     {title}
                   </Cell>
                 )
@@ -31,9 +32,9 @@ const PostugraphyForm = ({ values, setFieldValue }) => {
             </>
           )}
         >
-          {cdpTestQuestions.map(({ title, options, key }) => (
-            <>
-              {options.length === 0 ? (
+          <TableRow>
+            {cdpTestQuestions.map(({ title, options, key }, index) =>
+              options.length === 0 ? (
                 <BodyCell key={key}>{title}</BodyCell>
               ) : (
                 <BodyCell key={key}>
@@ -48,9 +49,9 @@ const PostugraphyForm = ({ values, setFieldValue }) => {
                     />
                   </Box>
                 </BodyCell>
-              )}
-            </>
-          ))}
+              )
+            )}
+          </TableRow>
         </ReportTable>
         <ReportTable
           Columns={() => (
@@ -67,12 +68,12 @@ const PostugraphyForm = ({ values, setFieldValue }) => {
             </>
           )}
         >
-          {mcTestQuestions.map(({ title, options, key }) => (
-            <>
-              {options.length === 0 ? (
-                <BodyCell>{title}</BodyCell>
+          <TableRow>
+            {mcTestQuestions.map(({ title, options, key }, index) =>
+              options.length === 0 ? (
+                <BodyCell key={index}>{title}</BodyCell>
               ) : (
-                <BodyCell>
+                <BodyCell key={index}>
                   <Box mb={2.5} mt={2.5}>
                     <Toggle
                       name={`cdpTest.mcTest.${key}`}
@@ -84,9 +85,9 @@ const PostugraphyForm = ({ values, setFieldValue }) => {
                     />
                   </Box>
                 </BodyCell>
-              )}
-            </>
-          ))}
+              )
+            )}
+          </TableRow>
         </ReportTable>
       </CardContent>
 
@@ -106,9 +107,9 @@ const PostugraphyForm = ({ values, setFieldValue }) => {
             </>
           )}
         >
-          {adTest.map(({ title, options, key }) => (
-            <>
-              {options.length === 0 ? (
+          <TableRow>
+            {adTest.map(({ title, options, key }, index) =>
+              options.length === 0 ? (
                 <BodyCell key={key}>{title}</BodyCell>
               ) : (
                 <BodyCell key={key}>
@@ -123,9 +124,9 @@ const PostugraphyForm = ({ values, setFieldValue }) => {
                     />
                   </Box>
                 </BodyCell>
-              )}
-            </>
-          ))}
+              )
+            )}
+          </TableRow>
         </ReportTable>
         <TextArea
           value={values["cdpTest"]["notes"]}

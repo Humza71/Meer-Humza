@@ -46,12 +46,12 @@ const validationSchema = Yup.object().shape({});
 
 const InnerForm = (props) => {
   const {
-    errors,
-    handleBlur,
-    handleChange,
+    //errors,
+    //handleBlur,
+    //handleChange,
     setFieldValue,
-    isSubmitting,
-    touched,
+    //isSubmitting,
+    //touched,
     values,
     status,
   } = props;

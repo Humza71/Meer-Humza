@@ -1,43 +1,16 @@
 import React from "react";
 
-import * as Yup from "yup";
-import { Formik } from "formik";
-
-import { Alert as MuiAlert } from "@material-ui/lab";
-import { spacing } from "@material-ui/system";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import styled from "styled-components/macro";
 
-import {
-  StyledHeader,
-  StyledCell,
-  StyledBodyCell,
-  NormalityOptions,
-  ConsentOptions,
-  OutCard,
-  TextArea,
-  StyledInput,
-  DirectionOptions,
-  IndexOptions,
-  CarolicOptions,
-} from "./styledComponents";
+import ReportCard from "components/reports/ReportCard";
+import ReportTable from "components/reports/Table";
+import Cell from "components/reports/Cell";
+import BodyCell from "components/reports/BodyCell";
+import Toggle from "components/reports/Toggle";
+import TextArea from "components/reports/TextArea";
+import Input from "components/reports/Input";
 
-import {
-  Box,
-  Card as MuiCard,
-  CardContent,
-  CircularProgress,
-  Typography as MuiTypography,
-  TextareaAutosize,
-  Input,
-} from "@material-ui/core";
-
-const Typography = styled(MuiTypography)(spacing);
+import { Box } from "@material-ui/core";
 
 const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
   const data = values[formKey];
@@ -56,101 +29,100 @@ const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
   ];
 
   return (
-    <OutCard mb={6}>
-      <CardContent>
-        <Box my={4}>
-          <Typography variant="h4" color="inherit" gutterBottom>
-            {formTitle}
-          </Typography>
-        </Box>
-        <>
-          <TableContainer>
-            <Table aria-label="simple table">
-              <StyledHeader>
-                <TableRow>
-                  <StyledCell align="center" />
-                  <StyledCell align="center">WARM</StyledCell>
-                  <StyledCell align="center">COOL</StyledCell>
-                  <StyledCell align="center">VERTIGO</StyledCell>
-                  <StyledCell align="center"></StyledCell>
-                  <StyledCell align="center">FIXATION INDEX</StyledCell>
-                  <StyledCell align="center">BILATERAL WEAKNESS</StyledCell>
-                </TableRow>
-              </StyledHeader>
-              <TableBody>
-                {sections.map(({ title, parentKey, key }) => (
-                  <TableRow key={key}>
-                    <StyledBodyCell>{title}</StyledBodyCell>
-                    <StyledBodyCell>
-                      <Box mb={2.5} mt={2.5}>
-                        <StyledInput
-                          value={data[key]["warm"]}
-                          onChange={(e) =>
-                            setFieldValue(
-                              `${formKey}.${key}.warm`,
-                              e.target.value
-                            )
-                          }
-                        />
-                      </Box>
-                    </StyledBodyCell>
-                    <StyledBodyCell>
-                      <Box mb={2.5} mt={2.5}>
-                        <StyledInput
-                          value={data[key]["cool"]}
-                          onChange={(e) =>
-                            setFieldValue(
-                              `${formKey}.${key}.cool`,
-                              e.target.value
-                            )
-                          }
-                        />
-                      </Box>
-                    </StyledBodyCell>
-                    <StyledBodyCell>
-                      <Box mb={2.5} mt={2.5}>
-                        <ConsentOptions
-                          formKey={`${parentKey}`}
-                          values={data[key]}
-                          setFieldValue={setFieldValue}
-                          fieldkey="uwDp"
-                        />
-                      </Box>
-                    </StyledBodyCell>
-                    <StyledBodyCell>
-                      <Box mb={2.5} mt={2.5}>
-                        <CarolicOptions
-                          formKey={`${parentKey}`}
-                          values={data[key]}
-                          setFieldValue={setFieldValue}
-                          fieldkey="fixationIndex"
-                        />
-                      </Box>
-                    </StyledBodyCell>
-                    <StyledBodyCell>
-                      <Box mb={2.5} mt={2.5}>
-                        <IndexOptions
-                          formKey={`${parentKey}`}
-                          values={data[key]}
-                          setFieldValue={setFieldValue}
-                          fieldkey="bW"
-                        />
-                      </Box>
-                    </StyledBodyCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TextArea
-            rowsMin={3}
-            placeholder="Notes"
-            value={data["notes"]}
-            onChange={(e) => setFieldValue(`${formKey}.notes`, e.target.value)}
-          />
-        </>
-      </CardContent>
-    </OutCard>
+    <ReportCard title={formTitle}>
+      <>
+        <ReportTable
+          Columns={() => (
+            <>
+              <Cell align="center" />
+              <Cell align="center">WARM</Cell>
+              <Cell align="center">COOL</Cell>
+              <Cell align="center">VERTIGO</Cell>
+              <Cell align="center"></Cell>
+              <Cell align="center">FIXATION INDEX</Cell>
+              <Cell align="center">BILATERAL WEAKNESS</Cell>
+            </>
+          )}
+        >
+          {sections.map(({ title, parentKey, key }) => (
+            <TableRow key={key}>
+              <BodyCell>{title}</BodyCell>
+              <BodyCell>
+                <Box mb={2.5} mt={2.5}>
+                  <Input
+                    value={data[key]["warm"]}
+                    onChange={(e) =>
+                      setFieldValue(`${formKey}.${key}.warm`, e.target.value)
+                    }
+                  />
+                </Box>
+              </BodyCell>
+              <BodyCell>
+                <Box mb={2.5} mt={2.5}>
+                  <Input
+                    value={data[key]["cool"]}
+                    onChange={(e) =>
+                      setFieldValue(`${formKey}.${key}.cool`, e.target.value)
+                    }
+                  />
+                </Box>
+              </BodyCell>
+              <BodyCell>
+                <Box mb={2.5} mt={2.5}>
+                  <Toggle
+                    name={`${formKey}.${key}`}
+                    value={data[key]}
+                    onChange={(value) =>
+                      setFieldValue(`${formKey}.${key}`, value)
+                    }
+                    options={[
+                      { title: "Yes", value: "yes" },
+                      { title: "No", value: "no" },
+                    ]}
+                  />
+                </Box>
+              </BodyCell>
+              <BodyCell>
+                <Box mb={2.5} mt={2.5}>
+                  <Toggle
+                    name={`${formKey}.${key}`}
+                    value={data[key]}
+                    onChange={(value) =>
+                      setFieldValue(`${formKey}.${key}`, value)
+                    }
+                    options={[
+                      { title: "UW", value: "uw" },
+                      { title: "DP", value: "dp" },
+                    ]}
+                  />
+                </Box>
+              </BodyCell>
+              <BodyCell>
+                <Box mb={2.5} mt={2.5}>
+                  <Toggle
+                    name={`${formKey}.${key}`}
+                    value={data[key]}
+                    onChange={(value) =>
+                      setFieldValue(`${formKey}.${key}`, value)
+                    }
+                    options={[
+                      { title: "Negative", value: "negative" },
+                      { title: "Positive", value: "positive" },
+                    ]}
+                  />
+                </Box>
+              </BodyCell>
+            </TableRow>
+          ))}
+        </ReportTable>
+        <TextArea
+          rowsMin={3}
+          placeholder="Notes"
+          value={data["notes"]}
+          onChange={(value) => setFieldValue(`${formKey}.notes`, value)}
+        />
+      </>
+    </ReportCard>
   );
 };
 

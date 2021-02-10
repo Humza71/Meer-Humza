@@ -8,16 +8,15 @@ import styled from "styled-components/macro";
 export const ToggleButtonGroup = styled(MuiToggleButtonGroup)`
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: ${(props) => props.direction};
   justify-content: space-between;
   align-items: center;
   .MuiToggleButton-root {
     border: 1px solid rgba(0, 0, 0, 0.12) !important;
     border-radius: 4px !important;
-    width: 85px;
-    height: 38px;
+    width: ${(props) => props.togglesize.width};
+    height: ${(props) => props.togglesize.height};
     margin-bottom: 9px;
-    max-width: 120px;
   }
   .MuiToggleButton-root.Mui-selected {
     border: 1px solid #09539e !important;
@@ -26,10 +25,24 @@ export const ToggleButtonGroup = styled(MuiToggleButtonGroup)`
   }
 `;
 
-const Toggle = ({ options, name, handleBlur, label = "", value, onChange }) => (
+const Toggle = ({
+  options,
+  name,
+  handleBlur,
+  label = "",
+  value,
+  onChange,
+  direction = "column",
+  togglesize = {
+    width: "85px",
+    height: "38px",
+  },
+}) => (
   <>
     <ToggleButtonGroup
       exclusive
+      togglesize={togglesize}
+      direction={direction}
       name={name}
       label={label}
       value={value}
@@ -37,8 +50,8 @@ const Toggle = ({ options, name, handleBlur, label = "", value, onChange }) => (
       onChange={(e, value) => onChange(value)}
       aria-label={name}
     >
-      {options.map(({ value, title, key }) => (
-        <ToggleButton value={value} aria-label={value} key={key}>
+      {options.map(({ value, title }, index) => (
+        <ToggleButton value={value} aria-label={value} key={index}>
           {title}
         </ToggleButton>
       ))}
