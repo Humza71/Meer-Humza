@@ -27,6 +27,9 @@ import PatientForm from "forms/PatientForm";
 import FilesForm from "forms/FilesForm";
 import PosturalForm from "forms/PosturalForm";
 import VngForm from "forms/Vng";
+import RotaryChair from "forms/RotaryChair";
+import VHIT from "forms/VHIT";
+import VAT from "forms/VAT";
 import { setHeaderTitle, setStepNewReport } from "redux/reducers/uiReducer";
 import { clearNewReport } from "redux/reducers/reportReducer";
 
@@ -114,19 +117,19 @@ const tabsInfo = [
     label: "ROTARY CHAIR",
     icon: AirlineSeatLegroomNormalIcon,
     backgroundColor: "#32D74B",
-    component: PatientForm,
+    component: RotaryChair,
   },
   {
     label: "vHIT",
     icon: TimelapseIcon,
     backgroundColor: "#96DA45",
-    component: PatientForm,
+    component: VHIT,
   },
   {
     label: "VAT/VORTEQ",
     icon: SlidersIcon,
     backgroundColor: "#FF8F61",
-    component: PatientForm,
+    component: VAT,
   },
   {
     label: "ELECTROPHYS",

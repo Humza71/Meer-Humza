@@ -1,7 +1,6 @@
 import React from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
@@ -20,9 +19,7 @@ const ReportTable = ({ Columns, children }) => {
             <Columns />
           </TableRow>
         </StyledHeader>
-        <TableBody>
-          <TableRow>{children}</TableRow>
-        </TableBody>
+        <TableBody>{children}</TableBody>
       </Table>
     </TableContainer>
   );

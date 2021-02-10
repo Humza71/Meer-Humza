@@ -5,6 +5,7 @@ import ReportCard from "components/reports/ReportCard";
 import ReportTable from "components/reports/Table";
 import Toggle from "components/reports/Toggle";
 import TextArea from "components/reports/TextArea";
+import TableRow from "@material-ui/core/TableRow";
 
 import { Box } from "@material-ui/core";
 
@@ -75,25 +76,29 @@ const OculuMotors = ({ formTitle, formKey, setFieldValue, values }) => {
       <>
         <ReportTable
           Columns={() =>
-            oculuMotorsQuestions.map(({ title }) => (
-              <Cell align="center">{title}</Cell>
+            oculuMotorsQuestions.map(({ title }, index) => (
+              <Cell align="center" key={index}>
+                {title}
+              </Cell>
             ))
           }
         >
-          {oculuMotorsQuestions.map(({ title, key, options }) => (
-            <BodyCell>
-              <Box mb={2.5} mt={2.5}>
-                <Toggle
-                  name={`${formKey}.${key}`}
-                  value={data[key]}
-                  onChange={(value) =>
-                    setFieldValue(`${formKey}.${key}`, value)
-                  }
-                  options={options}
-                />
-              </Box>
-            </BodyCell>
-          ))}
+          <TableRow>
+            {oculuMotorsQuestions.map(({ title, key, options }, index) => (
+              <BodyCell key={index}>
+                <Box mb={2.5} mt={2.5}>
+                  <Toggle
+                    name={`${formKey}.${key}`}
+                    value={data[key]}
+                    onChange={(value) =>
+                      setFieldValue(`${formKey}.${key}`, value)
+                    }
+                    options={options}
+                  />
+                </Box>
+              </BodyCell>
+            ))}
+          </TableRow>
         </ReportTable>
       </>
       <TextArea

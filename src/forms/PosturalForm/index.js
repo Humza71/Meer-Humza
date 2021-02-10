@@ -7,6 +7,7 @@ import { spacing } from "@material-ui/system";
 
 import GansForm from "./GansForm";
 import PostugraphyForm from "./PostugraphyForm";
+import CreateReportFooter from "components/CreateReportFooter";
 
 const Alert = styled(MuiAlert)(spacing);
 
@@ -46,12 +47,12 @@ const validationSchema = Yup.object().shape({});
 
 const InnerForm = (props) => {
   const {
-    errors,
-    handleBlur,
-    handleChange,
+    //errors,
+    //handleBlur,
+    //handleChange,
     setFieldValue,
-    isSubmitting,
-    touched,
+    //isSubmitting,
+    //touched,
     values,
     status,
   } = props;
@@ -85,6 +86,7 @@ const PosturalForm = () => {
         {(formProps) => (
           <form onSubmit={handleSubmit}>
             <InnerForm {...formProps} />
+            <CreateReportFooter {...formProps} onSave={() => {}} />
           </form>
         )}
       </Formik>
