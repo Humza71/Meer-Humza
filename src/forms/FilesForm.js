@@ -6,26 +6,52 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Alert as MuiAlert } from "@material-ui/lab";
 import { spacing } from "@material-ui/system";
-import {
-  Box,
-  Card as MuiCard,
-  CardContent,
-  CircularProgress,
-  Typography as MuiTypography,
-} from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import { DropzoneArea } from "material-ui-dropzone";
 
 import CreateReportFooter from "components/CreateReportFooter";
 import { setStepNewReport } from "redux/reducers/uiReducer";
+import ReportCard from "components/reports/ReportCard";
+import FileChip from "components/reports/FileChip";
 // import { updateNewReport } from "redux/reducers/reportReducer";
 
-const Card = styled(MuiCard)(spacing);
 const Alert = styled(MuiAlert)(spacing);
-const Typography = styled(MuiTypography)(spacing);
 
-const OutCard = styled(Card)`
-  width: 500px;
-  margin: 20px auto;
+const FileIcon = styled.img`
+  width: 76px;
+  height: 55px;
+`;
+
+const SectionHeading = styled.p`
+  font-size: 10px;
+  font-weight: 600px;
+  margin: 24px 0 5px 0;
+  color: #09539e;
+`;
+
+const DropZoneWrapper = styled.div`
+  .dropZoneWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .MuiDropzoneArea-textContainer {
+    text-align: center;
+    flex-direction: column-reverse;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  .MuiDropzoneArea-textContainer p {
+    font-weight: 400;
+    font-style: normal;
+    font-size: 18px;
+    line-height: 25.55px;
+  }
+`;
+
+const MainWrapper = styled.div`
+  height: 700px;
 `;
 
 const validationSchema = Yup.object().shape({
@@ -43,39 +69,65 @@ const InnerForm = (props) => {
     status,
   } = props;
 
+  const { files } = values;
+  const hasFiles = files.length > 0;
+
+  const handleDelete = (index) => {
+    const newFiles = [...files];
+    newFiles.splice(index, 1);
+    setFieldValue("files", newFiles);
+  };
+
   return (
-    <OutCard mb={6}>
-      <CardContent>
-        <Typography variant="h6" mb={5} gutterBottom>
-          Upload your files
-        </Typography>
+    <ReportCard
+      title="Upload your files"
+      cardsize={{
+        width: "672px",
+      }}
+    >
+      {status && status.sent && (
+        <Alert severity="success" my={3}>
+          Your data has been submitted successfully!
+        </Alert>
+      )}
 
-        {status && status.sent && (
-          <Alert severity="success" my={3}>
-            Your data has been submitted successfully!
-          </Alert>
-        )}
-
-        {isSubmitting ? (
-          <Box display="flex" justifyContent="center" my={6}>
-            <CircularProgress />
-          </Box>
-        ) : (
-          <>
-            <DropzoneArea
-              dropzoneText="Drop your files here or browse"
-              showFileNamesInPreview={true}
-              showFileNames={true}
-              value={values.files}
-              onChange={(value) => setFieldValue("files", value)}
-              error={Boolean(touched.files && errors.files)}
-              helperText={touched.files && errors.files}
-              onBlur={handleBlur}
-            />
-          </>
-        )}
-      </CardContent>
-    </OutCard>
+      {isSubmitting ? (
+        <Box display="flex" justifyContent="center" my={6}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <DropZoneWrapper>
+          <DropzoneArea
+            clearOnUnmount
+            showPreviews={false}
+            showPreviewsInDropzone={false}
+            dropzoneText="Drop files here or browse"
+            dropzoneClass="dropZoneWrapper"
+            showFileNamesInPreview={true}
+            showFileNames={true}
+            value={files}
+            maxFiles={10}
+            Icon={() => <FileIcon src={"/static/img/fileIcon.png"} />}
+            onChange={(value) => setFieldValue("files", value)}
+            error={Boolean(touched.files && errors.files)}
+            helperText={touched.files && errors.files}
+            onBlur={handleBlur}
+          />
+          {hasFiles && (
+            <div>
+              <SectionHeading>UPLOADED FILES</SectionHeading>
+              {files.map(({ name }, i) => (
+                <FileChip
+                  key={i}
+                  name={name}
+                  handleDelete={() => handleDelete(i)}
+                />
+              ))}
+            </div>
+          )}
+        </DropZoneWrapper>
+      )}
+    </ReportCard>
   );
 };
 
@@ -122,13 +174,15 @@ const FilesForm = () => {
         onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <Form>
-            <InnerForm {...formProps} />
-            <CreateReportFooter
-              {...formProps}
-              handleSave={() => handleSave(formProps.values)}
-            />
-          </Form>
+          <MainWrapper>
+            <Form>
+              <InnerForm {...formProps} />
+              <CreateReportFooter
+                {...formProps}
+                handleSave={() => handleSave(formProps.values)}
+              />
+            </Form>
+          </MainWrapper>
         )}
       </Formik>
     </React.Fragment>

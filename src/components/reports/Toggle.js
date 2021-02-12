@@ -37,10 +37,11 @@ const Toggle = ({
     width: "85px",
     height: "38px",
   },
+  exclusive = true,
 }) => (
   <>
     <ToggleButtonGroup
-      exclusive
+      exclusive={exclusive}
       togglesize={togglesize}
       direction={direction}
       name={name}

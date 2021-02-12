@@ -30,6 +30,7 @@ import VngForm from "forms/Vng";
 import RotaryChair from "forms/RotaryChair";
 import VHIT from "forms/VHIT";
 import VAT from "forms/VAT";
+import History from "forms/History";
 import { setHeaderTitle, setStepNewReport } from "redux/reducers/uiReducer";
 import { clearNewReport } from "redux/reducers/reportReducer";
 
@@ -99,7 +100,7 @@ const tabsInfo = [
     label: "HISTORY",
     icon: HistoryIcon,
     backgroundColor: "#36B2F9",
-    component: PatientForm,
+    component: History,
   },
   {
     label: "POSTURAL STABILITY",
