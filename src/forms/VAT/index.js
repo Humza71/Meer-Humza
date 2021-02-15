@@ -93,7 +93,7 @@ const InnerForm = (props) => {
         title="Vestibular Autorotation Test"
       >
         {rows.map(({ title, key }) => (
-          <Box mb={5}>
+          <Box mb={5} key={key}>
             <Section size={{ width: "88%" }}>
               <span>{title}</span>
               {questions.map(({ key: fieldKey, options }) => (
