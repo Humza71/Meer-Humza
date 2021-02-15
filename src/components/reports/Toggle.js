@@ -4,6 +4,7 @@ import {
   ToggleButtonGroup as MuiToggleButtonGroup,
 } from "@material-ui/lab";
 import styled from "styled-components/macro";
+import Input from "./Input";
 
 export const ToggleButtonGroup = styled(MuiToggleButtonGroup)`
   width: 100%;
@@ -51,7 +52,7 @@ const Toggle = ({
       onChange={(e, value) => onChange(value)}
       aria-label={name}
     >
-      {options.map(({ value, title }, index) => (
+      {options.map(({ value, title, addText = false }, index, props) => (
         <ToggleButton value={value} aria-label={value} key={index}>
           {title}
         </ToggleButton>

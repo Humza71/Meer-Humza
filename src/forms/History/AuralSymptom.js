@@ -105,7 +105,6 @@ const AuralSymptom = (props) => {
                 width: "148px",
                 height: "38px",
               }}
-              exclusive={false}
               name={`auralSymptom.otalgia`}
               value={values["auralSymptom"]["otalgia"]}
               onChange={(value) => setFieldValue(`auralSymptom.otalgia`, value)}

@@ -2,6 +2,7 @@ import React from "react";
 
 import ReportCard from "components/reports/ReportCard";
 import Toggle from "components/reports/Toggle";
+import Input from "components/reports/Input";
 
 import { Grid, Box, CircularProgress } from "@material-ui/core";
 
@@ -100,7 +101,7 @@ const AuralSymptom = (props) => {
             options={conditionCol1}
           />
         </Grid>
-        <Grid item xs={5}>
+        <Grid container>
           <Toggle
             togglesize={{
               width: "210px",

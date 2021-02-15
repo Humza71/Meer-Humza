@@ -30,7 +30,10 @@ import VngForm from "forms/Vng";
 import RotaryChair from "forms/RotaryChair";
 import VHIT from "forms/VHIT";
 import VAT from "forms/VAT";
+import Electrophys from "forms/Electrophys";
 import History from "forms/History";
+import AudioMetery from "forms/AudioMetery";
+import Screenings from "forms/Screenings";
 import { setHeaderTitle, setStepNewReport } from "redux/reducers/uiReducer";
 import { clearNewReport } from "redux/reducers/reportReducer";
 
@@ -136,19 +139,19 @@ const tabsInfo = [
     label: "ELECTROPHYS",
     icon: ActivityIcon,
     backgroundColor: "#FF6968",
-    component: PatientForm,
+    component: Electrophys,
   },
   {
     label: "AUDIOMETRY",
     icon: RecordVoiceOverIcon,
     backgroundColor: "#DFAD00",
-    component: PatientForm,
+    component: AudioMetery,
   },
   {
     label: "SCREENINGS",
     icon: ScreenShareIcon,
     backgroundColor: "#F08115",
-    component: PatientForm,
+    component: Screenings,
   },
   {
     label: "ADD.TESTS & COMMENTS",
