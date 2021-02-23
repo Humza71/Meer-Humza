@@ -4,7 +4,6 @@ import {
   ToggleButtonGroup as MuiToggleButtonGroup,
 } from "@material-ui/lab";
 import styled from "styled-components/macro";
-import Input from "./Input";
 
 export const ToggleButtonGroup = styled(MuiToggleButtonGroup)`
   width: 100%;

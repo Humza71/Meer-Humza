@@ -7,7 +7,6 @@ import Toggle from "components/reports/Toggle";
 import BodyCell from "components/reports/BodyCell";
 import TextArea from "components/reports/TextArea";
 import { TableRow } from "@material-ui/core";
-import Input from "components/reports/Input";
 
 const OtoacousticForm = (props) => {
   const { setFieldValue, values } = props;
