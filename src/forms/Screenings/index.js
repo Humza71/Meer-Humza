@@ -5,9 +5,6 @@ import { Formik } from "formik";
 
 import CreateReportFooter from "components/CreateReportFooter";
 import ScreeningTest from "./ScreeningTest";
-// import AucousticForm from "./AucousticForm";
-// import OtoacousticForm from "./OtoacousticForm";
-// import AudiogramForm from "./AudiogramForm";
 
 const initialValues = {
   vast: {
@@ -28,18 +25,177 @@ const initialValues = {
     },
     notes: "",
   },
+  actuity: {
+    horizontal: {
+      negPositive: "",
+    },
+    vertical: {
+      negPositive: "",
+    },
+  },
+  impulse: {
+    right: {
+      negPositive: "",
+    },
+    left: {
+      negPositive: "",
+    },
+  },
 };
 
 const validationSchema = Yup.object().shape({});
 
+const vastForms = [
+  {
+    title: "Vertebral Artery Screening Test (VAST)",
+    sectionKey: "vast",
+    rows: ["right", "left"],
+    rowOptions: {
+      right: {
+        rowTitle: "Right",
+        valueKey: "negPositive",
+        options: [
+          {
+            title: "Positive",
+            value: "positive",
+          },
+          {
+            title: "Negative",
+            value: "negative",
+          },
+        ],
+      },
+      left: {
+        rowTitle: "Left",
+        valueKey: "negPositive",
+        options: [
+          {
+            title: "Positive",
+            value: "positive",
+          },
+          {
+            title: "Negative",
+            value: "negative",
+          },
+        ],
+      },
+    },
+  },
+  {
+    title: "Cervical Dizziness Screening Test",
+    sectionKey: "cervical",
+    rows: ["right", "left"],
+    rowOptions: {
+      right: {
+        rowTitle: "Right",
+        valueKey: "negPositive",
+        options: [
+          {
+            title: "Positive",
+            value: "positive",
+          },
+          {
+            title: "Negative",
+            value: "negative",
+          },
+        ],
+      },
+      left: {
+        rowTitle: "Left",
+        valueKey: "negPositive",
+        options: [
+          {
+            title: "Positive",
+            value: "positive",
+          },
+          {
+            title: "Negative",
+            value: "negative",
+          },
+        ],
+      },
+    },
+  },
+];
+
+const aibForms = [
+  {
+    title: "AIB – Computerized Dynamic Visual Acuity Test ©",
+    sectionKey: "actuity",
+    rows: ["horizontal", "vertical"],
+    rowOptions: {
+      horizontal: {
+        rowTitle: "Horizontal",
+        valueKey: "negPositive",
+        options: [
+          {
+            title: "Positive",
+            value: "positive",
+          },
+          {
+            title: "Negative",
+            value: "negative",
+          },
+        ],
+      },
+      vertical: {
+        rowTitle: "Vertical",
+        valueKey: "negPositive",
+        options: [
+          {
+            title: "Positive",
+            value: "positive",
+          },
+          {
+            title: "Negative",
+            value: "negative",
+          },
+        ],
+      },
+    },
+  },
+  {
+    title: "Head Impulse Test",
+    sectionKey: "impulse",
+    rows: ["right", "left"],
+    rowOptions: {
+      right: {
+        rowTitle: "Right",
+        valueKey: "negPositive",
+        options: [
+          {
+            title: "Positive",
+            value: "positive",
+          },
+          {
+            title: "Negative",
+            value: "negative",
+          },
+        ],
+      },
+      left: {
+        rowTitle: "Left",
+        valueKey: "negPositive",
+        options: [
+          {
+            title: "Positive",
+            value: "positive",
+          },
+          {
+            title: "Negative",
+            value: "negative",
+          },
+        ],
+      },
+    },
+  },
+];
+
 const InnerForm = (props) => {
-  //   const { setFieldValue, isSubmitting, values } = props;
   return (
     <>
-      <ScreeningTest {...props} />
-      {/*<AucousticForm {...props} />
-      <OtoacousticForm {...props} />
-      <AudiogramForm {...props} /> */}
+      <ScreeningTest {...props} forms={vastForms} />
+      <ScreeningTest {...props} forms={aibForms} />
     </>
   );
 };

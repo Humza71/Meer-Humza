@@ -34,6 +34,7 @@ import Electrophys from "forms/Electrophys";
 import History from "forms/History";
 import AudioMetery from "forms/AudioMetery";
 import Screenings from "forms/Screenings";
+import CommentsForm from "forms/CommentsForm";
 import { setHeaderTitle, setStepNewReport } from "redux/reducers/uiReducer";
 import { clearNewReport } from "redux/reducers/reportReducer";
 
@@ -157,7 +158,7 @@ const tabsInfo = [
     label: "ADD.TESTS & COMMENTS",
     icon: AddCommentIcon,
     backgroundColor: "#EC524B",
-    component: PatientForm,
+    component: CommentsForm,
   },
   {
     label: "IMPRESSION & PLAN",
