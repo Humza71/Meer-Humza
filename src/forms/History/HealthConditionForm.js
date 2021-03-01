@@ -83,9 +83,9 @@ const AuralSymptom = (props) => {
       <CircularProgress />
     </Box>
   ) : (
-    <ReportCard cardsize={{ width: "987px" }} title="Our Health Conditions">
+    <ReportCard cardsize={{ width: "850px" }} title="Our Health Conditions">
       <Grid container spacing={6}>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <Toggle
             togglesize={{
               width: "210px",

@@ -6,8 +6,9 @@ import { Box, CircularProgress } from "@material-ui/core";
 import HPI from "./HPI";
 import AuralSymptom from "./AuralSymptom";
 import HealthConditionForm from "./HealthConditionForm";
-
 import CreateReportFooter from "components/CreateReportFooter";
+import Tabs from "components/Tabs";
+import FlexBox from "components/FlexBox";
 
 const initialValues = {
   hpi: {
@@ -33,39 +34,44 @@ const initialValues = {
 const validationSchema = Yup.object().shape({});
 
 const InnerForm = (props) => {
-  const {
-    // errors,
-    // handleBlur,
-    // handleChange,
-    setFieldValue,
-    isSubmitting,
-    // touched,
-    values,
-    // status,
-  } = props;
+  const { setFieldValue, isSubmitting, values } = props;
+
+  const labels = [
+    "History of Present Illness (HPI)",
+    "AURAL SYMPTOMS",
+    "Other health conditions",
+  ];
 
   return isSubmitting ? (
     <Box display="flex" justifyContent="center" my={6}>
       <CircularProgress />
     </Box>
   ) : (
-    <>
-      <HPI
-        values={values}
-        setFieldValue={setFieldValue}
-        isSubmitting={isSubmitting}
-      />
-      <AuralSymptom
-        values={values}
-        setFieldValue={setFieldValue}
-        isSubmitting={isSubmitting}
-      />
-      <HealthConditionForm
-        values={values}
-        setFieldValue={setFieldValue}
-        isSubmitting={isSubmitting}
-      />
-    </>
+    <FlexBox>
+      <Tabs labels={labels}>
+        <section id="History of Present Illness (HPI)">
+          <HPI
+            values={values}
+            setFieldValue={setFieldValue}
+            isSubmitting={isSubmitting}
+          />
+        </section>
+        <section id="AURAL SYMPTOMS">
+          <AuralSymptom
+            values={values}
+            setFieldValue={setFieldValue}
+            isSubmitting={isSubmitting}
+          />
+        </section>
+        <section id="Other health conditions">
+          <HealthConditionForm
+            values={values}
+            setFieldValue={setFieldValue}
+            isSubmitting={isSubmitting}
+          />
+        </section>
+      </Tabs>
+    </FlexBox>
   );
 };
 

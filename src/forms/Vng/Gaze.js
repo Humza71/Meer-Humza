@@ -7,7 +7,7 @@ import Cell from "components/reports/Cell";
 import BodyCell from "components/reports/BodyCell";
 import Toggle from "components/reports/Toggle";
 import TextArea from "components/reports/TextArea";
-import Input from "components/reports/Input";
+import NumberPopUp from "components/reports/NumberPopUp";
 
 import { Box } from "@material-ui/core";
 
@@ -106,10 +106,10 @@ const Gaze = ({ formTitle, formKey, setFieldValue, values }) => {
               </BodyCell>
               <BodyCell>
                 <Box mb={2.5} mt={2.5}>
-                  <Input
+                  <NumberPopUp
                     value={data[key]["deg"]}
-                    onChange={(e) =>
-                      setFieldValue(`${formKey}.${key}.deg`, e.target.value)
+                    onChange={(value) =>
+                      setFieldValue(`${formKey}.${key}.deg`, value)
                     }
                   />
                 </Box>

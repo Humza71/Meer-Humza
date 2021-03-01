@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import styled from "styled-components/macro";
@@ -13,6 +13,7 @@ import CreateReportFooter from "components/CreateReportFooter";
 import { setStepNewReport } from "redux/reducers/uiReducer";
 import ReportCard from "components/reports/ReportCard";
 import FileChip from "components/reports/FileChip";
+import Modal from "components/Modal";
 // import { updateNewReport } from "redux/reducers/reportReducer";
 
 const Alert = styled(MuiAlert)(spacing);
@@ -59,6 +60,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const InnerForm = (props) => {
+  const [preview, setPreview] = useState(false);
+  const [currentFile, setCurrentFile] = useState({});
   const {
     errors,
     handleBlur,
@@ -120,6 +123,10 @@ const InnerForm = (props) => {
                 <FileChip
                   key={i}
                   name={name}
+                  handlePreview={() => {
+                    setPreview(true);
+                    setCurrentFile(files[i]);
+                  }}
                   handleDelete={() => handleDelete(i)}
                 />
               ))}
@@ -127,6 +134,15 @@ const InnerForm = (props) => {
           )}
         </DropZoneWrapper>
       )}
+      <Modal
+        title={currentFile["name"]}
+        open={preview}
+        handleClose={() => setPreview(false)}
+        width="55%"
+        height="400px"
+      >
+        <div />
+      </Modal>
     </ReportCard>
   );
 };

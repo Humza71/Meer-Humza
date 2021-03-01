@@ -5,8 +5,8 @@ import ReportTable from "components/reports/Table";
 import Cell from "components/reports/Cell";
 import Toggle from "components/reports/Toggle";
 import BodyCell from "components/reports/BodyCell";
-import Input from "components/reports/Input";
 import TextArea from "components/reports/TextArea";
+import NumberPopUp from "components/reports/NumberPopUp";
 
 import { Box } from "@material-ui/core";
 
@@ -99,7 +99,7 @@ const HighFrequency = ({ formTitle, formKey, setFieldValue, values }) => {
               </BodyCell>
               <BodyCell>
                 <Box mb={2.5} mt={2.5}>
-                  <Input
+                  <NumberPopUp
                     value={data[key]["deg"]}
                     onChange={(e) =>
                       setFieldValue(`${formKey}.${key}.deg`, e.target.value)

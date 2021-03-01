@@ -32,7 +32,7 @@ const AuralSymptom = (props) => {
       <CircularProgress />
     </Box>
   ) : (
-    <ReportCard cardsize={{ width: "987px" }} title="Aural Symptoms">
+    <ReportCard cardsize={{ width: "850px" }} title="Aural Symptoms">
       <Box mb={2.5}></Box>
       <Divider />
       <ReportTable
