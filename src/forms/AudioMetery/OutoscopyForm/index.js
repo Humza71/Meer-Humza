@@ -35,10 +35,7 @@ const OutoscopyForm = (props) => {
   ];
 
   return (
-    <ReportCard
-      cardsize={{ width: "635px" }}
-      title="Auditory Brainstem Response (ABR)"
-    >
+    <ReportCard cardsize={{ width: "635px" }} title="Otoscopy">
       <ReportTable
         Columns={() => (
           <>

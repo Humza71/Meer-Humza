@@ -5,6 +5,8 @@ import { setTheme } from "../redux/reducers/themeReducer";
 import { THEMES } from "../constants";
 import { green, grey, indigo } from "@material-ui/core/colors";
 import { Link } from "react-router-dom";
+import FileChip from "components/reports/FileChip";
+import ClearIcon from "@material-ui/icons/Clear";
 
 import {
   Box,
@@ -14,11 +16,30 @@ import {
   Grid,
   ListItem,
   Typography,
+  ClickAwayListener,
 } from "@material-ui/core";
 
 import { Alert } from "@material-ui/lab";
 
 import { FolderOpen as FolderIcon } from "@material-ui/icons";
+
+const FileWrapper = styled.div`
+  position: fixed;
+  right: 23px;
+  bottom: 149px;
+  background: white;
+  width: 424px;
+  height: 230px;
+  box-shadow: 2px 6px 10px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  h3 {
+    padding-left: 5px;
+    color: #09539e;
+  }
+  .spacingContainer {
+    padding: 5px;
+  }
+`;
 
 const DemoButton = styled.div`
   cursor: pointer;
@@ -180,18 +201,42 @@ const UploadedFilesButton = () => {
     isOpen: false,
   });
 
-  const toggleDrawer = (open) => () => {
-    setState({ ...state, isOpen: open });
-  };
+  // const toggleDrawer = () => () => {
+  //   setState({ ...state, isOpen: open });
+  // };
 
+  const { isOpen } = state;
   return (
     <React.Fragment>
-      <Fab color="primary" aria-label="Edit" onClick={toggleDrawer(true)}>
-        <FolderIcon />
+      {state.isOpen && (
+        <ClickAwayListener
+          onClickAway={() => setState({ ...state, isOpen: false })}
+        >
+          <FileWrapper>
+            <div className="spacingContainer">
+              <h3>UPLOADED FILES</h3>
+              {[{ name: "File1" }, { name: "File2" }].map(({ name }, i) => (
+                <FileChip
+                  key={i}
+                  name={name}
+                  handlePreview={() => {}}
+                  handleDelete={() => {}}
+                />
+              ))}
+            </div>
+          </FileWrapper>
+        </ClickAwayListener>
+      )}
+      <Fab
+        color="primary"
+        aria-label="Edit"
+        onClick={() => setState({ ...state, isOpen: !isOpen })}
+      >
+        {isOpen ? <ClearIcon /> : <FolderIcon />}
       </Fab>
-      <Drawer anchor="right" open={state.isOpen} onClose={toggleDrawer(false)}>
+      {/* <Drawer anchor="right" open={state.isOpen} onClose={toggleDrawer(false)}>
         <Demos />
-      </Drawer>
+      </Drawer> */}
     </React.Fragment>
   );
 };

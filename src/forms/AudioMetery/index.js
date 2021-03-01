@@ -8,6 +8,8 @@ import OutoscopyForm from "./OutoscopyForm";
 import AucousticForm from "./AucousticForm";
 import OtoacousticForm from "./OtoacousticForm";
 import AudiogramForm from "./AudiogramForm";
+import Tabs from "components/Tabs";
+import FlexBox from "components/FlexBox";
 
 const initialValues = {
   otoscopy: {
@@ -42,12 +44,31 @@ const validationSchema = Yup.object().shape({});
 
 const InnerForm = (props) => {
   //   const { setFieldValue, isSubmitting, values } = props;
+  const labels = [
+    "Otoscopy",
+    "Acoustic Immittance",
+    "Otoacoustic Emissions",
+    "Audiogram",
+  ];
+
   return (
     <>
-      <OutoscopyForm {...props} />
-      <AucousticForm {...props} />
-      <OtoacousticForm {...props} />
-      <AudiogramForm {...props} />
+      <FlexBox>
+        <Tabs labels={labels}>
+          <section id="Otoscopy">
+            <OutoscopyForm {...props} />
+          </section>
+          <section id="Acoustic Immittance">
+            <AucousticForm {...props} />
+          </section>
+          <section id="Otoacoustic Emissions">
+            <OtoacousticForm {...props} />
+          </section>
+          <section id="Audiogram">
+            <AudiogramForm {...props} />
+          </section>
+        </Tabs>
+      </FlexBox>
     </>
   );
 };

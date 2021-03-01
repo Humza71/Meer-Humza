@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   headerTitle: "",
   stepNewReport: 0,
+  report: {},
 };
 
 export const slice = createSlice({
