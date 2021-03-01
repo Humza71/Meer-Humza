@@ -15,6 +15,7 @@ const Input = ({
   onChange,
   placeholder = "",
   fieldsize = { width: "72px", height: "38px" },
+  ...rest
 }) => {
   return (
     <StyledInput
@@ -22,6 +23,7 @@ const Input = ({
       onChange={onChange}
       placeholder={placeholder}
       size={fieldsize}
+      {...rest}
     />
   );
 };

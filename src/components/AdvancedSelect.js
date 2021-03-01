@@ -49,7 +49,7 @@ const AdvancedSelect = ({
   name,
   label,
   helperText,
-  options,
+  options = [],
   variant,
   allowAdd,
   onAdd,

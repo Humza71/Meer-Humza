@@ -9,6 +9,7 @@ import BodyCell from "components/reports/BodyCell";
 import Toggle from "components/reports/Toggle";
 import TextArea from "components/reports/TextArea";
 import Input from "components/reports/Input";
+import NumberPopUp from "components/reports/NumberPopUp";
 
 import { Box } from "@material-ui/core";
 
@@ -49,20 +50,20 @@ const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
               <BodyCell>{title}</BodyCell>
               <BodyCell>
                 <Box mb={2.5} mt={2.5}>
-                  <Input
+                  <NumberPopUp
                     value={data[key]["warm"]}
-                    onChange={(e) =>
-                      setFieldValue(`${formKey}.${key}.warm`, e.target.value)
+                    onChange={(value) =>
+                      setFieldValue(`${formKey}.${key}.warm`, value)
                     }
                   />
                 </Box>
               </BodyCell>
               <BodyCell>
                 <Box mb={2.5} mt={2.5}>
-                  <Input
+                  <NumberPopUp
                     value={data[key]["cool"]}
-                    onChange={(e) =>
-                      setFieldValue(`${formKey}.${key}.cool`, e.target.value)
+                    onChange={(value) =>
+                      setFieldValue(`${formKey}.${key}.cool`, value)
                     }
                   />
                 </Box>
