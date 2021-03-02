@@ -209,7 +209,7 @@ const HPI = (props) => {
             <FlexBox direction="row">
               <FlexBox direction="column">
                 {durationOption.map((item, index) => (
-                  <Box mb={2}>
+                  <Box mb={2} key={index}>
                     <Input
                       disabled={
                         durationOption.length - 1 === index
@@ -232,7 +232,7 @@ const HPI = (props) => {
               </FlexBox>
               <Box ml={2}>
                 {durationOption.map((item, index) => (
-                  <Box mb={2}>
+                  <Box mb={2} key={index}>
                     <InputLabel htmlFor="filled-age-native-simple"></InputLabel>
                     <Select
                       disabled={
@@ -269,7 +269,7 @@ const HPI = (props) => {
             {Array(5)
               .fill()
               .map((item, index) => (
-                <Box mb={2}>
+                <Box mb={2} key={index}>
                   <InputLabel htmlFor="filled-age-native-simple"></InputLabel>
                   <Select
                     disabled={
@@ -292,7 +292,9 @@ const HPI = (props) => {
                     }}
                   >
                     {provokesOption.map(({ title, value }) => (
-                      <option value={value}>{title}</option>
+                      <option value={value} key={value}>
+                        {title}
+                      </option>
                     ))}
                   </Select>
                 </Box>

@@ -10,7 +10,6 @@ import CreateReportFooter from "components/CreateReportFooter";
 import Tabs from "components/Tabs";
 import FlexBox from "components/FlexBox";
 import { TabWrapper } from "components/Tabs";
-import styled from "styled-components/macro";
 
 const initialValues = {
   hpi: {
