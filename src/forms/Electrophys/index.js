@@ -9,7 +9,7 @@ import ElectrophyForm from "./ElectrophyForm";
 import CervicalForm from "./CervicalForm";
 import OcularForm from "./OcularForm";
 import Tabs from "components/Tabs";
-import FlexBox from "components/FlexBox";
+import { TabWrapper } from "components/Tabs";
 
 const initialValues = {
   abr: {
@@ -80,18 +80,20 @@ const InnerForm = (props) => {
   return (
     <>
       <Tabs labels={labels}>
-        <section id="Auditory Brainstem Response (ABR)">
-          <ABRform {...props} />
-        </section>
-        <section id="Electrocochleography(ECoG)">
-          <ElectrophyForm {...props} />
-        </section>
-        <section id="Cervical Vestibular Evoked Myogenic Potential (cVEMP)">
-          <CervicalForm {...props} />
-        </section>
-        <section id="Ocular Vestibular Evoked Myogenic Potential (oVEMP)">
-          <OcularForm {...props} />
-        </section>
+        <TabWrapper>
+          <section id="Auditory Brainstem Response (ABR)">
+            <ABRform {...props} />
+          </section>
+          <section id="Electrocochleography(ECoG)">
+            <ElectrophyForm {...props} />
+          </section>
+          <section id="Cervical Vestibular Evoked Myogenic Potential (cVEMP)">
+            <CervicalForm {...props} />
+          </section>
+          <section id="Ocular Vestibular Evoked Myogenic Potential (oVEMP)">
+            <OcularForm {...props} />
+          </section>
+        </TabWrapper>
       </Tabs>
     </>
   );

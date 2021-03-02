@@ -11,7 +11,6 @@ import ClearIcon from "@material-ui/icons/Clear";
 import {
   Box,
   Button,
-  Drawer,
   Fab as MuiFab,
   Grid,
   ListItem,

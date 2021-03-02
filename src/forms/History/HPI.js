@@ -106,6 +106,19 @@ const HPI = (props) => {
     },
   ];
 
+  // const disableInput = (index) => {
+  //   const disable =
+  //     (values["hpi"]["symptoms"] === "roomSpin" && index === 0) ||
+  //     (values["hpi"]["symptoms"] === "patientSpin" && index === 1) ||
+  //     (values["hpi"]["symptoms"] === "imbalance" && index === 2) ||
+  //     (values["hpi"]["symptoms"] === "lightHeaded" && index === 3)
+  //       ? false
+  //       : true;
+
+  //   debugger;
+  //   return disable;
+  // };
+
   return isSubmitting ? (
     <Box display="flex" justifyContent="center" my={6}>
       <CircularProgress />
@@ -188,6 +201,8 @@ const HPI = (props) => {
             <Input
               placeholder="Other"
               fieldsize={{ width: "148px", height: "38px" }}
+              // value={values["hpi"]["symptoms"]}
+              onChange={(e) => setFieldValue(`hpi.symptoms`, e.target.value)}
             />
           </BodyCell>
           <BodyCell>
@@ -196,6 +211,12 @@ const HPI = (props) => {
                 {durationOption.map((item, index) => (
                   <Box mb={2}>
                     <Input
+                      disabled={
+                        durationOption.length - 1 === index
+                          ? false
+                          : values["hpi"]["symptoms"] !==
+                            symtomsOptions[index]?.value
+                      }
                       fieldsize={{ width: "147px", height: "41px" }}
                       placeholder="Enter a value"
                       value={values["hpi"][`symptomDuration-${index}`]}
@@ -214,6 +235,12 @@ const HPI = (props) => {
                   <Box mb={2}>
                     <InputLabel htmlFor="filled-age-native-simple"></InputLabel>
                     <Select
+                      disabled={
+                        durationOption.length - 1 === index
+                          ? false
+                          : values["hpi"]["symptoms"] !==
+                            symtomsOptions[index]?.value
+                      }
                       variant="outlined"
                       native
                       label="Select"
@@ -245,6 +272,12 @@ const HPI = (props) => {
                 <Box mb={2}>
                   <InputLabel htmlFor="filled-age-native-simple"></InputLabel>
                   <Select
+                    disabled={
+                      durationOption.length - 1 === index
+                        ? false
+                        : values["hpi"]["symptoms"] !==
+                          symtomsOptions[index]?.value
+                    }
                     variant="outlined"
                     native
                     width="110px"
