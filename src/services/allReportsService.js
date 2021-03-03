@@ -1,13 +1,9 @@
-import { postUtil } from "../utils/apiService";
-export function createReport(payload) {
-  const patientPayload = {
-    patientDemographics: {
-      ...payload,
-    },
-  };
+import { getUtil } from "../utils/apiService";
+export const getReports = async (credentials) => {
   return new Promise((resolve, reject) => {
-    postUtil("/api/add/patient-demographics", patientPayload)
+    http: getUtil("/api/add/patient-demographics", credentials)
       .then((response) => {
+        console.log(response.data);
         if (response.status === 200) {
           resolve(response.data);
         }
@@ -17,4 +13,4 @@ export function createReport(payload) {
         reject(error);
       });
   });
-}
+};

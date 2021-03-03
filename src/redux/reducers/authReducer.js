@@ -29,10 +29,8 @@ const { setUser, setLoading } = slice.actions;
 
 export const signIn = (credentials, onSuccess) => async (dispatch) => {
   dispatch(setLoading(true));
-  debugger;
   try {
     const response = await authSignIn(credentials, onSuccess);
-    debugger;
     dispatch(
       setUser({
         id: response.id,
@@ -48,11 +46,9 @@ export const signIn = (credentials, onSuccess) => async (dispatch) => {
 
 export const signUp = (credentials) => async (dispatch) => {
   dispatch(setLoading(true));
-  console.log("1111111111", credentials);
 
   try {
     const response = await authSignUp(credentials);
-    console.log("hereeeeeeeeeeeeeeeee is my response", response);
     dispatch(
       setUser({
         id: response.id,
@@ -61,8 +57,6 @@ export const signUp = (credentials) => async (dispatch) => {
       })
     );
   } catch (error) {
-    debugger;
-    console.log(error, "Erororroor");
     dispatch(setMessage({ message: "Email or password already exist!" }));
   }
 

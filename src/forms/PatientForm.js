@@ -37,6 +37,7 @@ import {
   LoadingStates,
   addProvider,
   addTechnician,
+  // saveReport,
 } from "redux/reducers/reportReducer";
 import { setStepNewReport } from "redux/reducers/uiReducer";
 
@@ -76,10 +77,10 @@ const ToggleButtonGroup = styled(MuiToggleButtonGroup)`
 `;
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required("Required"),
-  lastName: Yup.string().required("Required"),
-  birthday: Yup.date().required("Required"),
-  encounterDate: Yup.date().required("Required"),
+  first_name: Yup.string().required("Required"),
+  last_name: Yup.string().required("Required"),
+  date_of_birth: Yup.date().required("Required"),
+  date_encounted: Yup.date().required("Required"),
   gender: Yup.string().required("Required"),
   provider: Yup.number(),
   technician: Yup.number(),
@@ -135,12 +136,12 @@ const InnerForm = (props) => {
                 <Grid container spacing={6}>
                   <Grid item md={6}>
                     <TextField
-                      name="firstName"
+                      name="first_name"
                       label="First Name"
-                      value={values.firstName}
-                      error={Boolean(touched.firstName && errors.firstName)}
+                      value={values.first_name}
+                      error={Boolean(touched.first_name && errors.first_name)}
                       fullWidth
-                      helperText={touched.firstName && errors.firstName}
+                      helperText={touched.first_name && errors.first_name}
                       onBlur={handleBlur}
                       onChange={handleChange}
                       variant="outlined"
@@ -156,12 +157,12 @@ const InnerForm = (props) => {
                   </Grid>
                   <Grid item md={6}>
                     <TextField
-                      name="lastName"
+                      name="last_name"
                       label="Last Name"
-                      value={values.lastName}
-                      error={Boolean(touched.lastName && errors.lastName)}
+                      value={values.last_name}
+                      error={Boolean(touched.last_name && errors.last_name)}
                       fullWidth
-                      helperText={touched.lastName && errors.lastName}
+                      helperText={touched.last_name && errors.last_name}
                       onBlur={handleBlur}
                       onChange={handleChange}
                       variant="outlined"
@@ -180,16 +181,16 @@ const InnerForm = (props) => {
               <Box mb={2.5}>
                 <KeyboardDatePicker
                   disableToolbar
-                  name="birthday"
+                  name="date_of_birth"
                   variant="inline"
                   format="MM/dd/yyyy"
                   margin="normal"
                   label="Date of Birth"
-                  value={values.birthday}
-                  onChange={(value) => setFieldValue("birthday", value)}
-                  error={Boolean(touched.birthday && errors.birthday)}
+                  value={values.date_of_birth}
+                  onChange={(value) => setFieldValue("date_of_birth", value)}
+                  error={Boolean(touched.date_of_birth && errors.date_of_birth)}
                   fullWidth
-                  helperText={touched.birthday && errors.birthday}
+                  helperText={touched.date_of_birth && errors.date_of_birth}
                   onBlur={handleBlur}
                   KeyboardButtonProps={{
                     "aria-label": "change date",
@@ -223,16 +224,18 @@ const InnerForm = (props) => {
               <Box mb={2.5}>
                 <KeyboardDatePicker
                   disableToolbar
-                  name="encounterDate"
+                  name="date_encounted"
                   variant="inline"
                   format="MM/dd/yyyy"
                   margin="normal"
                   label="Encounter Date"
-                  value={values.encounterDate}
-                  onChange={(value) => setFieldValue("encounterDate", value)}
-                  error={Boolean(touched.encounterDate && errors.encounterDate)}
+                  value={values.date_encounted}
+                  onChange={(value) => setFieldValue("date_encounted", value)}
+                  error={Boolean(
+                    touched.date_encounted && errors.date_encounted
+                  )}
                   fullWidth
-                  helperText={touched.encounterDate && errors.encounterDate}
+                  helperText={touched.date_encounted && errors.date_encounted}
                   onBlur={handleBlur}
                   KeyboardButtonProps={{
                     "aria-label": "change date",
@@ -246,12 +249,14 @@ const InnerForm = (props) => {
                 <Grid container spacing={6}>
                   <Grid item md={6}>
                     <AdvancedSelect
-                      error={Boolean(touched.provider && errors.provider)}
-                      helperText={touched.provider && errors.provider}
-                      value={values.provider}
+                      error={Boolean(
+                        touched.physician_id && errors.physician_id
+                      )}
+                      helperText={touched.physician_id && errors.physician_id}
+                      value={values.physician_id}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      name="provider"
+                      name="physician_id"
                       label="Provider"
                       options={providers.map((item, index) => ({
                         label: item,
@@ -264,12 +269,14 @@ const InnerForm = (props) => {
                   </Grid>
                   <Grid item md={6}>
                     <AdvancedSelect
-                      error={Boolean(touched.technician && errors.technician)}
-                      helperText={touched.technician && errors.technician}
-                      value={values.technician}
+                      error={Boolean(
+                        touched.technician_id && errors.technician_id
+                      )}
+                      helperText={touched.technician_id && errors.technician_id}
+                      value={values.technician_id}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      name="technician"
+                      name="technician_id"
                       label="Technician"
                       options={technicians.map((item, index) => ({
                         label: item,
@@ -300,11 +307,11 @@ const PatientForm = () => {
     lastName: newReport.lastName,
     dob: newReport.dob ? new Date(newReport.dob) : new Date(),
     gender: newReport.gender,
-    encounterDate: newReport.encounterDate
-      ? new Date(newReport.encounterDate)
+    date_encounted: newReport.date_encounted
+      ? new Date(newReport.date_encounted)
       : new Date(),
-    provider: newReport.provider,
-    technician: newReport.technician,
+    physician_id: newReport.physician_id,
+    technician_id: newReport.technician_id,
   };
 
   useEffect(() => {
@@ -314,21 +321,27 @@ const PatientForm = () => {
   }, []);
 
   const handleSave = (values) => {
-    debugger;
     dispatch(
       updateReport({
         ...values,
-        dob: values.birthday.toISOString(),
-        encounterDate: values.encounterDate.toISOString(),
+        dob: values.dob.toISOString(),
+        encounterDate: values.date_encounted.toISOString(),
       })
     );
+
+    // dispatch(
+    //   saveReport({
+    //     ...values,
+    //     date_of_birth: values.date_of_birth.toISOString(),
+    //     date_encounted: values.date_encounted.toISOString(),
+    //   })
+    // );
   };
 
   const handleSubmit = async (
     values,
     { resetForm, setErrors, setStatus, setSubmitting }
   ) => {
-    debugger;
     try {
       handleSave(values);
       dispatch(setStepNewReport(stepNewReport + 1));
@@ -358,7 +371,6 @@ const PatientForm = () => {
             <CreateReportFooter
               {...formProps}
               handleSave={() => {
-                debugger;
                 handleSave(formProps.values);
               }}
             />

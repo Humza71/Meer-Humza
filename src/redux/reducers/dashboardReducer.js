@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { providers, technicians } from "lib/dumyData";
-import { postUtil } from "../../utils/apiService";
+// import { providers, technicians } from "lib/dumyData";
+// import { postUtil } from "../../utils/apiService";
+import {getReports} from "../../services/allReportsService"
 
 export const LoadingStates = {
   ALL_REPORTS_LOADING: "All Report Loading",
@@ -12,13 +13,13 @@ const initialState = {
 };
 
 export const slice = createSlice({
-  name: "reportReducer",
+  name: "dashboardReducer",
   initialState,
   reducers: {
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
-    getDashboardReports: (state, action) => {
+    updateReports: (state, action) => {
       state.allReports = {
         ...state.allReports,
         ...action.payload,
@@ -41,34 +42,32 @@ export const getAllReports = () => (dispatch) => {
     const response = await getReports(values);
     console.log("hereeeeeeeeeeeeeeeee is my response", response);
     dispatch(
-      getDashboardReports({
-        
+      updateReports({
+        payload: response.data,
       })
     );
   } catch (error) {
-    debugger;
     console.log(error, "Erororroor");
    
   }
   dispatch(setLoading(null));
 };
 
-export const getReports = async (credentials) => {
-  debugger;
-  return new Promise((resolve, reject) => {
-    http: postUtil("/api/add/patient-demographics", credentials)
-      .then((response) => {
-        console.log(response.data);
-        if (response.status === 200) {
-          debugger;
-          resolve(response.data);
-        }
-        reject(response.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-};
+// export const getReportsApi = async (credentials) => {
+
+//   return new Promise((resolve, reject) => {
+//     http: postUtil("/api/add/patient-demographics", credentials)
+//       .then((response) => {
+//         console.log(response.data);
+//         if (response.status === 200) {
+//           resolve(response.data);
+//         }
+//         reject(response.data);
+//       })
+//       .catch((error) => {
+//         reject(error);
+//       });
+//   });
+// };
 
 export default slice.reducer;

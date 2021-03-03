@@ -22,7 +22,6 @@ export const signUp = async (credentials) => {
   return new Promise((resolve, reject) => {
     postUtil("/api/register", credentials)
       .then((response) => {
-        console.log(response.data);
         if (response.status === 200) {
           resolve(response.data);
         }
@@ -38,9 +37,8 @@ export function userInfo() {
   return new Promise((resolve, reject) => {
     //axios.get("/sanctum/csrf-cookie").then(() => {
     axios
-      .get("http://localhost:8000/api/user/profile-information")
+      .get("/api/user/profile-information")
       .then((response) => {
-        console.log(response.data);
         if (response.status === 200) {
           resolve(response.data);
         }

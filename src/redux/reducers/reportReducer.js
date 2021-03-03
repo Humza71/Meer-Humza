@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { providers, technicians } from "lib/dumyData";
-import { postUtil } from "../../utils/apiService";
+// import { postUtil } from "../../utils/apiService";
 import { createReport } from "../../services/reportService";
+
+// import { setMessage } from "./messageReducer";
+// import { createNewReport } from "services/reportService";
 
 export const LoadingStates = {
   REPORT_CREATION_LOADING: "Create Report Loading",
@@ -14,9 +17,9 @@ const initialState = {
     lastName: "",
     dob: null,
     gender: "",
-    encounterDate: null,
-    provider: "",
-    technician: "",
+    date_encounted: null,
+    physician_id: "",
+    technician_id: "",
     files: [],
   },
   providers: [],
@@ -72,19 +75,15 @@ export const getAllProviders = () => (dispatch) => {
 };
 
 export const updateReport = (values) => async (dispatch) => {
-  debugger;
   dispatch(setLoading(true));
   try {
     const response = await createReport(values);
-    console.log("hereeeeeeeeeeeeeeeee is my response", response);
     dispatch(
       updateNewReport({
         ...values,
       })
     );
   } catch (error) {
-    debugger;
-    console.log(error, "Erororroor");
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
 
