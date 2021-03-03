@@ -2,6 +2,7 @@ import React from "react";
 
 import ReportCard from "components/reports/ReportCard";
 import Toggle from "components/reports/Toggle";
+import Input from "components/reports/Input";
 
 import { Grid, Box, CircularProgress } from "@material-ui/core";
 
@@ -84,8 +85,8 @@ const AuralSymptom = (props) => {
     </Box>
   ) : (
     <ReportCard cardsize={{ width: "850px" }} title="Our Health Conditions">
-      <Grid container spacing={6}>
-        <Grid item xs={4}>
+      <Grid container spacing={2}>
+        <Grid item xs={3}>
           <Toggle
             togglesize={{
               width: "210px",
@@ -114,6 +115,79 @@ const AuralSymptom = (props) => {
             }
             options={conditionCol2}
           />
+        </Grid>
+        <Grid item xs={3}>
+          <Box pt={35}>
+            <Box mb={2.5}>
+              <Input
+                placeholder=""
+                value={values["healthCondition"]["Migraine"]}
+                fieldsize={{ width: "180px", height: "37px" }}
+                onChange={(e) =>
+                  setFieldValue(`healthCondition.Migraine`, e.target.value)
+                }
+              />
+            </Box>
+            <Box mb={2.5}>
+              <Input
+                placeholder=""
+                value={values["healthCondition"]["OrthopedicLimitations"]}
+                fieldsize={{ width: "180px", height: "37px" }}
+                onChange={(e) => {
+                  setFieldValue(
+                    `healthCondition.OrthopedicLimitations`,
+                    e.target.value
+                  );
+                }}
+              />
+            </Box>
+            <Box mb={2.5}>
+              <Input
+                placeholder=""
+                value={values["healthCondition"]["ConcussionHeadInjury"]}
+                fieldsize={{ width: "180px", height: "37px" }}
+                onChange={(e) =>
+                  setFieldValue(
+                    `healthCondition.ConcussionHeadInjury`,
+                    e.target.value
+                  )
+                }
+              />
+            </Box>
+            <Box mb={2.5}>
+              <Input
+                placeholder=""
+                value={values["healthCondition"]["CVATIA"]}
+                fieldsize={{ width: "180px", height: "37px" }}
+                onChange={(e) =>
+                  setFieldValue(`healthCondition.CVATIA`, e.target.value)
+                }
+              />
+            </Box>
+            <Box mb={2.5}>
+              <Input
+                placeholder=""
+                value={values["healthCondition"]["RecentHeadImaging"]}
+                fieldsize={{ width: "180px", height: "37px" }}
+                onChange={(e) =>
+                  setFieldValue(
+                    `healthCondition.RecentHeadImaging`,
+                    e.target.value
+                  )
+                }
+              />
+            </Box>
+            <Box mb={2.5}>
+              <Input
+                placeholder=""
+                value={values["healthCondition"]["Other"]}
+                fieldsize={{ width: "180px", height: "37px" }}
+                onChange={(e) =>
+                  setFieldValue(`healthCondition.Other`, e.target.value)
+                }
+              />
+            </Box>
+          </Box>
         </Grid>
       </Grid>
     </ReportCard>

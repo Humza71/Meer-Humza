@@ -12,7 +12,7 @@ import HallPick from "./HallPick";
 import Calorics from "./Calorics";
 import CreateReportFooter from "components/CreateReportFooter";
 import Tabs from "components/Tabs";
-import FlexBox from "components/FlexBox";
+import { TabWrapper } from "components/Tabs";
 
 const initialValues = {
   oculuMotors: {
@@ -184,7 +184,6 @@ const initialValues = {
       vertigo: "",
       uwDp: "",
       fixationIndex: "",
-      bW: "",
     },
     left: {
       warm: "",
@@ -192,8 +191,8 @@ const initialValues = {
       vertigo: "",
       uwDp: "",
       fixationIndex: "",
-      bW: "",
     },
+    bilateralWeakness: false,
   },
 };
 
@@ -229,70 +228,72 @@ const InnerForm = (props) => {
   ) : (
     <>
       <Tabs labels={labels}>
-        <section id="Oculo-motors">
-          <OculuMotors
-            formTitle={"Oculo-motors"}
-            formKey={"oculuMotors"}
-            setFieldValue={setFieldValue}
-            values={values}
-          />
-        </section>
-        <section id="Gaze - Vision Denied">
-          <Gaze
-            formTitle={"Gaze - Vision Denied"}
-            formKey={"gazeDenied"}
-            setFieldValue={setFieldValue}
-            values={values}
-          />
-        </section>
-        <section id="Gaze - Vision Denied">
-          <Gaze
-            formTitle={"Gaze - Vision Denied"}
-            formKey={"gazeEnabled"}
-            setFieldValue={setFieldValue}
-            values={values}
-          />
-        </section>
-        <section id="High Frequency Headshake">
-          <HighFrequency
-            formTitle={"High Frequency Headshake"}
-            formKey={"highFrequecy"}
-            setFieldValue={setFieldValue}
-            values={values}
-          />
-        </section>
-        <section id="Positionals – Vision Denied">
-          <Positional
-            formTitle={"Positionals – Vision Denied"}
-            formKey={"positionDenied"}
-            setFieldValue={setFieldValue}
-            values={values}
-          />
-        </section>
-        <section id="Positionals – Vision Enabled">
-          <Positional
-            formTitle={"Positionals – Vision Enabled"}
-            formKey={"positionEnabled"}
-            setFieldValue={setFieldValue}
-            values={values}
-          />
-        </section>
-        <section id="Hallpike">
-          <HallPick
-            formTitle={"Hallpike"}
-            formKey={"hallPick"}
-            setFieldValue={setFieldValue}
-            values={values}
-          />
-        </section>
-        <section id="Calorics">
-          <Calorics
-            formTitle={"Calorics"}
-            formKey={"calorics"}
-            setFieldValue={setFieldValue}
-            values={values}
-          />
-        </section>
+        <TabWrapper>
+          <section id="Oculo-motors">
+            <OculuMotors
+              formTitle={"Oculo-motors"}
+              formKey={"oculuMotors"}
+              setFieldValue={setFieldValue}
+              values={values}
+            />
+          </section>
+          <section id="Gaze - Vision Denied">
+            <Gaze
+              formTitle={"Gaze - Vision Denied"}
+              formKey={"gazeDenied"}
+              setFieldValue={setFieldValue}
+              values={values}
+            />
+          </section>
+          <section id="Gaze - Vision Denied">
+            <Gaze
+              formTitle={"Gaze - Vision Denied"}
+              formKey={"gazeEnabled"}
+              setFieldValue={setFieldValue}
+              values={values}
+            />
+          </section>
+          <section id="High Frequency Headshake">
+            <HighFrequency
+              formTitle={"High Frequency Headshake"}
+              formKey={"highFrequecy"}
+              setFieldValue={setFieldValue}
+              values={values}
+            />
+          </section>
+          <section id="Positionals – Vision Denied">
+            <Positional
+              formTitle={"Positionals – Vision Denied"}
+              formKey={"positionDenied"}
+              setFieldValue={setFieldValue}
+              values={values}
+            />
+          </section>
+          <section id="Positionals – Vision Enabled">
+            <Positional
+              formTitle={"Positionals – Vision Enabled"}
+              formKey={"positionEnabled"}
+              setFieldValue={setFieldValue}
+              values={values}
+            />
+          </section>
+          <section id="Hallpike">
+            <HallPick
+              formTitle={"Hallpike"}
+              formKey={"hallPick"}
+              setFieldValue={setFieldValue}
+              values={values}
+            />
+          </section>
+          <section id="Calorics">
+            <Calorics
+              formTitle={"Calorics"}
+              formKey={"calorics"}
+              setFieldValue={setFieldValue}
+              values={values}
+            />
+          </section>
+        </TabWrapper>
       </Tabs>
     </>
   );

@@ -98,6 +98,7 @@ const InnerForm = (props) => {
               <span>{title}</span>
               {questions.map(({ key: fieldKey, options }) => (
                 <Toggle
+                  key={fieldKey}
                   togglesize={{
                     width: "120px",
                     height: "38px",

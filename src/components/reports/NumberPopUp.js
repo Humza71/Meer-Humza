@@ -97,8 +97,9 @@ const NumberPopover = ({ value, onChange }) => {
             </Button>
           </div>
           <div className="numberWrapper">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((number) => (
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((number, index) => (
               <div
+                key={index}
                 className="number"
                 onClick={() => onChange(`${value}${number}`)}
               >

@@ -10,6 +10,7 @@ import PostugraphyForm from "./PostugraphyForm";
 import CreateReportFooter from "components/CreateReportFooter";
 import Tabs from "components/Tabs";
 import FlexBox from "components/FlexBox";
+import { TabWrapper } from "components/Tabs";
 
 const Alert = styled(MuiAlert)(spacing);
 
@@ -73,12 +74,14 @@ const InnerForm = (props) => {
       )}
       <FlexBox>
         <Tabs labels={labels}>
-          <section id="Gans Sensory Organization Performance Test ©">
-            <GansForm values={values} setFieldValue={setFieldValue} />
-          </section>
-          <section id="Computerized Dynamic Posturography">
-            <PostugraphyForm values={values} setFieldValue={setFieldValue} />
-          </section>
+          <TabWrapper>
+            <section id="Gans Sensory Organization Performance Test ©">
+              <GansForm values={values} setFieldValue={setFieldValue} />
+            </section>
+            <section id="Computerized Dynamic Posturography">
+              <PostugraphyForm values={values} setFieldValue={setFieldValue} />
+            </section>
+          </TabWrapper>
         </Tabs>
       </FlexBox>
     </>
