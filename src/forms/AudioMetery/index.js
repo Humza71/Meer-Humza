@@ -10,6 +10,7 @@ import OtoacousticForm from "./OtoacousticForm";
 import AudiogramForm from "./AudiogramForm";
 import Tabs from "components/Tabs";
 import FlexBox from "components/FlexBox";
+import { TabWrapper } from "components/Tabs";
 
 const initialValues = {
   otoscopy: {
@@ -55,18 +56,20 @@ const InnerForm = (props) => {
     <>
       <FlexBox>
         <Tabs labels={labels}>
-          <section id="Otoscopy">
-            <OutoscopyForm {...props} />
-          </section>
-          <section id="Acoustic Immittance">
-            <AucousticForm {...props} />
-          </section>
-          <section id="Otoacoustic Emissions">
-            <OtoacousticForm {...props} />
-          </section>
-          <section id="Audiogram">
-            <AudiogramForm {...props} />
-          </section>
+          <TabWrapper>
+            <section id="Otoscopy">
+              <OutoscopyForm {...props} />
+            </section>
+            <section id="Acoustic Immittance">
+              <AucousticForm {...props} />
+            </section>
+            <section id="Otoacoustic Emissions">
+              <OtoacousticForm {...props} />
+            </section>
+            <section id="Audiogram">
+              <AudiogramForm {...props} />
+            </section>
+          </TabWrapper>
         </Tabs>
       </FlexBox>
     </>

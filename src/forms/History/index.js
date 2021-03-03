@@ -9,6 +9,7 @@ import HealthConditionForm from "./HealthConditionForm";
 import CreateReportFooter from "components/CreateReportFooter";
 import Tabs from "components/Tabs";
 import FlexBox from "components/FlexBox";
+import { TabWrapper } from "components/Tabs";
 
 const initialValues = {
   hpi: {
@@ -28,6 +29,12 @@ const initialValues = {
   },
   healthCondition: {
     conditions: [],
+    Migraine: "",
+    OrthopedicLimitations: "",
+    ConcussionHeadInjury: "",
+    CVATIA: "",
+    RecentHeadImaging: "",
+    Other: "",
   },
 };
 
@@ -47,31 +54,35 @@ const InnerForm = (props) => {
       <CircularProgress />
     </Box>
   ) : (
-    <FlexBox>
-      <Tabs labels={labels}>
-        <section id="History of Present Illness (HPI)">
-          <HPI
-            values={values}
-            setFieldValue={setFieldValue}
-            isSubmitting={isSubmitting}
-          />
-        </section>
-        <section id="AURAL SYMPTOMS">
-          <AuralSymptom
-            values={values}
-            setFieldValue={setFieldValue}
-            isSubmitting={isSubmitting}
-          />
-        </section>
-        <section id="Other health conditions">
-          <HealthConditionForm
-            values={values}
-            setFieldValue={setFieldValue}
-            isSubmitting={isSubmitting}
-          />
-        </section>
-      </Tabs>
-    </FlexBox>
+    <div id="historyTab">
+      <FlexBox>
+        <Tabs rootEl="#historyTab" labels={labels}>
+          <TabWrapper>
+            <section id="History of Present Illness (HPI)">
+              <HPI
+                values={values}
+                setFieldValue={setFieldValue}
+                isSubmitting={isSubmitting}
+              />
+            </section>
+            <section id="AURAL SYMPTOMS">
+              <AuralSymptom
+                values={values}
+                setFieldValue={setFieldValue}
+                isSubmitting={isSubmitting}
+              />
+            </section>
+            <section id="Other health conditions">
+              <HealthConditionForm
+                values={values}
+                setFieldValue={setFieldValue}
+                isSubmitting={isSubmitting}
+              />
+            </section>
+          </TabWrapper>
+        </Tabs>
+      </FlexBox>
+    </div>
   );
 };
 

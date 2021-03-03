@@ -6,8 +6,9 @@ import styled from "styled-components/macro";
 const TabsWrapper = styled.div`
   ul {
     display: flex;
+    position: fixed;
     flex-direction: column;
-    width: 248px;
+    width: 210px;
     margin: 55px 0px 0px 0px;
     a {
       text-decoration: none;
@@ -37,17 +38,26 @@ const TabsWrapper = styled.div`
   }
 `;
 
-export default function VerticalTabs({ labels, children }) {
+export default function VerticalTabs({ labels = [], children }) {
   return (
     <FlexBox>
       <TabsWrapper>
         <Scrollspy items={labels} currentClassName="is-current">
           {labels.map((name) => (
-            <a href={`#${name}`}>{name}</a>
+            <a key={name} href={`#${name}`}>
+              {name}
+            </a>
           ))}
         </Scrollspy>
       </TabsWrapper>
-      <div>{children}</div>
+      <div data-spy="scroll" data-target="#nav-spy">
+        {children}
+      </div>
     </FlexBox>
   );
 }
+
+export const TabWrapper = styled.div`
+  position: relative;
+  left: 220px;
+`;
