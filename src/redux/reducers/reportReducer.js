@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { providers, technicians } from "lib/dumyData";
+// import { postUtil } from "../../utils/apiService";
+import { createReport } from "../../services/reportService";
 
-import { setMessage } from "./messageReducer";
-import { createNewReport } from "services/reportService";
+// import { setMessage } from "./messageReducer";
+// import { createNewReport } from "services/reportService";
 
 export const LoadingStates = {
   REPORT_CREATION_LOADING: "Create Report Loading",
@@ -11,10 +13,9 @@ export const LoadingStates = {
 const initialState = {
   loading: null,
   newReport: {
-    id: null,
-    first_name: "",
-    last_name: "",
-    date_of_birth: null,
+    firstName: "",
+    lastName: "",
+    dob: null,
     gender: "",
     date_encounted: null,
     physician_id: "",
@@ -23,6 +24,7 @@ const initialState = {
   },
   providers: [],
   technicians: [],
+  completed: true,
 };
 
 export const slice = createSlice({
@@ -72,6 +74,22 @@ export const getAllProviders = () => (dispatch) => {
   dispatch(setLoading(null));
 };
 
+export const updateReport = (values) => async (dispatch) => {
+  dispatch(setLoading(true));
+  try {
+    const response = await createReport(values);
+    dispatch(
+      updateNewReport({
+        ...values,
+      })
+    );
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+
+  dispatch(setLoading(false));
+};
+
 export const getAllTechnicians = () => (dispatch) => {
   dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
   // Need to be replaced by the service that does API call
@@ -90,25 +108,6 @@ export const addTechnician = (newTechnician, save) => (dispatch) => {
   dispatch(addItemToTechnicians(newTechnician));
   if (save) {
     // Do API Call to save newTechnician
-  }
-};
-
-export const saveReport = (report) => async (dispatch) => {
-  try {
-    if (report.id) {
-      // Call Update Report API
-    } else {
-      // Create Report API
-      const report_id = await createNewReport(report);
-      dispatch(
-        updateNewReport({
-          ...report,
-          id: report_id,
-        })
-      );
-    }
-  } catch (error) {
-    dispatch(setMessage({ message: error.message }));
   }
 };
 

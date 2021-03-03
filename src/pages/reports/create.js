@@ -173,7 +173,7 @@ const tabsInfo = [
 const CreateReport = () => {
   const dispatch = useDispatch();
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
-
+  const completed = useSelector((state) => state.reportReducer.completed);
   const handleTabChange = (value) => {
     dispatch(setStepNewReport(value));
   };
@@ -184,6 +184,8 @@ const CreateReport = () => {
     dispatch(clearNewReport());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {}, []);
 
   return (
     <Box pt={10} display="flex" flexDirection="column" height="100%">
@@ -198,6 +200,7 @@ const CreateReport = () => {
         >
           {tabsInfo.map((tabItem, index) => (
             <Tab
+              disabled={!completed && index > 0}
               label={tabItem.label}
               icon={<tabItem.icon />}
               tabcolor={tabItem.backgroundColor}

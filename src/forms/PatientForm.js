@@ -31,7 +31,7 @@ import {
 import CreateReportFooter from "components/CreateReportFooter";
 import AdvancedSelect from "components/AdvancedSelect";
 import {
-  updateNewReport,
+  updateReport,
   getAllProviders,
   getAllTechnicians,
   LoadingStates,
@@ -82,8 +82,8 @@ const validationSchema = Yup.object().shape({
   date_of_birth: Yup.date().required("Required"),
   date_encounted: Yup.date().required("Required"),
   gender: Yup.string().required("Required"),
-  physician_id: Yup.number().required("Required"),
-  technician_id: Yup.number().required("Required"),
+  provider: Yup.number(),
+  technician: Yup.number(),
 });
 
 const InnerForm = (props) => {
@@ -303,11 +303,9 @@ const PatientForm = () => {
   const dispatch = useDispatch();
 
   const initialValues = {
-    first_name: newReport.first_name,
-    last_name: newReport.last_name,
-    date_of_birth: newReport.date_of_birth
-      ? new Date(newReport.date_of_birth)
-      : new Date(),
+    firstName: newReport.firstName,
+    lastName: newReport.lastName,
+    dob: newReport.dob ? new Date(newReport.dob) : new Date(),
     gender: newReport.gender,
     date_encounted: newReport.date_encounted
       ? new Date(newReport.date_encounted)
@@ -324,10 +322,10 @@ const PatientForm = () => {
 
   const handleSave = (values) => {
     dispatch(
-      updateNewReport({
+      updateReport({
         ...values,
-        date_of_birth: values.date_of_birth.toISOString(),
-        date_encounted: values.date_encounted.toISOString(),
+        dob: values.dob.toISOString(),
+        encounterDate: values.date_encounted.toISOString(),
       })
     );
 
@@ -363,7 +361,6 @@ const PatientForm = () => {
         validationSchema={validationSchema}
         validate={(values) => {
           console.log(values);
-
           return {};
         }}
         onSubmit={handleSubmit}
@@ -373,7 +370,9 @@ const PatientForm = () => {
             <InnerForm {...formProps} />
             <CreateReportFooter
               {...formProps}
-              onSave={() => handleSave(formProps.values)}
+              handleSave={() => {
+                handleSave(formProps.values);
+              }}
             />
           </Form>
         )}

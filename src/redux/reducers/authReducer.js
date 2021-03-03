@@ -27,11 +27,10 @@ export const slice = createSlice({
 
 const { setUser, setLoading } = slice.actions;
 
-export const signIn = (credentials) => async (dispatch) => {
+export const signIn = (credentials, onSuccess) => async (dispatch) => {
   dispatch(setLoading(true));
-
   try {
-    const response = await authSignIn(credentials);
+    const response = await authSignIn(credentials, onSuccess);
     dispatch(
       setUser({
         id: response.id,
@@ -58,7 +57,7 @@ export const signUp = (credentials) => async (dispatch) => {
       })
     );
   } catch (error) {
-    dispatch(setMessage({ message: error.message }));
+    dispatch(setMessage({ message: "Email or password already exist!" }));
   }
 
   dispatch(setLoading(false));

@@ -6,6 +6,7 @@ import themeReducer from "./themeReducer";
 import messageReducer from "./messageReducer";
 import uiReducer from "./uiReducer";
 import reportReducer from "./reportReducer";
+import dashboardReducer from "./dashboardReducer";
 
 const reducers = (history) =>
   combineReducers({
@@ -15,6 +16,7 @@ const reducers = (history) =>
     messageReducer,
     uiReducer,
     reportReducer,
+    dashboardReducer,
   });
 
 export default reducers;

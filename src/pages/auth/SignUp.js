@@ -125,13 +125,14 @@ function SignUp() {
                 company: "test",
                 email: values.email,
                 password: values.password,
-                password_confirmation: values.password_confirmation,
+                confirm_password: values.password_confirmation,
               })
             );
             await dispatch(
-              signIn({ email: values.email, password: values.password })
+              signIn({ email: values.email, password: values.password }, () => {
+                history.push("/");
+              })
             );
-            history.push("/");
           } catch (error) {
             const message = error.message || "Something went wrong";
 
