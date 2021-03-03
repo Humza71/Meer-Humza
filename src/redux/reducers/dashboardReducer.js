@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 // import { providers, technicians } from "lib/dumyData";
 // import { postUtil } from "../../utils/apiService";
-import {getReports} from "../../services/allReportsService"
+import { getReports } from "../../services/allReportsService";
 
 export const LoadingStates = {
   ALL_REPORTS_LOADING: "All Report Loading",
@@ -29,17 +29,14 @@ export const slice = createSlice({
 });
 
 // export const { clearNewReport, updateNewReport } = slice.actions;
-const {
-  getAllReports,
-  setLoading,
-} = slice.actions;
+const { setLoading, updateReports } = slice.actions;
 
-export const getAllReports = () => (dispatch) => {
+export const getAllReports = () => async (dispatch) => {
   dispatch(setLoading(LoadingStates.ALL_REPORTS_LOADING));
   // Need to be replaced by the service that does API call
-    
-     try {
-    const response = await getReports(values);
+
+  try {
+    const response = await getReports();
     console.log("hereeeeeeeeeeeeeeeee is my response", response);
     dispatch(
       updateReports({
@@ -48,7 +45,6 @@ export const getAllReports = () => (dispatch) => {
     );
   } catch (error) {
     console.log(error, "Erororroor");
-   
   }
   dispatch(setLoading(null));
 };

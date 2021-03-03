@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components/macro";
 import Helmet from "react-helmet";
 import { useHistory } from "react-router";
+import { getAllReports } from "redux/reducers/dashboardReducer";
 
 import {
   Grid as MuiGrid,
@@ -70,6 +71,7 @@ const Reports = () => {
   useEffect(() => {
     dispatch(setHeaderTitle("Dashboard"));
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    dispatch(getAllReports());
   }, []);
 
   return (
