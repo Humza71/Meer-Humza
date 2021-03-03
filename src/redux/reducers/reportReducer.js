@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { providers, technicians } from "lib/dumyData";
+import { postUtil } from "../../utils/apiService";
+import { createReport } from "../../services/reportService";
 
 export const LoadingStates = {
   REPORT_CREATION_LOADING: "Create Report Loading",
@@ -10,7 +12,7 @@ const initialState = {
   newReport: {
     firstName: "",
     lastName: "",
-    birthday: null,
+    dob: null,
     gender: "",
     encounterDate: null,
     provider: "",
@@ -19,6 +21,7 @@ const initialState = {
   },
   providers: [],
   technicians: [],
+  completed: true,
 };
 
 export const slice = createSlice({
@@ -68,6 +71,26 @@ export const getAllProviders = () => (dispatch) => {
   dispatch(setLoading(null));
 };
 
+export const updateReport = (values) => async (dispatch) => {
+  debugger;
+  dispatch(setLoading(true));
+  try {
+    const response = await createReport(values);
+    console.log("hereeeeeeeeeeeeeeeee is my response", response);
+    dispatch(
+      updateNewReport({
+        ...values,
+      })
+    );
+  } catch (error) {
+    debugger;
+    console.log(error, "Erororroor");
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+
+  dispatch(setLoading(false));
+};
+
 export const getAllTechnicians = () => (dispatch) => {
   dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
   // Need to be replaced by the service that does API call
@@ -88,4 +111,5 @@ export const addTechnician = (newTechnician, save) => (dispatch) => {
     // Do API Call to save newTechnician
   }
 };
+
 export default slice.reducer;

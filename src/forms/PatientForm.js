@@ -31,7 +31,7 @@ import {
 import CreateReportFooter from "components/CreateReportFooter";
 import AdvancedSelect from "components/AdvancedSelect";
 import {
-  updateNewReport,
+  updateReport,
   getAllProviders,
   getAllTechnicians,
   LoadingStates,
@@ -81,8 +81,8 @@ const validationSchema = Yup.object().shape({
   birthday: Yup.date().required("Required"),
   encounterDate: Yup.date().required("Required"),
   gender: Yup.string().required("Required"),
-  provider: Yup.number().required("Required"),
-  technician: Yup.number().required("Required"),
+  provider: Yup.number(),
+  technician: Yup.number(),
 });
 
 const InnerForm = (props) => {
@@ -298,7 +298,7 @@ const PatientForm = () => {
   const initialValues = {
     firstName: newReport.firstName,
     lastName: newReport.lastName,
-    birthday: newReport.birthday ? new Date(newReport.birthday) : new Date(),
+    dob: newReport.dob ? new Date(newReport.dob) : new Date(),
     gender: newReport.gender,
     encounterDate: newReport.encounterDate
       ? new Date(newReport.encounterDate)
@@ -314,10 +314,11 @@ const PatientForm = () => {
   }, []);
 
   const handleSave = (values) => {
+    debugger;
     dispatch(
-      updateNewReport({
+      updateReport({
         ...values,
-        birthday: values.birthday.toISOString(),
+        dob: values.birthday.toISOString(),
         encounterDate: values.encounterDate.toISOString(),
       })
     );
@@ -327,6 +328,7 @@ const PatientForm = () => {
     values,
     { resetForm, setErrors, setStatus, setSubmitting }
   ) => {
+    debugger;
     try {
       handleSave(values);
       dispatch(setStepNewReport(stepNewReport + 1));
@@ -346,7 +348,6 @@ const PatientForm = () => {
         validationSchema={validationSchema}
         validate={(values) => {
           console.log(values);
-
           return {};
         }}
         onSubmit={handleSubmit}
@@ -356,7 +357,10 @@ const PatientForm = () => {
             <InnerForm {...formProps} />
             <CreateReportFooter
               {...formProps}
-              onSave={() => handleSave(formProps.values)}
+              handleSave={() => {
+                debugger;
+                handleSave(formProps.values);
+              }}
             />
           </Form>
         )}

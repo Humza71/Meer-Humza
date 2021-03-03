@@ -1,59 +1,56 @@
-import axios from "../utils/axios";
+import { postUtil } from "../utils/apiService";
+import axios from "axios";
 
-export function signIn(credentials) {
+export function signIn(credentials, onSuccess) {
   return new Promise((resolve, reject) => {
-    axios.get("/sanctum/csrf-cookie").then(() => {
-      axios
-        .post("/api/login", credentials)
-        .then((response) => {
-          if (response.status === 200) {
-            resolve(response.data);
-          }
-          reject(response.data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
+    postUtil("/api/login", credentials)
+      .then((response) => {
+        if (response.status === 200) {
+          localStorage.setItem("token", response.data.data.access_token);
+          onSuccess();
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
   });
 }
 
-export function signUp(credentials) {
+export const signUp = async (credentials) => {
   return new Promise((resolve, reject) => {
-    axios.get("/sanctum/csrf-cookie").then(() => {
-      axios
-        .post("/api/register", credentials)
-        .then((response) => {
-          console.log(response.data);
-          if (response.status === 200) {
-            resolve(response.data);
-          }
-          reject(response.data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
+    postUtil("/api/register", credentials)
+      .then((response) => {
+        console.log(response.data);
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
   });
-}
+};
 
 export function userInfo() {
   return new Promise((resolve, reject) => {
-    axios.get("/sanctum/csrf-cookie").then(() => {
-      axios
-        .get("/api/user/profile-information")
-        .then((response) => {
-          console.log(response.data);
-          if (response.status === 200) {
-            resolve(response.data);
-          }
-          reject(response.data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
+    //axios.get("/sanctum/csrf-cookie").then(() => {
+    axios
+      .get("http://localhost:8000/api/user/profile-information")
+      .then((response) => {
+        console.log(response.data);
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
   });
+  // });
 }
 
 export function resetPassword(credentials) {
