@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { providers, technicians } from "lib/dumyData";
 
+import { setMessage } from "./messageReducer";
+import { createNewReport } from "services/reportService";
+
 export const LoadingStates = {
   REPORT_CREATION_LOADING: "Create Report Loading",
 };
@@ -8,13 +11,14 @@ export const LoadingStates = {
 const initialState = {
   loading: null,
   newReport: {
-    firstName: "",
-    lastName: "",
-    birthday: null,
+    id: null,
+    first_name: "",
+    last_name: "",
+    date_of_birth: null,
     gender: "",
-    encounterDate: null,
-    provider: "",
-    technician: "",
+    date_encounted: null,
+    physician_id: "",
+    technician_id: "",
     files: [],
   },
   providers: [],
@@ -88,4 +92,24 @@ export const addTechnician = (newTechnician, save) => (dispatch) => {
     // Do API Call to save newTechnician
   }
 };
+
+export const saveReport = (report) => async (dispatch) => {
+  try {
+    if (report.id) {
+      // Call Update Report API
+    } else {
+      // Create Report API
+      const report_id = await createNewReport(report);
+      dispatch(
+        updateNewReport({
+          ...report,
+          id: report_id,
+        })
+      );
+    }
+  } catch (error) {
+    dispatch(setMessage({ message: error.message }));
+  }
+};
+
 export default slice.reducer;
