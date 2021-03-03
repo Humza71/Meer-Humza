@@ -39,9 +39,11 @@ const IconContainer = styled.div`
 const LeftContainer = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
   display: flex;
   p {
     color: #09539e;
+    cursor: pointer;
   }
 `;
 
@@ -49,7 +51,7 @@ const DeleteIcon = styled.img`
   padding-left: 15px;
 `;
 
-const FileChip = ({ name, handleDelete }) => {
+const FileChip = ({ name, handleDelete, handlePreview }) => {
   const today = new Date();
 
   return (
@@ -62,7 +64,7 @@ const FileChip = ({ name, handleDelete }) => {
         </FileNameWrapper>
       </FileInfo>
       <LeftContainer>
-        <p>Preview</p>
+        <p onClick={handlePreview}>Preview</p>
         <DeleteIcon src="/static/img/delete.svg" onClick={handleDelete} />
       </LeftContainer>
     </Chip>

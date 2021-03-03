@@ -8,6 +8,8 @@ import ABRform from "./ABRform";
 import ElectrophyForm from "./ElectrophyForm";
 import CervicalForm from "./CervicalForm";
 import OcularForm from "./OcularForm";
+import Tabs from "components/Tabs";
+import FlexBox from "components/FlexBox";
 
 const initialValues = {
   abr: {
@@ -68,12 +70,29 @@ const validationSchema = Yup.object().shape({});
 
 const InnerForm = (props) => {
   //   const { setFieldValue, isSubmitting, values } = props;
+  const labels = [
+    "Auditory Brainstem Response (ABR)",
+    "Electrocochleography(ECoG)",
+    "Cervical Vestibular Evoked Myogenic Potential (cVEMP)",
+    "Ocular Vestibular Evoked Myogenic Potential (oVEMP)",
+  ];
+
   return (
     <>
-      <ABRform {...props} />
-      <ElectrophyForm {...props} />
-      <CervicalForm {...props} />
-      <OcularForm {...props} />
+      <Tabs labels={labels}>
+        <section id="Auditory Brainstem Response (ABR)">
+          <ABRform {...props} />
+        </section>
+        <section id="Electrocochleography(ECoG)">
+          <ElectrophyForm {...props} />
+        </section>
+        <section id="Cervical Vestibular Evoked Myogenic Potential (cVEMP)">
+          <CervicalForm {...props} />
+        </section>
+        <section id="Ocular Vestibular Evoked Myogenic Potential (oVEMP)">
+          <OcularForm {...props} />
+        </section>
+      </Tabs>
     </>
   );
 };

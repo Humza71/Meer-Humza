@@ -35,6 +35,8 @@ import History from "forms/History";
 import AudioMetery from "forms/AudioMetery";
 import Screenings from "forms/Screenings";
 import CommentsForm from "forms/CommentsForm";
+import ImpressionForm from "forms/ImpressionForm";
+
 import { setHeaderTitle, setStepNewReport } from "redux/reducers/uiReducer";
 import { clearNewReport } from "redux/reducers/reportReducer";
 
@@ -164,7 +166,7 @@ const tabsInfo = [
     label: "IMPRESSION & PLAN",
     icon: SentimentVerySatisfiedIcon,
     backgroundColor: "#EF3175",
-    component: PatientForm,
+    component: ImpressionForm,
   },
 ];
 

@@ -8,6 +8,8 @@ import { spacing } from "@material-ui/system";
 import GansForm from "./GansForm";
 import PostugraphyForm from "./PostugraphyForm";
 import CreateReportFooter from "components/CreateReportFooter";
+import Tabs from "components/Tabs";
+import FlexBox from "components/FlexBox";
 
 const Alert = styled(MuiAlert)(spacing);
 
@@ -57,6 +59,11 @@ const InnerForm = (props) => {
     status,
   } = props;
 
+  const labels = [
+    "Gans Sensory Organization Performance Test ©",
+    "Computerized Dynamic Posturography",
+  ];
+
   return (
     <>
       {status && status.sent && (
@@ -64,8 +71,16 @@ const InnerForm = (props) => {
           Your data has been submitted successfully!
         </Alert>
       )}
-      <GansForm values={values} setFieldValue={setFieldValue} />
-      <PostugraphyForm values={values} setFieldValue={setFieldValue} />
+      <FlexBox>
+        <Tabs labels={labels}>
+          <section id="Gans Sensory Organization Performance Test ©">
+            <GansForm values={values} setFieldValue={setFieldValue} />
+          </section>
+          <section id="Computerized Dynamic Posturography">
+            <PostugraphyForm values={values} setFieldValue={setFieldValue} />
+          </section>
+        </Tabs>
+      </FlexBox>
     </>
   );
 };

@@ -5,6 +5,8 @@ import ReportTable from "components/reports/Table";
 import Cell from "components/reports/Cell";
 import TextArea from "components/reports/TextArea";
 import Toggle from "components/reports/Toggle";
+import Input from "components/reports/Input";
+import InputLabel from "@material-ui/core/InputLabel";
 
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -18,9 +20,18 @@ import {
   Box,
   CircularProgress,
   TableRow,
+  Select as MuiSelect,
 } from "@material-ui/core";
+import styled from "styled-components/macro";
 import BodyCell from "components/reports/BodyCell";
-import Input from "components/reports/Input";
+import FlexBox from "components/FlexBox";
+
+const Select = styled(MuiSelect)`
+  select {
+    padding: 13px !important;
+    width: ${({ width = "76px" }) => width};
+  }
+`;
 
 const HPI = (props) => {
   const { setFieldValue, isSubmitting, values } = props;
@@ -93,10 +104,6 @@ const HPI = (props) => {
       title: "Walking",
       value: "walking",
     },
-    {
-      title: "Nothing",
-      value: "nothing",
-    },
   ];
 
   return isSubmitting ? (
@@ -105,7 +112,7 @@ const HPI = (props) => {
     </Box>
   ) : (
     <ReportCard
-      cardsize={{ width: "987px" }}
+      cardsize={{ width: "850px" }}
       title="History of Present Illness (HPI)"
     >
       <Box mb={2.5}>
@@ -157,8 +164,10 @@ const HPI = (props) => {
         Columns={() => (
           <>
             <Cell align="center">SYMTOMS</Cell>
-            <Cell align="center">DURATION OF SYMPTOMS</Cell>
-            <Cell align="center" width="50%">
+            <Cell align="center" width="30%">
+              DURATION OF SYMPTOMS
+            </Cell>
+            <Cell align="center" width="40%">
               PROVOKES WITH
             </Cell>
           </>
@@ -182,32 +191,79 @@ const HPI = (props) => {
             />
           </BodyCell>
           <BodyCell>
-            <Toggle
-              togglesize={{
-                width: "148px",
-                height: "38px",
-              }}
-              name={`hpi.symptomDuration`}
-              value={values["hpi"]["symptomDuration"]}
-              onChange={(value) => setFieldValue(`hpi.symptomDuration`, value)}
-              options={durationOption}
-            />
+            <FlexBox direction="row">
+              <FlexBox direction="column">
+                {durationOption.map((item, index) => (
+                  <Box mb={2}>
+                    <Input
+                      fieldsize={{ width: "147px", height: "41px" }}
+                      placeholder="Enter a value"
+                      value={values["hpi"][`symptomDuration-${index}`]}
+                      onChange={({ target }) =>
+                        setFieldValue(
+                          `hpi.symptomDuration-${index}`,
+                          target.value
+                        )
+                      }
+                    />
+                  </Box>
+                ))}
+              </FlexBox>
+              <Box ml={2}>
+                {durationOption.map((item, index) => (
+                  <Box mb={2}>
+                    <InputLabel htmlFor="filled-age-native-simple"></InputLabel>
+                    <Select
+                      variant="outlined"
+                      native
+                      label="Select"
+                      value={values["hpi"][`symptomDuration-unit-${index}`]}
+                      onChange={({ target }) => {
+                        setFieldValue(
+                          `hpi.symptomDuration-unit-${index}`,
+                          target.value
+                        );
+                      }}
+                      inputProps={{
+                        name: "age",
+                        id: "filled-age-native-simple",
+                      }}
+                    >
+                      <option value="Seconds">Seconds</option>
+                      <option value="Minutes">Minutes</option>
+                      <option value="Hours">Hours</option>
+                    </Select>
+                  </Box>
+                ))}
+              </Box>
+            </FlexBox>
           </BodyCell>
           <BodyCell>
-            <Toggle
-              togglesize={{
-                width: "210px",
-                height: "38px",
-              }}
-              name={`hpi.provokesWith`}
-              value={values["hpi"]["provokesWith"]}
-              onChange={(value) => setFieldValue(`hpi.provokesWith`, value)}
-              options={provokesOption}
-            />
-            <Input
-              placeholder="Other"
-              fieldsize={{ width: "210px", height: "38px" }}
-            />
+            {Array(5)
+              .fill()
+              .map((item, index) => (
+                <Box mb={2}>
+                  <InputLabel htmlFor="filled-age-native-simple"></InputLabel>
+                  <Select
+                    variant="outlined"
+                    native
+                    width="110px"
+                    label="Select"
+                    value={values["hpi"][`provokesWith-${index}`]}
+                    onChange={({ target }) => {
+                      setFieldValue(`hpi.provokesWith-${index}`, target.value);
+                    }}
+                    inputProps={{
+                      name: "age",
+                      id: "filled-age-native-simple",
+                    }}
+                  >
+                    {provokesOption.map(({ title, value }) => (
+                      <option value={value}>{title}</option>
+                    ))}
+                  </Select>
+                </Box>
+              ))}
           </BodyCell>
         </TableRow>
       </ReportTable>
