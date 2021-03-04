@@ -28,11 +28,11 @@ function App() {
   const [isUserLoaded, setIsUserLoaded] = useState(false);
 
   useEffect(() => {
-    async function loadUser() {
-      await dispatch(userInfo());
-      setIsUserLoaded(true);
-    }
-    loadUser();
+    // async function loadUser() {
+    // await dispatch(userInfo());
+    if (localStorage.getItem("token")) setIsUserLoaded(true);
+    //}
+    //loadUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

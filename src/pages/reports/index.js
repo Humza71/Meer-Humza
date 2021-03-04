@@ -1,15 +1,17 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
 import Helmet from "react-helmet";
 import { useHistory } from "react-router";
-import { getAllReports } from "redux/reducers/dashboardReducer";
+import { getAllReports, LoadingStates } from "redux/reducers/dashboardReducer";
 
 import {
   Grid as MuiGrid,
   Typography,
   Box,
   Button as MuiButton,
+  CircularProgress,
 } from "@material-ui/core";
 import { Ballot as BallotIcon } from "@material-ui/icons";
 import { spacing } from "@material-ui/system";
@@ -65,8 +67,12 @@ const ReportHeader = () => {
     </React.Fragment>
   );
 };
-
 const Reports = () => {
+  const allReportLoading = useSelector(
+    (state) => state.dashboardReducer.loading
+  );
+  const allReports = useSelector((state) => state.dashboardReducer.allReports);
+  console.log("my reports", allReports);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setHeaderTitle("Dashboard"));
@@ -74,11 +80,62 @@ const Reports = () => {
     dispatch(getAllReports());
   }, []);
 
+  // {
+  //   date,
+  //   lastName,
+  //   firstName,
+  //   birthday,
+  //   physician,
+  //   technician,
+  //   headDoctor,
+  //   impression,
+  //   updatedAt,
+  //   clinic,
+  //   user,
+  // };
+
+  const myData = allReports.map(
+    ({
+      encounterDate,
+      lastName,
+      firstName,
+      dob,
+      physician,
+      technician,
+      headDoctor,
+      impression,
+      updatedAt,
+      clinic,
+      _id,
+    }) => ({
+      date: encounterDate
+        ? new Date(encounterDate).toLocaleDateString("en-US")
+        : "",
+      lastName,
+      firstName,
+      birthday: dob ? new Date(dob).toLocaleDateString("en-US") : "",
+      physician,
+      technician,
+      headDoctor,
+      impression,
+      updatedAt,
+      clinic: "Audiology Center of Maine",
+      user: _id,
+      _id: _id,
+    })
+  );
+
   return (
     <Box p={12}>
       <Helmet title="Dashboard" />
       <ReportHeader />
-      <ReportTable data={rows} columns={headCells} />
+      {allReportLoading === LoadingStates.ALL_REPORTS_LOADING ? (
+        <Box display="flex" justifyContent="center" my={6}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <ReportTable myData={myData} data={myData} columns={headCells} />
+      )}
     </Box>
   );
 };

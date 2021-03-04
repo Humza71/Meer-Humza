@@ -20,10 +20,7 @@ export const slice = createSlice({
       state.loading = action.payload;
     },
     updateReports: (state, action) => {
-      state.allReports = {
-        ...state.allReports,
-        ...action.payload,
-      };
+      state.allReports = [...action.payload.response];
     },
   },
 });
@@ -37,10 +34,9 @@ export const getAllReports = () => async (dispatch) => {
 
   try {
     const response = await getReports();
-    console.log("hereeeeeeeeeeeeeeeee is my response", response);
     dispatch(
       updateReports({
-        payload: response.data,
+        response,
       })
     );
   } catch (error) {

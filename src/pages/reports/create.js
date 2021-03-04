@@ -170,7 +170,7 @@ const tabsInfo = [
   },
 ];
 
-const CreateReport = () => {
+const CreateReport = (props) => {
   const dispatch = useDispatch();
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
   const completed = useSelector((state) => state.reportReducer.completed);
@@ -214,7 +214,7 @@ const CreateReport = () => {
       </AppBar>
       {tabsInfo.map((tabItem, index) => (
         <TabPanel value={stepNewReport} index={index} key={index}>
-          <tabItem.component />
+          <tabItem.component {...props} />
         </TabPanel>
       ))}
       <UploadedFilesButton />

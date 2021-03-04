@@ -28,6 +28,7 @@ import { spacing } from "@material-ui/system";
 
 import SearchInput from "components/SearchInput";
 import AdvancedSelect from "components/AdvancedSelect";
+import { useHistory } from "react-router";
 
 const Paper = styled(MuiPaper)(spacing);
 const Toolbar = styled(MuiToolbar)(spacing);
@@ -167,7 +168,6 @@ let TableToolbar = (props) => {
             variant="outlined"
             renderValue={() => "Columns"}
             multiple
-            hidelabeltop={true}
           />
         </Grid>
 
@@ -267,6 +267,7 @@ const ReportTable = (props) => {
   const [filteredColumns, setFilteredColumns] = React.useState(
     columns.filter((item) => item.id !== "actions").map((item) => item.label)
   );
+  const history = useHistory();
   const getInitialClinics = () => {
     let initialClinics = [];
     for (let item of data) {
@@ -294,9 +295,14 @@ const ReportTable = (props) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
+  const movetoCreate = (id) => {
+    history.push(`/report/create/${id}`);
+  };
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+
+  console.log("222222", data, "emptyyyyyyyyyyyy", emptyRows);
+  console.log("3333333", props.myData);
 
   return (
     <Paper>
@@ -331,44 +337,38 @@ const ReportTable = (props) => {
             onRequestSort={handleRequestSort}
           />
           <TableBody>
-            {stableSort(
-              filterReports(
-                data,
-                searchString,
-                filteredClinics,
-                columns,
-                filteredColumns
-              ),
-              getComparator(order, orderBy)
-            )
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
-                const labelId = `report-table-${index}`;
+            {data.map((row, index) => {
+              const labelId = `report-table-${index}`;
 
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={labelId}>
-                    {columns.map(
-                      (headCell) =>
-                        filteredColumns.indexOf(headCell.label) !== -1 &&
-                        headCell.id !== "actions" && (
-                          <TableCell align="left" key={headCell.id}>
-                            {row[headCell.id]}
-                          </TableCell>
-                        )
-                    )}
-                    <TableCell align="left">
-                      <IconButton aria-label="actions">
-                        <MoreVertIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            {emptyRows > 0 && (
-              <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
-              </TableRow>
-            )}
+              return (
+                <TableRow
+                  onClick={() => movetoCreate(row._id)}
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={labelId}
+                >
+                  {columns.map(
+                    (headCell) =>
+                      filteredColumns.indexOf(headCell.label) !== -1 &&
+                      headCell.id !== "actions" && (
+                        <TableCell align="left" key={headCell.id}>
+                          {row[headCell.id]}
+                        </TableCell>
+                      )
+                  )}
+                  <TableCell align="left">
+                    <IconButton aria-label="actions">
+                      <MoreVertIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+
+            <TableRow style={{ height: 53 * emptyRows }}>
+              <TableCell colSpan={6} />
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>

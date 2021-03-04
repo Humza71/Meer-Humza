@@ -5,10 +5,9 @@ import { setDefault } from "../utils/apiService";
 
 // For routes that can only be accessed by authenticated users
 function AuthGuard({ children }) {
-  setDefault();
   const auth = useSelector((state) => state.authReducer);
-
-  if (auth.user) {
+  if (localStorage.getItem("token")) {
+    setDefault();
     return children;
   }
 
