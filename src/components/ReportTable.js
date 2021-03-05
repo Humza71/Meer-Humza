@@ -301,9 +301,6 @@ const ReportTable = (props) => {
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
-  console.log("222222", data, "emptyyyyyyyyyyyy", emptyRows);
-  console.log("3333333", props.myData);
-
   return (
     <Paper>
       <TableToolbar

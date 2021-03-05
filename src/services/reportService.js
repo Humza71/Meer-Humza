@@ -1,9 +1,10 @@
 import { postUtil, getUtil } from "../utils/apiService";
 export function createReport(payload, onSuccess) {
   let data = {};
+  const { id = "" } = payload || {};
   data = payload.id
     ? {
-        _id: payload.id,
+        reportId: payload.id,
         patientDemographics: {
           ...payload,
         },
@@ -18,7 +19,9 @@ export function createReport(payload, onSuccess) {
     postUtil("/api/add/patient-demographics", data)
       .then((response) => {
         if (response.status === 200) {
-          onSuccess();
+          if (id === "") {
+            onSuccess();
+          }
           resolve(response.data);
         }
         reject(response.data);
@@ -33,7 +36,11 @@ export function getTechnicians() {
     getUtil("/api/get/technician")
       .then((response) => {
         if (response.status === 200) {
-          resolve(response.data.data);
+          if (response.data.data.length > 0) {
+            resolve(response.data.data[0].technicians);
+          } else {
+            resolve([]);
+          }
         }
         reject(response.data);
       })
@@ -48,7 +55,11 @@ export function getProviders() {
     getUtil("/api/get-providers")
       .then((response) => {
         if (response.status === 200) {
-          resolve(response.data.data);
+          if (response.data.data.length > 0) {
+            resolve(response.data.data[0].providers);
+          } else {
+            resolve([]);
+          }
         }
         reject(response.data);
       })
@@ -101,6 +112,47 @@ export function saveTechnician(payload) {
   };
   return new Promise((resolve, reject) => {
     postUtil("/api/add/technician", technician)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function patientHistory(payload) {
+  // const provider = {
+  //   providers: {
+  //     name: payload,
+  //   },
+  // };
+  const data = {
+    reportId: payload.reportId,
+    history: {
+      ...payload,
+    },
+  };
+  return new Promise((resolve, reject) => {
+    postUtil("/api/add/history", data)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function getHistoryById(payload) {
+  return new Promise((resolve, reject) => {
+    getUtil(`/api/add/history/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);

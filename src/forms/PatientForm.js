@@ -8,6 +8,7 @@ import { useHistory } from "react-router";
 import queryString from "query-string";
 import { Alert as MuiAlert } from "@material-ui/lab";
 import { spacing } from "@material-ui/system";
+import Toggle from "../components/reports/Toggle";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   Box,
@@ -100,6 +101,20 @@ const InnerForm = (props) => {
     values,
     status,
   } = props;
+  const Options = [
+    {
+      title: "Male",
+      value: "male",
+    },
+    {
+      title: "Female",
+      value: "female",
+    },
+    {
+      title: "Non-Binary",
+      value: "non-binary",
+    },
+  ];
   const providers = useSelector((state) => state.reportReducer.providers) || [];
   const technicians =
     useSelector((state) => state.reportReducer.technicians) || [];
@@ -204,25 +219,16 @@ const InnerForm = (props) => {
                 <Typography variant="subtitle1" mb={1}>
                   Gender
                 </Typography>
-                <ToggleButtonGroup
-                  exclusive
-                  name="gender"
-                  label="Gender"
-                  value={values.gender}
-                  onBlur={handleBlur}
-                  onChange={(event, value) => setFieldValue("gender", value)}
-                  aria-label="gender"
-                >
-                  <ToggleButton value="male" aria-label="male">
-                    Male
-                  </ToggleButton>
-                  <ToggleButton value="female" aria-label="male">
-                    Female
-                  </ToggleButton>
-                  <ToggleButton value="none-binary" aria-label="none-binary">
-                    Non-binary
-                  </ToggleButton>
-                </ToggleButtonGroup>
+                <Toggle
+                  togglesize={{
+                    width: "148px",
+                    height: "38px",
+                  }}
+                  direction="row"
+                  value={values["gender"]}
+                  options={Options}
+                  onChange={(value) => setFieldValue("gender", value)}
+                />
               </Box>
               <Box mb={2.5}>
                 <KeyboardDatePicker
@@ -261,7 +267,7 @@ const InnerForm = (props) => {
                       label="Provider"
                       options={providers.map((item, index) => ({
                         label: item.name,
-                        value: index,
+                        value: item.name,
                       }))}
                       variant="outlined"
                       allowAdd={true}
@@ -280,8 +286,8 @@ const InnerForm = (props) => {
                       name="technician_id"
                       label="Technician"
                       options={technicians.map((item, index) => ({
-                        label: item,
-                        value: index,
+                        label: item.name,
+                        value: item.name,
                       }))}
                       variant="outlined"
                       allowAdd={true}
@@ -399,6 +405,7 @@ const PatientForm = (props) => {
             <InnerForm {...formProps} />
             <CreateReportFooter
               {...formProps}
+              id={id}
               handleSave={() => {
                 handleSave(formProps.values);
               }}

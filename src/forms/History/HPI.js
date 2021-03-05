@@ -35,7 +35,7 @@ const Select = styled(MuiSelect)`
 
 const HPI = (props) => {
   const { setFieldValue, isSubmitting, values } = props;
-  const { fnp, recentEpisode } = values["hpi"];
+  const { firstNotedProblem, mostRecentEpisode } = values["hpi"];
 
   const symtomsOptions = [
     {
@@ -142,8 +142,10 @@ const HPI = (props) => {
                 inputVariant="outlined"
                 format="MM/dd/yyyy"
                 margin="normal"
-                value={fnp}
-                onChange={(value) => setFieldValue("hpi.fnp", value)}
+                value={firstNotedProblem}
+                onChange={(value) =>
+                  setFieldValue("hpi.firstNotedProblem", value)
+                }
                 fullWidth
                 KeyboardButtonProps={{
                   "aria-label": "change date",
@@ -161,8 +163,10 @@ const HPI = (props) => {
                 inputVariant="outlined"
                 format="MM/dd/yyyy"
                 margin="normal"
-                value={recentEpisode}
-                onChange={(value) => setFieldValue("hpi.recentEpisode", value)}
+                value={mostRecentEpisode}
+                onChange={(value) =>
+                  setFieldValue("hpi.mostRecentEpisode", value)
+                }
                 fullWidth
                 KeyboardButtonProps={{
                   "aria-label": "change date",
@@ -244,10 +248,10 @@ const HPI = (props) => {
                       variant="outlined"
                       native
                       label="Select"
-                      value={values["hpi"][`symptomDuration-unit-${index}`]}
+                      value={values["hpi"][`symptomDurationUnit-${index}`]}
                       onChange={({ target }) => {
                         setFieldValue(
-                          `hpi.symptomDuration-unit-${index}`,
+                          `hpi.symptomDurationUnit-${index}`,
                           target.value
                         );
                       }}

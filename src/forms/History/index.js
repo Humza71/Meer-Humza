@@ -1,8 +1,9 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Box, CircularProgress } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
 import HPI from "./HPI";
 import AuralSymptom from "./AuralSymptom";
 import HealthConditionForm from "./HealthConditionForm";
@@ -10,13 +11,18 @@ import CreateReportFooter from "components/CreateReportFooter";
 import Tabs from "components/Tabs";
 import FlexBox from "components/FlexBox";
 import { TabWrapper } from "components/Tabs";
+import {
+  historyReport,
+  getHistoryReport,
+} from "../../redux/reducers/reportReducer";
 
 const initialValues = {
   hpi: {
-    fnp: new Date(),
-    recentEpisode: new Date(),
+    firstNotedProblem: new Date(),
+    mostRecentEpisode: new Date(),
     symptoms: "",
     symptomDuration: "",
+    symptomDurationUnit: "",
     provokesWith: "",
     notes: "",
   },
@@ -86,8 +92,31 @@ const InnerForm = (props) => {
   );
 };
 
-const History = () => {
-  const handleSubmit = async () => {};
+const History = (props) => {
+  const { match = {} } = props || {};
+  const { params = {} } = match;
+  const { id } = params;
+  const dispatch = useDispatch();
+  const handleSave = (values) => {
+    dispatch(
+      historyReport({
+        reportId: id,
+        ...values,
+        // firstNotedProblem: values.hpi.firstNotedProblem.toISOString(),
+        // mostRecentEpisode: values.hpi.mostRecentEpisode.toISOString(),
+      })
+    );
+  };
+  useEffect(() => {
+    if (id) {
+      dispatch(
+        getHistoryReport({
+          reportId: id,
+        })
+      );
+    }
+  }, []);
+  const handleSubmit = async (values) => {};
 
   return (
     <Fragment>
@@ -96,7 +125,6 @@ const History = () => {
         validationSchema={validationSchema}
         validate={(values) => {
           console.log(values);
-
           return {};
         }}
         onSubmit={handleSubmit}
@@ -104,7 +132,12 @@ const History = () => {
         {(formProps) => (
           <form onSubmit={handleSubmit}>
             <InnerForm {...formProps} />
-            <CreateReportFooter {...formProps} onSave={() => {}} />
+            <CreateReportFooter
+              {...formProps}
+              handleSave={() => {
+                handleSave(formProps.values);
+              }}
+            />
           </form>
         )}
       </Formik>

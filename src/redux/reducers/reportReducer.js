@@ -8,6 +8,8 @@ import {
   getTechnicians,
   saveProvider,
   saveTechnician,
+  patientHistory,
+  getHistoryById,
 } from "../../services/reportService";
 // import { setMessage } from "./messageReducer";
 // import { createNewReport } from "services/reportService";
@@ -30,7 +32,8 @@ const initialState = {
   },
   providers: [],
   technicians: [],
-  completed: true,
+  completed: false,
+  history: {},
 };
 
 export const slice = createSlice({
@@ -49,78 +52,53 @@ export const slice = createSlice({
         ...patientDemographics,
       };
     },
+    setCompleted: (state, action) => {
+      state.completed = true;
+    },
     setProviders: (state, action) => {
-      state.providers = [];
+      state.providers = action.payload;
     },
     addItemToProviders: (state, action) => {
-      state.providers.push(action.payload);
+      state.providers.push({ name: action.payload });
     },
     setTechnicians: (state, action) => {
-      state.technicians = [];
+      state.technicians = action.payload;
     },
     addItemToTechnicians: (state, action) => {
-      state.technicians.push(action.payload);
+      state.technicians.push({ name: action.payload });
+    },
+    setHistory: (state, action) => {
+      state.history = action.payload;
     },
   },
 });
 
 export const { clearNewReport, updateNewReport } = slice.actions;
 const {
+  setCompleted,
   setProviders,
   setTechnicians,
   setLoading,
   addItemToProviders,
   addItemToTechnicians,
+  setHistory,
 } = slice.actions;
-
-export const getAllProviders = () => async (dispatch) => {
-  // dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
-  // Need to be replaced by the service that does API call
-
-  try {
-    const response = await getProviders();
-
-    dispatch(setProviders({ ...response.map(({ providers }) => providers) }));
-  } catch (error) {
-    // dispatch(setMessage({ message: "Email or password already exist!" }));
-  }
-
-  //dispatch(setProviders(providers));
-  // dispatch(setLoading(null));
-};
 
 export const updateReport = (values, onSuccess) => async (dispatch) => {
   dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
   try {
     const response = await createReport(values, onSuccess);
-    dispatch(
-      updateNewReport({
-        ...values,
-      })
-    );
+    // dispatch(
+    //   updateNewReport({
+    //     ...values,
+    //   })
+    // );
+    dispatch(setCompleted());
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
 
   dispatch(setLoading(null));
-};
-
-export const getAllTechnicians = () => async (dispatch) => {
-  // dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
-  // Need to be replaced by the service that does API call
-
-  try {
-    const response = await getTechnicians();
-
-    dispatch(
-      setTechnicians({ ...response.map(({ technicians }) => technicians) })
-    );
-  } catch (error) {
-    // dispatch(setMessage({ message: "Email or password already exist!" }));
-  }
-
-  // dispatch(setTechnicians(technicians));
-  // dispatch(setLoading(null));
 };
 
 export const getReportById = (id) => async (dispatch) => {
@@ -134,12 +112,49 @@ export const getReportById = (id) => async (dispatch) => {
         ...response.data,
       })
     );
+    // dispatch(
+    //   setHistory({
+    //     ...response.data.history,
+    //   })
+    // );
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
 
   // dispatch(setTechnicians(technicians));
   dispatch(setLoading(null));
+};
+
+export const getAllProviders = () => async (dispatch) => {
+  // dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  // Need to be replaced by the service that does API call
+
+  try {
+    const response = await getProviders();
+
+    dispatch(setProviders(response));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+
+  //dispatch(setProviders(providers));
+  // dispatch(setLoading(null));
+};
+
+export const getAllTechnicians = () => async (dispatch) => {
+  // dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  // Need to be replaced by the service that does API call
+
+  try {
+    const response = await getTechnicians();
+
+    dispatch(setTechnicians(response));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+
+  // dispatch(setTechnicians(technicians));
+  // dispatch(setLoading(null));
 };
 
 export const addProvider = (newProvider, save) => async (dispatch) => {
@@ -170,6 +185,38 @@ export const addTechnician = (newTechnician, save) => async (dispatch) => {
     }
     // Do API Call to save newTechnician
   }
+};
+
+export const historyReport = (values) => async (dispatch) => {
+  // dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  try {
+    const response = await patientHistory(values);
+    // dispatch(
+    //   updateNewReport({
+    //     ...values,
+    //   })
+    // );
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+
+  // dispatch(setLoading(null));
+};
+
+export const getHistoryReport = (values) => async (dispatch) => {
+  // dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  try {
+    const response = await getHistoryById(values);
+    dispatch(
+      setHistory({
+        response,
+      })
+    );
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+
+  // dispatch(setLoading(null));
 };
 
 export default slice.reducer;
