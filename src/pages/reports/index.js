@@ -72,7 +72,6 @@ const Reports = () => {
     (state) => state.dashboardReducer.loading
   );
   const allReports = useSelector((state) => state.dashboardReducer.allReports);
-  console.log("my reports", allReports);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setHeaderTitle("Dashboard"));
