@@ -1,16 +1,22 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import styled from "styled-components/macro";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Alert as MuiAlert } from "@material-ui/lab";
+import { Box, CircularProgress } from "@material-ui/core";
 import { spacing } from "@material-ui/system";
-
+import { useDispatch, useSelector } from "react-redux";
 import GansForm from "./GansForm";
 import PostugraphyForm from "./PostugraphyForm";
 import CreateReportFooter from "components/CreateReportFooter";
 import Tabs from "components/Tabs";
 import FlexBox from "components/FlexBox";
 import { TabWrapper } from "components/Tabs";
+import {
+  posturalStabilityReport,
+  getPosturalStability,
+  LoadingStates,
+} from "../../redux/reducers/reportReducer";
 
 const Alert = styled(MuiAlert)(spacing);
 
@@ -54,12 +60,12 @@ const InnerForm = (props) => {
     //handleBlur,
     //handleChange,
     setFieldValue,
-    //isSubmitting,
+    isSubmitting,
     //touched,
     values,
     status,
   } = props;
-
+  const reportLoading = useSelector((state) => state.reportReducer.loading);
   const labels = [
     "Gans Sensory Organization Performance Test ©",
     "Computerized Dynamic Posturography",
@@ -72,28 +78,97 @@ const InnerForm = (props) => {
           Your data has been submitted successfully!
         </Alert>
       )}
-      <FlexBox>
-        <Tabs labels={labels}>
-          <TabWrapper>
-            <section id="Gans Sensory Organization Performance Test ©">
-              <GansForm values={values} setFieldValue={setFieldValue} />
-            </section>
-            <section id="Computerized Dynamic Posturography">
-              <PostugraphyForm values={values} setFieldValue={setFieldValue} />
-            </section>
-          </TabWrapper>
-        </Tabs>
-      </FlexBox>
+      {isSubmitting ||
+      reportLoading === LoadingStates.REPORT_CREATION_LOADING ? (
+        <Box display="flex" justifyContent="center" my={6}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <FlexBox>
+          <Tabs labels={labels}>
+            <TabWrapper>
+              <section id="Gans Sensory Organization Performance Test ©">
+                <GansForm values={values} setFieldValue={setFieldValue} />
+              </section>
+              <section id="Computerized Dynamic Posturography">
+                <PostugraphyForm
+                  values={values}
+                  setFieldValue={setFieldValue}
+                />
+              </section>
+            </TabWrapper>
+          </Tabs>
+        </FlexBox>
+      )}
     </>
   );
 };
 
-const PosturalForm = () => {
+const PosturalForm = (props) => {
+  const { match = {} } = props || {};
+  const { params = {} } = match;
+  const { id } = params;
+  const dispatch = useDispatch();
+  const posturalValues =
+    useSelector((state) => state.reportReducer.posturalStability) || {};
+
+  const initialValues = {
+    gsoTest: {
+      condition1: posturalValues.gsoTest.condition1,
+      condition2: posturalValues.gsoTest.condition2,
+      condition3: posturalValues.gsoTest.condition3,
+      condition4: posturalValues.gsoTest.condition4,
+      condition5: posturalValues.gsoTest.condition5,
+      condition6: posturalValues.gsoTest.condition6,
+      steppingFakuda: posturalValues.gsoTest.steppingFakuda,
+      notes: posturalValues.gsoTest.notes,
+    },
+    cdpTest: {
+      soTest: {
+        condition1: posturalValues.cdpTest.soTest.condition1,
+        condition2: posturalValues.cdpTest.soTest.condition2,
+        condition3: posturalValues.cdpTest.soTest.condition3,
+        condition4: posturalValues.cdpTest.soTest.condition4,
+        condition5: posturalValues.cdpTest.soTest.condition5,
+        condition6: posturalValues.cdpTest.soTest.condition6,
+      },
+      mcTest: {
+        bt: posturalValues.cdpTest.mcTest.bt,
+        ft: posturalValues.cdpTest.mcTest.ft,
+      },
+      adTest: {
+        tu: posturalValues.cdpTest.adTest.tu,
+        td: posturalValues.cdpTest.adTest.td,
+      },
+      notes: posturalValues.cdpTest.notes,
+    },
+  };
+
+  const handleSave = (values) => {
+    dispatch(
+      posturalStabilityReport({
+        reportId: id,
+        ...values,
+        // firstNotedProblem: values.hpi.firstNotedProblem.toISOString(),
+        // mostRecentEpisode: values.hpi.mostRecentEpisode.toISOString(),
+      })
+    );
+  };
+  useEffect(() => {
+    if (id) {
+      dispatch(
+        getPosturalStability({
+          reportId: id,
+        })
+      );
+    }
+  }, []);
   const handleSubmit = async () => {};
 
   return (
     <Fragment>
       <Formik
+        enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}
         validate={(values) => {
@@ -104,7 +179,12 @@ const PosturalForm = () => {
         {(formProps) => (
           <form onSubmit={handleSubmit}>
             <InnerForm {...formProps} />
-            <CreateReportFooter {...formProps} onSave={() => {}} />
+            <CreateReportFooter
+              {...formProps}
+              handleSave={() => {
+                handleSave(formProps.values);
+              }}
+            />
           </form>
         )}
       </Formik>

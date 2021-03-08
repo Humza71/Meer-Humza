@@ -14,40 +14,14 @@ import { TabWrapper } from "components/Tabs";
 import {
   historyReport,
   getHistoryReport,
+  LoadingStates,
 } from "../../redux/reducers/reportReducer";
-
-const initialValues = {
-  hpi: {
-    firstNotedProblem: new Date(),
-    mostRecentEpisode: new Date(),
-    symptoms: "",
-    symptomDuration: "",
-    symptomDurationUnit: "",
-    provokesWith: "",
-    notes: "",
-  },
-  auralSymptom: {
-    shl: "",
-    ap: "",
-    otorrhea: "",
-    tinnitus: "",
-    otalgia: "",
-  },
-  healthCondition: {
-    conditions: [],
-    Migraine: "",
-    OrthopedicLimitations: "",
-    ConcussionHeadInjury: "",
-    CVATIA: "",
-    RecentHeadImaging: "",
-    Other: "",
-  },
-};
 
 const validationSchema = Yup.object().shape({});
 
 const InnerForm = (props) => {
   const { setFieldValue, isSubmitting, values } = props;
+  const reportLoading = useSelector((state) => state.reportReducer.loading);
 
   const labels = [
     "History of Present Illness (HPI)",
@@ -55,7 +29,8 @@ const InnerForm = (props) => {
     "Other health conditions",
   ];
 
-  return isSubmitting ? (
+  return isSubmitting ||
+    reportLoading === LoadingStates.REPORT_CREATION_LOADING ? (
     <Box display="flex" justifyContent="center" my={6}>
       <CircularProgress />
     </Box>
@@ -93,9 +68,45 @@ const InnerForm = (props) => {
 };
 
 const History = (props) => {
+  const historyValues =
+    useSelector((state) => state.reportReducer.history) || {};
+  const initialValues = {
+    hpi: {
+      ...historyValues.hpi,
+      firstNotedProblem: historyValues.hpi.firstNotedProblem
+        ? new Date(historyValues.hpi.firstNotedProblem)
+        : new Date(),
+      mostRecentEpisode: historyValues.hpi.mostRecentEpisode
+        ? new Date(historyValues.hpi.mostRecentEpisode)
+        : new Date(),
+      symptoms: historyValues.hpi.symptoms,
+      symptomDuration: historyValues.hpi.symptomDuration,
+      symptomDurationUnit: historyValues.hpi.symptomDurationUnit,
+      provokesWith: historyValues.hpi.provokesWith,
+      notes: historyValues.hpi.notes,
+    },
+    auralSymptom: {
+      shl: historyValues.auralSymptom.shl,
+      ap: historyValues.auralSymptom.ap,
+      otorrhea: historyValues.auralSymptom.otorrhea,
+      tinnitus: historyValues.auralSymptom.tinnitus,
+      otalgia: historyValues.auralSymptom.otalgia,
+    },
+    healthCondition: {
+      conditions: historyValues.healthCondition.conditions || [],
+      Migraine: historyValues.healthCondition.Migraine,
+      OrthopedicLimitations:
+        historyValues.healthCondition.OrthopedicLimitations,
+      ConcussionHeadInjury: historyValues.healthCondition.ConcussionHeadInjury,
+      CVATIA: historyValues.healthCondition.CVATIA,
+      RecentHeadImaging: historyValues.healthCondition.RecentHeadImaging,
+      Other: historyValues.healthCondition.Other,
+    },
+  };
+
   const { match = {} } = props || {};
   const { params = {} } = match;
-  const { id } = params;
+  const { id = "" } = params;
   const dispatch = useDispatch();
   const handleSave = (values) => {
     dispatch(
@@ -121,6 +132,7 @@ const History = (props) => {
   return (
     <Fragment>
       <Formik
+        enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}
         validate={(values) => {

@@ -10,6 +10,24 @@ import {
   saveTechnician,
   patientHistory,
   getHistoryById,
+  posturalStability,
+  getPosturalStabilityById,
+  addVng,
+  getVngById,
+  addRotaryChair,
+  getRotaryChairById,
+  addVHit,
+  getVHitById,
+  addVat,
+  getVatById,
+  addElectrophys,
+  getElectrophysById,
+  addAudiometry,
+  getAudiometryById,
+  addScreenings,
+  getScreeningsById,
+  addTestComments,
+  getTestCommentsById,
 } from "../../services/reportService";
 // import { setMessage } from "./messageReducer";
 // import { createNewReport } from "services/reportService";
@@ -33,7 +51,61 @@ const initialState = {
   providers: [],
   technicians: [],
   completed: false,
-  history: {},
+  history: {
+    hpi: {},
+    auralSymptom: {},
+    healthCondition: {},
+  },
+  posturalStability: {
+    gsoTest: {},
+    cdpTest: {
+      soTest: {},
+      mcTest: {},
+      adTest: {},
+    },
+  },
+  vng: {
+    oculuMotors: {},
+    gazeDenied: {
+      center: {},
+      right: {},
+      left: {},
+      up: {},
+    },
+    gazeEnabled: {
+      center: {},
+      right: {},
+      left: {},
+      up: {},
+    },
+    highFrequecy: {
+      seated: {},
+      lateralRight: {},
+      lateralLeft: {},
+    },
+    positionDenied: {
+      supine: {},
+      headRight: {},
+      headLeft: {},
+      bodyRight: {},
+      bodyLeft: {},
+    },
+    positionEnabled: {
+      supine: {},
+      headRight: {},
+      headLeft: {},
+      bodyRight: {},
+      bodyLeft: {},
+    },
+    hallPick: {
+      left: {},
+      right: {},
+    },
+    calorics: {
+      right: {},
+      left: {},
+    },
+  },
 };
 
 export const slice = createSlice({
@@ -45,15 +117,18 @@ export const slice = createSlice({
     },
     clearNewReport: (state, action) => {
       state.newReport = initialState.newReport;
+      state.history = initialState.history;
+      state.posturalStability = initialState.posturalStability;
     },
     updateNewReport: (state, action) => {
       const { patientDemographics = {} } = action.payload || {};
       state.newReport = {
         ...patientDemographics,
       };
+      state.completed = true;
     },
     setCompleted: (state, action) => {
-      state.completed = true;
+      state.completed = action.payload;
     },
     setProviders: (state, action) => {
       state.providers = action.payload;
@@ -68,14 +143,31 @@ export const slice = createSlice({
       state.technicians.push({ name: action.payload });
     },
     setHistory: (state, action) => {
-      state.history = action.payload;
+      state.history.hpi = action.payload.response.hpi;
+      state.history.auralSymptom = action.payload.response.auralSymptom;
+      state.history.healthCondition = action.payload.response.healthCondition;
+    },
+    setPosturalStability: (state, action) => {
+      state.posturalStability.cdpTest = action.payload.cdpTest;
+      state.posturalStability.gsoTest = action.payload.gsoTest;
+    },
+    setVng: (state, action) => {
+      state.vng.oculuMotors = action.payload.oculuMotors;
+      state.vng.gazeEnabled = action.payload.gazeEnabled;
+      state.vng.positionEnabled = action.payload.positionEnabled;
+      state.vng.positionDenied = action.payload.positionDenied;
+      state.vng.calorics = action.payload.calorics;
+      state.vng.hallPick = action.payload.hallPick;
+      state.vng.highFrequecy = action.payload.highFrequecy;
+      state.vng.gazeDenied = action.payload.gazeDenied;
     },
   },
 });
 
-export const { clearNewReport, updateNewReport } = slice.actions;
+export const { clearNewReport, updateNewReport, setCompleted } = slice.actions;
 const {
-  setCompleted,
+  setVng,
+  setPosturalStability,
   setProviders,
   setTechnicians,
   setLoading,
@@ -93,7 +185,7 @@ export const updateReport = (values, onSuccess) => async (dispatch) => {
     //     ...values,
     //   })
     // );
-    dispatch(setCompleted());
+    dispatch(setCompleted({ payload: true }));
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
@@ -188,7 +280,7 @@ export const addTechnician = (newTechnician, save) => async (dispatch) => {
 };
 
 export const historyReport = (values) => async (dispatch) => {
-  // dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
   try {
     const response = await patientHistory(values);
     // dispatch(
@@ -200,7 +292,7 @@ export const historyReport = (values) => async (dispatch) => {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
 
-  // dispatch(setLoading(null));
+  dispatch(setLoading(null));
 };
 
 export const getHistoryReport = (values) => async (dispatch) => {
@@ -217,6 +309,42 @@ export const getHistoryReport = (values) => async (dispatch) => {
   }
 
   // dispatch(setLoading(null));
+};
+
+export const posturalStabilityReport = (values) => async (dispatch) => {
+  dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  try {
+    const response = await posturalStability(values);
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+  dispatch(setLoading(null));
+};
+
+export const getPosturalStability = (values) => async (dispatch) => {
+  try {
+    const response = await getPosturalStabilityById(values);
+    dispatch(setPosturalStability(response.data.postureStability));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const vngReport = (values) => async (dispatch) => {
+  try {
+    const response = await addVng(values);
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const getVng = (values) => async (dispatch) => {
+  try {
+    const response = await getVngById(values);
+    dispatch(setVng(response.data.vng));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
 };
 
 export default slice.reducer;

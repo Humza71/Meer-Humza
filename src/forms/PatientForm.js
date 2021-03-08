@@ -40,6 +40,7 @@ import {
   LoadingStates,
   addProvider,
   addTechnician,
+  setCompleted,
   // saveReport,
 } from "redux/reducers/reportReducer";
 import { setStepNewReport } from "redux/reducers/uiReducer";
@@ -80,6 +81,7 @@ const ToggleButtonGroup = styled(MuiToggleButtonGroup)`
 `;
 
 const validationSchema = Yup.object().shape({
+  ssn: Yup.string().required("Required"),
   firstName: Yup.string().required("Required"),
   lastName: Yup.string().required("Required"),
   dob: Yup.date().required("Required"),
@@ -231,6 +233,34 @@ const InnerForm = (props) => {
                 />
               </Box>
               <Box mb={2.5}>
+                <Typography variant="subtitle1" mb={1}>
+                  SSN
+                </Typography>
+                <Grid container spacing={6}>
+                  <Grid item md={6}>
+                    <TextField
+                      type="password"
+                      name="ssn"
+                      label="SSN"
+                      value={values.ssn}
+                      error={Boolean(touched.ssn && errors.ssn)}
+                      fullWidth
+                      helperText={touched.ssn && errors.ssn}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      variant="outlined"
+                      my={2}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start"></InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+
+              <Box mb={2.5}>
                 <KeyboardDatePicker
                   disableToolbar
                   name="encounterDate"
@@ -305,7 +335,9 @@ const InnerForm = (props) => {
 };
 
 const PatientForm = (props) => {
-  const newReport = useSelector((state) => state.reportReducer.newReport);
+  const newReport = useSelector((state) => {
+    return state.reportReducer.newReport;
+  });
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -340,6 +372,8 @@ const PatientForm = (props) => {
           () => {}
         )
       );
+    } else {
+      dispatch(setCompleted());
     }
   }, []);
   const onSuccess = () => {
