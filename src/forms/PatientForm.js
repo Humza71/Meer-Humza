@@ -4,9 +4,11 @@ import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import styled from "styled-components/macro";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useHistory } from "react-router";
+// import queryString from "query-string";
 import { Alert as MuiAlert } from "@material-ui/lab";
 import { spacing } from "@material-ui/system";
+import Toggle from "../components/reports/Toggle";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   Box,
@@ -18,10 +20,10 @@ import {
   TextField as MuiTextField,
   Typography as MuiTypography,
 } from "@material-ui/core";
-import {
-  ToggleButton,
-  ToggleButtonGroup as MuiToggleButtonGroup,
-} from "@material-ui/lab";
+// import {
+//   ToggleButton,
+//   ToggleButtonGroup as MuiToggleButtonGroup,
+// } from "@material-ui/lab";
 import { User as UserIcon } from "react-feather";
 import {
   MuiPickersUtilsProvider,
@@ -32,11 +34,13 @@ import CreateReportFooter from "components/CreateReportFooter";
 import AdvancedSelect from "components/AdvancedSelect";
 import {
   updateReport,
+  getReportById,
   getAllProviders,
   getAllTechnicians,
   LoadingStates,
   addProvider,
   addTechnician,
+  setCompleted,
   // saveReport,
 } from "redux/reducers/reportReducer";
 import { setStepNewReport } from "redux/reducers/uiReducer";
@@ -64,23 +68,24 @@ const KeyboardDatePicker = styled(MuiKeyboardDatePicker)`
   }
 `;
 
-const ToggleButtonGroup = styled(MuiToggleButtonGroup)`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  .MuiToggleButton-root {
-    border: 1px solid rgba(0, 0, 0, 0.12) !important;
-    border-radius: 4px !important;
-    min-width: 100px;
-  }
-`;
+// const ToggleButtonGroup = styled(MuiToggleButtonGroup)`
+//   width: 100%;
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-between;
+//   .MuiToggleButton-root {
+//     border: 1px solid rgba(0, 0, 0, 0.12) !important;
+//     border-radius: 4px !important;
+//     min-width: 100px;
+//   }
+// `;
 
 const validationSchema = Yup.object().shape({
-  first_name: Yup.string().required("Required"),
-  last_name: Yup.string().required("Required"),
-  date_of_birth: Yup.date().required("Required"),
-  date_encounted: Yup.date().required("Required"),
+  ssn: Yup.string().required("Required"),
+  firstName: Yup.string().required("Required"),
+  lastName: Yup.string().required("Required"),
+  dob: Yup.date().required("Required"),
+  encounterDate: Yup.date().required("Required"),
   gender: Yup.string().required("Required"),
   provider: Yup.number(),
   technician: Yup.number(),
@@ -98,8 +103,23 @@ const InnerForm = (props) => {
     values,
     status,
   } = props;
-  const providers = useSelector((state) => state.reportReducer.providers);
-  const technicians = useSelector((state) => state.reportReducer.technicians);
+  const Options = [
+    {
+      title: "Male",
+      value: "male",
+    },
+    {
+      title: "Female",
+      value: "female",
+    },
+    {
+      title: "Non-Binary",
+      value: "non-binary",
+    },
+  ];
+  const providers = useSelector((state) => state.reportReducer.providers) || [];
+  const technicians =
+    useSelector((state) => state.reportReducer.technicians) || [];
   const reportLoading = useSelector((state) => state.reportReducer.loading);
   const hanldeNewProvider = (newProvider, saveForFuture) => {
     dispatch(addProvider(newProvider, saveForFuture));
@@ -136,12 +156,12 @@ const InnerForm = (props) => {
                 <Grid container spacing={6}>
                   <Grid item md={6}>
                     <TextField
-                      name="first_name"
+                      name="firstName"
                       label="First Name"
-                      value={values.first_name}
-                      error={Boolean(touched.first_name && errors.first_name)}
+                      value={values.firstName}
+                      error={Boolean(touched.firstName && errors.firstName)}
                       fullWidth
-                      helperText={touched.first_name && errors.first_name}
+                      helperText={touched.firstName && errors.firstName}
                       onBlur={handleBlur}
                       onChange={handleChange}
                       variant="outlined"
@@ -157,12 +177,12 @@ const InnerForm = (props) => {
                   </Grid>
                   <Grid item md={6}>
                     <TextField
-                      name="last_name"
+                      name="lastName"
                       label="Last Name"
-                      value={values.last_name}
-                      error={Boolean(touched.last_name && errors.last_name)}
+                      value={values.lastName}
+                      error={Boolean(touched.lastName && errors.lastName)}
                       fullWidth
-                      helperText={touched.last_name && errors.last_name}
+                      helperText={touched.lastName && errors.lastName}
                       onBlur={handleBlur}
                       onChange={handleChange}
                       variant="outlined"
@@ -181,16 +201,16 @@ const InnerForm = (props) => {
               <Box mb={2.5}>
                 <KeyboardDatePicker
                   disableToolbar
-                  name="date_of_birth"
+                  name="dob"
                   variant="inline"
                   format="MM/dd/yyyy"
                   margin="normal"
                   label="Date of Birth"
-                  value={values.date_of_birth}
-                  onChange={(value) => setFieldValue("date_of_birth", value)}
-                  error={Boolean(touched.date_of_birth && errors.date_of_birth)}
+                  value={values.dob}
+                  onChange={(value) => setFieldValue("dob", value)}
+                  error={Boolean(touched.dob && errors.dob)}
                   fullWidth
-                  helperText={touched.date_of_birth && errors.date_of_birth}
+                  helperText={touched.dob && errors.dob}
                   onBlur={handleBlur}
                   KeyboardButtonProps={{
                     "aria-label": "change date",
@@ -201,41 +221,58 @@ const InnerForm = (props) => {
                 <Typography variant="subtitle1" mb={1}>
                   Gender
                 </Typography>
-                <ToggleButtonGroup
-                  exclusive
-                  name="gender"
-                  label="Gender"
-                  value={values.gender}
-                  onBlur={handleBlur}
-                  onChange={(event, value) => setFieldValue("gender", value)}
-                  aria-label="gender"
-                >
-                  <ToggleButton value="male" aria-label="male">
-                    Male
-                  </ToggleButton>
-                  <ToggleButton value="female" aria-label="male">
-                    Female
-                  </ToggleButton>
-                  <ToggleButton value="none-binary" aria-label="none-binary">
-                    Non-binary
-                  </ToggleButton>
-                </ToggleButtonGroup>
+                <Toggle
+                  togglesize={{
+                    width: "148px",
+                    height: "38px",
+                  }}
+                  direction="row"
+                  value={values["gender"]}
+                  options={Options}
+                  onChange={(value) => setFieldValue("gender", value)}
+                />
               </Box>
+              <Box mb={2.5}>
+                <Typography variant="subtitle1" mb={1}>
+                  SSN
+                </Typography>
+                <Grid container spacing={6}>
+                  <Grid item md={6}>
+                    <TextField
+                      type="password"
+                      name="ssn"
+                      label="SSN"
+                      value={values.ssn}
+                      error={Boolean(touched.ssn && errors.ssn)}
+                      fullWidth
+                      helperText={touched.ssn && errors.ssn}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      variant="outlined"
+                      my={2}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start"></InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+
               <Box mb={2.5}>
                 <KeyboardDatePicker
                   disableToolbar
-                  name="date_encounted"
+                  name="encounterDate"
                   variant="inline"
                   format="MM/dd/yyyy"
                   margin="normal"
                   label="Encounter Date"
-                  value={values.date_encounted}
-                  onChange={(value) => setFieldValue("date_encounted", value)}
-                  error={Boolean(
-                    touched.date_encounted && errors.date_encounted
-                  )}
+                  value={values.encounterDate}
+                  onChange={(value) => setFieldValue("encounterDate", value)}
+                  error={Boolean(touched.encounterDate && errors.encounterDate)}
                   fullWidth
-                  helperText={touched.date_encounted && errors.date_encounted}
+                  helperText={touched.encounterDate && errors.encounterDate}
                   onBlur={handleBlur}
                   KeyboardButtonProps={{
                     "aria-label": "change date",
@@ -259,8 +296,8 @@ const InnerForm = (props) => {
                       name="physician_id"
                       label="Provider"
                       options={providers.map((item, index) => ({
-                        label: item,
-                        value: index,
+                        label: item.name,
+                        value: item.name,
                       }))}
                       variant="outlined"
                       allowAdd={true}
@@ -279,8 +316,8 @@ const InnerForm = (props) => {
                       name="technician_id"
                       label="Technician"
                       options={technicians.map((item, index) => ({
-                        label: item,
-                        value: index,
+                        label: item.name,
+                        value: item.name,
                       }))}
                       variant="outlined"
                       allowAdd={true}
@@ -297,43 +334,74 @@ const InnerForm = (props) => {
   );
 };
 
-const PatientForm = () => {
-  const newReport = useSelector((state) => state.reportReducer.newReport);
+const PatientForm = (props) => {
+  const newReport = useSelector((state) => {
+    return state.reportReducer.newReport;
+  });
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const initialValues = {
     firstName: newReport.firstName,
     lastName: newReport.lastName,
     dob: newReport.dob ? new Date(newReport.dob) : new Date(),
     gender: newReport.gender,
-    date_encounted: newReport.date_encounted
-      ? new Date(newReport.date_encounted)
+    encounterDate: newReport.encounterDate
+      ? new Date(newReport.encounterDate)
       : new Date(),
     physician_id: newReport.physician_id,
     technician_id: newReport.technician_id,
   };
 
+  const { match = {} } = props || {};
+  const { params = {} } = match;
+  const { id } = params;
   useEffect(() => {
     dispatch(getAllProviders());
     dispatch(getAllTechnicians());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+  }, [dispatch]);
+  useEffect(() => {
+    if (id) {
+      dispatch(
+        getReportById(
+          {
+            id,
+          },
+          () => {}
+        )
+      );
+    } else {
+      dispatch(setCompleted());
+    }
+  }, [dispatch, id]);
+  const onSuccess = () => {
+    history.push("/report");
+  };
+  // useEffect(() => {
+  //   if (newReport.firstName) {
+  //     history.push("/report");
+  //   }
+  // }, [newReport.firstName]);
   const handleSave = (values) => {
     dispatch(
-      updateReport({
-        ...values,
-        dob: values.dob.toISOString(),
-        encounterDate: values.date_encounted.toISOString(),
-      })
+      updateReport(
+        {
+          ...values,
+          id,
+          dob: values.dob.toISOString(),
+          encounterDate: values.encounterDate.toISOString(),
+        },
+        onSuccess
+      )
     );
 
     // dispatch(
     //   saveReport({
     //     ...values,
-    //     date_of_birth: values.date_of_birth.toISOString(),
-    //     date_encounted: values.date_encounted.toISOString(),
+    //     dob: values.dob.toISOString(),
+    //     encounterDate: values.encounterDate.toISOString(),
     //   })
     // );
   };
@@ -357,6 +425,7 @@ const PatientForm = () => {
   return (
     <React.Fragment>
       <Formik
+        enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}
         validate={(values) => {
@@ -370,6 +439,7 @@ const PatientForm = () => {
             <InnerForm {...formProps} />
             <CreateReportFooter
               {...formProps}
+              id={id}
               handleSave={() => {
                 handleSave(formProps.values);
               }}

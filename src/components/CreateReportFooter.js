@@ -41,7 +41,7 @@ const Wrapper = styled(Box)`
 `;
 
 const CreateReportFooter = (props) => {
-  const { dirty, isValid, handleSave } = props;
+  const { dirty, isValid, handleSave, id } = props;
   const dispatch = useDispatch();
   const history = useHistory();
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
@@ -88,7 +88,7 @@ const CreateReportFooter = (props) => {
               size="medium"
               color="primary"
               mr={5}
-              disabled={!dirty}
+              disabled={id ? false : !dirty}
               onClick={handleSave}
             >
               Save as draft

@@ -1,12 +1,16 @@
 import { getUtil } from "../utils/apiService";
 export const getReports = async (credentials) => {
   return new Promise((resolve, reject) => {
-    getUtil("/get-reports", credentials)
+    getUtil("/api/get-reports", credentials)
       .then((response) => {
-        console.log(response.data, "dataaaaaa");
         if (response.status === 200) {
-          debugger;
-          resolve(response.data);
+          const newData = response.data.data.map(
+            ({ _id, patientDemographics }) => ({
+              _id,
+              ...patientDemographics,
+            })
+          );
+          resolve(newData);
         }
         reject(response.data);
       })

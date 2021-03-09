@@ -68,7 +68,7 @@ const landingRoute = {
   path: "/",
   name: "Landing",
   component: () => <Redirect to="/report" />,
-  // guard: AuthGuard,
+  guard: AuthGuard,
 };
 const reportRoutes = {
   id: "Dashboard",
@@ -77,17 +77,17 @@ const reportRoutes = {
   containsHome: true,
   name: "Dashboard",
   component: Reports,
-  // guard: AuthGuard,
+  guard: AuthGuard,
 };
 const reportChildrenRoutes = {
   id: "Report Children",
   path: "/report",
   children: [
     {
-      path: "/report/create",
+      path: [`/report/create`, `/report/create/:id`],
       name: "Create Report",
       component: CreateReport,
-      // guard: AuthGuard,
+      guard: AuthGuard,
     },
   ],
 };
