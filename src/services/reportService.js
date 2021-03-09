@@ -245,7 +245,7 @@ export function addRotaryChair(payload) {
     },
   };
   return new Promise((resolve, reject) => {
-    postUtil("/api/add/rotaryChair", data)
+    postUtil("/api/add/rotary-chair", data)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -260,7 +260,7 @@ export function addRotaryChair(payload) {
 
 export function getRotaryChairById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/add/rotaryChair/${payload.reportId}`)
+    getUtil(`/api/get-rotary-chair-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -276,12 +276,12 @@ export function getRotaryChairById(payload) {
 export function addVHit(payload) {
   const data = {
     reportId: payload.reportId,
-    VHit: {
+    vHIT: {
       ...payload,
     },
   };
   return new Promise((resolve, reject) => {
-    postUtil("/api/add/VHit", data)
+    postUtil("/api/add/vHIT", data)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -296,7 +296,7 @@ export function addVHit(payload) {
 
 export function getVHitById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/add/VHit/${payload.reportId}`)
+    getUtil(`/api/get-vHIT-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);

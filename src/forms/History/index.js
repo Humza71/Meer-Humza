@@ -72,18 +72,51 @@ const History = (props) => {
     useSelector((state) => state.reportReducer.history) || {};
   const initialValues = {
     hpi: {
-      ...historyValues.hpi,
+      "symptomDuration-roomSpin":
+        historyValues.hpi["symptomDuration-roomSpin"] || "",
+      "symptomDuration-patientSpin":
+        historyValues.hpi["symptomDuration-patientSpin"] || "",
+      "symptomDuration-imbalance":
+        historyValues.hpi["symptomDuration-imbalance"] || "",
+      "symptomDuration-lightHeaded":
+        historyValues.hpi["symptomDuration-lightHeaded"] || "",
+      "symptomDuration-other": historyValues.hpi["symptomDuration-other"] || "",
+
+      "symptomDurationUnit-roomSpin":
+        historyValues.hpi["symptomDurationUnit-roomSpin"] || "",
+      "symptomDurationUnit-patientSpin":
+        historyValues.hpi["symptomDurationUnit-patientSpin"] || "",
+      "symptomDurationUnit-imbalance":
+        historyValues.hpi["symptomDurationUnit-imbalance"] || "",
+      "symptomDurationUnit-lightHeaded":
+        historyValues.hpi["symptomDurationUnit-lightHeaded"] || "",
+      "symptomDurationUnit-other":
+        historyValues.hpi["symptomDuration-other"] || "",
+
+      "provokesWith-lyingDown":
+        historyValues.hpi["provokesWith-lyingDown"] || "",
+      "provokesWith-sittingUp":
+        historyValues.hpi["provokesWith-sittingUp"] || "",
+      "provokesWith-rollingOver":
+        historyValues.hpi["provokesWith-rollingOver"] || "",
+      "provokesWith-horizontalHeadMovement":
+        historyValues.hpi["provokesWith-horizontalHeadMovement"] || "",
+      "provokesWith-verticalHeadPitch":
+        historyValues.hpi["symptomDuration-verticalHeadPitch"] || "",
+      "provokesWith-walking":
+        historyValues.hpi["symptomDuration-walking"] || "",
+
       firstNotedProblem: historyValues.hpi.firstNotedProblem
         ? new Date(historyValues.hpi.firstNotedProblem)
         : new Date(),
       mostRecentEpisode: historyValues.hpi.mostRecentEpisode
         ? new Date(historyValues.hpi.mostRecentEpisode)
         : new Date(),
-      symptoms: historyValues.hpi.symptoms,
+      symptoms: historyValues.hpi.symptoms || [],
       symptomDuration: historyValues.hpi.symptomDuration,
       symptomDurationUnit: historyValues.hpi.symptomDurationUnit,
       provokesWith: historyValues.hpi.provokesWith,
-      notes: historyValues.hpi.notes,
+      notes: historyValues.hpi.notes ? historyValues.hpi.notes : "",
     },
     auralSymptom: {
       shl: historyValues.auralSymptom.shl,
@@ -94,13 +127,24 @@ const History = (props) => {
     },
     healthCondition: {
       conditions: historyValues.healthCondition.conditions || [],
-      Migraine: historyValues.healthCondition.Migraine,
-      OrthopedicLimitations:
-        historyValues.healthCondition.OrthopedicLimitations,
-      ConcussionHeadInjury: historyValues.healthCondition.ConcussionHeadInjury,
-      CVATIA: historyValues.healthCondition.CVATIA,
-      RecentHeadImaging: historyValues.healthCondition.RecentHeadImaging,
-      Other: historyValues.healthCondition.Other,
+      Migraine: historyValues.healthCondition.Migraine
+        ? historyValues.healthCondition.Migraine
+        : "",
+      OrthopedicLimitations: historyValues.healthCondition.OrthopedicLimitations
+        ? historyValues.healthCondition.OrthopedicLimitations
+        : "",
+      ConcussionHeadInjury: historyValues.healthCondition.ConcussionHeadInjury
+        ? historyValues.healthCondition.ConcussionHeadInjury
+        : "",
+      CVATIA: historyValues.healthCondition.CVATIA
+        ? historyValues.healthCondition.CVATIA
+        : "",
+      RecentHeadImaging: historyValues.healthCondition.RecentHeadImaging
+        ? historyValues.healthCondition.RecentHeadImaging
+        : "",
+      Other: historyValues.healthCondition.Other
+        ? historyValues.healthCondition.Other
+        : "",
     },
   };
 
@@ -126,9 +170,9 @@ const History = (props) => {
         })
       );
     }
-  }, []);
+  }, [dispatch, id]);
   const handleSubmit = async (values) => {};
-
+  console.log(initialValues, "my values");
   return (
     <Fragment>
       <Formik
@@ -136,7 +180,7 @@ const History = (props) => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         validate={(values) => {
-          console.log(values);
+          console.log(values, "my values");
           return {};
         }}
         onSubmit={handleSubmit}

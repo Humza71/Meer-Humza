@@ -13,7 +13,7 @@ import Calorics from "./Calorics";
 import CreateReportFooter from "components/CreateReportFooter";
 import Tabs from "components/Tabs";
 import { TabWrapper } from "components/Tabs";
-import { vngReport, getVng } from "redux/reducers/reportReducer";
+import { vngReport, getVng, LoadingStates } from "redux/reducers/reportReducer";
 
 // const initialValues = {
 //   oculuMotors: {
@@ -210,7 +210,7 @@ const InnerForm = (props) => {
     values,
     // status,
   } = props;
-
+  const reportLoading = useSelector((state) => state.reportReducer.loading);
   const labels = [
     "Oculo-motors",
     "Gaze - Vision Denied",
@@ -222,7 +222,8 @@ const InnerForm = (props) => {
     "Calorics",
   ];
 
-  return isSubmitting ? (
+  return isSubmitting ||
+    reportLoading === LoadingStates.REPORT_CREATION_LOADING ? (
     <Box display="flex" justifyContent="center" my={6}>
       <CircularProgress />
     </Box>
@@ -308,188 +309,230 @@ const VngForm = (props) => {
   const vngValues = useSelector((state) => state.reportReducer.vng);
 
   const initialValues = {
-    ...vngValues,
-  };
-  // oculuMotors: {
-  //   saccades: vngValues.oculuMotors.saccades,
-  //   vertigo: vngValues.oculuMotors.vertigo,
-  //   smoothPursuit: vngValues.oculuMotors.smoothPursuit,
-  //   optokinetic: vngValues.oculuMotors.optokinetic,
-  //   notes: vngValues.oculuMotors.notes,
-  // },
-  // gazeDenied: {
-  //   center: {
-  //     consent: vngValues.gazeDenied.center.consent,
-  //     vertigo: vngValues.gazeDenied.center.vertigo,
-  //     beatDirection: vngValues.gazeDenied.center.beatDirection,
-  //     deg: vngValues.gazeDenied.center.deg,
-  //   },
-  //   right: {
-  //     consent: vngValues.gazeDenied.right.consent,
-  //     vertigo: vngValues.gazeDenied.right.vertigo,
-  //     beatDirection: vngValues.gazeDenied.right.beatDirection,
-  //     deg: vngValues.gazeDenied.right.deg,
-  //   },
-  //   left: {
-  //     consent: vngValues.gazeDenied.left.consent,
-  //     vertigo: vngValues.gazeDenied.left.vertigo,
-  //     beatDirection: vngValues.gazeDenied.left.beatDirection,
-  //     deg: vngValues.gazeDenied.left.deg,
-  //   },
-  //   up: {
-  //     consent: vngValues.gazeDenied.up.consent,
-  //     vertigo: vngValues.gazeDenied.up.vertigo,
-  //     beatDirection: vngValues.gazeDenied.up.beatDirection,
-  //     deg: vngValues.gazeDenied.up.deg,
-  //   },
-  //   notes: vngValues.gazeDenied.notes,
-  // },
-  // gazeEnabled: {
-  //   center: {
-  //     consent: vngValues.gazeEnabled.center.consent,
-  //     vertigo: vngValues.gazeEnabled.center.vertigo,
-  //     beatDirection: vngValues.gazeEnabled.center.beatDirection,
-  //     deg: vngValues.gazeEnabled.center.deg,
-  //   },
-  //   right: {
-  //     consent: vngValues.gazeEnabled.right.consent,
-  //     vertigo: vngValues.gazeEnabled.right.vertigo,
-  //     beatDirection: vngValues.gazeEnabled.right.beatDirection,
-  //     deg: vngValues.gazeEnabled.right.deg,
-  //   },
-  //   left: {
-  //     cconsent: vngValues.gazeEnabled.left.consent,
-  //     vertigo: vngValues.gazeEnabled.left.vertigo,
-  //     beatDirection: vngValues.gazeEnabled.left.beatDirection,
-  //     deg: vngValues.gazeEnabled.left.deg,
-  //   },
-  //   up: {
-  //     consent: vngValues.gazeEnabled.up.consent,
-  //     vertigo: vngValues.gazeEnabled.up.vertigo,
-  //     beatDirection: vngValues.gazeEnabled.up.beatDirection,
-  //     deg: vngValues.gazeEnabled.up.deg,
-  //   },
-  //   notes: vngValues.gazeEnabled.notes,
-  // },
-  // highFrequecy: {
-  //   seated: {
-  //     normality: vngValues.highFrequecy.seated.normality,
-  //     vertigo: vngValues.highFrequecy.seated.vertigo,
-  //     beatDirection: vngValues.highFrequecy.seated.beatDirection,
-  //     deg: vngValues.highFrequecy.seated.deg,
-  //   },
-  //   lateralRight: {
-  //     normality: vngValues.highFrequecy.lateralRight.normality,
-  //     vertigo: vngValues.highFrequecy.lateralRight.vertigo,
-  //     beatDirection: vngValues.highFrequecy.lateralRight.beatDirection,
-  //     deg: vngValues.highFrequecy.lateralRight.deg,
-  //   },
-  //   lateralLeft: {
-  //     normality: vngValues.highFrequecy.lateralLeft.normality,
-  //     vertigo: vngValues.highFrequecy.lateralLeft.vertigo,
-  //     beatDirection: vngValues.highFrequecy.lateralLeft.beatDirection,
-  //     deg: vngValues.highFrequecy.lateralLeft.deg,
-  //   },
-  //   notes: vngValues.highFrequecy.notes,
-  // },
-  // positionDenied: {
-  //   supine: {
-  //     normality: vngValues.positionDenied.supine.normality,
-  //     vertigo: vngValues.positionDenied.supine.vertigo,
-  //     beatDirection: vngValues.positionDenied.supine.beatDirection,
-  //     deg: vngValues.positionDenied.supine.deg,
-  //   },
-  //   headRight: {
-  //     normality: vngValues.positionDenied.headRight.normality,
-  //     vertigo: vngValues.positionDenied.headRight.vertigo,
-  //     beatDirection: vngValues.positionDenied.headRight.beatDirection,
-  //     deg: vngValues.positionDenied.headRight.deg,
-  //   },
-  //   headLeft: {
-  //     normality: vngValues.positionDenied.headLeft.normality,
-  //     vertigo: vngValues.positionDenied.headLeft.vertigo,
-  //     beatDirection: vngValues.positionDenied.headLeft.beatDirection,
-  //     deg: vngValues.positionDenied.headLeft.deg,
-  //   },
-  //   bodyRight: {
-  //     normality: vngValues.positionDenied.bodyRight.normality,
-  //     vertigo: vngValues.positionDenied.bodyRight.vertigo,
-  //     beatDirection: vngValues.positionDenied.bodyRight.beatDirection,
-  //     deg: vngValues.positionDenied.bodyRight.deg,
-  //   },
-  //   bodyLeft: {
-  //     normality: vngValues.positionDenied.bodyLeft.normality,
-  //     vertigo: vngValues.positionDenied.bodyLeft.vertigo,
-  //     beatDirection: vngValues.positionDenied.bodyLeft.beatDirection,
-  //     deg: vngValues.positionDenied.bodyLeft.deg,
-  //   },
-  //   notes: vngValues.positionDenied.notes,
-  // },
-  // positionEnabled: {
-  //   supine: {
-  //     normality: vngValues.positionEnabled.supine.normality,
-  //     vertigo: vngValues.positionEnabled.supine.vertigo,
-  //     beatDirection: vngValues.positionEnabled.supine.beatDirection,
-  //     deg: vngValues.positionEnabled.supine.deg,
-  //   },
-  //   headRight: {
-  //     normality: vngValues.positionEnabled.headRight.normality,
-  //     vertigo: vngValues.positionEnabled.headRight.vertigo,
-  //     beatDirection: vngValues.positionEnabled.headRight.beatDirection,
-  //     deg: vngValues.positionEnabled.headRight.deg,
-  //   },
-  //   headLeft: {
-  //     normality: vngValues.positionEnabled.headLeft.normality,
-  //     vertigo: vngValues.positionEnabled.headLeft.vertigo,
-  //     beatDirection: vngValues.positionEnabled.headLeft.beatDirection,
-  //     deg: vngValues.positionEnabled.headLeft.deg,
-  //   },
-  //   bodyRight: {
-  //     normality: vngValues.positionEnabled.bodyRight.normality,
-  //     vertigo: vngValues.positionEnabled.bodyRight.vertigo,
-  //     beatDirection: vngValues.positionEnabled.bodyRight.beatDirection,
-  //     deg: vngValues.positionEnabled.bodyRight.deg,
-  //   },
-  //   bodyLeft: {
-  //     normality: vngValues.positionEnabled.bodyLeft.normality,
-  //     vertigo: vngValues.positionEnabled.bodyLeft.vertigo,
-  //     beatDirection: vngValues.positionEnabled.bodyLeft.beatDirection,
-  //     deg: vngValues.positionEnabled.bodyLeft.deg,
-  //   },
-  //   notes: vngValues.positionEnabled.notes,
-  // },
-  // hallPick: {
-  //   right: {
-  //     index: vngValues.hallPick.right.index,
-  //     vertigo: vngValues.hallPick.right.vertigo,
-  //     beatDirection: vngValues.hallPick.right.beatDirection,
-  //     deg: vngValues.hallPick.right.deg,
-  //   },
-  //   left: {
-  //     index: vngValues.hallPick.left.index,
-  //     vertigo: vngValues.hallPick.left.vertigo,
-  //     beatDirection: vngValues.hallPick.left.beatDirection,
-  //     deg: vngValues.hallPick.left.deg,
-  //   },
-  // },
-  // calorics: {
-  //   right: {
-  //     warm: vngValues.calorics.right.warm,
-  //     cool: vngValues.calorics.right.cool,
-  //     vertigo: vngValues.calorics.right.vertigo,
-  //     uwDp: vngValues.calorics.right.uwDp,
-  //     fixationIndex: vngValues.calorics.right.fixationIndex,
-  //   },
-  //   left: {
-  //     warm: vngValues.calorics.left.warm,
-  //     cool: vngValues.calorics.left.cool,
-  //     vertigo: vngValues.calorics.left.vertigo,
-  //     uwDp: vngValues.calorics.left.uwDp,
-  //     fixationIndex: vngValues.calorics.left.fixationIndex,
-  //   },
-  //   bilateralWeakness: vngValues.calorics.bilateralWeakness,
-  // },
+    // ...vngValues,
 
+    oculuMotors: {
+      saccades: vngValues.oculuMotors.saccades,
+      vertigo: vngValues.oculuMotors.vertigo,
+      smoothPursuit: vngValues.oculuMotors.smoothPursuit,
+      optokinetic: vngValues.oculuMotors.optokinetic,
+      notes: vngValues.oculuMotors.notes ? vngValues.oculuMotors.notes : "",
+    },
+    gazeDenied: {
+      center: {
+        consent: vngValues.gazeDenied.center.consent,
+        vertigo: vngValues.gazeDenied.center.vertigo,
+        beatDirection: vngValues.gazeDenied.center.beatDirection,
+        deg: vngValues.gazeDenied.center.deg
+          ? vngValues.gazeDenied.center.deg
+          : "",
+      },
+      right: {
+        consent: vngValues.gazeDenied.right.consent,
+        vertigo: vngValues.gazeDenied.right.vertigo,
+        beatDirection: vngValues.gazeDenied.right.beatDirection,
+        deg: vngValues.gazeDenied.right.deg
+          ? vngValues.gazeDenied.right.deg
+          : "",
+      },
+      left: {
+        consent: vngValues.gazeDenied.left.consent,
+        vertigo: vngValues.gazeDenied.left.vertigo,
+        beatDirection: vngValues.gazeDenied.left.beatDirection,
+        deg: vngValues.gazeDenied.left.deg ? vngValues.gazeDenied.left.deg : "",
+      },
+      up: {
+        consent: vngValues.gazeDenied.up.consent,
+        vertigo: vngValues.gazeDenied.up.vertigo,
+        beatDirection: vngValues.gazeDenied.up.beatDirection,
+        deg: vngValues.gazeDenied.up.deg ? vngValues.gazeDenied.up.deg : "",
+      },
+      notes: vngValues.gazeDenied.notes ? vngValues.gazeDenied.notes : "",
+    },
+    gazeEnabled: {
+      center: {
+        consent: vngValues.gazeEnabled.center.consent,
+        vertigo: vngValues.gazeEnabled.center.vertigo,
+        beatDirection: vngValues.gazeEnabled.center.beatDirection,
+        deg: vngValues.gazeEnabled.center.deg
+          ? vngValues.gazeEnabled.center.deg
+          : "",
+      },
+      right: {
+        consent: vngValues.gazeEnabled.right.consent,
+        vertigo: vngValues.gazeEnabled.right.vertigo,
+        beatDirection: vngValues.gazeEnabled.right.beatDirection,
+        deg: vngValues.gazeEnabled.right.deg
+          ? vngValues.gazeEnabled.right.deg
+          : "",
+      },
+      left: {
+        cconsent: vngValues.gazeEnabled.left.consent,
+        vertigo: vngValues.gazeEnabled.left.vertigo,
+        beatDirection: vngValues.gazeEnabled.left.beatDirection,
+        deg: vngValues.gazeEnabled.left.deg
+          ? vngValues.gazeEnabled.left.deg
+          : "",
+      },
+      up: {
+        consent: vngValues.gazeEnabled.up.consent,
+        vertigo: vngValues.gazeEnabled.up.vertigo,
+        beatDirection: vngValues.gazeEnabled.up.beatDirection,
+        deg: vngValues.gazeEnabled.up.deg ? vngValues.gazeEnabled.up.deg : "",
+      },
+      notes: vngValues.gazeEnabled.notes ? vngValues.gazeEnabled.notes : "",
+    },
+    highFrequecy: {
+      seated: {
+        normality: vngValues.highFrequecy.seated.normality,
+        vertigo: vngValues.highFrequecy.seated.vertigo,
+        beatDirection: vngValues.highFrequecy.seated.beatDirection,
+        deg: vngValues.highFrequecy.seated.deg
+          ? vngValues.highFrequecy.seated.deg
+          : "",
+      },
+      lateralRight: {
+        normality: vngValues.highFrequecy.lateralRight.normality,
+        vertigo: vngValues.highFrequecy.lateralRight.vertigo,
+        beatDirection: vngValues.highFrequecy.lateralRight.beatDirection,
+        deg: vngValues.highFrequecy.lateralRight.deg
+          ? vngValues.highFrequecy.lateralRight.deg
+          : "",
+      },
+      lateralLeft: {
+        normality: vngValues.highFrequecy.lateralLeft.normality,
+        vertigo: vngValues.highFrequecy.lateralLeft.vertigo,
+        beatDirection: vngValues.highFrequecy.lateralLeft.beatDirection,
+        deg: vngValues.highFrequecy.lateralLeft.deg
+          ? vngValues.highFrequecy.lateralLeft.deg
+          : "",
+      },
+      notes: vngValues.highFrequecy.notes ? vngValues.highFrequecy.notes : "",
+    },
+    positionDenied: {
+      supine: {
+        normality: vngValues.positionDenied.supine.normality,
+        vertigo: vngValues.positionDenied.supine.vertigo,
+        beatDirection: vngValues.positionDenied.supine.beatDirection,
+        deg: vngValues.positionDenied.supine.deg
+          ? vngValues.positionDenied.supine.deg
+          : "",
+      },
+      headRight: {
+        normality: vngValues.positionDenied.headRight.normality,
+        vertigo: vngValues.positionDenied.headRight.vertigo,
+        beatDirection: vngValues.positionDenied.headRight.beatDirection,
+        deg: vngValues.positionDenied.headRight.deg
+          ? vngValues.positionDenied.headRight.deg
+          : "",
+      },
+      headLeft: {
+        normality: vngValues.positionDenied.headLeft.normality,
+        vertigo: vngValues.positionDenied.headLeft.vertigo,
+        beatDirection: vngValues.positionDenied.headLeft.beatDirection,
+        deg: vngValues.positionDenied.headLeft.deg
+          ? vngValues.positionDenied.headLeft.deg
+          : "",
+      },
+      bodyRight: {
+        normality: vngValues.positionDenied.bodyRight.normality,
+        vertigo: vngValues.positionDenied.bodyRight.vertigo,
+        beatDirection: vngValues.positionDenied.bodyRight.beatDirection,
+        deg: vngValues.positionDenied.bodyRight.deg
+          ? vngValues.positionDenied.bodyRight.deg
+          : "",
+      },
+      bodyLeft: {
+        normality: vngValues.positionDenied.bodyLeft.normality,
+        vertigo: vngValues.positionDenied.bodyLeft.vertigo,
+        beatDirection: vngValues.positionDenied.bodyLeft.beatDirection,
+        deg: vngValues.positionDenied.bodyLeft.deg
+          ? vngValues.positionDenied.bodyLeft.deg
+          : "",
+      },
+      notes: vngValues.positionDenied.notes
+        ? vngValues.positionDenied.notes
+        : "",
+    },
+    positionEnabled: {
+      supine: {
+        normality: vngValues.positionEnabled.supine.normality,
+        vertigo: vngValues.positionEnabled.supine.vertigo,
+        beatDirection: vngValues.positionEnabled.supine.beatDirection,
+        deg: vngValues.positionEnabled.supine.deg
+          ? vngValues.positionEnabled.supine.deg
+          : "",
+      },
+      headRight: {
+        normality: vngValues.positionEnabled.headRight.normality,
+        vertigo: vngValues.positionEnabled.headRight.vertigo,
+        beatDirection: vngValues.positionEnabled.headRight.beatDirection,
+        deg: vngValues.positionEnabled.headRight.deg
+          ? vngValues.positionEnabled.headRight.deg
+          : "",
+      },
+      headLeft: {
+        normality: vngValues.positionEnabled.headLeft.normality,
+        vertigo: vngValues.positionEnabled.headLeft.vertigo,
+        beatDirection: vngValues.positionEnabled.headLeft.beatDirection,
+        deg: vngValues.positionEnabled.headLeft.deg
+          ? vngValues.positionEnabled.headLeft.deg
+          : "",
+      },
+      bodyRight: {
+        normality: vngValues.positionEnabled.bodyRight.normality,
+        vertigo: vngValues.positionEnabled.bodyRight.vertigo,
+        beatDirection: vngValues.positionEnabled.bodyRight.beatDirection,
+        deg: vngValues.positionEnabled.bodyRight.deg
+          ? vngValues.positionEnabled.bodyRight.deg
+          : "",
+      },
+      bodyLeft: {
+        normality: vngValues.positionEnabled.bodyLeft.normality,
+        vertigo: vngValues.positionEnabled.bodyLeft.vertigo,
+        beatDirection: vngValues.positionEnabled.bodyLeft.beatDirection,
+        deg: vngValues.positionEnabled.bodyLeft.deg
+          ? vngValues.positionEnabled.bodyLeft.deg
+          : "",
+      },
+      notes: vngValues.positionEnabled.notes
+        ? vngValues.positionEnabled.notes
+        : "",
+    },
+    hallPick: {
+      right: {
+        index: vngValues.hallPick.right.index,
+        vertigo: vngValues.hallPick.right.vertigo,
+        beatDirection: vngValues.hallPick.right.beatDirection,
+        deg: vngValues.hallPick.right.deg ? vngValues.hallPick.right.deg : "",
+      },
+      left: {
+        index: vngValues.hallPick.left.index,
+        vertigo: vngValues.hallPick.left.vertigo,
+        beatDirection: vngValues.hallPick.left.beatDirection,
+        deg: vngValues.hallPick.left.deg ? vngValues.hallPick.left.deg : "",
+      },
+    },
+    calorics: {
+      right: {
+        warm: vngValues.calorics.right.warm || "",
+        cool: vngValues.calorics.right.cool || "",
+        vertigo: vngValues.calorics.right.vertigo || "",
+        uwDp: vngValues.calorics.right.uwDp || "",
+        fixationIndex: vngValues.calorics.right.fixationIndex || "",
+      },
+      left: {
+        warm: vngValues.calorics.left.warm || "",
+        cool: vngValues.calorics.left.cool || "",
+        vertigo: vngValues.calorics.left.vertigo || "",
+        uwDp: vngValues.calorics.left.uwDp || "",
+        fixationIndex: vngValues.calorics.left.fixationIndex || "",
+      },
+      bilateralWeakness: vngValues.calorics.bilateralWeakness,
+    },
+  };
+  console.log("vng values", vngValues);
+  console.log("initial values", initialValues);
   const handleSubmit = async () => {};
   const handleSave = (values) => {
     dispatch(
@@ -509,7 +552,7 @@ const VngForm = (props) => {
         })
       );
     }
-  }, []);
+  }, [id, dispatch]);
 
   return (
     <Fragment>

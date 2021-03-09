@@ -20,7 +20,7 @@ import ButtonDropDown from "components/ButtonDropDown";
 import ReportTable from "components/ReportTable";
 
 import { setHeaderTitle } from "redux/reducers/uiReducer";
-import { rows, headCells } from "lib/dumyData";
+import { headCells } from "lib/dumyData";
 
 const Button = styled(MuiButton)(spacing);
 const Grid = styled(MuiGrid)(spacing);
@@ -77,7 +77,7 @@ const Reports = () => {
     dispatch(setHeaderTitle("Dashboard"));
     // eslint-disable-next-line react-hooks/exhaustive-deps
     dispatch(getAllReports());
-  }, []);
+  }, [dispatch]);
 
   // {
   //   date,

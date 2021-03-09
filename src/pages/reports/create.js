@@ -183,9 +183,9 @@ const CreateReport = (props) => {
     dispatch(setStepNewReport(0));
     dispatch(clearNewReport());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
-  useEffect(() => {}, []);
+  // useEffect(() => {}, []);
 
   return (
     <Box pt={10} display="flex" flexDirection="column" height="100%">

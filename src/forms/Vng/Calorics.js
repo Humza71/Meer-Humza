@@ -76,9 +76,9 @@ const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
                     name={`${formKey}.${key}`}
-                    value={data[key]}
+                    value={data[key]["vertigo"]}
                     onChange={(value) =>
-                      setFieldValue(`${formKey}.${key}`, value)
+                      setFieldValue(`${formKey}.${key}.vertigo`, value)
                     }
                     options={[
                       { title: "Yes", value: "yes" },
@@ -91,9 +91,9 @@ const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
                     name={`${formKey}.${key}`}
-                    value={data[key]}
+                    value={data[key]["uwDp"]}
                     onChange={(value) =>
-                      setFieldValue(`${formKey}.${key}`, value)
+                      setFieldValue(`${formKey}.${key}.uwDp`, value)
                     }
                     options={[
                       { title: "UW", value: "uw" },
@@ -106,9 +106,9 @@ const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
                     name={`${formKey}.${key}`}
-                    value={data[key]}
+                    value={data[key]["fixationIndex"]}
                     onChange={(value) =>
-                      setFieldValue(`${formKey}.${key}`, value)
+                      setFieldValue(`${formKey}.${key}.fixationIndex`, value)
                     }
                     mb={2.5}
                     mt={2.5}

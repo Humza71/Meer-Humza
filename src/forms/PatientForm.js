@@ -5,7 +5,7 @@ import { Formik, Form } from "formik";
 import styled from "styled-components/macro";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import queryString from "query-string";
+// import queryString from "query-string";
 import { Alert as MuiAlert } from "@material-ui/lab";
 import { spacing } from "@material-ui/system";
 import Toggle from "../components/reports/Toggle";
@@ -20,10 +20,10 @@ import {
   TextField as MuiTextField,
   Typography as MuiTypography,
 } from "@material-ui/core";
-import {
-  ToggleButton,
-  ToggleButtonGroup as MuiToggleButtonGroup,
-} from "@material-ui/lab";
+// import {
+//   ToggleButton,
+//   ToggleButtonGroup as MuiToggleButtonGroup,
+// } from "@material-ui/lab";
 import { User as UserIcon } from "react-feather";
 import {
   MuiPickersUtilsProvider,
@@ -68,17 +68,17 @@ const KeyboardDatePicker = styled(MuiKeyboardDatePicker)`
   }
 `;
 
-const ToggleButtonGroup = styled(MuiToggleButtonGroup)`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  .MuiToggleButton-root {
-    border: 1px solid rgba(0, 0, 0, 0.12) !important;
-    border-radius: 4px !important;
-    min-width: 100px;
-  }
-`;
+// const ToggleButtonGroup = styled(MuiToggleButtonGroup)`
+//   width: 100%;
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-between;
+//   .MuiToggleButton-root {
+//     border: 1px solid rgba(0, 0, 0, 0.12) !important;
+//     border-radius: 4px !important;
+//     min-width: 100px;
+//   }
+// `;
 
 const validationSchema = Yup.object().shape({
   ssn: Yup.string().required("Required"),
@@ -361,7 +361,7 @@ const PatientForm = (props) => {
     dispatch(getAllProviders());
     dispatch(getAllTechnicians());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
   useEffect(() => {
     if (id) {
       dispatch(
@@ -375,7 +375,7 @@ const PatientForm = (props) => {
     } else {
       dispatch(setCompleted());
     }
-  }, []);
+  }, [dispatch, id]);
   const onSuccess = () => {
     history.push("/report");
   };

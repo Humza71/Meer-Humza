@@ -18,16 +18,16 @@ import {
   getRotaryChairById,
   addVHit,
   getVHitById,
-  addVat,
-  getVatById,
-  addElectrophys,
-  getElectrophysById,
-  addAudiometry,
-  getAudiometryById,
-  addScreenings,
-  getScreeningsById,
-  addTestComments,
-  getTestCommentsById,
+  // addVat,
+  // getVatById,
+  // addElectrophys,
+  // getElectrophysById,
+  // addAudiometry,
+  // getAudiometryById,
+  // addScreenings,
+  // getScreeningsById,
+  // addTestComments,
+  // getTestCommentsById,
 } from "../../services/reportService";
 // import { setMessage } from "./messageReducer";
 // import { createNewReport } from "services/reportService";
@@ -106,6 +106,13 @@ const initialState = {
       left: {},
     },
   },
+  rotaryChair: {},
+  vHit: {
+    lateral: {},
+    ralp: {},
+    larp: {},
+    notes: "",
+  },
 };
 
 export const slice = createSlice({
@@ -119,6 +126,8 @@ export const slice = createSlice({
       state.newReport = initialState.newReport;
       state.history = initialState.history;
       state.posturalStability = initialState.posturalStability;
+      state.vng = initialState.vng;
+      state.rotaryChair = initialState.rotaryChair;
     },
     updateNewReport: (state, action) => {
       const { patientDemographics = {} } = action.payload || {};
@@ -161,6 +170,19 @@ export const slice = createSlice({
       state.vng.highFrequecy = action.payload.highFrequecy;
       state.vng.gazeDenied = action.payload.gazeDenied;
     },
+    setRotaryChair: (state, action) => {
+      state.rotaryChair = action.payload.rotaryChair;
+      // state.posturalStability.cdpTest = action.payload.cdpTest;
+      // state.posturalStability.gsoTest = action.payload.gsoTest;
+    },
+    setVHit: (state, action) => {
+      state.vHit.ralp = action.payload.vHIT.ralp;
+      state.vHit.larp = action.payload.vHIT.larp;
+      state.vHit.lateral = action.payload.vHIT.lateral;
+      state.vHit.notes = action.payload.vHIT.notes;
+      // state.posturalStability.cdpTest = action.payload.cdpTest;
+      // state.posturalStability.gsoTest = action.payload.gsoTest;
+    },
   },
 });
 
@@ -174,12 +196,14 @@ const {
   addItemToProviders,
   addItemToTechnicians,
   setHistory,
+  setRotaryChair,
+  setVHit,
 } = slice.actions;
 
 export const updateReport = (values, onSuccess) => async (dispatch) => {
   dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
   try {
-    const response = await createReport(values, onSuccess);
+    await createReport(values, onSuccess);
     // dispatch(
     //   updateNewReport({
     //     ...values,
@@ -282,7 +306,7 @@ export const addTechnician = (newTechnician, save) => async (dispatch) => {
 export const historyReport = (values) => async (dispatch) => {
   dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
   try {
-    const response = await patientHistory(values);
+    await patientHistory(values);
     // dispatch(
     //   updateNewReport({
     //     ...values,
@@ -314,7 +338,7 @@ export const getHistoryReport = (values) => async (dispatch) => {
 export const posturalStabilityReport = (values) => async (dispatch) => {
   dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
   try {
-    const response = await posturalStability(values);
+    await posturalStability(values);
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
@@ -331,17 +355,57 @@ export const getPosturalStability = (values) => async (dispatch) => {
 };
 
 export const vngReport = (values) => async (dispatch) => {
+  dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
   try {
-    const response = await addVng(values);
+    await addVng(values);
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
+  dispatch(setLoading(null));
 };
 
 export const getVng = (values) => async (dispatch) => {
   try {
     const response = await getVngById(values);
     dispatch(setVng(response.data.vng));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const rotaryChairReport = (values) => async (dispatch) => {
+  dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  try {
+    await addRotaryChair(values);
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+  dispatch(setLoading(null));
+};
+
+export const getRotaryChair = (values) => async (dispatch) => {
+  try {
+    const response = await getRotaryChairById(values);
+    dispatch(setRotaryChair(response.data));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const vHitReport = (values) => async (dispatch) => {
+  dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  try {
+    await addVHit(values);
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+  dispatch(setLoading(null));
+};
+
+export const getVHit = (values) => async (dispatch) => {
+  try {
+    const response = await getVHitById(values);
+    dispatch(setVHit(response.data));
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }

@@ -20,37 +20,37 @@ import {
 
 const Alert = styled(MuiAlert)(spacing);
 
-const initialValues = {
-  gsoTest: {
-    condition1: "",
-    condition2: "",
-    condition3: "",
-    condition4: "",
-    condition5: "",
-    condition6: "",
-    steppingFakuda: "",
-    notes: "",
-  },
-  cdpTest: {
-    soTest: {
-      condition1: "",
-      condition2: "",
-      condition3: "",
-      condition4: "",
-      condition5: "",
-      condition6: "",
-    },
-    mcTest: {
-      bt: "",
-      ft: "",
-    },
-    adTest: {
-      tu: "",
-      td: "",
-    },
-    notes: "",
-  },
-};
+// const initialValues = {
+//   gsoTest: {
+//     condition1: "",
+//     condition2: "",
+//     condition3: "",
+//     condition4: "",
+//     condition5: "",
+//     condition6: "",
+//     steppingFakuda: "",
+//     notes: "",
+//   },
+//   cdpTest: {
+//     soTest: {
+//       condition1: "",
+//       condition2: "",
+//       condition3: "",
+//       condition4: "",
+//       condition5: "",
+//       condition6: "",
+//     },
+//     mcTest: {
+//       bt: "",
+//       ft: "",
+//     },
+//     adTest: {
+//       tu: "",
+//       td: "",
+//     },
+//     notes: "",
+//   },
+// };
 
 const validationSchema = Yup.object().shape({});
 
@@ -121,7 +121,7 @@ const PosturalForm = (props) => {
       condition5: posturalValues.gsoTest.condition5,
       condition6: posturalValues.gsoTest.condition6,
       steppingFakuda: posturalValues.gsoTest.steppingFakuda,
-      notes: posturalValues.gsoTest.notes,
+      notes: posturalValues.gsoTest.notes ? posturalValues.gsoTest.notes : "",
     },
     cdpTest: {
       soTest: {
@@ -140,7 +140,7 @@ const PosturalForm = (props) => {
         tu: posturalValues.cdpTest.adTest.tu,
         td: posturalValues.cdpTest.adTest.td,
       },
-      notes: posturalValues.cdpTest.notes,
+      notes: posturalValues.cdpTest.notes ? posturalValues.cdpTest.notes : "",
     },
   };
 
@@ -162,7 +162,7 @@ const PosturalForm = (props) => {
         })
       );
     }
-  }, []);
+  }, [dispatch, id]);
   const handleSubmit = async () => {};
 
   return (
