@@ -78,7 +78,6 @@ const AuralSymptom = (props) => {
       value: "Other",
     },
   ];
-
   return isSubmitting ? (
     <Box display="flex" justifyContent="center" my={6}>
       <CircularProgress />
@@ -120,6 +119,11 @@ const AuralSymptom = (props) => {
           <Box pt={35}>
             <Box mb={2.5}>
               <Input
+                disabled={
+                  !values.healthCondition.conditions.some(
+                    (item) => item === "Migraine"
+                  )
+                }
                 placeholder=""
                 value={values["healthCondition"]["Migraine"]}
                 fieldsize={{ width: "180px", height: "37px" }}
@@ -130,6 +134,11 @@ const AuralSymptom = (props) => {
             </Box>
             <Box mb={2.5}>
               <Input
+                disabled={
+                  !values.healthCondition.conditions.some(
+                    (item) => item === "Orthopedic Limitations"
+                  )
+                }
                 placeholder=""
                 value={values["healthCondition"]["OrthopedicLimitations"]}
                 fieldsize={{ width: "180px", height: "37px" }}
@@ -143,6 +152,11 @@ const AuralSymptom = (props) => {
             </Box>
             <Box mb={2.5}>
               <Input
+                disabled={
+                  !values.healthCondition.conditions.some(
+                    (item) => item === "Concussion/Head Injury"
+                  )
+                }
                 placeholder=""
                 value={values["healthCondition"]["ConcussionHeadInjury"]}
                 fieldsize={{ width: "180px", height: "37px" }}
@@ -156,6 +170,11 @@ const AuralSymptom = (props) => {
             </Box>
             <Box mb={2.5}>
               <Input
+                disabled={
+                  !values.healthCondition.conditions.some(
+                    (item) => item === "CVA/TIA"
+                  )
+                }
                 placeholder=""
                 value={values["healthCondition"]["CVATIA"]}
                 fieldsize={{ width: "180px", height: "37px" }}
@@ -166,6 +185,11 @@ const AuralSymptom = (props) => {
             </Box>
             <Box mb={2.5}>
               <Input
+                disabled={
+                  !values.healthCondition.conditions.some(
+                    (item) => item === "Recent Head Imaging"
+                  )
+                }
                 placeholder=""
                 value={values["healthCondition"]["RecentHeadImaging"]}
                 fieldsize={{ width: "180px", height: "37px" }}
@@ -179,6 +203,11 @@ const AuralSymptom = (props) => {
             </Box>
             <Box mb={2.5}>
               <Input
+                disabled={
+                  !values.healthCondition.conditions.some(
+                    (item) => item === "Other"
+                  )
+                }
                 placeholder=""
                 value={values["healthCondition"]["Other"]}
                 fieldsize={{ width: "180px", height: "37px" }}

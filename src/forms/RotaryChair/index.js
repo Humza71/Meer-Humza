@@ -1,28 +1,36 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Box, CircularProgress } from "@material-ui/core";
 import CreateReportFooter from "components/CreateReportFooter";
+import { useDispatch, useSelector } from "react-redux";
 
 import ReportCard from "components/reports/ReportCard";
 import Toggle from "components/reports/Toggle";
 import Divider from "@material-ui/core/Divider";
 import TextArea from "components/reports/TextArea";
 import Section from "components/reports/Section";
+import {
+  rotaryChairReport,
+  getRotaryChair,
+  LoadingStates,
+} from "../../redux/reducers/reportReducer";
 
-const initialValues = {
-  right: "",
-  left: "",
-  notes: "",
-};
+// const initialValues = {
+//   right: "",
+//   left: "",
+//   notes: "",
+// };
 
 const validationSchema = Yup.object().shape({});
 
 const InnerForm = (props) => {
   const { setFieldValue, isSubmitting, values } = props;
+  const reportLoading = useSelector((state) => state.reportReducer.loading);
 
-  return isSubmitting ? (
+  return isSubmitting ||
+    reportLoading === LoadingStates.REPORT_CREATION_LOADING ? (
     <Box display="flex" justifyContent="center" my={6}>
       <CircularProgress />
     </Box>
@@ -93,11 +101,43 @@ const InnerForm = (props) => {
   );
 };
 
-const RotaryChair = () => {
+const RotaryChair = (props) => {
+  const { match = {} } = props || {};
+  const { params = {} } = match;
+  const { id } = params;
+  const dispatch = useDispatch();
+  const rotaryChairValues = useSelector(
+    (state) => state.reportReducer.rotaryChair
+  );
+  const initialValues = {
+    right: rotaryChairValues?.right,
+    left: rotaryChairValues?.left,
+    notes: rotaryChairValues?.notes,
+  };
+
+  const handleSave = (values) => {
+    dispatch(
+      rotaryChairReport({
+        reportId: id,
+        ...values,
+      })
+    );
+  };
+
+  useEffect(() => {
+    if (id) {
+      dispatch(
+        getRotaryChair({
+          reportId: id,
+        })
+      );
+    }
+  }, [dispatch, id]);
   const handleSubmit = async () => {};
   return (
     <Fragment>
       <Formik
+        enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}
         validate={(values) => {
@@ -110,7 +150,12 @@ const RotaryChair = () => {
         {(formProps) => (
           <form onSubmit={handleSubmit}>
             <InnerForm {...formProps} />
-            <CreateReportFooter {...formProps} onSave={() => {}} />
+            <CreateReportFooter
+              {...formProps}
+              handleSave={() => {
+                handleSave(formProps.values);
+              }}
+            />
           </form>
         )}
       </Formik>

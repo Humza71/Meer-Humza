@@ -48,9 +48,9 @@ const HallPick = ({ formTitle, formKey, setFieldValue, values }) => {
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
                     name={`${formKey}.${key}`}
-                    value={data[key]}
+                    value={data[key]["index"]}
                     onChange={(value) =>
-                      setFieldValue(`${formKey}.${key}`, value)
+                      setFieldValue(`${formKey}.${key}.index`, value)
                     }
                     options={[
                       { title: "Negative", value: "negative" },
@@ -63,9 +63,9 @@ const HallPick = ({ formTitle, formKey, setFieldValue, values }) => {
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
                     name={`${formKey}.${key}`}
-                    value={data[key]}
+                    value={data[key]["vertigo"]}
                     onChange={(value) =>
-                      setFieldValue(`${formKey}.${key}`, value)
+                      setFieldValue(`${formKey}.${key}.vertigo`, value)
                     }
                     options={[
                       { title: "Yes", value: "yes" },
@@ -83,9 +83,9 @@ const HallPick = ({ formTitle, formKey, setFieldValue, values }) => {
                     }}
                     direction={"row"}
                     name={`${formKey}.${key}`}
-                    value={data[key]}
+                    value={data[key]["beatDirection"]}
                     onChange={(value) =>
-                      setFieldValue(`${formKey}.${key}`, value)
+                      setFieldValue(`${formKey}.${key}.beatDirection`, value)
                     }
                     options={[
                       { title: "Up & Right Torsion", value: "ur" },

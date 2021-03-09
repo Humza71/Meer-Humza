@@ -72,7 +72,7 @@ const InnerForm = (props) => {
     status,
   } = props;
 
-  const { files } = values;
+  const { files = [] } = values;
   const hasFiles = files.length > 0;
 
   const handleDelete = (index) => {

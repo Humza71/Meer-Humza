@@ -170,7 +170,7 @@ const tabsInfo = [
   },
 ];
 
-const CreateReport = () => {
+const CreateReport = (props) => {
   const dispatch = useDispatch();
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
   const completed = useSelector((state) => state.reportReducer.completed);
@@ -183,9 +183,9 @@ const CreateReport = () => {
     dispatch(setStepNewReport(0));
     dispatch(clearNewReport());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
-  useEffect(() => {}, []);
+  // useEffect(() => {}, []);
 
   return (
     <Box pt={10} display="flex" flexDirection="column" height="100%">
@@ -214,7 +214,7 @@ const CreateReport = () => {
       </AppBar>
       {tabsInfo.map((tabItem, index) => (
         <TabPanel value={stepNewReport} index={index} key={index}>
-          <tabItem.component />
+          <tabItem.component {...props} />
         </TabPanel>
       ))}
       <UploadedFilesButton />

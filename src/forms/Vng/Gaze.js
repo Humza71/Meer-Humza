@@ -56,9 +56,9 @@ const Gaze = ({ formTitle, formKey, setFieldValue, values }) => {
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
                     name={`${formKey}.${key}`}
-                    value={data[key]}
+                    value={data[key]["consent"]}
                     onChange={(value) =>
-                      setFieldValue(`${formKey}.${key}`, value)
+                      setFieldValue(`${formKey}.${key}.consent`, value)
                     }
                     options={[
                       { title: "Normal", value: "normal" },
@@ -71,9 +71,9 @@ const Gaze = ({ formTitle, formKey, setFieldValue, values }) => {
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
                     name={`${formKey}.${key}`}
-                    value={data[key]}
+                    value={data[key]["vertigo"]}
                     onChange={(value) =>
-                      setFieldValue(`${formKey}.${key}`, value)
+                      setFieldValue(`${formKey}.${key}.vertigo`, value)
                     }
                     options={[
                       { title: "Yes", value: "yes" },
@@ -91,9 +91,9 @@ const Gaze = ({ formTitle, formKey, setFieldValue, values }) => {
                       height: "38px",
                     }}
                     name={`${formKey}.${key}`}
-                    value={data[key]}
+                    value={data[key]["beatDirection"]}
                     onChange={(value) =>
-                      setFieldValue(`${formKey}.${key}`, value)
+                      setFieldValue(`${formKey}.${key}.beatDirection`, value)
                     }
                     options={[
                       { title: "R", value: "r" },
