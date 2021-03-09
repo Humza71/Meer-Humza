@@ -35,7 +35,7 @@ const Select = styled(MuiSelect)`
 
 const HPI = (props) => {
   const { setFieldValue, isSubmitting, values } = props;
-  const { fnp, recentEpisode } = values["hpi"];
+  const { firstNotedProblem, mostRecentEpisode } = values["hpi"];
 
   const symtomsOptions = [
     {
@@ -106,18 +106,16 @@ const HPI = (props) => {
     },
   ];
 
-  // const disableInput = (index) => {
-  //   const disable =
-  //     (values["hpi"]["symptoms"] === "roomSpin" && index === 0) ||
-  //     (values["hpi"]["symptoms"] === "patientSpin" && index === 1) ||
-  //     (values["hpi"]["symptoms"] === "imbalance" && index === 2) ||
-  //     (values["hpi"]["symptoms"] === "lightHeaded" && index === 3)
-  //       ? false
-  //       : true;
+  const resetInputValues = (key) => {
+    symtomsOptions
+      .filter(({ value }) => !key.some((item) => item === value))
+      .map(({ value }) => setFieldValue(`hpi.symptomDuration-${value}`, ""));
+  };
 
-  //   debugger;
-  //   return disable;
-  // };
+  const otherOption = {
+    title: "Other",
+    value: "other",
+  };
 
   return isSubmitting ? (
     <Box display="flex" justifyContent="center" my={6}>
@@ -142,8 +140,10 @@ const HPI = (props) => {
                 inputVariant="outlined"
                 format="MM/dd/yyyy"
                 margin="normal"
-                value={fnp}
-                onChange={(value) => setFieldValue("hpi.fnp", value)}
+                value={firstNotedProblem}
+                onChange={(value) =>
+                  setFieldValue("hpi.firstNotedProblem", value)
+                }
                 fullWidth
                 KeyboardButtonProps={{
                   "aria-label": "change date",
@@ -161,8 +161,10 @@ const HPI = (props) => {
                 inputVariant="outlined"
                 format="MM/dd/yyyy"
                 margin="normal"
-                value={recentEpisode}
-                onChange={(value) => setFieldValue("hpi.recentEpisode", value)}
+                value={mostRecentEpisode}
+                onChange={(value) =>
+                  setFieldValue("hpi.mostRecentEpisode", value)
+                }
                 fullWidth
                 KeyboardButtonProps={{
                   "aria-label": "change date",
@@ -193,36 +195,46 @@ const HPI = (props) => {
                 width: "148px",
                 height: "38px",
               }}
+              exclusive={false}
               name={`hpi.symptoms`}
               value={values["hpi"]["symptoms"]}
-              onChange={(value) => setFieldValue(`hpi.symptoms`, value)}
+              onChange={(value) => {
+                setFieldValue(`hpi.symptoms`, value);
+                resetInputValues(value);
+              }}
               options={symtomsOptions}
             />
             <Input
               placeholder="Other"
               fieldsize={{ width: "148px", height: "38px" }}
               // value={values["hpi"]["symptoms"]}
-              onChange={(e) => setFieldValue(`hpi.symptoms`, e.target.value)}
+              onChange={(e) =>
+                setFieldValue(`hpi.symptoms`, [
+                  ...values["hpi"]["symptoms"],
+                  e.target.value,
+                ])
+              }
             />
           </BodyCell>
           <BodyCell>
             <FlexBox direction="row">
               <FlexBox direction="column">
-                {durationOption.map((item, index) => (
+                {[...symtomsOptions, otherOption].map((item, index) => (
                   <Box mb={2} key={index}>
                     <Input
                       disabled={
-                        durationOption.length - 1 === index
+                        [...symtomsOptions, otherOption].length - 1 === index
                           ? false
-                          : values["hpi"]["symptoms"] !==
-                            symtomsOptions[index]?.value
+                          : !values.hpi.symptoms.some(
+                              (item) => item === symtomsOptions[index]?.value
+                            )
                       }
                       fieldsize={{ width: "147px", height: "41px" }}
                       placeholder="Enter a value"
-                      value={values["hpi"][`symptomDuration-${index}`]}
+                      value={values["hpi"][`symptomDuration-${item.value}`]}
                       onChange={({ target }) =>
                         setFieldValue(
-                          `hpi.symptomDuration-${index}`,
+                          `hpi.symptomDuration-${item.value}`,
                           target.value
                         )
                       }
@@ -231,23 +243,24 @@ const HPI = (props) => {
                 ))}
               </FlexBox>
               <Box ml={2}>
-                {durationOption.map((item, index) => (
+                {[...symtomsOptions, otherOption].map((item, index) => (
                   <Box mb={2} key={index}>
                     <InputLabel htmlFor="filled-age-native-simple"></InputLabel>
                     <Select
                       disabled={
-                        durationOption.length - 1 === index
+                        [...symtomsOptions, otherOption].length - 1 === index
                           ? false
-                          : values["hpi"]["symptoms"] !==
-                            symtomsOptions[index]?.value
+                          : !values.hpi.symptoms.some(
+                              (item) => item === symtomsOptions[index]?.value
+                            )
                       }
                       variant="outlined"
                       native
                       label="Select"
-                      value={values["hpi"][`symptomDuration-unit-${index}`]}
+                      value={values["hpi"][`symptomDurationUnit-${item.value}`]}
                       onChange={({ target }) => {
                         setFieldValue(
-                          `hpi.symptomDuration-unit-${index}`,
+                          `hpi.symptomDurationUnit-${item.value}`,
                           target.value
                         );
                       }}
@@ -275,8 +288,9 @@ const HPI = (props) => {
                     disabled={
                       durationOption.length - 1 === index
                         ? false
-                        : values["hpi"]["symptoms"] !==
-                          symtomsOptions[index]?.value
+                        : !values.hpi.symptoms.some(
+                            (item) => item === symtomsOptions[index]?.value
+                          )
                     }
                     variant="outlined"
                     native

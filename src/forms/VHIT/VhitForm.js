@@ -7,9 +7,12 @@ import Toggle from "components/reports/Toggle";
 import { Box, CircularProgress, TableRow } from "@material-ui/core";
 import BodyCell from "components/reports/BodyCell";
 import TextArea from "components/reports/TextArea";
+import { useSelector } from "react-redux";
+import { LoadingStates } from "redux/reducers/reportReducer";
 
 const VhitForm = (props) => {
   const { setFieldValue, isSubmitting, values } = props;
+  const reportLoading = useSelector((state) => state.reportReducer.loading);
   const vhitQuestions = [
     {
       title: "",
@@ -64,7 +67,8 @@ const VhitForm = (props) => {
     { title: "LARP", key: "larp" },
   ];
 
-  return isSubmitting ? (
+  return isSubmitting ||
+    reportLoading === LoadingStates.REPORT_CREATION_LOADING ? (
     <Box display="flex" justifyContent="center" my={6}>
       <CircularProgress />
     </Box>

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
 import DateFnsUtils from "@date-io/date-fns";
 
@@ -15,7 +15,6 @@ import {
 
 import createTheme from "./theme";
 import Routes from "./routes/Routes";
-import { userInfo } from "./redux/reducers/authReducer";
 
 const jss = create({
   ...jssPreset(),
@@ -24,21 +23,21 @@ const jss = create({
 
 function App() {
   const theme = useSelector((state) => state.themeReducer);
-  const dispatch = useDispatch();
-  const [isUserLoaded, setIsUserLoaded] = useState(false);
+  // const dispatch = useDispatch();
+  // const [isUserLoaded, setIsUserLoaded] = useState(false);
 
-  useEffect(() => {
-    async function loadUser() {
-      await dispatch(userInfo());
-      setIsUserLoaded(true);
-    }
-    loadUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   async function loadUser() {
+  //   await dispatch(userInfo());
+  //   if (localStorage.getItem("token")) setIsUserLoaded(true);
+  //   }
+  //   loadUser();
+  //   eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
-  if (!isUserLoaded) {
-    return <div></div>;
-  }
+  // if (!isUserLoaded) {
+  //   return <div></div>;
+  // }
   return (
     <React.Fragment>
       <Helmet
