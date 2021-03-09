@@ -22,3 +22,5 @@ jobs:
         run: yarn && yarn build
       - name: Deploy app build to S3 bucket
         run: aws s3 sync ./build/ s3://${{ secrets.BUCKET_DEV }} --delete
+      - name: Invalidate Cloudfront
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DEV }} --paths "*"
