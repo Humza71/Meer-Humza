@@ -531,8 +531,7 @@ const VngForm = (props) => {
       bilateralWeakness: vngValues.calorics.bilateralWeakness,
     },
   };
-  console.log("vng values", vngValues);
-  console.log("initial values", initialValues);
+
   const handleSubmit = async () => {};
   const handleSave = (values) => {
     dispatch(

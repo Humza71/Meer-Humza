@@ -94,7 +94,7 @@ const InnerForm = (props) => {
           rowsMin={3}
           placeholder="Notes"
           value={values["notes"]}
-          onChange={(e) => setFieldValue(`notes`, e.target.value)}
+          onChange={(value) => setFieldValue(`notes`, value)}
         />
       </ReportCard>
     </>

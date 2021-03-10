@@ -72,39 +72,33 @@ const History = (props) => {
     useSelector((state) => state.reportReducer.history) || {};
   const initialValues = {
     hpi: {
-      "symptomDuration-roomSpin":
-        historyValues.hpi["symptomDuration-roomSpin"] || "",
-      "symptomDuration-patientSpin":
-        historyValues.hpi["symptomDuration-patientSpin"] || "",
-      "symptomDuration-imbalance":
-        historyValues.hpi["symptomDuration-imbalance"] || "",
-      "symptomDuration-lightHeaded":
-        historyValues.hpi["symptomDuration-lightHeaded"] || "",
-      "symptomDuration-other": historyValues.hpi["symptomDuration-other"] || "",
+      symptomDurationRoomSpin:
+        historyValues.hpi["symptomDurationRoomSpin"] || "",
+      symptomDurationPatientSpin:
+        historyValues.hpi["symptomDurationPatientSpin"] || "",
+      symptomDurationImbalance:
+        historyValues.hpi["symptomDurationImbalance"] || "",
+      symptomDurationLightHeaded:
+        historyValues.hpi["symptomDurationLightHeaded"] || "",
+      symptomDurationOther: historyValues.hpi["symptomDurationOther"] || "",
 
-      "symptomDurationUnit-roomSpin":
-        historyValues.hpi["symptomDurationUnit-roomSpin"] || "",
-      "symptomDurationUnit-patientSpin":
-        historyValues.hpi["symptomDurationUnit-patientSpin"] || "",
-      "symptomDurationUnit-imbalance":
-        historyValues.hpi["symptomDurationUnit-imbalance"] || "",
-      "symptomDurationUnit-lightHeaded":
-        historyValues.hpi["symptomDurationUnit-lightHeaded"] || "",
-      "symptomDurationUnit-other":
-        historyValues.hpi["symptomDuration-other"] || "",
+      symptomDurationUnitRoomSpin:
+        historyValues.hpi["symptomDurationUnitRoomSpin"] || "",
+      symptomDurationUnitPatientSpin:
+        historyValues.hpi["symptomDurationUnitPatientSpin"] || "",
+      symptomDurationUnitImbalance:
+        historyValues.hpi["symptomDurationUnitImbalance"] || "",
+      symptomDurationUnitLightHeaded:
+        historyValues.hpi["symptomDurationUnitLightHeaded"] || "",
+      symptomDurationUnitOther: historyValues.hpi["symptomDuratiOnother"] || "",
 
-      "provokesWith-lyingDown":
-        historyValues.hpi["provokesWith-lyingDown"] || "",
-      "provokesWith-sittingUp":
-        historyValues.hpi["provokesWith-sittingUp"] || "",
-      "provokesWith-rollingOver":
-        historyValues.hpi["provokesWith-rollingOver"] || "",
-      "provokesWith-horizontalHeadMovement":
-        historyValues.hpi["provokesWith-horizontalHeadMovement"] || "",
-      "provokesWith-verticalHeadPitch":
-        historyValues.hpi["symptomDuration-verticalHeadPitch"] || "",
-      "provokesWith-walking":
-        historyValues.hpi["symptomDuration-walking"] || "",
+      provokesWithRoomSpin: historyValues.hpi["provokesWithRoomSpin"] || "",
+      provokesWithPatientSpin:
+        historyValues.hpi["provokesWithPatientSpin"] || "",
+      provokesWithImbalance: historyValues.hpi["provokesWithImbalance"] || "",
+      provokesWithLightHeaded:
+        historyValues.hpi["provokesWithLightHeaded"] || "",
+      provokesWithOther: historyValues.hpi["symptomDurationOther"] || "",
 
       firstNotedProblem: historyValues.hpi.firstNotedProblem
         ? new Date(historyValues.hpi.firstNotedProblem)
@@ -172,7 +166,6 @@ const History = (props) => {
     }
   }, [dispatch, id]);
   const handleSubmit = async (values) => {};
-  console.log(initialValues, "my values");
   return (
     <Fragment>
       <Formik

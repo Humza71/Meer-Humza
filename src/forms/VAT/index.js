@@ -1,9 +1,15 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Box, CircularProgress } from "@material-ui/core";
 import CreateReportFooter from "components/CreateReportFooter";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  vatVorteqReport,
+  getVatVorteq,
+  LoadingStates,
+} from "../../redux/reducers/reportReducer";
 
 import ReportCard from "components/reports/ReportCard";
 import Toggle from "components/reports/Toggle";
@@ -11,24 +17,11 @@ import Divider from "@material-ui/core/Divider";
 import TextArea from "components/reports/TextArea";
 import Section from "components/reports/Section";
 
-const initialValues = {
-  lateral: {
-    normality: "",
-    gain: "",
-    lag: "",
-  },
-  vertical: {
-    normality: "",
-    gain: "",
-    lag: "",
-  },
-  notes: "",
-};
-
 const validationSchema = Yup.object().shape({});
 
 const InnerForm = (props) => {
   const { setFieldValue, isSubmitting, values } = props;
+  const reportLoading = useSelector((state) => state.reportReducer.loading);
   const rows = [
     {
       title: "Lateral",
@@ -82,7 +75,8 @@ const InnerForm = (props) => {
     },
   ];
 
-  return isSubmitting ? (
+  return isSubmitting ||
+    reportLoading === LoadingStates.REPORT_CREATION_LOADING ? (
     <Box display="flex" justifyContent="center" my={6}>
       <CircularProgress />
     </Box>
@@ -119,18 +113,60 @@ const InnerForm = (props) => {
           rowsMin={3}
           placeholder="Notes"
           value={values["notes"]}
-          onChange={(e) => setFieldValue(`notes`, e.target.value)}
+          onChange={(value) => setFieldValue(`notes`, value)}
         />
       </ReportCard>
     </>
   );
 };
 
-const VAT = () => {
+const VAT = (props) => {
+  const { match = {} } = props || {};
+  const { params = {} } = match;
+  const { id } = params;
+  const dispatch = useDispatch();
+  const vatVorteqValues = useSelector((state) => state.reportReducer.vatVorteq);
+
+  const initialValues = {
+    lateral: {
+      normality: vatVorteqValues.lateral.normality
+        ? vatVorteqValues.lateral.normality
+        : "",
+      gain: vatVorteqValues.lateral.gain ? vatVorteqValues.lateral.gain : "",
+      lag: vatVorteqValues.lateral.lag ? vatVorteqValues.lateral.lag : "",
+    },
+    vertical: {
+      normality: vatVorteqValues.vertical.normality,
+      gain: vatVorteqValues.vertical.gain,
+      lag: vatVorteqValues.vertical.lag,
+    },
+    notes: vatVorteqValues.notes ? vatVorteqValues.notes : "",
+  };
+
+  const handleSave = (values) => {
+    dispatch(
+      vatVorteqReport({
+        reportId: id,
+        ...values,
+      })
+    );
+  };
+
+  useEffect(() => {
+    if (id) {
+      dispatch(
+        getVatVorteq({
+          reportId: id,
+        })
+      );
+    }
+  }, [dispatch, id]);
+
   const handleSubmit = async () => {};
   return (
     <Fragment>
       <Formik
+        enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}
         validate={(values) => {
@@ -143,7 +179,12 @@ const VAT = () => {
         {(formProps) => (
           <form onSubmit={handleSubmit}>
             <InnerForm {...formProps} />
-            <CreateReportFooter {...formProps} onSave={() => {}} />
+            <CreateReportFooter
+              {...formProps}
+              handleSave={() => {
+                handleSave(formProps.values);
+              }}
+            />
           </form>
         )}
       </Formik>

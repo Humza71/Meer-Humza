@@ -79,7 +79,13 @@ const AudiogramForm = (props) => {
               </BodyCell>
             ))}
             <BodyCell>
-              <Input fieldsize={{ width: "224px" }} />
+              <Input
+                fieldsize={{ width: "224px" }}
+                value={data[key]["instruction"]}
+                onChange={(e) =>
+                  setFieldValue(`audiogram.${key}.instruction`, e.target.value)
+                }
+              />
             </BodyCell>
           </TableRow>
         ))}
