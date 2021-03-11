@@ -7,6 +7,7 @@ import {
   getElectrophys,
   LoadingStates,
 } from "../../redux/reducers/reportReducer";
+import { setStepNewReport } from "redux/reducers/uiReducer";
 import { useDispatch, useSelector } from "react-redux";
 import CreateReportFooter from "components/CreateReportFooter";
 import ABRform from "./ABRform";
@@ -118,7 +119,7 @@ const Electrophys = (props) => {
   const electrophysValues = useSelector(
     (state) => state.reportReducer.electrophys
   );
-
+  const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
   const initialValues = {
     abr: {
       right: {
@@ -193,7 +194,20 @@ const Electrophys = (props) => {
     }
   }, [dispatch, id]);
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async (values) => {
+    try {
+      handleSave(values);
+      dispatch(setStepNewReport(stepNewReport + 1));
+      // setStatus({ sent: true });
+      // setSubmitting(false);
+    } catch (error) {
+      // setStatus({ sent: false });
+      // setErrors({ submit: error.message });
+      // setSubmitting(false);
+    }
+  };
+  console.log("values", electrophysValues);
+  console.log("initialValues", initialValues);
   return (
     <Fragment>
       <Formik
@@ -208,7 +222,7 @@ const Electrophys = (props) => {
         onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={() => handleSubmit(formProps.values)}>
             <InnerForm {...formProps} />
             <CreateReportFooter
               {...formProps}

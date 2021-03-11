@@ -25,10 +25,10 @@ import {
   getElectrophysById,
   addAudiometry,
   getAudiometryById,
-  // addScreenings,
-  // getScreeningsById,
-  // addTestComments,
-  // getTestCommentsById,
+  addScreenings,
+  getScreeningsById,
+  addTestComments,
+  getTestCommentsById,
 } from "../../services/reportService";
 // import { setMessage } from "./messageReducer";
 // import { createNewReport } from "services/reportService";
@@ -56,6 +56,8 @@ export const slice = createSlice({
       state.vatVorteq = initialState.vatVorteq;
       state.electrophys = initialState.electrophys;
       state.audiometry = initialState.audiometry;
+      state.screenings = initialState.screenings;
+      state.comments = initialState.comments;
     },
     updateNewReport: (state, action) => {
       const { patientDemographics = {} } = action.payload || {};
@@ -126,6 +128,15 @@ export const slice = createSlice({
       state.audiometry.oe = action.payload.audiometry.oe;
       state.audiometry.audiogram = action.payload.audiometry.audiogram;
     },
+    setScreenings: (state, action) => {
+      state.screenings.vast = action.payload.screenings.vast;
+      state.screenings.cervical = action.payload.screenings.cervical;
+      state.screenings.actuity = action.payload.screenings.actuity;
+      state.screenings.impulse = action.payload.screenings.impulse;
+    },
+    setComments: (state, action) => {
+      state.comments = action.payload.testComments;
+    },
   },
 });
 
@@ -144,6 +155,8 @@ const {
   setVatVorteq,
   setElectrophys,
   setAudiometry,
+  setScreenings,
+  setComments,
 } = slice.actions;
 
 export const updateReport = (values, onSuccess) => async (dispatch) => {
@@ -221,32 +234,28 @@ export const getAllTechnicians = () => async (dispatch) => {
 
 export const addProvider = (newProvider, save) => async (dispatch) => {
   dispatch(addItemToProviders(newProvider));
-  if (save) {
-    try {
-      const response = await saveProvider(newProvider);
-      if (response) {
-        console.log("providerAddedSuccessfully");
-      }
-    } catch (error) {
-      // dispatch(setMessage({ message: "Email or password already exist!" }));
+  try {
+    const response = await saveProvider(newProvider);
+    if (response) {
+      console.log("providerAddedSuccessfully");
     }
-    // Do API Call to save newProvider
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
+  // Do API Call to save newProvider
 };
 
 export const addTechnician = (newTechnician, save) => async (dispatch) => {
   dispatch(addItemToTechnicians(newTechnician));
-  if (save) {
-    try {
-      const response = await saveTechnician(newTechnician);
-      if (response) {
-        console.log("providerAddedSuccessfully");
-      }
-    } catch (error) {
-      // dispatch(setMessage({ message: "Email or password already exist!" }));
+  try {
+    const response = await saveTechnician(newTechnician);
+    if (response) {
+      console.log("providerAddedSuccessfully");
     }
-    // Do API Call to save newTechnician
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
+  // Do API Call to save newTechnician
 };
 
 export const historyReport = (values) => async (dispatch) => {
@@ -409,7 +418,7 @@ export const audiometryReport = (values) => async (dispatch) => {
   try {
     const response = await addAudiometry(values);
     if (response) {
-      console.log("Electrophys added Successfully");
+      console.log("Audiometry added Successfully");
     }
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
@@ -421,6 +430,51 @@ export const getAudiometry = (values) => async (dispatch) => {
   try {
     const response = await getAudiometryById(values);
     dispatch(setAudiometry(response.data));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const screeningsReport = (values) => async (dispatch) => {
+  dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  try {
+    const response = await addScreenings(values);
+    if (response) {
+      console.log("Screenings added Successfully");
+    }
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+  dispatch(setLoading(null));
+};
+
+export const getScreenings = (values) => async (dispatch) => {
+  try {
+    const response = await getScreeningsById(values);
+    dispatch(setScreenings(response.data));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const CommentsReport = (values) => async (dispatch) => {
+  dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  try {
+    const response = await addTestComments(values);
+    if (response) {
+      console.log("Comments added Successfully");
+    }
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+  dispatch(setLoading(null));
+};
+
+export const getComments = (values) => async (dispatch) => {
+  try {
+    const response = await getTestCommentsById(values);
+
+    dispatch(setComments(response.data));
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }

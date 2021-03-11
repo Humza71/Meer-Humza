@@ -16,8 +16,11 @@ import {
   getHistoryReport,
   LoadingStates,
 } from "../../redux/reducers/reportReducer";
+import { setStepNewReport } from "redux/reducers/uiReducer";
 
-const validationSchema = Yup.object().shape({});
+const validationSchema = Yup.object().shape({
+  history: Yup.object(),
+});
 
 const InnerForm = (props) => {
   const { setFieldValue, isSubmitting, values } = props;
@@ -70,6 +73,7 @@ const InnerForm = (props) => {
 const History = (props) => {
   const historyValues =
     useSelector((state) => state.reportReducer.history) || {};
+  const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
   const initialValues = {
     hpi: {
       symptomDurationRoomSpin:
@@ -165,7 +169,24 @@ const History = (props) => {
       );
     }
   }, [dispatch, id]);
-  const handleSubmit = async (values) => {};
+  const handleSubmit = async (values) => {
+    try {
+      handleSave(values);
+      dispatch(setStepNewReport(stepNewReport + 1));
+      // setStatus({ sent: true });
+      // setSubmitting(false);
+    } catch (error) {
+      // setStatus({ sent: false });
+      // setErrors({ submit: error.message });
+      // setSubmitting(false);
+    }
+  };
+
+  // const handleSubmit = async () => {
+  //   dispatch(setStepNewReport(stepNewReport + 1));
+  // };
+
+  console.log(stepNewReport, "value");
   return (
     <Fragment>
       <Formik
@@ -179,7 +200,7 @@ const History = (props) => {
         onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={() => handleSubmit(formProps.values)}>
             <InnerForm {...formProps} />
             <CreateReportFooter
               {...formProps}

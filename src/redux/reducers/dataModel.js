@@ -116,6 +116,25 @@ const initialState = {
       leftEar: {},
     },
   },
+  screenings: {
+    vast: {
+      right: {},
+      left: {},
+    },
+    cervical: {
+      right: {},
+      left: {},
+    },
+    actuity: {
+      horizontal: {},
+      vertical: {},
+    },
+    impulse: {
+      right: {},
+      left: {},
+    },
+  },
+  comments: {},
 };
 
 export default initialState;

@@ -7,6 +7,7 @@ import {
   audiometryReport,
   getAudiometry,
 } from "../../redux/reducers/reportReducer";
+import { setStepNewReport } from "redux/reducers/uiReducer";
 import { useDispatch, useSelector } from "react-redux";
 import CreateReportFooter from "components/CreateReportFooter";
 import OutoscopyForm from "./OutoscopyForm";
@@ -95,7 +96,7 @@ const AudioMetery = (props) => {
   const audiometryValues = useSelector(
     (state) => state.reportReducer.audiometry
   );
-
+  const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
   const initialValues = {
     otoscopy: {
       rightEar: {
@@ -175,7 +176,19 @@ const AudioMetery = (props) => {
     }
   }, [dispatch, id]);
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async (values) => {
+    try {
+      handleSave(values);
+      dispatch(setStepNewReport(stepNewReport + 1));
+      // setStatus({ sent: true });
+      // setSubmitting(false);
+    } catch (error) {
+      // setStatus({ sent: false });
+      // setErrors({ submit: error.message });
+      // setSubmitting(false);
+    }
+  };
+
   return (
     <Fragment>
       <Formik
@@ -190,7 +203,7 @@ const AudioMetery = (props) => {
         onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={() => handleSubmit(formProps.values)}>
             <InnerForm {...formProps} />
             <CreateReportFooter
               {...formProps}

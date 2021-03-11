@@ -440,7 +440,7 @@ export function addScreenings(payload) {
 
 export function getScreeningsById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/add/screenings/${payload.reportId}`)
+    getUtil(`/api/get-screenings-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -461,7 +461,7 @@ export function addTestComments(payload) {
     },
   };
   return new Promise((resolve, reject) => {
-    postUtil("/api/add/testComments", data)
+    postUtil("/api/add/test-comments", data)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -476,7 +476,7 @@ export function addTestComments(payload) {
 
 export function getTestCommentsById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/add/testComments/${payload.reportId}`)
+    getUtil(`/api/get-test-comments-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);

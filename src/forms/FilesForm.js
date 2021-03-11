@@ -150,6 +150,9 @@ const InnerForm = (props) => {
 const FilesForm = () => {
   const newReport = useSelector((state) => state.reportReducer.newReport);
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
+  // const { match = {} } = props || {};
+  // const { params = {} } = match;
+  // const { id } = params;
   const dispatch = useDispatch();
 
   const initialValues = {

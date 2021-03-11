@@ -10,6 +10,7 @@ import {
   getVatVorteq,
   LoadingStates,
 } from "../../redux/reducers/reportReducer";
+import { setStepNewReport } from "redux/reducers/uiReducer";
 
 import ReportCard from "components/reports/ReportCard";
 import Toggle from "components/reports/Toggle";
@@ -126,6 +127,7 @@ const VAT = (props) => {
   const { id } = params;
   const dispatch = useDispatch();
   const vatVorteqValues = useSelector((state) => state.reportReducer.vatVorteq);
+  const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
 
   const initialValues = {
     lateral: {
@@ -162,7 +164,19 @@ const VAT = (props) => {
     }
   }, [dispatch, id]);
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async (values) => {
+    try {
+      handleSave(values);
+      dispatch(setStepNewReport(stepNewReport + 1));
+      // setStatus({ sent: true });
+      // setSubmitting(false);
+    } catch (error) {
+      // setStatus({ sent: false });
+      // setErrors({ submit: error.message });
+      // setSubmitting(false);
+    }
+  };
+
   return (
     <Fragment>
       <Formik
@@ -177,7 +191,7 @@ const VAT = (props) => {
         onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={() => handleSubmit(formProps.values)}>
             <InnerForm {...formProps} />
             <CreateReportFooter
               {...formProps}

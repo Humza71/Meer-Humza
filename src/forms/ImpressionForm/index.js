@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 
 import * as Yup from "yup";
 import { Formik } from "formik";
@@ -9,6 +9,8 @@ import { Typography, Divider, Box } from "@material-ui/core";
 import Toggle from "components/reports/Toggle";
 import AdvancedSelect from "components/AdvancedSelect";
 import styled from "styled-components/macro";
+import { useDispatch, useSelector } from "react-redux";
+import { setStepNewReport } from "redux/reducers/uiReducer";
 
 const Lable = styled(Typography)`
   color: #09539e;
@@ -61,8 +63,45 @@ const InnerForm = (props) => {
   );
 };
 
-const ImpressionForm = () => {
-  const handleSubmit = async () => {};
+const ImpressionForm = (props) => {
+  const { match = {} } = props || {};
+  const { params = {} } = match;
+  const { id } = params;
+  const dispatch = useDispatch();
+  const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
+
+  const handleSave = (values) => {
+    // dispatch(
+    //   rotaryChairReport({
+    //     reportId: id,
+    //     ...values,
+    //   })
+    // );
+  };
+
+  useEffect(() => {
+    if (id) {
+      // dispatch(
+      //   getRotaryChair({
+      //     reportId: id,
+      //   })
+      // );
+    }
+  }, [dispatch, id]);
+
+  const handleSubmit = async (values) => {
+    try {
+      handleSave(values);
+      dispatch(setStepNewReport(stepNewReport + 1));
+      // setStatus({ sent: true });
+      // setSubmitting(false);
+    } catch (error) {
+      // setStatus({ sent: false });
+      // setErrors({ submit: error.message });
+      // setSubmitting(false);
+    }
+  };
+
   return (
     <Fragment>
       <Formik
@@ -76,9 +115,14 @@ const ImpressionForm = () => {
         onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={() => handleSubmit(formProps.values)}>
             <InnerForm {...formProps} />
-            <CreateReportFooter {...formProps} onSave={() => {}} />
+            <CreateReportFooter
+              {...formProps}
+              handleSave={() => {
+                handleSave(formProps.values);
+              }}
+            />
           </form>
         )}
       </Formik>

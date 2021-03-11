@@ -78,8 +78,11 @@ const ElectrophyForm = (props) => {
             <BodyCell>
               <Box ml={10}>
                 <Input
+                  value={data[key]["ratio"]}
                   fieldsize={{ width: "356px" }}
-                  onChange={(value) => setFieldValue(`eco.${key}.notes`, value)}
+                  onChange={(event) => {
+                    setFieldValue(`eco.${key}.ratio`, event.target.value);
+                  }}
                 />
               </Box>
             </BodyCell>
@@ -90,7 +93,7 @@ const ElectrophyForm = (props) => {
         rowsMin={3}
         placeholder="Notes"
         value={data["notes"]}
-        onChange={(value) => setFieldValue(`notes`, value)}
+        onChange={(value) => setFieldValue(`eco.notes`, value)}
       />
     </ReportCard>
   );

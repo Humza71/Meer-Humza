@@ -94,7 +94,7 @@ const AudiogramForm = (props) => {
         rowsMin={3}
         placeholder="Notes"
         value={data["notes"]}
-        onChange={(value) => setFieldValue(`ai.notes`, value)}
+        onChange={(value) => setFieldValue(`audiogram.notes`, value)}
       />
     </ReportCard>
   );

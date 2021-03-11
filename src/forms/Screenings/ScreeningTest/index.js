@@ -50,9 +50,9 @@ const ScreeningTest = ({ forms, values, setFieldValue }) => {
                 rowsMin={3}
                 placeholder="Notes"
                 value={values[sectionKey]["notes"]}
-                onChange={(e) =>
-                  setFieldValue(`${sectionKey}.notes`, e.target.value)
-                }
+                onChange={(value) => {
+                  setFieldValue(`${sectionKey}.notes`, value);
+                }}
               />
             </ReportCard>
           </Grid>
