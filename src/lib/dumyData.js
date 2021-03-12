@@ -238,12 +238,12 @@ export const headCells = [
     disablePadding: false,
     label: "TECHNICIAN",
   },
-  {
-    id: "headDoctor",
-    numeric: false,
-    disablePadding: false,
-    label: "HEAD DOCTOR",
-  },
+  // {
+  //   id: "headDoctor",
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: "HEAD DOCTOR",
+  // },
   {
     id: "impression",
     numeric: false,

@@ -14,6 +14,7 @@ import CreateReportFooter from "components/CreateReportFooter";
 import Tabs from "components/Tabs";
 import { TabWrapper } from "components/Tabs";
 import { vngReport, getVng, LoadingStates } from "redux/reducers/reportReducer";
+import { setStepNewReport } from "redux/reducers/uiReducer";
 
 // const initialValues = {
 //   oculuMotors: {
@@ -307,6 +308,7 @@ const VngForm = (props) => {
   const { id } = params;
   const dispatch = useDispatch();
   const vngValues = useSelector((state) => state.reportReducer.vng);
+  const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
 
   const initialValues = {
     // ...vngValues,
@@ -512,6 +514,7 @@ const VngForm = (props) => {
         beatDirection: vngValues.hallPick.left.beatDirection,
         deg: vngValues.hallPick.left.deg ? vngValues.hallPick.left.deg : "",
       },
+      notes: vngValues.hallPick.notes ? vngValues.hallPick.notes : "",
     },
     calorics: {
       right: {
@@ -528,12 +531,11 @@ const VngForm = (props) => {
         uwDp: vngValues.calorics.left.uwDp || "",
         fixationIndex: vngValues.calorics.left.fixationIndex || "",
       },
+      notes: vngValues.calorics.notes ? vngValues.calorics.notes : "",
       bilateralWeakness: vngValues.calorics.bilateralWeakness,
     },
   };
-  console.log("vng values", vngValues);
-  console.log("initial values", initialValues);
-  const handleSubmit = async () => {};
+
   const handleSave = (values) => {
     dispatch(
       vngReport({
@@ -554,6 +556,19 @@ const VngForm = (props) => {
     }
   }, [id, dispatch]);
 
+  const handleSubmit = async (values) => {
+    try {
+      handleSave(values);
+      dispatch(setStepNewReport(stepNewReport + 1));
+      // setStatus({ sent: true });
+      // setSubmitting(false);
+    } catch (error) {
+      // setStatus({ sent: false });
+      // setErrors({ submit: error.message });
+      // setSubmitting(false);
+    }
+  };
+
   return (
     <Fragment>
       <Formik
@@ -568,7 +583,7 @@ const VngForm = (props) => {
         onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={() => handleSubmit(formProps.values)}>
             <InnerForm {...formProps} />
             <CreateReportFooter
               {...formProps}

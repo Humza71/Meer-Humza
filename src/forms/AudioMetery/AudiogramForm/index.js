@@ -79,7 +79,13 @@ const AudiogramForm = (props) => {
               </BodyCell>
             ))}
             <BodyCell>
-              <Input fieldsize={{ width: "224px" }} />
+              <Input
+                fieldsize={{ width: "224px" }}
+                value={data[key]["instruction"]}
+                onChange={(e) =>
+                  setFieldValue(`audiogram.${key}.instruction`, e.target.value)
+                }
+              />
             </BodyCell>
           </TableRow>
         ))}
@@ -88,7 +94,7 @@ const AudiogramForm = (props) => {
         rowsMin={3}
         placeholder="Notes"
         value={data["notes"]}
-        onChange={(value) => setFieldValue(`ai.notes`, value)}
+        onChange={(value) => setFieldValue(`audiogram.notes`, value)}
       />
     </ReportCard>
   );

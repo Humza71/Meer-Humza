@@ -17,6 +17,7 @@ import {
   getPosturalStability,
   LoadingStates,
 } from "../../redux/reducers/reportReducer";
+import { setStepNewReport } from "redux/reducers/uiReducer";
 
 const Alert = styled(MuiAlert)(spacing);
 
@@ -111,6 +112,7 @@ const PosturalForm = (props) => {
   const dispatch = useDispatch();
   const posturalValues =
     useSelector((state) => state.reportReducer.posturalStability) || {};
+  const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
 
   const initialValues = {
     gsoTest: {
@@ -163,7 +165,18 @@ const PosturalForm = (props) => {
       );
     }
   }, [dispatch, id]);
-  const handleSubmit = async () => {};
+  const handleSubmit = async (values) => {
+    try {
+      handleSave(values);
+      dispatch(setStepNewReport(stepNewReport + 1));
+      // setStatus({ sent: true });
+      // setSubmitting(false);
+    } catch (error) {
+      // setStatus({ sent: false });
+      // setErrors({ submit: error.message });
+      // setSubmitting(false);
+    }
+  };
 
   return (
     <Fragment>
@@ -177,7 +190,7 @@ const PosturalForm = (props) => {
         onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={() => handleSubmit(formProps.values)}>
             <InnerForm {...formProps} />
             <CreateReportFooter
               {...formProps}

@@ -40,19 +40,19 @@ const HPI = (props) => {
   const symtomsOptions = [
     {
       title: "Room Spins",
-      value: "roomSpin",
+      value: "RoomSpin",
     },
     {
       title: "Patient Spins",
-      value: "patientSpin",
+      value: "PatientSpin",
     },
     {
       title: "Imbalance",
-      value: "imbalance",
+      value: "Imbalance",
     },
     {
       title: "LightHeaded",
-      value: "lightHeaded",
+      value: "LightHeaded",
     },
   ];
 
@@ -82,39 +82,39 @@ const HPI = (props) => {
   const provokesOption = [
     {
       title: "Lying Down",
-      value: "lyingDown",
+      value: "LyingDown",
     },
     {
       title: "Sitting Up",
-      value: "sittingUp",
+      value: "SittingUp",
     },
     {
       title: "Rolling Over",
-      value: "rollingOver",
+      value: "RollingOver",
     },
     {
       title: "Horizontal Head Movement",
-      value: "horizontalHeadMovement",
+      value: "HorizontalHeadMovement",
     },
     {
       title: "Vertical Head Pitch",
-      value: "verticalHeadPitch",
+      value: "VerticalHeadPitch",
     },
     {
       title: "Walking",
-      value: "walking",
+      value: "Walking",
     },
   ];
 
   const resetInputValues = (key) => {
     symtomsOptions
       .filter(({ value }) => !key.some((item) => item === value))
-      .map(({ value }) => setFieldValue(`hpi.symptomDuration-${value}`, ""));
+      .map(({ value }) => setFieldValue(`hpi.symptomDuration${value}`, ""));
   };
 
   const otherOption = {
     title: "Other",
-    value: "other",
+    value: "Other",
   };
 
   return isSubmitting ? (
@@ -231,10 +231,10 @@ const HPI = (props) => {
                       }
                       fieldsize={{ width: "147px", height: "41px" }}
                       placeholder="Enter a value"
-                      value={values["hpi"][`symptomDuration-${item.value}`]}
+                      value={values["hpi"][`symptomDuration${item.value}`]}
                       onChange={({ target }) =>
                         setFieldValue(
-                          `hpi.symptomDuration-${item.value}`,
+                          `hpi.symptomDuration${item.value}`,
                           target.value
                         )
                       }
@@ -257,10 +257,10 @@ const HPI = (props) => {
                       variant="outlined"
                       native
                       label="Select"
-                      value={values["hpi"][`symptomDurationUnit-${item.value}`]}
+                      value={values["hpi"][`symptomDurationUnit${item.value}`]}
                       onChange={({ target }) => {
                         setFieldValue(
-                          `hpi.symptomDurationUnit-${item.value}`,
+                          `hpi.symptomDurationUnit${item.value}`,
                           target.value
                         );
                       }}
@@ -279,40 +279,41 @@ const HPI = (props) => {
             </FlexBox>
           </BodyCell>
           <BodyCell>
-            {Array(5)
-              .fill()
-              .map((item, index) => (
-                <Box mb={2} key={index}>
-                  <InputLabel htmlFor="filled-age-native-simple"></InputLabel>
-                  <Select
-                    disabled={
-                      durationOption.length - 1 === index
-                        ? false
-                        : !values.hpi.symptoms.some(
-                            (item) => item === symtomsOptions[index]?.value
-                          )
-                    }
-                    variant="outlined"
-                    native
-                    width="110px"
-                    label="Select"
-                    value={values["hpi"][`provokesWith-${index}`]}
-                    onChange={({ target }) => {
-                      setFieldValue(`hpi.provokesWith-${index}`, target.value);
-                    }}
-                    inputProps={{
-                      name: "age",
-                      id: "filled-age-native-simple",
-                    }}
-                  >
-                    {provokesOption.map(({ title, value }) => (
-                      <option value={value} key={value}>
-                        {title}
-                      </option>
-                    ))}
-                  </Select>
-                </Box>
-              ))}
+            {[...symtomsOptions, otherOption].map((item, index) => (
+              <Box mb={2} key={index}>
+                <InputLabel htmlFor="filled-age-native-simple"></InputLabel>
+                <Select
+                  disabled={
+                    durationOption.length - 1 === index
+                      ? false
+                      : !values.hpi.symptoms.some(
+                          (item) => item === symtomsOptions[index]?.value
+                        )
+                  }
+                  variant="outlined"
+                  native
+                  width="110px"
+                  label="Select"
+                  value={values["hpi"][`provokesWith${item.value}`]}
+                  onChange={({ target }) => {
+                    setFieldValue(
+                      `hpi.provokesWith${item.value}`,
+                      target.value
+                    );
+                  }}
+                  inputProps={{
+                    name: "age",
+                    id: "filled-age-native-simple",
+                  }}
+                >
+                  {provokesOption.map(({ title, value }) => (
+                    <option value={value} key={value}>
+                      {title}
+                    </option>
+                  ))}
+                </Select>
+              </Box>
+            ))}
           </BodyCell>
         </TableRow>
       </ReportTable>

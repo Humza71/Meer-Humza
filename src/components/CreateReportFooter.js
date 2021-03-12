@@ -41,7 +41,7 @@ const Wrapper = styled(Box)`
 `;
 
 const CreateReportFooter = (props) => {
-  const { dirty, isValid, handleSave, id } = props;
+  const { dirty, handleSave, id } = props;
   const dispatch = useDispatch();
   const history = useHistory();
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
@@ -99,7 +99,7 @@ const CreateReportFooter = (props) => {
               color="primary"
               type="submit"
               endIcon={<ChevronRightIcon />}
-              disabled={!(isValid && dirty)}
+              // disabled={!(isValid && dirty||)}
             >
               Next Page
             </Button>

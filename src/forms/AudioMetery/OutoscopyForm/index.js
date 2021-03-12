@@ -70,7 +70,13 @@ const OutoscopyForm = (props) => {
               </BodyCell>
             ))}
             <BodyCell>
-              <Input fieldsize={{ width: "185px" }} />
+              <Input
+                fieldsize={{ width: "185px" }}
+                value={data[key]["instruction"]}
+                onChange={(e) =>
+                  setFieldValue(`otoscopy.${key}.instruction`, e.target.value)
+                }
+              />
             </BodyCell>
           </TableRow>
         ))}

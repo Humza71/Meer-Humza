@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import initial from "./dataModel";
 // import { providers, technicians } from "lib/dumyData";
 // import { postUtil } from "../../utils/apiService";
 import {
@@ -18,16 +19,16 @@ import {
   getRotaryChairById,
   addVHit,
   getVHitById,
-  // addVat,
-  // getVatById,
-  // addElectrophys,
-  // getElectrophysById,
-  // addAudiometry,
-  // getAudiometryById,
-  // addScreenings,
-  // getScreeningsById,
-  // addTestComments,
-  // getTestCommentsById,
+  addVat,
+  getVatById,
+  addElectrophys,
+  getElectrophysById,
+  addAudiometry,
+  getAudiometryById,
+  addScreenings,
+  getScreeningsById,
+  addTestComments,
+  getTestCommentsById,
 } from "../../services/reportService";
 // import { setMessage } from "./messageReducer";
 // import { createNewReport } from "services/reportService";
@@ -36,84 +37,7 @@ export const LoadingStates = {
   REPORT_CREATION_LOADING: "Create Report Loading",
 };
 
-const initialState = {
-  loading: null,
-  newReport: {
-    firstName: "",
-    lastName: "",
-    dob: null,
-    gender: "",
-    encounterDate: null,
-    physician_id: "",
-    technician_id: "",
-    files: [],
-  },
-  providers: [],
-  technicians: [],
-  completed: false,
-  history: {
-    hpi: {},
-    auralSymptom: {},
-    healthCondition: {},
-  },
-  posturalStability: {
-    gsoTest: {},
-    cdpTest: {
-      soTest: {},
-      mcTest: {},
-      adTest: {},
-    },
-  },
-  vng: {
-    oculuMotors: {},
-    gazeDenied: {
-      center: {},
-      right: {},
-      left: {},
-      up: {},
-    },
-    gazeEnabled: {
-      center: {},
-      right: {},
-      left: {},
-      up: {},
-    },
-    highFrequecy: {
-      seated: {},
-      lateralRight: {},
-      lateralLeft: {},
-    },
-    positionDenied: {
-      supine: {},
-      headRight: {},
-      headLeft: {},
-      bodyRight: {},
-      bodyLeft: {},
-    },
-    positionEnabled: {
-      supine: {},
-      headRight: {},
-      headLeft: {},
-      bodyRight: {},
-      bodyLeft: {},
-    },
-    hallPick: {
-      left: {},
-      right: {},
-    },
-    calorics: {
-      right: {},
-      left: {},
-    },
-  },
-  rotaryChair: {},
-  vHit: {
-    lateral: {},
-    ralp: {},
-    larp: {},
-    notes: "",
-  },
-};
+const initialState = initial;
 
 export const slice = createSlice({
   name: "reportReducer",
@@ -128,6 +52,12 @@ export const slice = createSlice({
       state.posturalStability = initialState.posturalStability;
       state.vng = initialState.vng;
       state.rotaryChair = initialState.rotaryChair;
+      state.vHit = initialState.vHit;
+      state.vatVorteq = initialState.vatVorteq;
+      state.electrophys = initialState.electrophys;
+      state.audiometry = initialState.audiometry;
+      state.screenings = initialState.screenings;
+      state.comments = initialState.comments;
     },
     updateNewReport: (state, action) => {
       const { patientDemographics = {} } = action.payload || {};
@@ -180,8 +110,32 @@ export const slice = createSlice({
       state.vHit.larp = action.payload.vHIT.larp;
       state.vHit.lateral = action.payload.vHIT.lateral;
       state.vHit.notes = action.payload.vHIT.notes;
-      // state.posturalStability.cdpTest = action.payload.cdpTest;
-      // state.posturalStability.gsoTest = action.payload.gsoTest;
+    },
+    setVatVorteq: (state, action) => {
+      state.vatVorteq.lateral = action.payload.vatVorteq.lateral;
+      state.vatVorteq.vertical = action.payload.vatVorteq.vertical;
+      state.vatVorteq.notes = action.payload.vatVorteq.notes;
+    },
+    setElectrophys: (state, action) => {
+      state.electrophys.abr = action.payload.electrophys.abr;
+      state.electrophys.eco = action.payload.electrophys.eco;
+      state.electrophys.cvemp = action.payload.electrophys.cvemp;
+      state.electrophys.ovemp = action.payload.electrophys.ovemp;
+    },
+    setAudiometry: (state, action) => {
+      state.audiometry.otoscopy = action.payload.audiometry.otoscopy;
+      state.audiometry.ai = action.payload.audiometry.ai;
+      state.audiometry.oe = action.payload.audiometry.oe;
+      state.audiometry.audiogram = action.payload.audiometry.audiogram;
+    },
+    setScreenings: (state, action) => {
+      state.screenings.vast = action.payload.screenings.vast;
+      state.screenings.cervical = action.payload.screenings.cervical;
+      state.screenings.actuity = action.payload.screenings.actuity;
+      state.screenings.impulse = action.payload.screenings.impulse;
+    },
+    setComments: (state, action) => {
+      state.comments = action.payload.testComments;
     },
   },
 });
@@ -198,6 +152,11 @@ const {
   setHistory,
   setRotaryChair,
   setVHit,
+  setVatVorteq,
+  setElectrophys,
+  setAudiometry,
+  setScreenings,
+  setComments,
 } = slice.actions;
 
 export const updateReport = (values, onSuccess) => async (dispatch) => {
@@ -275,32 +234,28 @@ export const getAllTechnicians = () => async (dispatch) => {
 
 export const addProvider = (newProvider, save) => async (dispatch) => {
   dispatch(addItemToProviders(newProvider));
-  if (save) {
-    try {
-      const response = await saveProvider(newProvider);
-      if (response) {
-        console.log("providerAddedSuccessfully");
-      }
-    } catch (error) {
-      // dispatch(setMessage({ message: "Email or password already exist!" }));
+  try {
+    const response = await saveProvider(newProvider);
+    if (response) {
+      console.log("providerAddedSuccessfully");
     }
-    // Do API Call to save newProvider
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
+  // Do API Call to save newProvider
 };
 
 export const addTechnician = (newTechnician, save) => async (dispatch) => {
   dispatch(addItemToTechnicians(newTechnician));
-  if (save) {
-    try {
-      const response = await saveTechnician(newTechnician);
-      if (response) {
-        console.log("providerAddedSuccessfully");
-      }
-    } catch (error) {
-      // dispatch(setMessage({ message: "Email or password already exist!" }));
+  try {
+    const response = await saveTechnician(newTechnician);
+    if (response) {
+      console.log("providerAddedSuccessfully");
     }
-    // Do API Call to save newTechnician
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
+  // Do API Call to save newTechnician
 };
 
 export const historyReport = (values) => async (dispatch) => {
@@ -395,7 +350,10 @@ export const getRotaryChair = (values) => async (dispatch) => {
 export const vHitReport = (values) => async (dispatch) => {
   dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
   try {
-    await addVHit(values);
+    const response = await addVHit(values);
+    if (response) {
+      console.log("vHIT added Successfully");
+    }
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
@@ -406,6 +364,117 @@ export const getVHit = (values) => async (dispatch) => {
   try {
     const response = await getVHitById(values);
     dispatch(setVHit(response.data));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const vatVorteqReport = (values) => async (dispatch) => {
+  dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  try {
+    const response = await addVat(values);
+    if (response) {
+      console.log("Vat/Vorteq added Successfully");
+    }
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+  dispatch(setLoading(null));
+};
+
+export const getVatVorteq = (values) => async (dispatch) => {
+  try {
+    const response = await getVatById(values);
+    dispatch(setVatVorteq(response.data));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const electrophysReport = (values) => async (dispatch) => {
+  dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  try {
+    const response = await addElectrophys(values);
+    if (response) {
+      console.log("Electrophys added Successfully");
+    }
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+  dispatch(setLoading(null));
+};
+
+export const getElectrophys = (values) => async (dispatch) => {
+  try {
+    const response = await getElectrophysById(values);
+    dispatch(setElectrophys(response.data));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const audiometryReport = (values) => async (dispatch) => {
+  dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  try {
+    const response = await addAudiometry(values);
+    if (response) {
+      console.log("Audiometry added Successfully");
+    }
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+  dispatch(setLoading(null));
+};
+
+export const getAudiometry = (values) => async (dispatch) => {
+  try {
+    const response = await getAudiometryById(values);
+    dispatch(setAudiometry(response.data));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const screeningsReport = (values) => async (dispatch) => {
+  dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  try {
+    const response = await addScreenings(values);
+    if (response) {
+      console.log("Screenings added Successfully");
+    }
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+  dispatch(setLoading(null));
+};
+
+export const getScreenings = (values) => async (dispatch) => {
+  try {
+    const response = await getScreeningsById(values);
+    dispatch(setScreenings(response.data));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const CommentsReport = (values) => async (dispatch) => {
+  dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  try {
+    const response = await addTestComments(values);
+    if (response) {
+      console.log("Comments added Successfully");
+    }
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+  dispatch(setLoading(null));
+};
+
+export const getComments = (values) => async (dispatch) => {
+  try {
+    const response = await getTestCommentsById(values);
+
+    dispatch(setComments(response.data));
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
