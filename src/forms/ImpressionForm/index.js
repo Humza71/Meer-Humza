@@ -5,11 +5,16 @@ import { Formik } from "formik";
 
 import CreateReportFooter from "components/CreateReportFooter";
 import ReportCard from "components/reports/ReportCard";
-import { Typography, Divider, Box } from "@material-ui/core";
+import { Typography, Divider, Box, CircularProgress } from "@material-ui/core";
 import Toggle from "components/reports/Toggle";
 import AdvancedSelect from "components/AdvancedSelect";
 import styled from "styled-components/macro";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  LoadingStates,
+  getImpressionPlan,
+  impressionPlanReport,
+} from "../../redux/reducers/reportReducer";
 import { setStepNewReport } from "redux/reducers/uiReducer";
 
 const Lable = styled(Typography)`
@@ -20,15 +25,20 @@ const OptionWrapper = styled.div`
   width: 25%;
 `;
 
-const initialValues = {
-  normality: "",
-};
+// const initialValues = {
+//   normality: "",
+// };
 
 const validationSchema = Yup.object().shape({});
 
 const InnerForm = (props) => {
   const { setFieldValue, values } = props;
-  return (
+  const reportLoading = useSelector((state) => state.reportReducer.loading);
+  return reportLoading === LoadingStates.REPORT_CREATION_LOADING ? (
+    <Box display="flex" justifyContent="center" my={6}>
+      <CircularProgress />
+    </Box>
+  ) : (
     <>
       <ReportCard title={"Impression & plan"}>
         <Lable variant="overline" display="block" gutterBottom>
@@ -69,30 +79,37 @@ const ImpressionForm = (props) => {
   const { id } = params;
   const dispatch = useDispatch();
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
+  const impressionValues = useSelector(
+    (state) => state.reportReducer.impression
+  );
+
+  const initialValues = {
+    normality: impressionValues.normality,
+  };
 
   const handleSave = (values) => {
-    // dispatch(
-    //   rotaryChairReport({
-    //     reportId: id,
-    //     ...values,
-    //   })
-    // );
+    dispatch(
+      impressionPlanReport({
+        reportId: id,
+        ...values,
+      })
+    );
   };
 
   useEffect(() => {
     if (id) {
-      // dispatch(
-      //   getRotaryChair({
-      //     reportId: id,
-      //   })
-      // );
+      dispatch(
+        getImpressionPlan({
+          reportId: id,
+        })
+      );
     }
   }, [dispatch, id]);
 
   const handleSubmit = async (values) => {
     try {
       handleSave(values);
-      dispatch(setStepNewReport(stepNewReport + 1));
+      dispatch(setStepNewReport(stepNewReport));
       // setStatus({ sent: true });
       // setSubmitting(false);
     } catch (error) {

@@ -29,6 +29,8 @@ import {
   getScreeningsById,
   addTestComments,
   getTestCommentsById,
+  addImpressionPlan,
+  getImpressionPlanById,
 } from "../../services/reportService";
 // import { setMessage } from "./messageReducer";
 // import { createNewReport } from "services/reportService";
@@ -82,60 +84,86 @@ export const slice = createSlice({
       state.technicians.push({ name: action.payload });
     },
     setHistory: (state, action) => {
-      state.history.hpi = action.payload.response.hpi;
-      state.history.auralSymptom = action.payload.response.auralSymptom;
-      state.history.healthCondition = action.payload.response.healthCondition;
+      if (action.payload.response) {
+        debugger;
+        state.history.hpi = action.payload.response.hpi;
+        state.history.auralSymptom = action.payload.response.auralSymptom;
+        state.history.healthCondition = action.payload.response.healthCondition;
+      }
     },
     setPosturalStability: (state, action) => {
-      state.posturalStability.cdpTest = action.payload.cdpTest;
-      state.posturalStability.gsoTest = action.payload.gsoTest;
+      if (action.payload) {
+        state.posturalStability.cdpTest = action.payload.cdpTest;
+        state.posturalStability.gsoTest = action.payload.gsoTest;
+      }
     },
     setVng: (state, action) => {
-      state.vng.oculuMotors = action.payload.oculuMotors;
-      state.vng.gazeEnabled = action.payload.gazeEnabled;
-      state.vng.positionEnabled = action.payload.positionEnabled;
-      state.vng.positionDenied = action.payload.positionDenied;
-      state.vng.calorics = action.payload.calorics;
-      state.vng.hallPick = action.payload.hallPick;
-      state.vng.highFrequecy = action.payload.highFrequecy;
-      state.vng.gazeDenied = action.payload.gazeDenied;
+      if (action.payload) {
+        state.vng.oculuMotors = action.payload.oculuMotors;
+        state.vng.gazeEnabled = action.payload.gazeEnabled;
+        state.vng.positionEnabled = action.payload.positionEnabled;
+        state.vng.positionDenied = action.payload.positionDenied;
+        state.vng.calorics = action.payload.calorics;
+        state.vng.hallPick = action.payload.hallPick;
+        state.vng.highFrequecy = action.payload.highFrequecy;
+        state.vng.gazeDenied = action.payload.gazeDenied;
+      }
     },
     setRotaryChair: (state, action) => {
-      state.rotaryChair = action.payload.rotaryChair;
+      if (action.payload) {
+        state.rotaryChair = action.payload.rotaryChair;
+      }
       // state.posturalStability.cdpTest = action.payload.cdpTest;
       // state.posturalStability.gsoTest = action.payload.gsoTest;
     },
     setVHit: (state, action) => {
-      state.vHit.ralp = action.payload.vHIT.ralp;
-      state.vHit.larp = action.payload.vHIT.larp;
-      state.vHit.lateral = action.payload.vHIT.lateral;
-      state.vHit.notes = action.payload.vHIT.notes;
+      if (action.payload.vHIT) {
+        state.vHit.ralp = action.payload.vHIT.ralp;
+        state.vHit.larp = action.payload.vHIT.larp;
+        state.vHit.lateral = action.payload.vHIT.lateral;
+        state.vHit.notes = action.payload.vHIT.notes;
+      }
     },
     setVatVorteq: (state, action) => {
-      state.vatVorteq.lateral = action.payload.vatVorteq.lateral;
-      state.vatVorteq.vertical = action.payload.vatVorteq.vertical;
-      state.vatVorteq.notes = action.payload.vatVorteq.notes;
+      if (action.payload.vatVorteq) {
+        state.vatVorteq.lateral = action.payload.vatVorteq.lateral;
+        state.vatVorteq.vertical = action.payload.vatVorteq.vertical;
+        state.vatVorteq.notes = action.payload.vatVorteq.notes;
+      }
     },
     setElectrophys: (state, action) => {
-      state.electrophys.abr = action.payload.electrophys.abr;
-      state.electrophys.eco = action.payload.electrophys.eco;
-      state.electrophys.cvemp = action.payload.electrophys.cvemp;
-      state.electrophys.ovemp = action.payload.electrophys.ovemp;
+      if (action.payload.electrophys) {
+        state.electrophys.abr = action.payload.electrophys.abr;
+        state.electrophys.eco = action.payload.electrophys.eco;
+        state.electrophys.cvemp = action.payload.electrophys.cvemp;
+        state.electrophys.ovemp = action.payload.electrophys.ovemp;
+      }
     },
     setAudiometry: (state, action) => {
-      state.audiometry.otoscopy = action.payload.audiometry.otoscopy;
-      state.audiometry.ai = action.payload.audiometry.ai;
-      state.audiometry.oe = action.payload.audiometry.oe;
-      state.audiometry.audiogram = action.payload.audiometry.audiogram;
+      if (action.payload.audiometry) {
+        state.audiometry.otoscopy = action.payload.audiometry.otoscopy;
+        state.audiometry.ai = action.payload.audiometry.ai;
+        state.audiometry.oe = action.payload.audiometry.oe;
+        state.audiometry.audiogram = action.payload.audiometry.audiogram;
+      }
     },
     setScreenings: (state, action) => {
-      state.screenings.vast = action.payload.screenings.vast;
-      state.screenings.cervical = action.payload.screenings.cervical;
-      state.screenings.actuity = action.payload.screenings.actuity;
-      state.screenings.impulse = action.payload.screenings.impulse;
+      if (action.payload.screenings) {
+        state.screenings.vast = action.payload.screenings.vast;
+        state.screenings.cervical = action.payload.screenings.cervical;
+        state.screenings.actuity = action.payload.screenings.actuity;
+        state.screenings.impulse = action.payload.screenings.impulse;
+      }
     },
     setComments: (state, action) => {
-      state.comments = action.payload.testComments;
+      if (action.payload.testComments) {
+        state.comments = action.payload.testComments;
+      }
+    },
+    setImpression: (state, action) => {
+      if (action.payload.impression) {
+        state.impression = action.payload.impressionPlan;
+      }
     },
   },
 });
@@ -157,6 +185,7 @@ const {
   setAudiometry,
   setScreenings,
   setComments,
+  setImpression,
 } = slice.actions;
 
 export const updateReport = (values, onSuccess) => async (dispatch) => {
@@ -475,6 +504,29 @@ export const getComments = (values) => async (dispatch) => {
     const response = await getTestCommentsById(values);
 
     dispatch(setComments(response.data));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const impressionPlanReport = (values) => async (dispatch) => {
+  dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  try {
+    const response = await addImpressionPlan(values);
+    if (response) {
+      console.log("Comments added Successfully");
+    }
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+  dispatch(setLoading(null));
+};
+
+export const getImpressionPlan = (values) => async (dispatch) => {
+  try {
+    const response = await getImpressionPlanById(values);
+
+    dispatch(setImpression(response.data));
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }

@@ -488,3 +488,39 @@ export function getTestCommentsById(payload) {
       });
   });
 }
+
+export function addImpressionPlan(payload) {
+  const data = {
+    reportId: payload.reportId,
+    impressionPlan: {
+      ...payload,
+    },
+  };
+  return new Promise((resolve, reject) => {
+    postUtil("/api/add/", data)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function getImpressionPlanById(payload) {
+  return new Promise((resolve, reject) => {
+    getUtil(`/api//${payload.reportId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}

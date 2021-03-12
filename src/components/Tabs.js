@@ -42,7 +42,12 @@ export default function VerticalTabs({ labels = [], children }) {
   return (
     <FlexBox>
       <TabsWrapper>
-        <Scrollspy items={labels} currentClassName="is-current">
+        <Scrollspy
+          items={labels}
+          currentClassName="is-current"
+
+          // scrolledPastClassName=""
+        >
           {labels.map((name) => (
             <a key={name} href={`#${name}`}>
               {name}

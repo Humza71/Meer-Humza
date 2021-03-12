@@ -135,6 +135,7 @@ const initialState = {
     },
   },
   comments: {},
+  impression: {},
 };
 
 export default initialState;

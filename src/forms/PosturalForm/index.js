@@ -178,6 +178,7 @@ const PosturalForm = (props) => {
     }
   };
 
+  console.log(posturalValues, "hehehe");
   return (
     <Fragment>
       <Formik

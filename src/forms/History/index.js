@@ -41,7 +41,7 @@ const InnerForm = (props) => {
     <div id="historyTab">
       <FlexBox>
         <Tabs rootEl="#historyTab" labels={labels}>
-          <TabWrapper>
+          <TabWrapper style={{ scrollBehavior: "smooth" }}>
             <section id="History of Present Illness (HPI)">
               <HPI
                 values={values}
