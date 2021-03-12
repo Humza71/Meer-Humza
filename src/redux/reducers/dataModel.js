@@ -14,7 +14,7 @@ const initialState = {
   technicians: [],
   completed: false,
   history: {
-    hpi: {},
+    presentIllness: {},
     auralSymptom: {},
     healthCondition: {},
   },

@@ -75,46 +75,53 @@ const History = (props) => {
     useSelector((state) => state.reportReducer.history) || {};
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
   const initialValues = {
-    hpi: {
+    presentIllness: {
       symptomDurationRoomSpin:
-        historyValues.hpi["symptomDurationRoomSpin"] || "",
+        historyValues.presentIllness["symptomDurationRoomSpin"] || "",
       symptomDurationPatientSpin:
-        historyValues.hpi["symptomDurationPatientSpin"] || "",
+        historyValues.presentIllness["symptomDurationPatientSpin"] || "",
       symptomDurationImbalance:
-        historyValues.hpi["symptomDurationImbalance"] || "",
+        historyValues.presentIllness["symptomDurationImbalance"] || "",
       symptomDurationLightHeaded:
-        historyValues.hpi["symptomDurationLightHeaded"] || "",
-      symptomDurationOther: historyValues.hpi["symptomDurationOther"] || "",
+        historyValues.presentIllness["symptomDurationLightHeaded"] || "",
+      symptomDurationOther:
+        historyValues.presentIllness["symptomDurationOther"] || "",
 
       symptomDurationUnitRoomSpin:
-        historyValues.hpi["symptomDurationUnitRoomSpin"] || "",
+        historyValues.presentIllness["symptomDurationUnitRoomSpin"] || "",
       symptomDurationUnitPatientSpin:
-        historyValues.hpi["symptomDurationUnitPatientSpin"] || "",
+        historyValues.presentIllness["symptomDurationUnitPatientSpin"] || "",
       symptomDurationUnitImbalance:
-        historyValues.hpi["symptomDurationUnitImbalance"] || "",
+        historyValues.presentIllness["symptomDurationUnitImbalance"] || "",
       symptomDurationUnitLightHeaded:
-        historyValues.hpi["symptomDurationUnitLightHeaded"] || "",
-      symptomDurationUnitOther: historyValues.hpi["symptomDuratiOnother"] || "",
+        historyValues.presentIllness["symptomDurationUnitLightHeaded"] || "",
+      symptomDurationUnitOther:
+        historyValues.presentIllness["symptomDuratiOnother"] || "",
 
-      provokesWithRoomSpin: historyValues.hpi["provokesWithRoomSpin"] || "",
+      provokesWithRoomSpin:
+        historyValues.presentIllness["provokesWithRoomSpin"] || "",
       provokesWithPatientSpin:
-        historyValues.hpi["provokesWithPatientSpin"] || "",
-      provokesWithImbalance: historyValues.hpi["provokesWithImbalance"] || "",
+        historyValues.presentIllness["provokesWithPatientSpin"] || "",
+      provokesWithImbalance:
+        historyValues.presentIllness["provokesWithImbalance"] || "",
       provokesWithLightHeaded:
-        historyValues.hpi["provokesWithLightHeaded"] || "",
-      provokesWithOther: historyValues.hpi["symptomDurationOther"] || "",
+        historyValues.presentIllness["provokesWithLightHeaded"] || "",
+      provokesWithOther:
+        historyValues.presentIllness["symptomDurationOther"] || "",
 
-      firstNotedProblem: historyValues.hpi.firstNotedProblem
-        ? new Date(historyValues.hpi.firstNotedProblem)
+      firstNotedProblem: historyValues.presentIllness.firstNotedProblem
+        ? new Date(historyValues.presentIllness.firstNotedProblem)
         : new Date(),
-      mostRecentEpisode: historyValues.hpi.mostRecentEpisode
-        ? new Date(historyValues.hpi.mostRecentEpisode)
+      mostRecentEpisode: historyValues.presentIllness.mostRecentEpisode
+        ? new Date(historyValues.presentIllness.mostRecentEpisode)
         : new Date(),
-      symptoms: historyValues.hpi.symptoms || [],
-      symptomDuration: historyValues.hpi.symptomDuration,
-      symptomDurationUnit: historyValues.hpi.symptomDurationUnit,
-      provokesWith: historyValues.hpi.provokesWith,
-      notes: historyValues.hpi.notes ? historyValues.hpi.notes : "",
+      symptoms: historyValues.presentIllness.symptoms || [],
+      symptomDuration: historyValues.presentIllness.symptomDuration,
+      symptomDurationUnit: historyValues.presentIllness.symptomDurationUnit,
+      provokesWith: historyValues.presentIllness.provokesWith,
+      notes: historyValues.presentIllness.notes
+        ? historyValues.presentIllness.notes
+        : "",
     },
     auralSymptom: {
       shl: historyValues.auralSymptom.shl,

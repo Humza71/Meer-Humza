@@ -35,7 +35,7 @@ const Select = styled(MuiSelect)`
 
 const HPI = (props) => {
   const { setFieldValue, isSubmitting, values } = props;
-  const { firstNotedProblem, mostRecentEpisode } = values["hpi"];
+  const { firstNotedProblem, mostRecentEpisode } = values["presentIllness"];
 
   const symtomsOptions = [
     {
@@ -109,7 +109,9 @@ const HPI = (props) => {
   const resetInputValues = (key) => {
     symtomsOptions
       .filter(({ value }) => !key.some((item) => item === value))
-      .map(({ value }) => setFieldValue(`hpi.symptomDuration${value}`, ""));
+      .map(({ value }) =>
+        setFieldValue(`presentIllness.symptomDuration${value}`, "")
+      );
   };
 
   const otherOption = {
@@ -142,7 +144,7 @@ const HPI = (props) => {
                 margin="normal"
                 value={firstNotedProblem}
                 onChange={(value) =>
-                  setFieldValue("hpi.firstNotedProblem", value)
+                  setFieldValue("presentIllness.firstNotedProblem", value)
                 }
                 fullWidth
                 KeyboardButtonProps={{
@@ -163,7 +165,7 @@ const HPI = (props) => {
                 margin="normal"
                 value={mostRecentEpisode}
                 onChange={(value) =>
-                  setFieldValue("hpi.mostRecentEpisode", value)
+                  setFieldValue("presentIllness.mostRecentEpisode", value)
                 }
                 fullWidth
                 KeyboardButtonProps={{
@@ -196,10 +198,10 @@ const HPI = (props) => {
                 height: "38px",
               }}
               exclusive={false}
-              name={`hpi.symptoms`}
-              value={values["hpi"]["symptoms"]}
+              name={`presentIllness.symptoms`}
+              value={values["presentIllness"]["symptoms"]}
               onChange={(value) => {
-                setFieldValue(`hpi.symptoms`, value);
+                setFieldValue(`presentIllness.symptoms`, value);
                 resetInputValues(value);
               }}
               options={symtomsOptions}
@@ -209,8 +211,8 @@ const HPI = (props) => {
               fieldsize={{ width: "148px", height: "38px" }}
               // value={values["hpi"]["symptoms"]}
               onChange={(e) =>
-                setFieldValue(`hpi.symptoms`, [
-                  ...values["hpi"]["symptoms"],
+                setFieldValue(`presentIllness.symptoms`, [
+                  ...values["presentIllness"]["symptoms"],
                   e.target.value,
                 ])
               }
@@ -225,16 +227,18 @@ const HPI = (props) => {
                       disabled={
                         [...symtomsOptions, otherOption].length - 1 === index
                           ? false
-                          : !values.hpi.symptoms.some(
+                          : !values.presentIllness.symptoms.some(
                               (item) => item === symtomsOptions[index]?.value
                             )
                       }
                       fieldsize={{ width: "147px", height: "41px" }}
                       placeholder="Enter a value"
-                      value={values["hpi"][`symptomDuration${item.value}`]}
+                      value={
+                        values["presentIllness"][`symptomDuration${item.value}`]
+                      }
                       onChange={({ target }) =>
                         setFieldValue(
-                          `hpi.symptomDuration${item.value}`,
+                          `presentIllness.symptomDuration${item.value}`,
                           target.value
                         )
                       }
@@ -250,17 +254,21 @@ const HPI = (props) => {
                       disabled={
                         [...symtomsOptions, otherOption].length - 1 === index
                           ? false
-                          : !values.hpi.symptoms.some(
+                          : !values.presentIllness.symptoms.some(
                               (item) => item === symtomsOptions[index]?.value
                             )
                       }
                       variant="outlined"
                       native
                       label="Select"
-                      value={values["hpi"][`symptomDurationUnit${item.value}`]}
+                      value={
+                        values["presentIllness"][
+                          `symptomDurationUnit${item.value}`
+                        ]
+                      }
                       onChange={({ target }) => {
                         setFieldValue(
-                          `hpi.symptomDurationUnit${item.value}`,
+                          `presentIllness.symptomDurationUnit${item.value}`,
                           target.value
                         );
                       }}
@@ -286,7 +294,7 @@ const HPI = (props) => {
                   disabled={
                     durationOption.length - 1 === index
                       ? false
-                      : !values.hpi.symptoms.some(
+                      : !values.presentIllness.symptoms.some(
                           (item) => item === symtomsOptions[index]?.value
                         )
                   }
@@ -294,10 +302,10 @@ const HPI = (props) => {
                   native
                   width="110px"
                   label="Select"
-                  value={values["hpi"][`provokesWith${item.value}`]}
+                  value={values["presentIllness"][`provokesWith${item.value}`]}
                   onChange={({ target }) => {
                     setFieldValue(
-                      `hpi.provokesWith${item.value}`,
+                      `presentIllness.provokesWith${item.value}`,
                       target.value
                     );
                   }}
@@ -320,8 +328,8 @@ const HPI = (props) => {
       <TextArea
         rowsMin={3}
         placeholder="Notes"
-        value={values["hpi"]["notes"]}
-        onChange={(value) => setFieldValue(`hpi.notes`, value)}
+        value={values["presentIllness"]["notes"]}
+        onChange={(value) => setFieldValue(`presentIllness.notes`, value)}
       />
     </ReportCard>
   );

@@ -52,7 +52,7 @@ export function getTechnicians() {
 
 export function getProviders() {
   return new Promise((resolve, reject) => {
-    getUtil("/api/get-providers")
+    getUtil("/api/get/providers")
       .then((response) => {
         if (response.status === 200) {
           if (response.data.data.length > 0) {
@@ -91,7 +91,7 @@ export function saveProvider(payload) {
     },
   };
   return new Promise((resolve, reject) => {
-    postUtil("/api/add/provider", provider)
+    postUtil("/api/add/providers", provider)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -111,7 +111,7 @@ export function saveTechnician(payload) {
     },
   };
   return new Promise((resolve, reject) => {
-    postUtil("/api/add/technician", technician)
+    postUtil("/api/add/technicians", technician)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);

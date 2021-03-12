@@ -1,7 +1,8 @@
 import { getUtil } from "../utils/apiService";
 export const getReports = async (credentials) => {
   return new Promise((resolve, reject) => {
-    getUtil("/api/get-reports", credentials)
+    debugger;
+    getUtil("/api/get/reports")
       .then((response) => {
         if (response.status === 200) {
           const newData = response.data.data.map(

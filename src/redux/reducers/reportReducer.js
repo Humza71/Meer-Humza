@@ -86,7 +86,7 @@ export const slice = createSlice({
     setHistory: (state, action) => {
       if (action.payload.response) {
         debugger;
-        state.history.hpi = action.payload.response.hpi;
+        state.history.presentIllness = action.payload.response.presentIllness;
         state.history.auralSymptom = action.payload.response.auralSymptom;
         state.history.healthCondition = action.payload.response.healthCondition;
       }

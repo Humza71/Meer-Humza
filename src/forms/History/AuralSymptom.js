@@ -116,8 +116,8 @@ const AuralSymptom = (props) => {
       <TextArea
         rowsMin={3}
         placeholder="Notes"
-        value={values["hpi"]["notes"]}
-        onChange={(value) => setFieldValue(`hpi.notes`, value)}
+        value={values["auralSymptom"]["notes"]}
+        onChange={(value) => setFieldValue(`auralSymptom.notes`, value)}
       />
     </ReportCard>
   );
