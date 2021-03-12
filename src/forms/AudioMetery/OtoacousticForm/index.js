@@ -82,7 +82,7 @@ const OtoacousticForm = (props) => {
                     name={`${key}.${fieldKey}`}
                     value={data[key][fieldKey]}
                     onChange={(value) =>
-                      setFieldValue(`ai.${key}.${fieldKey}`, value)
+                      setFieldValue(`oe.${key}.${fieldKey}`, value)
                     }
                     options={options}
                   />
@@ -96,7 +96,7 @@ const OtoacousticForm = (props) => {
         rowsMin={3}
         placeholder="Notes"
         value={data["notes"]}
-        onChange={(value) => setFieldValue(`ai.notes`, value)}
+        onChange={(value) => setFieldValue(`oe.notes`, value)}
       />
     </ReportCard>
   );

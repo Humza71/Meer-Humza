@@ -234,7 +234,7 @@ const InnerForm = (props) => {
               </Box>
               <Box mb={2.5}>
                 <Typography variant="subtitle1" mb={1}>
-                  SSN
+                  Last 4 Digits of SSN
                 </Typography>
                 <Grid container spacing={6}>
                   <Grid item md={6}>
@@ -406,19 +406,16 @@ const PatientForm = (props) => {
     // );
   };
 
-  const handleSubmit = async (
-    values,
-    { resetForm, setErrors, setStatus, setSubmitting }
-  ) => {
+  const handleSubmit = async (values) => {
     try {
       handleSave(values);
       dispatch(setStepNewReport(stepNewReport + 1));
-      setStatus({ sent: true });
-      setSubmitting(false);
+      // setStatus({ sent: true });
+      // setSubmitting(false);
     } catch (error) {
-      setStatus({ sent: false });
-      setErrors({ submit: error.message });
-      setSubmitting(false);
+      // setStatus({ sent: false });
+      // setErrors({ submit: error.message });
+      // setSubmitting(false);
     }
   };
 
@@ -435,7 +432,7 @@ const PatientForm = (props) => {
         onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <Form>
+          <Form onSubmit={() => handleSubmit(formProps.values)}>
             <InnerForm {...formProps} />
             <CreateReportFooter
               {...formProps}

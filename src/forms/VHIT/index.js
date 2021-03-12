@@ -7,6 +7,7 @@ import CreateReportFooter from "components/CreateReportFooter";
 import { useDispatch, useSelector } from "react-redux";
 import VhitForm from "./VhitForm";
 import { vHitReport, getVHit } from "redux/reducers/reportReducer";
+import { setStepNewReport } from "redux/reducers/uiReducer";
 
 const validationSchema = Yup.object().shape({});
 
@@ -16,6 +17,7 @@ const VHIT = (props) => {
   const { id } = params;
   const dispatch = useDispatch();
   const vHitValues = useSelector((state) => state.reportReducer.vHit);
+  const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
 
   const initialValues = {
     lateral: {
@@ -53,7 +55,18 @@ const VHIT = (props) => {
     }
   }, [dispatch, id]);
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async (values) => {
+    try {
+      handleSave(values);
+      dispatch(setStepNewReport(stepNewReport + 1));
+      // setStatus({ sent: true });
+      // setSubmitting(false);
+    } catch (error) {
+      // setStatus({ sent: false });
+      // setErrors({ submit: error.message });
+      // setSubmitting(false);
+    }
+  };
   return (
     <Fragment>
       <Formik
@@ -68,7 +81,7 @@ const VHIT = (props) => {
         onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={() => handleSubmit(formProps.values)}>
             <VhitForm {...formProps} />
             <CreateReportFooter
               {...formProps}

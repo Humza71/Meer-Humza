@@ -312,12 +312,12 @@ export function getVHitById(payload) {
 export function addVat(payload) {
   const data = {
     reportId: payload.reportId,
-    Vat: {
+    vatVorteq: {
       ...payload,
     },
   };
   return new Promise((resolve, reject) => {
-    postUtil("/api/add/Vat", data)
+    postUtil("/api/add/vatVorteq", data)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -332,7 +332,7 @@ export function addVat(payload) {
 
 export function getVatById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/add/Vat/${payload.reportId}`)
+    getUtil(`/api/get-vatVorteq-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -368,7 +368,7 @@ export function addElectrophys(payload) {
 
 export function getElectrophysById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/add/electrophys/${payload.reportId}`)
+    getUtil(`/api/get-electrophys-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -404,7 +404,7 @@ export function addAudiometry(payload) {
 
 export function getAudiometryById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/add/audiometry/${payload.reportId}`)
+    getUtil(`/api/get-audiometry-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -440,7 +440,7 @@ export function addScreenings(payload) {
 
 export function getScreeningsById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/add/screenings/${payload.reportId}`)
+    getUtil(`/api/get-screenings-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -461,7 +461,7 @@ export function addTestComments(payload) {
     },
   };
   return new Promise((resolve, reject) => {
-    postUtil("/api/add/testComments", data)
+    postUtil("/api/add/test-comments", data)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -476,7 +476,7 @@ export function addTestComments(payload) {
 
 export function getTestCommentsById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/add/testComments/${payload.reportId}`)
+    getUtil(`/api/get-test-comments-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);

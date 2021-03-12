@@ -16,6 +16,7 @@ import {
   getRotaryChair,
   LoadingStates,
 } from "../../redux/reducers/reportReducer";
+import { setStepNewReport } from "redux/reducers/uiReducer";
 
 // const initialValues = {
 //   right: "",
@@ -94,7 +95,7 @@ const InnerForm = (props) => {
           rowsMin={3}
           placeholder="Notes"
           value={values["notes"]}
-          onChange={(e) => setFieldValue(`notes`, e.target.value)}
+          onChange={(value) => setFieldValue(`notes`, value)}
         />
       </ReportCard>
     </>
@@ -109,6 +110,7 @@ const RotaryChair = (props) => {
   const rotaryChairValues = useSelector(
     (state) => state.reportReducer.rotaryChair
   );
+  const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
   const initialValues = {
     right: rotaryChairValues?.right,
     left: rotaryChairValues?.left,
@@ -133,7 +135,20 @@ const RotaryChair = (props) => {
       );
     }
   }, [dispatch, id]);
-  const handleSubmit = async () => {};
+
+  const handleSubmit = async (values) => {
+    try {
+      handleSave(values);
+      dispatch(setStepNewReport(stepNewReport + 1));
+      // setStatus({ sent: true });
+      // setSubmitting(false);
+    } catch (error) {
+      // setStatus({ sent: false });
+      // setErrors({ submit: error.message });
+      // setSubmitting(false);
+    }
+  };
+
   return (
     <Fragment>
       <Formik
@@ -148,7 +163,7 @@ const RotaryChair = (props) => {
         onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={() => handleSubmit(formProps.values)}>
             <InnerForm {...formProps} />
             <CreateReportFooter
               {...formProps}
