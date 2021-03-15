@@ -121,57 +121,96 @@ const Electrophys = (props) => {
   );
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
   const initialValues = {
-    abr: {
+    auditoryBrainstemResponse: {
       right: {
-        absoluteLatency: electrophysValues.abr.right.absoluteLatency,
-        interWaveLatency: electrophysValues.abr.right.interWaveLatency,
-        morphology: electrophysValues.abr.right.morphology,
+        absoluteLatency:
+          electrophysValues.auditoryBrainstemResponse.right.absoluteLatency,
+        interWaveLatency:
+          electrophysValues.auditoryBrainstemResponse.right.interWaveLatency,
+        morphology:
+          electrophysValues.auditoryBrainstemResponse.right.morphology,
       },
       left: {
-        absoluteLatency: electrophysValues.abr.left.absoluteLatency,
-        interWaveLatency: electrophysValues.abr.left.interWaveLatency,
-        morphology: electrophysValues.abr.left.morphology,
+        absoluteLatency:
+          electrophysValues.auditoryBrainstemResponse.left.absoluteLatency,
+        interWaveLatency:
+          electrophysValues.auditoryBrainstemResponse.left.interWaveLatency,
+        morphology: electrophysValues.auditoryBrainstemResponse.left.morphology,
       },
-      notes: electrophysValues.abr.notes ? electrophysValues.abr.notes : "",
+      notes: electrophysValues.auditoryBrainstemResponse.notes
+        ? electrophysValues.auditoryBrainstemResponse.notes
+        : "",
     },
-    eco: {
+    electroCochleoGraphy: {
       right: {
-        normality: electrophysValues.eco.right.normality,
-        ratio: electrophysValues.eco.right.ratio,
+        normality: electrophysValues.electroCochleoGraphy.right.normality,
+        ratio: electrophysValues.electroCochleoGraphy.right.ratio,
       },
       left: {
-        normality: electrophysValues.eco.left.normality,
-        ratio: electrophysValues.eco.left.ratio,
+        normality: electrophysValues.electroCochleoGraphy.left.normality,
+        ratio: electrophysValues.electroCochleoGraphy.left.ratio,
       },
-      notes: electrophysValues.eco.notes ? electrophysValues.eco.notes : "",
+      notes: electrophysValues.electroCochleoGraphy.notes
+        ? electrophysValues.electroCochleoGraphy.notes
+        : "",
     },
-    cvemp: {
+    cervicalVestibularEvokedMyogenicPotential: {
       right: {
-        normality: electrophysValues.cvemp.right.normality,
-        precense: electrophysValues.cvemp.right.precense,
-        threshold: electrophysValues.cvemp.right.threshold,
-        trend: electrophysValues.cvemp.right.trend,
+        normality:
+          electrophysValues.cervicalVestibularEvokedMyogenicPotential.right
+            .normality,
+        precense:
+          electrophysValues.cervicalVestibularEvokedMyogenicPotential.right
+            .precense,
+        threshold:
+          electrophysValues.cervicalVestibularEvokedMyogenicPotential.right
+            .threshold,
+        trend:
+          electrophysValues.cervicalVestibularEvokedMyogenicPotential.right
+            .trend,
       },
       left: {
-        normality: electrophysValues.cvemp.left.normality,
-        precense: electrophysValues.cvemp.left.precense,
-        threshold: electrophysValues.cvemp.left.threshold,
-        trend: electrophysValues.cvemp.left.trend,
+        normality:
+          electrophysValues.cervicalVestibularEvokedMyogenicPotential.left
+            .normality,
+        precense:
+          electrophysValues.cervicalVestibularEvokedMyogenicPotential.left
+            .precense,
+        threshold:
+          electrophysValues.cervicalVestibularEvokedMyogenicPotential.left
+            .threshold,
+        trend:
+          electrophysValues.cervicalVestibularEvokedMyogenicPotential.left
+            .trend,
       },
-      notes: electrophysValues.cvemp.notes ? electrophysValues.cvemp.notes : "",
+      notes: electrophysValues.cervicalVestibularEvokedMyogenicPotential.notes
+        ? electrophysValues.cervicalVestibularEvokedMyogenicPotential.notes
+        : "",
     },
-    ovemp: {
+    ocularVestibularEvokedMyogenicPotential: {
       right: {
-        negPositive: electrophysValues.ovemp.right.negPositive,
-        presence: electrophysValues.ovemp.right.presence,
-        trend: electrophysValues.ovemp.right.trend,
+        negPositive:
+          electrophysValues.ocularVestibularEvokedMyogenicPotential.right
+            .negPositive,
+        presence:
+          electrophysValues.ocularVestibularEvokedMyogenicPotential.right
+            .presence,
+        trend:
+          electrophysValues.ocularVestibularEvokedMyogenicPotential.right.trend,
       },
       left: {
-        negPositive: electrophysValues.ovemp.left.negPositive,
-        presence: electrophysValues.ovemp.left.presence,
-        trend: electrophysValues.ovemp.left.trend,
+        negPositive:
+          electrophysValues.ocularVestibularEvokedMyogenicPotential.left
+            .negPositive,
+        presence:
+          electrophysValues.ocularVestibularEvokedMyogenicPotential.left
+            .presence,
+        trend:
+          electrophysValues.ocularVestibularEvokedMyogenicPotential.left.trend,
       },
-      notes: electrophysValues.ovemp.notes ? electrophysValues.ovemp.notes : "",
+      notes: electrophysValues.ocularVestibularEvokedMyogenicPotential.notes
+        ? electrophysValues.ocularVestibularEvokedMyogenicPotential.notes
+        : "",
     },
   };
 

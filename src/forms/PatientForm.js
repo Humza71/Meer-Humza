@@ -128,6 +128,9 @@ const InnerForm = (props) => {
     dispatch(addTechnician(newTechnician, saveForFuture));
   };
 
+  console.log(values.staffInformation.technicianId, "table values");
+  console.log(values, "values");
+
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <OutCard mb={6}>
@@ -286,18 +289,21 @@ const InnerForm = (props) => {
                 <Grid container spacing={6}>
                   <Grid item md={6}>
                     <AdvancedSelect
-                      error={Boolean(
-                        touched.physician_id && errors.physician_id
-                      )}
-                      helperText={touched.physician_id && errors.physician_id}
-                      value={values.physician_id}
-                      onChange={handleChange}
+                      error={Boolean(touched.providerId && errors.providerId)}
+                      helperText={touched.providerId && errors.providerId}
+                      value={values.staffInformation.providerId}
+                      onChange={(e) =>
+                        setFieldValue(
+                          "staffInformation.providerId",
+                          e.target.value
+                        )
+                      }
                       onBlur={handleBlur}
-                      name="physician_id"
+                      name="providerId"
                       label="Provider"
                       options={providers.map((item, index) => ({
                         label: item.name,
-                        value: item.name,
+                        value: item.id,
                       }))}
                       variant="outlined"
                       allowAdd={true}
@@ -307,17 +313,22 @@ const InnerForm = (props) => {
                   <Grid item md={6}>
                     <AdvancedSelect
                       error={Boolean(
-                        touched.technician_id && errors.technician_id
+                        touched.technicianId && errors.technicianId
                       )}
-                      helperText={touched.technician_id && errors.technician_id}
-                      value={values.technician_id}
-                      onChange={handleChange}
+                      helperText={touched.technicianId && errors.technicianId}
+                      value={values.staffInformation.technicianId}
+                      onChange={(e) =>
+                        setFieldValue(
+                          "staffInformation.technicianId",
+                          e.target.value
+                        )
+                      }
                       onBlur={handleBlur}
-                      name="technician_id"
+                      name="technicianId"
                       label="Technician"
                       options={technicians.map((item, index) => ({
                         label: item.name,
-                        value: item.name,
+                        value: item.id,
                       }))}
                       variant="outlined"
                       allowAdd={true}
@@ -341,6 +352,9 @@ const PatientForm = (props) => {
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
   const dispatch = useDispatch();
   const history = useHistory();
+  const { match = {} } = props || {};
+  const { params = {} } = match;
+  const { id } = params;
 
   const initialValues = {
     firstName: newReport.firstName,
@@ -350,13 +364,16 @@ const PatientForm = (props) => {
     encounterDate: newReport.encounterDate
       ? new Date(newReport.encounterDate)
       : new Date(),
-    physician_id: newReport.physician_id,
-    technician_id: newReport.technician_id,
+    staffInformation: {
+      providerId: newReport.staffInformation
+        ? newReport.staffInformation.providerId
+        : "",
+      technicianId: newReport.staffInformation
+        ? newReport.staffInformation.technicianId
+        : "",
+    },
   };
 
-  const { match = {} } = props || {};
-  const { params = {} } = match;
-  const { id } = params;
   useEffect(() => {
     dispatch(getAllProviders());
     dispatch(getAllTechnicians());
@@ -376,8 +393,13 @@ const PatientForm = (props) => {
       dispatch(setCompleted());
     }
   }, [dispatch, id]);
-  const onSuccess = () => {
-    history.push("/report");
+  const onSuccess = (reportId) => {
+    if (!id) {
+      // dispatch(getAllProviders());
+      // dispatch(getAllTechnicians());
+      // debugger;
+      history.push(`/report/create/${reportId}`);
+    }
   };
   // useEffect(() => {
   //   if (newReport.firstName) {
@@ -418,6 +440,9 @@ const PatientForm = (props) => {
       // setSubmitting(false);
     }
   };
+
+  console.log(newReport, "check provider");
+  console.log(initialValues, "initialValues");
 
   return (
     <React.Fragment>

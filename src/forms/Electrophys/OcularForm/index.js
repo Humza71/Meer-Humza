@@ -10,7 +10,7 @@ import TextArea from "components/reports/TextArea";
 
 const OcularForm = (props) => {
   const { setFieldValue, values } = props;
-  const data = values["ovemp"];
+  const data = values["ocularVestibularEvokedMyogenicPotential"];
   const cervicalQuestions = [
     {
       title: "",
@@ -102,7 +102,10 @@ const OcularForm = (props) => {
                     name={`${key}.${fieldKey}`}
                     value={data[key][fieldKey]}
                     onChange={(value) => {
-                      setFieldValue(`ovemp.${key}.${fieldKey}`, value);
+                      setFieldValue(
+                        `ocularVestibularEvokedMyogenicPotential.${key}.${fieldKey}`,
+                        value
+                      );
                     }}
                     options={options}
                   />
@@ -116,7 +119,9 @@ const OcularForm = (props) => {
         rowsMin={3}
         placeholder="Notes"
         value={data["notes"]}
-        onChange={(value) => setFieldValue(`ovemp.notes`, value)}
+        onChange={(value) =>
+          setFieldValue(`ocularVestibularEvokedMyogenicPotential.notes`, value)
+        }
       />
     </ReportCard>
   );

@@ -101,8 +101,8 @@ const HighFrequency = ({ formTitle, formKey, setFieldValue, values }) => {
                 <Box mb={2.5} mt={2.5}>
                   <NumberPopUp
                     value={data[key]["deg"]}
-                    onChange={(e) =>
-                      setFieldValue(`${formKey}.${key}.deg`, e.target.value)
+                    onChange={(value) =>
+                      setFieldValue(`${formKey}.${key}.deg`, value)
                     }
                   />
                 </Box>

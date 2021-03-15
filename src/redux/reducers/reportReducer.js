@@ -63,10 +63,12 @@ export const slice = createSlice({
     },
     updateNewReport: (state, action) => {
       const { patientDemographics = {} } = action.payload || {};
-      state.newReport = {
-        ...patientDemographics,
-      };
-      state.completed = true;
+      if (patientDemographics) {
+        state.newReport = {
+          ...patientDemographics,
+        };
+        state.completed = true;
+      }
     },
     setCompleted: (state, action) => {
       state.completed = action.payload;
@@ -75,7 +77,7 @@ export const slice = createSlice({
       state.providers = action.payload;
     },
     addItemToProviders: (state, action) => {
-      state.providers.push({ name: action.payload });
+      // state.providers.push({ name: action.payload });
     },
     setTechnicians: (state, action) => {
       state.technicians = action.payload;
@@ -85,7 +87,6 @@ export const slice = createSlice({
     },
     setHistory: (state, action) => {
       if (action.payload.response) {
-        debugger;
         state.history.presentIllness = action.payload.response.presentIllness;
         state.history.auralSymptom = action.payload.response.auralSymptom;
         state.history.healthCondition = action.payload.response.healthCondition;
@@ -93,71 +94,88 @@ export const slice = createSlice({
     },
     setPosturalStability: (state, action) => {
       if (action.payload) {
-        state.posturalStability.cdpTest = action.payload.cdpTest;
-        state.posturalStability.gsoTest = action.payload.gsoTest;
+        state.posturalStability.computerizedDynamicPosturography =
+          action.payload.computerizedDynamicPosturography;
+        state.posturalStability.gsPerformanceTest =
+          action.payload.gsPerformanceTest;
       }
     },
     setVng: (state, action) => {
       if (action.payload) {
-        state.vng.oculuMotors = action.payload.oculuMotors;
-        state.vng.gazeEnabled = action.payload.gazeEnabled;
-        state.vng.positionEnabled = action.payload.positionEnabled;
-        state.vng.positionDenied = action.payload.positionDenied;
+        state.vng.oculoMotors = action.payload.oculoMotors;
+        state.vng.gazeVisionEnabled = action.payload.gazeVisionEnabled;
+        state.vng.positionalsVisionEnabled =
+          action.payload.positionalsVisionEnabled;
+        state.vng.positionalsVisionDenied =
+          action.payload.positionalsVisionDenied;
         state.vng.calorics = action.payload.calorics;
-        state.vng.hallPick = action.payload.hallPick;
-        state.vng.highFrequecy = action.payload.highFrequecy;
-        state.vng.gazeDenied = action.payload.gazeDenied;
+        state.vng.hallPike = action.payload.hallPike;
+        state.vng.highFrequencyHeadshake = {
+          ...initial.vng.highFrequencyHeadshake,
+          ...action.payload.highFrequencyHeadshake,
+        };
+        state.vng.gazeVisionDenied = action.payload.gazeVisionDenied;
       }
     },
     setRotaryChair: (state, action) => {
       if (action.payload) {
-        state.rotaryChair = action.payload.rotaryChair;
+        state.rotaryChair = action.payload;
       }
       // state.posturalStability.cdpTest = action.payload.cdpTest;
       // state.posturalStability.gsoTest = action.payload.gsoTest;
     },
     setVHit: (state, action) => {
-      if (action.payload.vHIT) {
-        state.vHit.ralp = action.payload.vHIT.ralp;
-        state.vHit.larp = action.payload.vHIT.larp;
-        state.vHit.lateral = action.payload.vHIT.lateral;
-        state.vHit.notes = action.payload.vHIT.notes;
+      if (action.payload) {
+        state.vHit.ralp = action.payload.ralp;
+        state.vHit.larp = action.payload.larp;
+        state.vHit.lateral = action.payload.lateral;
+        state.vHit.notes = action.payload.notes;
       }
     },
     setVatVorteq: (state, action) => {
-      if (action.payload.vatVorteq) {
-        state.vatVorteq.lateral = action.payload.vatVorteq.lateral;
-        state.vatVorteq.vertical = action.payload.vatVorteq.vertical;
-        state.vatVorteq.notes = action.payload.vatVorteq.notes;
+      if (action.payload) {
+        state.vatVorteq.lateral = action.payload.lateral;
+        state.vatVorteq.vertical = action.payload.vertical;
+        state.vatVorteq.notes = action.payload.notes;
       }
     },
     setElectrophys: (state, action) => {
-      if (action.payload.electrophys) {
-        state.electrophys.abr = action.payload.electrophys.abr;
-        state.electrophys.eco = action.payload.electrophys.eco;
-        state.electrophys.cvemp = action.payload.electrophys.cvemp;
-        state.electrophys.ovemp = action.payload.electrophys.ovemp;
+      if (action.payload) {
+        state.electrophys.auditoryBrainstemResponse =
+          action.payload.auditoryBrainstemResponse;
+        state.electrophys.electroCochleoGraphy =
+          action.payload.electroCochleoGraphy;
+        state.electrophys.cervicalVestibularEvokedMyogenicPotential =
+          action.payload.cervicalVestibularEvokedMyogenicPotential;
+        state.electrophys.ocularVestibularEvokedMyogenicPotential =
+          action.payload.ocularVestibularEvokedMyogenicPotential;
       }
     },
     setAudiometry: (state, action) => {
-      if (action.payload.audiometry) {
-        state.audiometry.otoscopy = action.payload.audiometry.otoscopy;
-        state.audiometry.ai = action.payload.audiometry.ai;
-        state.audiometry.oe = action.payload.audiometry.oe;
-        state.audiometry.audiogram = action.payload.audiometry.audiogram;
+      if (action.payload) {
+        state.audiometry.otoscopy = action.payload.otoscopy;
+        state.audiometry.acousticImmittance = action.payload.acousticImmittance;
+        state.audiometry.otoacousticEmissions =
+          action.payload.otoacousticEmissions;
+        state.audiometry.audioGram = action.payload.audioGram;
       }
     },
     setScreenings: (state, action) => {
-      if (action.payload.screenings) {
-        state.screenings.vast = action.payload.screenings.vast;
-        state.screenings.cervical = action.payload.screenings.cervical;
-        state.screenings.actuity = action.payload.screenings.actuity;
-        state.screenings.impulse = action.payload.screenings.impulse;
+      if (action.payload) {
+        state.screenings.vertebralArteryScreeningTest =
+          action.payload.vertebralArteryScreeningTest;
+        state.screenings.cervicalDizzinessScreeningTest =
+          action.payload.cervicalDizzinessScreeningTest;
+        state.screenings.aibComputerizedDynamicVisualAcuityTest = {
+          ...initial.screenings.aibComputerizedDynamicVisualAcuityTest,
+          ...action.payload.aibComputerizedDynamicVisualAcuityTest,
+        };
+        state.screenings.headImpulseTest = action.payload.headImpulseTest;
       }
     },
     setComments: (state, action) => {
-      if (action.payload.testComments) {
-        state.comments = action.payload.testComments;
+      if (action.payload) {
+        state.comments = action.payload;
       }
     },
     setImpression: (state, action) => {
@@ -191,13 +209,12 @@ const {
 export const updateReport = (values, onSuccess) => async (dispatch) => {
   dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
   try {
-    await createReport(values, onSuccess);
-    // dispatch(
-    //   updateNewReport({
-    //     ...values,
-    //   })
-    // );
-    dispatch(setCompleted({ payload: true }));
+    const res = await createReport(values, onSuccess);
+    if (res) {
+      onSuccess(res);
+      dispatch(updateNewReport({ patientDemographics: values }));
+      dispatch(setCompleted({ payload: true }));
+    }
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
@@ -332,7 +349,7 @@ export const posturalStabilityReport = (values) => async (dispatch) => {
 export const getPosturalStability = (values) => async (dispatch) => {
   try {
     const response = await getPosturalStabilityById(values);
-    dispatch(setPosturalStability(response.data.postureStability));
+    dispatch(setPosturalStability(response));
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
@@ -351,7 +368,7 @@ export const vngReport = (values) => async (dispatch) => {
 export const getVng = (values) => async (dispatch) => {
   try {
     const response = await getVngById(values);
-    dispatch(setVng(response.data.vng));
+    dispatch(setVng(response.data));
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
@@ -502,7 +519,6 @@ export const CommentsReport = (values) => async (dispatch) => {
 export const getComments = (values) => async (dispatch) => {
   try {
     const response = await getTestCommentsById(values);
-
     dispatch(setComments(response.data));
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));

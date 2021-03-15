@@ -114,45 +114,49 @@ const AudioMetery = (props) => {
         ? audiometryValues.otoscopy.notes
         : "",
     },
-    ai: {
+    acousticImmittance: {
       rightEar: {
-        tympanogram: audiometryValues.ai.rightEar.tympanogram,
-        ispi: audiometryValues.ai.rightEar.ispi,
-        contraFlex: audiometryValues.ai.rightEar.contraFlex,
-        reflex: audiometryValues.ai.rightEar.reflex,
+        tympanogram: audiometryValues.acousticImmittance.rightEar.tympanogram,
+        ispi: audiometryValues.acousticImmittance.rightEar.ispi,
+        contraFlex: audiometryValues.acousticImmittance.rightEar.contraFlex,
+        reflex: audiometryValues.acousticImmittance.rightEar.reflex,
       },
       leftEar: {
-        tympanogram: audiometryValues.ai.leftEar.tympanogram,
-        ispi: audiometryValues.ai.leftEar.ispi,
-        contraFlex: audiometryValues.ai.leftEar.contraFlex,
-        reflex: audiometryValues.ai.leftEar.reflex,
+        tympanogram: audiometryValues.acousticImmittance.leftEar.tympanogram,
+        ispi: audiometryValues.acousticImmittance.leftEar.ispi,
+        contraFlex: audiometryValues.acousticImmittance.leftEar.contraFlex,
+        reflex: audiometryValues.acousticImmittance.leftEar.reflex,
       },
-      notes: audiometryValues.ai.notes ? audiometryValues.ai.notes : "",
+      notes: audiometryValues.acousticImmittance.notes
+        ? audiometryValues.acousticImmittance.notes
+        : "",
     },
-    oe: {
+    otoacousticEmissions: {
       rightEar: {
-        dpoae: audiometryValues.oe.rightEar.dpoae,
-        teoae: audiometryValues.oe.rightEar.teoae,
+        dpoae: audiometryValues.otoacousticEmissions.rightEar.dpoae,
+        teoae: audiometryValues.otoacousticEmissions.rightEar.teoae,
       },
       leftEar: {
-        dpoae: audiometryValues.oe.leftEar.dpoae,
-        teoae: audiometryValues.oe.leftEar.teoae,
+        dpoae: audiometryValues.otoacousticEmissions.leftEar.dpoae,
+        teoae: audiometryValues.otoacousticEmissions.leftEar.teoae,
       },
-      notes: audiometryValues.oe.notes ? audiometryValues.oe.notes : "",
+      notes: audiometryValues.otoacousticEmissions.notes
+        ? audiometryValues.otoacousticEmissions.notes
+        : "",
     },
-    audiogram: {
+    audioGram: {
       rightEar: {
-        dpoae: audiometryValues.audiogram.rightEar.dpoae,
-        teoae: audiometryValues.audiogram.rightEar.teoae,
-        instruction: audiometryValues.audiogram.rightEar.instruction,
+        dpoae: audiometryValues.audioGram.rightEar.dpoae,
+        teoae: audiometryValues.audioGram.rightEar.teoae,
+        instruction: audiometryValues.audioGram.rightEar.instruction,
       },
       leftEar: {
-        dpoae: audiometryValues.audiogram.leftEar.dpoae,
-        teoae: audiometryValues.audiogram.leftEar.teoae,
-        instruction: audiometryValues.audiogram.leftEar.instruction,
+        dpoae: audiometryValues.audioGram.leftEar.dpoae,
+        teoae: audiometryValues.audioGram.leftEar.teoae,
+        instruction: audiometryValues.audioGram.leftEar.instruction,
       },
-      notes: audiometryValues.audiogram.notes
-        ? audiometryValues.audiogram.notes
+      notes: audiometryValues.audioGram.notes
+        ? audiometryValues.audioGram.notes
         : "",
     },
   };

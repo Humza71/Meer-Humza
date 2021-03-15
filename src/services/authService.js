@@ -34,18 +34,15 @@ export const signUp = async (credentials) => {
 };
 
 export const clinic = async () => {
-  debugger;
   return new Promise((resolve, reject) => {
     getUtil("/api/get/clinic")
       .then((response) => {
         if (response.status === 200) {
-          debugger;
           resolve(response.data);
         }
         reject(response.data);
       })
       .catch((error) => {
-        debugger;
         reject(error);
       });
   });

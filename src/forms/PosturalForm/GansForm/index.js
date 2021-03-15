@@ -1,5 +1,5 @@
 import React from "react";
-import { gsoTestQuestion } from "./model.js";
+import { gsPerformanceTest } from "./model.js";
 
 import Toggle from "components/reports/Toggle";
 import ReportCard from "components/reports/ReportCard";
@@ -27,7 +27,7 @@ const GansForm = ({ values, setFieldValue }) => {
       <>
         <ReportTable
           Columns={() =>
-            gsoTestQuestion.map(({ title }, index) => (
+            gsPerformanceTest.map(({ title }, index) => (
               <Cell align="center" key={index}>
                 {title}
               </Cell>
@@ -35,7 +35,7 @@ const GansForm = ({ values, setFieldValue }) => {
           }
         >
           <TableRow>
-            {gsoTestQuestion.map(({ title, key, options }) => (
+            {gsPerformanceTest.map(({ title, key, options }) => (
               <BorderCell key={key}>
                 <Box my={4}>
                   <img
@@ -45,9 +45,11 @@ const GansForm = ({ values, setFieldValue }) => {
                 </Box>
                 <Box mb={2.5}>
                   <Toggle
-                    name={`gsoTest.${key}`}
-                    value={values["gsoTest"][key]}
-                    onChange={(value) => setFieldValue(`gsoTest.${key}`, value)}
+                    name={`gsPerformanceTest.${key}`}
+                    value={values["gsPerformanceTest"][key]}
+                    onChange={(value) =>
+                      setFieldValue(`gsPerformanceTest.${key}`, value)
+                    }
                     options={options}
                   />
                 </Box>
@@ -56,8 +58,8 @@ const GansForm = ({ values, setFieldValue }) => {
           </TableRow>
         </ReportTable>
         <TextArea
-          value={values["gsoTest"]["notes"]}
-          onChange={(value) => setFieldValue(`gsoTest.notes`, value)}
+          value={values["gsPerformanceTest"]["notes"]}
+          onChange={(value) => setFieldValue(`gsPerformanceTest.notes`, value)}
         />
       </>
     </ReportCard>

@@ -10,7 +10,7 @@ import { TableRow } from "@material-ui/core";
 
 const AucousticForm = (props) => {
   const { setFieldValue, values } = props;
-  const data = values["ai"];
+  const data = values["acousticImmittance"];
   const aucousticQuestions = [
     {
       title: "Tympanogram",
@@ -127,7 +127,10 @@ const AucousticForm = (props) => {
                   name={`${key}.${fieldKey}`}
                   value={data[key][fieldKey]}
                   onChange={(value) =>
-                    setFieldValue(`ai.${key}.${fieldKey}`, value)
+                    setFieldValue(
+                      `acousticImmittance.${key}.${fieldKey}`,
+                      value
+                    )
                   }
                   options={options}
                 />
@@ -140,7 +143,7 @@ const AucousticForm = (props) => {
         rowsMin={3}
         placeholder="Notes"
         value={data["notes"]}
-        onChange={(value) => setFieldValue(`ai.notes`, value)}
+        onChange={(value) => setFieldValue(`acousticImmittance.notes`, value)}
       />
     </ReportCard>
   );

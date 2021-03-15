@@ -125,10 +125,10 @@ const AuralSymptom = (props) => {
                   )
                 }
                 placeholder=""
-                value={values["healthCondition"]["Migraine"]}
+                value={values["healthCondition"]["migraine"]}
                 fieldsize={{ width: "180px", height: "37px" }}
                 onChange={(e) =>
-                  setFieldValue(`healthCondition.Migraine`, e.target.value)
+                  setFieldValue(`healthCondition.migraine`, e.target.value)
                 }
               />
             </Box>
@@ -140,11 +140,11 @@ const AuralSymptom = (props) => {
                   )
                 }
                 placeholder=""
-                value={values["healthCondition"]["OrthopedicLimitations"]}
+                value={values["healthCondition"]["orthopedicLimitations"]}
                 fieldsize={{ width: "180px", height: "37px" }}
                 onChange={(e) => {
                   setFieldValue(
-                    `healthCondition.OrthopedicLimitations`,
+                    `healthCondition.orthopedicLimitations`,
                     e.target.value
                   );
                 }}
@@ -158,11 +158,11 @@ const AuralSymptom = (props) => {
                   )
                 }
                 placeholder=""
-                value={values["healthCondition"]["ConcussionHeadInjury"]}
+                value={values["healthCondition"]["concussionHeadInjury"]}
                 fieldsize={{ width: "180px", height: "37px" }}
                 onChange={(e) =>
                   setFieldValue(
-                    `healthCondition.ConcussionHeadInjury`,
+                    `healthCondition.concussionHeadInjury`,
                     e.target.value
                   )
                 }
@@ -176,10 +176,10 @@ const AuralSymptom = (props) => {
                   )
                 }
                 placeholder=""
-                value={values["healthCondition"]["CVATIA"]}
+                value={values["healthCondition"]["cvatia"]}
                 fieldsize={{ width: "180px", height: "37px" }}
                 onChange={(e) =>
-                  setFieldValue(`healthCondition.CVATIA`, e.target.value)
+                  setFieldValue(`healthCondition.cvatia`, e.target.value)
                 }
               />
             </Box>
@@ -191,11 +191,11 @@ const AuralSymptom = (props) => {
                   )
                 }
                 placeholder=""
-                value={values["healthCondition"]["RecentHeadImaging"]}
+                value={values["healthCondition"]["recentHeadImaging"]}
                 fieldsize={{ width: "180px", height: "37px" }}
                 onChange={(e) =>
                   setFieldValue(
-                    `healthCondition.RecentHeadImaging`,
+                    `healthCondition.recentHeadImaging`,
                     e.target.value
                   )
                 }
@@ -209,10 +209,10 @@ const AuralSymptom = (props) => {
                   )
                 }
                 placeholder=""
-                value={values["healthCondition"]["Other"]}
+                value={values["healthCondition"]["other"]}
                 fieldsize={{ width: "180px", height: "37px" }}
                 onChange={(e) =>
-                  setFieldValue(`healthCondition.Other`, e.target.value)
+                  setFieldValue(`healthCondition.other`, e.target.value)
                 }
               />
             </Box>

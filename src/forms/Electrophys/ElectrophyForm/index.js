@@ -11,7 +11,7 @@ import Input from "components/reports/Input";
 
 const ElectrophyForm = (props) => {
   const { setFieldValue, values } = props;
-  const data = values["eco"];
+  const data = values["electroCochleoGraphy"];
   const ecoQuestions = [
     {
       title: "",
@@ -69,7 +69,10 @@ const ElectrophyForm = (props) => {
                   name={`${key}.${fieldKey}`}
                   value={data[key][fieldKey]}
                   onChange={(value) => {
-                    setFieldValue(`eco.${key}.${fieldKey}`, value);
+                    setFieldValue(
+                      `electroCochleoGraphy.${key}.${fieldKey}`,
+                      value
+                    );
                   }}
                   options={options}
                 />
@@ -81,7 +84,10 @@ const ElectrophyForm = (props) => {
                   value={data[key]["ratio"]}
                   fieldsize={{ width: "356px" }}
                   onChange={(event) => {
-                    setFieldValue(`eco.${key}.ratio`, event.target.value);
+                    setFieldValue(
+                      `electroCochleoGraphy.${key}.ratio`,
+                      event.target.value
+                    );
                   }}
                 />
               </Box>
@@ -93,7 +99,7 @@ const ElectrophyForm = (props) => {
         rowsMin={3}
         placeholder="Notes"
         value={data["notes"]}
-        onChange={(value) => setFieldValue(`eco.notes`, value)}
+        onChange={(value) => setFieldValue(`electroCochleoGraphy.notes`, value)}
       />
     </ReportCard>
   );

@@ -78,9 +78,8 @@ function SignUp() {
   };
 
   useEffect(() => {
-    debugger;
     dispatch(getClinic());
-  }, []);
+  }, [dispatch]);
   console.log("id", clinicId);
   return (
     <Wrapper>

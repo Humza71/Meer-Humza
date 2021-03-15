@@ -25,7 +25,6 @@ export const slice = createSlice({
       state.loading = action.payload;
     },
     setClinic: (state, action) => {
-      debugger;
       state.clinicId = action.payload._id;
     },
   },
@@ -71,10 +70,10 @@ export const signUp = (credentials) => async (dispatch) => {
 
 export const getClinic = () => async (dispatch) => {
   // dispatch(setLoading(true));
-  debugger;
+
   try {
     const response = await clinic();
-    debugger;
+
     dispatch(setClinic(response.data));
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));

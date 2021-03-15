@@ -22,7 +22,7 @@ import { setStepNewReport } from "redux/reducers/uiReducer";
 const Alert = styled(MuiAlert)(spacing);
 
 // const initialValues = {
-//   gsoTest: {
+//   gsPerformanceTest: {
 //     condition1: "",
 //     condition2: "",
 //     condition3: "",
@@ -33,7 +33,7 @@ const Alert = styled(MuiAlert)(spacing);
 //     notes: "",
 //   },
 //   cdpTest: {
-//     soTest: {
+//     sensoryOrganizationTest: {
 //       condition1: "",
 //       condition2: "",
 //       condition3: "",
@@ -115,34 +115,58 @@ const PosturalForm = (props) => {
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
 
   const initialValues = {
-    gsoTest: {
-      condition1: posturalValues.gsoTest.condition1,
-      condition2: posturalValues.gsoTest.condition2,
-      condition3: posturalValues.gsoTest.condition3,
-      condition4: posturalValues.gsoTest.condition4,
-      condition5: posturalValues.gsoTest.condition5,
-      condition6: posturalValues.gsoTest.condition6,
-      steppingFakuda: posturalValues.gsoTest.steppingFakuda,
-      notes: posturalValues.gsoTest.notes ? posturalValues.gsoTest.notes : "",
+    gsPerformanceTest: {
+      condition1: posturalValues.gsPerformanceTest.condition1,
+      condition2: posturalValues.gsPerformanceTest.condition2,
+      condition3: posturalValues.gsPerformanceTest.condition3,
+      condition4: posturalValues.gsPerformanceTest.condition4,
+      condition5: posturalValues.gsPerformanceTest.condition5,
+      condition6: posturalValues.gsPerformanceTest.condition6,
+      steppingFakuda: posturalValues.gsPerformanceTest.steppingFakuda,
+      notes: posturalValues.gsPerformanceTest.notes
+        ? posturalValues.gsPerformanceTest.notes
+        : "",
     },
-    cdpTest: {
-      soTest: {
-        condition1: posturalValues.cdpTest.soTest.condition1,
-        condition2: posturalValues.cdpTest.soTest.condition2,
-        condition3: posturalValues.cdpTest.soTest.condition3,
-        condition4: posturalValues.cdpTest.soTest.condition4,
-        condition5: posturalValues.cdpTest.soTest.condition5,
-        condition6: posturalValues.cdpTest.soTest.condition6,
+    computerizedDynamicPosturography: {
+      sensoryOrganizationTest: {
+        condition1:
+          posturalValues.computerizedDynamicPosturography
+            .sensoryOrganizationTest.condition1,
+        condition2:
+          posturalValues.computerizedDynamicPosturography
+            .sensoryOrganizationTest.condition2,
+        condition3:
+          posturalValues.computerizedDynamicPosturography
+            .sensoryOrganizationTest.condition3,
+        condition4:
+          posturalValues.computerizedDynamicPosturography
+            .sensoryOrganizationTest.condition4,
+        condition5:
+          posturalValues.computerizedDynamicPosturography
+            .sensoryOrganizationTest.condition5,
+        condition6:
+          posturalValues.computerizedDynamicPosturography
+            .sensoryOrganizationTest.condition6,
       },
-      mcTest: {
-        bt: posturalValues.cdpTest.mcTest.bt,
-        ft: posturalValues.cdpTest.mcTest.ft,
+      motorControlTest: {
+        backwardTranslations:
+          posturalValues.computerizedDynamicPosturography.motorControlTest
+            .backwardTranslations,
+        forwardTranslations:
+          posturalValues.computerizedDynamicPosturography.motorControlTest
+            .forwardTranslations,
       },
-      adTest: {
-        tu: posturalValues.cdpTest.adTest.tu,
-        td: posturalValues.cdpTest.adTest.td,
+      adaptationTest: {
+        toesUp:
+          posturalValues.computerizedDynamicPosturography.adaptationTest
+            ?.toesUp,
+        toesDown:
+          posturalValues.computerizedDynamicPosturography.adaptationTest
+            ?.toesDown,
       },
-      notes: posturalValues.cdpTest.notes ? posturalValues.cdpTest.notes : "",
+      notes: posturalValues.computerizedDynamicPosturography.notes
+        ? posturalValues.computerizedDynamicPosturography.notes
+        : "",
     },
   };
 

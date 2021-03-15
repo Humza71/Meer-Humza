@@ -124,31 +124,31 @@ const History = (props) => {
         : "",
     },
     auralSymptom: {
-      shl: historyValues.auralSymptom.shl,
-      ap: historyValues.auralSymptom.ap,
+      suddenHearingLoss: historyValues.auralSymptom.suddenHearingLoss,
+      auralPressure: historyValues.auralSymptom.auralPressure,
       otorrhea: historyValues.auralSymptom.otorrhea,
       tinnitus: historyValues.auralSymptom.tinnitus,
       otalgia: historyValues.auralSymptom.otalgia,
     },
     healthCondition: {
       conditions: historyValues.healthCondition.conditions || [],
-      Migraine: historyValues.healthCondition.Migraine
-        ? historyValues.healthCondition.Migraine
+      migraine: historyValues.healthCondition.migraine
+        ? historyValues.healthCondition.migraine
         : "",
-      OrthopedicLimitations: historyValues.healthCondition.OrthopedicLimitations
-        ? historyValues.healthCondition.OrthopedicLimitations
+      orthopedicLimitations: historyValues.healthCondition.orthopedicLimitations
+        ? historyValues.healthCondition.orthopedicLimitations
         : "",
-      ConcussionHeadInjury: historyValues.healthCondition.ConcussionHeadInjury
-        ? historyValues.healthCondition.ConcussionHeadInjury
+      concussionHeadInjury: historyValues.healthCondition.concussionHeadInjury
+        ? historyValues.healthCondition.concussionHeadInjury
         : "",
-      CVATIA: historyValues.healthCondition.CVATIA
-        ? historyValues.healthCondition.CVATIA
+      cbatia: historyValues.healthCondition.cvatia
+        ? historyValues.healthCondition.cvatia
         : "",
-      RecentHeadImaging: historyValues.healthCondition.RecentHeadImaging
-        ? historyValues.healthCondition.RecentHeadImaging
+      recentHeadImaging: historyValues.healthCondition.recentHeadImaging
+        ? historyValues.healthCondition.recentHeadImaging
         : "",
-      Other: historyValues.healthCondition.Other
-        ? historyValues.healthCondition.Other
+      other: historyValues.healthCondition.other
+        ? historyValues.healthCondition.other
         : "",
     },
   };
@@ -192,6 +192,9 @@ const History = (props) => {
   // const handleSubmit = async () => {
   //   dispatch(setStepNewReport(stepNewReport + 1));
   // };
+
+  console.log(historyValues, "history");
+  console.log(initialValues, "initial");
 
   console.log(stepNewReport, "value");
   return (

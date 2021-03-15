@@ -1,4 +1,4 @@
-export const cdpTestQuestions = [
+export const computerizedDynamicPosturographyTestQuestions = [
   {
     title: "Sensory Organization Test",
     key: "Sensory Organization Test",
@@ -114,7 +114,7 @@ export const cdpTestQuestions = [
   },
 ];
 
-export const mcTestQuestions = [
+export const motorControlTestQuestions = [
   {
     title: "Motor Control Test",
     key: "Motor Control Test",
@@ -122,7 +122,7 @@ export const mcTestQuestions = [
   },
   {
     title: "Motor Control Test",
-    key: "bt",
+    key: "backwardTranslations",
     options: [
       {
         title: "Normal",
@@ -136,7 +136,7 @@ export const mcTestQuestions = [
   },
   {
     title: "Forward Translations",
-    key: "ft",
+    key: "forwardTranslations",
     options: [
       {
         title: "Normal",
@@ -150,7 +150,7 @@ export const mcTestQuestions = [
   },
 ];
 
-export const adTest = [
+export const adaptationTest = [
   {
     title: "Adaptation Test",
     key: "Adaptation Test",
@@ -158,7 +158,7 @@ export const adTest = [
   },
   {
     title: "Toes-Up",
-    key: "tu",
+    key: "toesUp",
     options: [
       {
         title: "Normal",
@@ -172,7 +172,7 @@ export const adTest = [
   },
   {
     title: "Toes-Down",
-    key: "td",
+    key: "toesDown",
     options: [
       {
         title: "Normal",

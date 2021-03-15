@@ -1,5 +1,9 @@
 import React from "react";
-import { cdpTestQuestions, mcTestQuestions, adTest } from "./model.js";
+import {
+  computerizedDynamicPosturographyTestQuestions,
+  motorControlTestQuestions,
+  adaptationTest,
+} from "./model.js";
 
 import Toggle from "components/reports/Toggle";
 import ReportCard from "components/reports/ReportCard";
@@ -18,45 +22,54 @@ const PostugraphyForm = ({ values, setFieldValue }) => {
         <ReportTable
           Columns={() => (
             <>
-              {cdpTestQuestions.map(({ title = "", key }, index) =>
-                title ? (
-                  <Cell align="center" key={index}>
-                    {title}
-                  </Cell>
-                ) : (
-                  <Cell align="center" width="22%" key={index}>
-                    {title}
-                  </Cell>
-                )
+              {computerizedDynamicPosturographyTestQuestions.map(
+                ({ title = "", key }, index) =>
+                  title ? (
+                    <Cell align="center" key={index}>
+                      {title}
+                    </Cell>
+                  ) : (
+                    <Cell align="center" width="22%" key={index}>
+                      {title}
+                    </Cell>
+                  )
               )}
             </>
           )}
         >
           <TableRow>
-            {cdpTestQuestions.map(({ title, options, key }, index) =>
-              options.length === 0 ? (
-                <BodyCell key={key}>{title}</BodyCell>
-              ) : (
-                <BodyCell key={key}>
-                  <Box mb={2.5} mt={2.5}>
-                    <Toggle
-                      name={`cdpTest.soTest.${key}`}
-                      value={values["cdpTest"]["soTest"][key]}
-                      onChange={(value) =>
-                        setFieldValue(`cdpTest.soTest.${key}`, value)
-                      }
-                      options={options}
-                    />
-                  </Box>
-                </BodyCell>
-              )
+            {computerizedDynamicPosturographyTestQuestions.map(
+              ({ title, options, key }, index) =>
+                options.length === 0 ? (
+                  <BodyCell key={key}>{title}</BodyCell>
+                ) : (
+                  <BodyCell key={key}>
+                    <Box mb={2.5} mt={2.5}>
+                      <Toggle
+                        name={`computerizedDynamicPosturography.sensoryOrganizationTest.${key}`}
+                        value={
+                          values["computerizedDynamicPosturography"][
+                            "sensoryOrganizationTest"
+                          ][key]
+                        }
+                        onChange={(value) =>
+                          setFieldValue(
+                            `computerizedDynamicPosturography.sensoryOrganizationTest.${key}`,
+                            value
+                          )
+                        }
+                        options={options}
+                      />
+                    </Box>
+                  </BodyCell>
+                )
             )}
           </TableRow>
         </ReportTable>
         <ReportTable
           Columns={() => (
             <>
-              {mcTestQuestions.map(({ title, key }) =>
+              {motorControlTestQuestions.map(({ title, key }) =>
                 title ? (
                   <Cell align="center" width="35%" key={key}>
                     {title}
@@ -69,17 +82,24 @@ const PostugraphyForm = ({ values, setFieldValue }) => {
           )}
         >
           <TableRow>
-            {mcTestQuestions.map(({ title, options, key }, index) =>
+            {motorControlTestQuestions.map(({ title, options, key }, index) =>
               options.length === 0 ? (
                 <BodyCell key={index}>{title}</BodyCell>
               ) : (
                 <BodyCell key={index}>
                   <Box mb={2.5} mt={2.5}>
                     <Toggle
-                      name={`cdpTest.mcTest.${key}`}
-                      value={values["cdpTest"]["mcTest"][key]}
+                      name={`computerizedDynamicPosturography.motorControlTest.${key}`}
+                      value={
+                        values["computerizedDynamicPosturography"][
+                          "motorControlTest"
+                        ][key]
+                      }
                       onChange={(value) =>
-                        setFieldValue(`cdpTest.mcTest.${key}`, value)
+                        setFieldValue(
+                          `computerizedDynamicPosturography.motorControlTest.${key}`,
+                          value
+                        )
                       }
                       options={options}
                     />
@@ -95,7 +115,7 @@ const PostugraphyForm = ({ values, setFieldValue }) => {
         <ReportTable
           Columns={() => (
             <>
-              {adTest.map(({ title, key }) =>
+              {adaptationTest.map(({ title, key }) =>
                 title ? (
                   <Cell align="center" width="35%" key={key}>
                     {title}
@@ -108,17 +128,24 @@ const PostugraphyForm = ({ values, setFieldValue }) => {
           )}
         >
           <TableRow>
-            {adTest.map(({ title, options, key }, index) =>
+            {adaptationTest.map(({ title, options, key }, index) =>
               options.length === 0 ? (
                 <BodyCell key={key}>{title}</BodyCell>
               ) : (
                 <BodyCell key={key}>
                   <Box mb={2.5} mt={2.5}>
                     <Toggle
-                      name={`cdpTest.adTest.${key}`}
-                      value={values["cdpTest"]["adTest"][key]}
+                      name={`computerizedDynamicPosturography.adaptationTest.${key}`}
+                      value={
+                        values["computerizedDynamicPosturography"][
+                          "adaptationTest"
+                        ][key]
+                      }
                       onChange={(value) =>
-                        setFieldValue(`cdpTest.adTest.${key}`, value)
+                        setFieldValue(
+                          `computerizedDynamicPosturography.adaptationTest.${key}`,
+                          value
+                        )
                       }
                       options={options}
                     />
@@ -129,8 +156,10 @@ const PostugraphyForm = ({ values, setFieldValue }) => {
           </TableRow>
         </ReportTable>
         <TextArea
-          value={values["cdpTest"]["notes"]}
-          onChange={(value) => setFieldValue(`cdpTest.notes`, value)}
+          value={values["computerizedDynamicPosturography"]["notes"]}
+          onChange={(value) =>
+            setFieldValue(`computerizedDynamicPosturography.notes`, value)
+          }
         />
       </CardContent>
     </ReportCard>

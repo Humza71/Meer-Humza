@@ -53,9 +53,11 @@ const AuralSymptom = (props) => {
                 width: "148px",
                 height: "38px",
               }}
-              name={`auralSymptom.shl`}
-              value={values["auralSymptom"]["shl"]}
-              onChange={(value) => setFieldValue(`auralSymptom.shl`, value)}
+              name={`auralSymptom.suddenHearingLoss`}
+              value={values["auralSymptom"]["suddenHearingLoss"]}
+              onChange={(value) =>
+                setFieldValue(`auralSymptom.suddenHearingLoss`, value)
+              }
               options={options}
             />
           </BodyCell>
@@ -65,9 +67,11 @@ const AuralSymptom = (props) => {
                 width: "148px",
                 height: "38px",
               }}
-              name={`auralSymptom.ap`}
-              value={values["auralSymptom"]["ap"]}
-              onChange={(value) => setFieldValue(`auralSymptom.ap`, value)}
+              name={`auralSymptom.auralPressure`}
+              value={values["auralSymptom"]["auralPressure"]}
+              onChange={(value) =>
+                setFieldValue(`auralSymptom.auralPressure`, value)
+              }
               options={options}
             />
           </BodyCell>
