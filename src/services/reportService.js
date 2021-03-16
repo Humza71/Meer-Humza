@@ -497,7 +497,7 @@ export function addImpressionPlan(payload) {
     },
   };
   return new Promise((resolve, reject) => {
-    postUtil("/api/add/", data)
+    postUtil("/api/add/impression-and-plan", data)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -512,7 +512,7 @@ export function addImpressionPlan(payload) {
 
 export function getImpressionPlanById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api//${payload.reportId}`)
+    getUtil(`/api/impression-and-plan-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);

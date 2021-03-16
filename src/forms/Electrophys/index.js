@@ -245,8 +245,7 @@ const Electrophys = (props) => {
       // setSubmitting(false);
     }
   };
-  console.log("values", electrophysValues);
-  console.log("initialValues", initialValues);
+
   return (
     <Fragment>
       <Formik

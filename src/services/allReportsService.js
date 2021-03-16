@@ -19,3 +19,18 @@ export const getReports = async () => {
       });
   });
 };
+
+export const getPdfReports = async () => {
+  return new Promise((resolve, reject) => {
+    getUtil("/api/get/pdf")
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

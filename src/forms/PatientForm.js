@@ -128,9 +128,6 @@ const InnerForm = (props) => {
     dispatch(addTechnician(newTechnician, saveForFuture));
   };
 
-  console.log(values.staffInformation.technicianId, "table values");
-  console.log(values, "values");
-
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <OutCard mb={6}>
@@ -440,9 +437,6 @@ const PatientForm = (props) => {
       // setSubmitting(false);
     }
   };
-
-  console.log(newReport, "check provider");
-  console.log(initialValues, "initialValues");
 
   return (
     <React.Fragment>

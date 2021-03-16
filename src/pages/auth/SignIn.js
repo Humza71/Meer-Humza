@@ -130,7 +130,7 @@ function SignIn() {
             );
             history.push("/");
           } catch (error) {
-            const message = error.message || "Something went wrong";
+            const message = "Invalid email or password";
 
             setStatus({ success: false });
             setErrors({ submit: message });

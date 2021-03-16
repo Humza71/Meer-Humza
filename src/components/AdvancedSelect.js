@@ -107,7 +107,7 @@ const AdvancedSelect = ({
     setSearchText("");
   };
   const extraProps = !hidelabeltop ? { label: label } : {};
-  console.log(selectValue, "ffff");
+
   return (
     <FormControl error={error} fullWidth variant={variant}>
       {!hidelabeltop && <InputLabel>{label}</InputLabel>}

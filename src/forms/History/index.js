@@ -96,7 +96,7 @@ const History = (props) => {
       symptomDurationUnitLightHeaded:
         historyValues.presentIllness["symptomDurationUnitLightHeaded"] || "",
       symptomDurationUnitOther:
-        historyValues.presentIllness["symptomDuratiOnother"] || "",
+        historyValues.presentIllness["symptomDurationOther"] || "",
 
       provokesWithRoomSpin:
         historyValues.presentIllness["provokesWithRoomSpin"] || "",
@@ -107,7 +107,7 @@ const History = (props) => {
       provokesWithLightHeaded:
         historyValues.presentIllness["provokesWithLightHeaded"] || "",
       provokesWithOther:
-        historyValues.presentIllness["symptomDurationOther"] || "",
+        historyValues.presentIllness["provokesWithOther"] || "",
 
       firstNotedProblem: historyValues.presentIllness.firstNotedProblem
         ? new Date(historyValues.presentIllness.firstNotedProblem)
@@ -193,10 +193,6 @@ const History = (props) => {
   //   dispatch(setStepNewReport(stepNewReport + 1));
   // };
 
-  console.log(historyValues, "history");
-  console.log(initialValues, "initial");
-
-  console.log(stepNewReport, "value");
   return (
     <Fragment>
       <Formik

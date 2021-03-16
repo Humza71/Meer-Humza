@@ -248,9 +248,9 @@ const InnerForm = (props) => {
               values={values}
             />
           </section>
-          <section id="Gaze - Vision Denied">
+          <section id="Gaze - Vision Enabled">
             <Gaze
-              formTitle={"Gaze - Vision Denied"}
+              formTitle={"Gaze - Vision Enabled"}
               formKey={"gazeVisionEnabled"}
               setFieldValue={setFieldValue}
               values={values}
@@ -309,8 +309,6 @@ const VngForm = (props) => {
   const dispatch = useDispatch();
   const vngValues = useSelector((state) => state.reportReducer.vng);
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
-
-  console.log("hereeeeeeeeeeee", vngValues);
 
   const initialValues = {
     // ...vngValues,

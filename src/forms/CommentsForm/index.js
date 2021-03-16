@@ -41,9 +41,7 @@ const InnerForm = ({ setFieldValue, values }) => {
         <EditorWrapper>
           <CKEditor
             enableReinitialize
-            data={
-              "<select name=`cars` id=`cars`><option value=`volvo`>Volvo</option><option value=`volvo3`>Volvo2</option></select>"
-            }
+            data={values["comments"]}
             config={{
               toolbar: [
                 "bold",
@@ -110,9 +108,6 @@ const CommentsForm = (props) => {
       // setSubmitting(false);
     }
   };
-
-  console.log("values", commentsValues);
-  console.log("initial", initialValues);
 
   return (
     <Fragment>

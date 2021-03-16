@@ -179,8 +179,8 @@ export const slice = createSlice({
       }
     },
     setImpression: (state, action) => {
-      if (action.payload.impression) {
-        state.impression = action.payload.impressionPlan;
+      if (action.payload) {
+        state.impression = action.payload;
       }
     },
   },

@@ -17,13 +17,23 @@ import {
   TableSortLabel,
   Toolbar as MuiToolbar,
   Button,
+  // Popover,
+  // Tooltip as MuiTooltip,
+  Menu,
+  MenuItem,
+  Typography,
 } from "@material-ui/core";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import {
   MoreVert as MoreVertIcon,
   Menu as MenuIcon,
   ViewHeadline as ViewHeadlineIcon,
+  // ListItemIcon as MuiListItemIcon,
 } from "@material-ui/icons";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import SaveAltIcon from "@material-ui/icons/SaveAlt";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { spacing } from "@material-ui/system";
 
 import SearchInput from "components/SearchInput";
@@ -32,6 +42,29 @@ import { useHistory } from "react-router";
 
 const Paper = styled(MuiPaper)(spacing);
 const Toolbar = styled(MuiToolbar)(spacing);
+// const Typography = styled(MuiTypography)`
+//   margin-left: 0px;
+// `;
+// const myListItemIcon = styled(ListItemIcon)`
+//   margin-bottom: 5px;
+// `;
+// const Tooltip = styled(MuiTooltip)`
+//   font-size: 2em;
+// `;
+// const Popover = styled(MuiPopover)`
+//   margin-bottom: 30px;
+// `;
+// const theme = createMuiTheme({
+//   overrides: {
+//     MuiTooltip: {
+//       tooltip: {
+//         fontSize: "2em",
+//         color: "yellow",
+//         backgroundColor: "red",
+//       },
+//     },
+//   },
+// });
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -281,7 +314,15 @@ const ReportTable = (props) => {
   const [filteredClinics, setFilteredClinics] = React.useState(
     getInitialClinics()
   );
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -302,6 +343,8 @@ const ReportTable = (props) => {
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
   return (
     <Paper>
       <TableToolbar
@@ -340,7 +383,7 @@ const ReportTable = (props) => {
 
               return (
                 <TableRow
-                  onClick={() => movetoCreate(row._id)}
+                  // onClick={() => movetoCreate(row._id)}
                   hover
                   role="checkbox"
                   tabIndex={-1}
@@ -357,8 +400,45 @@ const ReportTable = (props) => {
                   )}
                   <TableCell align="left">
                     <IconButton aria-label="actions">
-                      <MoreVertIcon />
+                      <MoreVertIcon onClick={handleClick} />
                     </IconButton>
+
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={anchorEl}
+                      keepMounted
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                    >
+                      <MenuItem>
+                        <Typography color="primary" variant="inherit">
+                          ACTIONS
+                        </Typography>
+                      </MenuItem>
+
+                      <MenuItem onClick={() => movetoCreate(row._id)}>
+                        <EditIcon color="primary" />
+
+                        <Typography variant="inherit">Edit</Typography>
+                      </MenuItem>
+                      <MenuItem>
+                        <SaveAltIcon color="primary" />
+                        <Typography variant="inherit">Download</Typography>
+                      </MenuItem>
+                      <MenuItem>
+                        <DeleteIcon color="primary" />
+
+                        <Typography variant="inherit">Delete</Typography>
+                      </MenuItem>
+                    </Menu>
                   </TableCell>
                 </TableRow>
               );
