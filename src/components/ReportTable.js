@@ -21,19 +21,17 @@ import {
   // Tooltip as MuiTooltip,
   Menu,
   MenuItem,
-  Typography,
+  Typography as MuiTypography,
 } from "@material-ui/core";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import {
   MoreVert as MoreVertIcon,
   Menu as MenuIcon,
   ViewHeadline as ViewHeadlineIcon,
-  // ListItemIcon as MuiListItemIcon,
 } from "@material-ui/icons";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { spacing } from "@material-ui/system";
 
 import SearchInput from "components/SearchInput";
@@ -42,9 +40,10 @@ import { useHistory } from "react-router";
 
 const Paper = styled(MuiPaper)(spacing);
 const Toolbar = styled(MuiToolbar)(spacing);
-// const Typography = styled(MuiTypography)`
-//   margin-left: 0px;
-// `;
+
+const Typography = styled(MuiTypography)`
+  margin-left: 10px;
+`;
 // const myListItemIcon = styled(ListItemIcon)`
 //   margin-bottom: 5px;
 // `;
@@ -343,8 +342,8 @@ const ReportTable = (props) => {
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  // const open = Boolean(anchorEl);
+  // const id = open ? "simple-popover" : undefined;
   return (
     <Paper>
       <TableToolbar

@@ -31,6 +31,8 @@ import {
   getTestCommentsById,
   addImpressionPlan,
   getImpressionPlanById,
+  getMacros,
+  getMacrosByName,
 } from "../../services/reportService";
 // import { setMessage } from "./messageReducer";
 // import { createNewReport } from "services/reportService";
@@ -60,6 +62,10 @@ export const slice = createSlice({
       state.audiometry = initialState.audiometry;
       state.screenings = initialState.screenings;
       state.comments = initialState.comments;
+      state.impression = initialState.impression;
+      state.selectedMacros = initialState.selectedMacros;
+      state.macros = initialState.macros;
+      state.selectedMacros = initialState.selectedMacros;
     },
     updateNewReport: (state, action) => {
       const { patientDemographics = {} } = action.payload || {};
@@ -180,7 +186,41 @@ export const slice = createSlice({
     },
     setImpression: (state, action) => {
       if (action.payload) {
-        state.impression = action.payload;
+        state.impression.impressionAndPlan.overAllImpression =
+          action.payload.overAllImpression;
+        // state.impression.impressionAndPlan.macro = action.payload.macro;
+        state.selectedMacros = [...action.payload.macro];
+        // state.macrosForForm = [...action.payload.macro];
+      }
+    },
+    addMacro: (state, action) => {
+      if (action.payload) {
+        state.selectedMacros = [
+          ...state.selectedMacros,
+          action.payload.newData,
+        ];
+        state.impression.impressionAndPlan.overAllImpression =
+          action.payload.overAllImpression;
+      }
+    },
+
+    setMacros: (state, action) => {
+      if (action.payload) {
+        state.macros = action.payload;
+      }
+    },
+    updateMacro: (state, action) => {
+      // const array = [...state.selectedMacros];
+      // const newArray = array.filter(
+      //   (item, index) => index !== action.payload.macroIndex
+      // );
+      var newArray = [...state.selectedMacros];
+      newArray.splice(action.payload.macroIndex, 1);
+
+      if (action.payload) {
+        state.selectedMacros = [...newArray];
+        state.impression.impressionAndPlan.overAllImpression =
+          action.payload.overAllImpression;
       }
     },
   },
@@ -204,6 +244,10 @@ const {
   setScreenings,
   setComments,
   setImpression,
+  setMacros,
+  addMacro,
+  updateMacro,
+  // setNormality,
 } = slice.actions;
 
 export const updateReport = (values, onSuccess) => async (dispatch) => {
@@ -541,11 +585,42 @@ export const impressionPlanReport = (values) => async (dispatch) => {
 export const getImpressionPlan = (values) => async (dispatch) => {
   try {
     const response = await getImpressionPlanById(values);
-
     dispatch(setImpression(response.data));
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
+};
+
+export const allMacros = () => async (dispatch) => {
+  // dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  try {
+    const response = await getMacros();
+
+    dispatch(setMacros(response.data));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+  dispatch(setLoading(null));
+};
+
+export const macrosByName = (values) => async (dispatch) => {
+  try {
+    const response = await getMacrosByName(values);
+    const data = {
+      newData: { ...response.data },
+      overAllImpression: values.overAllImpression,
+    };
+
+    dispatch(addMacro(data));
+    // dispatch(setNormality(values.overAllImpression));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const updateMacros = (values) => async (dispatch) => {
+  dispatch(updateMacro(values));
+  // dispatch(setNormality(values.overAllImpression));
 };
 
 export default slice.reducer;

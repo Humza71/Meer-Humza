@@ -61,6 +61,7 @@ const AdvancedSelect = ({
   const [searchText, setSearchText] = useState("");
   const [newOption, setNewOption] = useState("");
   const [saveForFuture, setSaveForFuture] = useState(false);
+
   const stopPropagation = (e) => {
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
@@ -113,7 +114,7 @@ const AdvancedSelect = ({
       {!hidelabeltop && <InputLabel>{label}</InputLabel>}
       <Select
         name={name}
-        value={selectValue}
+        value={value.length > 0 ? value : selectValue}
         open={open}
         onChange={handleSelectChange}
         onOpen={() => setOpen(true)}

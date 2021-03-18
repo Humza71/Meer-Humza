@@ -52,7 +52,9 @@ export const getPdf = () => async (dispatch) => {
 
   try {
     const response = await getPdfReports();
-    // downloadjs(response.data, "report.pdf", "text/plain");
+    if (response) {
+      // downloadjs(response.data, "report.pdf", "text/plain");
+    }
   } catch (error) {
     console.log(error, "Error");
   }

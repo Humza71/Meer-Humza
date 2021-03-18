@@ -490,14 +490,17 @@ export function getTestCommentsById(payload) {
 }
 
 export function addImpressionPlan(payload) {
-  const data = {
-    reportId: payload.reportId,
-    impressionPlan: {
-      ...payload,
-    },
-  };
+  // debugger;
+  // const data = {
+  //   reportId: payload.reportId,
+  //   impressionPlan: {
+  //     ...payload,
+  //   },
+  // };
+  // debugger;
+
   return new Promise((resolve, reject) => {
-    postUtil("/api/add/impression-and-plan", data)
+    postUtil("/api/add/impression-and-plan", payload)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -512,7 +515,37 @@ export function addImpressionPlan(payload) {
 
 export function getImpressionPlanById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/impression-and-plan-report/${payload.reportId}`)
+    getUtil(`/api/get/impression-and-plan-report/${payload.reportId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function getMacros(payload) {
+  return new Promise((resolve, reject) => {
+    getUtil("/api/get/macros")
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function getMacrosByName(payload) {
+  return new Promise((resolve, reject) => {
+    getUtil(`/api/get/macro/${payload.name}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);

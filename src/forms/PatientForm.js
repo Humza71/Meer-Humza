@@ -392,9 +392,6 @@ const PatientForm = (props) => {
   }, [dispatch, id]);
   const onSuccess = (reportId) => {
     if (!id) {
-      // dispatch(getAllProviders());
-      // dispatch(getAllTechnicians());
-      // debugger;
       history.push(`/report/create/${reportId}`);
     }
   };

@@ -135,7 +135,15 @@ const initialState = {
     },
   },
   comments: {},
-  impression: {},
+  impression: {
+    impressionAndPlan: {
+      overAllImpression: "",
+      macro: [],
+    },
+  },
+  macros: [],
+  selectedMacros: [],
+  // normality: "",
 };
 
 export default initialState;
