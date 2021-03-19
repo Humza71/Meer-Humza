@@ -81,11 +81,7 @@ const Dashboard = ({ children, routes }) => {
     } else {
       setNavExpand(true);
     }
-  }, [window]);
-
-  // useEffect(() => {
-  //   dispatch(userInfo());
-  // }, [dispatch]);
+  }, []);
 
   return (
     <Root>
