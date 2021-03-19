@@ -55,7 +55,7 @@ const validationSchema = Yup.object().shape({});
 const vastForms = [
   {
     title: "Vertebral Artery Screening Test (VAST)",
-    sectionKey: "vast",
+    sectionKey: "vertebralArteryScreeningTest",
     rows: ["right", "left"],
     rowOptions: {
       right: {
@@ -90,7 +90,7 @@ const vastForms = [
   },
   {
     title: "Cervical Dizziness Screening Test",
-    sectionKey: "cervical",
+    sectionKey: "cervicalDizzinessScreeningTest",
     rows: ["right", "left"],
     rowOptions: {
       right: {
@@ -128,7 +128,7 @@ const vastForms = [
 const aibForms = [
   {
     title: "AIB – Computerized Dynamic Visual Acuity Test ©",
-    sectionKey: "actuity",
+    sectionKey: "aibComputerizedDynamicVisualAcuityTest",
     rows: ["horizontal", "vertical"],
     rowOptions: {
       horizontal: {
@@ -163,7 +163,7 @@ const aibForms = [
   },
   {
     title: "Head Impulse Test",
-    sectionKey: "impulse",
+    sectionKey: "headImpulseTest",
     rows: ["right", "left"],
     rowOptions: {
       right: {
@@ -223,46 +223,56 @@ const AudioMetery = (props) => {
   );
 
   const initialValues = {
-    vast: {
+    vertebralArteryScreeningTest: {
       right: {
-        negPositive: screeningsValues.vast.right.negPositive,
+        negPositive:
+          screeningsValues.vertebralArteryScreeningTest.right.negPositive,
       },
       left: {
-        negPositive: screeningsValues.vast.left.negPositive,
+        negPositive:
+          screeningsValues.vertebralArteryScreeningTest.left.negPositive,
       },
-      notes: screeningsValues.vast.notes ? screeningsValues.vast.notes : "",
-    },
-    cervical: {
-      right: {
-        negPositive: screeningsValues.cervical.right.negPositive,
-      },
-      left: {
-        negPositive: screeningsValues.cervical.left.negPositive,
-      },
-      notes: screeningsValues.cervical.notes
-        ? screeningsValues.cervical.notes
+      notes: screeningsValues.vertebralArteryScreeningTest.notes
+        ? screeningsValues.vertebralArteryScreeningTest.notes
         : "",
     },
-    actuity: {
+    cervicalDizzinessScreeningTest: {
+      right: {
+        negPositive:
+          screeningsValues.cervicalDizzinessScreeningTest.right.negPositive,
+      },
+      left: {
+        negPositive:
+          screeningsValues.cervicalDizzinessScreeningTest.left.negPositive,
+      },
+      notes: screeningsValues.cervicalDizzinessScreeningTest.notes
+        ? screeningsValues.cervicalDizzinessScreeningTest.notes
+        : "",
+    },
+    aibComputerizedDynamicVisualAcuityTest: {
       horizontal: {
-        negPositive: screeningsValues.actuity.horizontal.negPositive,
+        negPositive:
+          screeningsValues.aibComputerizedDynamicVisualAcuityTest.horizontal
+            .negPositive,
       },
       vertical: {
-        negPositive: screeningsValues.actuity.vertical.negPositive,
+        negPositive:
+          screeningsValues.aibComputerizedDynamicVisualAcuityTest.vertical
+            .negPositive,
       },
-      notes: screeningsValues.actuity.notes
-        ? screeningsValues.actuity.notes
+      notes: screeningsValues.aibComputerizedDynamicVisualAcuityTest.notes
+        ? screeningsValues.aibComputerizedDynamicVisualAcuityTest.notes
         : "",
     },
-    impulse: {
+    headImpulseTest: {
       right: {
-        negPositive: screeningsValues.impulse.right.negPositive,
+        negPositive: screeningsValues.headImpulseTest.right.negPositive,
       },
       left: {
-        negPositive: screeningsValues.impulse.left.negPositive,
+        negPositive: screeningsValues.headImpulseTest.left.negPositive,
       },
-      notes: screeningsValues.impulse.notes
-        ? screeningsValues.impulse.notes
+      notes: screeningsValues.headImpulseTest.notes
+        ? screeningsValues.headImpulseTest.notes
         : "",
     },
   };

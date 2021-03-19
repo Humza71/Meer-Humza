@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components/macro";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/AppBar";
@@ -70,6 +70,14 @@ const Dashboard = ({ children, routes }) => {
     console.log(navExpand);
     setNavExpand(!navExpand);
   };
+
+  useEffect(() => {
+    if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
+      setNavExpand(false);
+    } else {
+      setNavExpand(true);
+    }
+  }, [window.innerWidth]);
 
   return (
     <Root>

@@ -41,7 +41,7 @@ const Wrapper = styled(Box)`
 `;
 
 const CreateReportFooter = (props) => {
-  const { dirty, handleSave, id } = props;
+  const { dirty, handleSave, id, isPublish = false, handlePublish } = props;
   const dispatch = useDispatch();
   const history = useHistory();
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
@@ -83,6 +83,19 @@ const CreateReportFooter = (props) => {
         </Grid>
         <Grid item xs={12} sm={12} md={5}>
           <Box display="flex" justifyContent="flex-end">
+            {isPublish && (
+              <Button
+                variant="outlined"
+                size="medium"
+                color="primary"
+                mr={5}
+                // disabled={id ? false : !dirty}
+                onClick={handlePublish}
+              >
+                Publish
+              </Button>
+            )}
+
             <Button
               variant="outlined"
               size="medium"

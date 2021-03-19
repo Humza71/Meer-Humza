@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link as RouterLink } from "react-router-dom";
 import styled from "styled-components/macro";
 import { Helmet } from "react-helmet";
@@ -25,7 +25,7 @@ import {
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 
-import { signIn, signUp } from "redux/reducers/authReducer";
+import { signIn, signUp, getClinic } from "redux/reducers/authReducer";
 
 const Alert = styled(MuiAlert)(spacing);
 const TextField = styled(MuiTextField)(spacing);
@@ -67,7 +67,7 @@ function SignUp() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-
+  const clinicId = useSelector((state) => state.authReducer.clinicId);
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => {
@@ -77,6 +77,10 @@ function SignUp() {
     event.preventDefault();
   };
 
+  useEffect(() => {
+    dispatch(getClinic());
+  }, [dispatch]);
+  console.log("id", clinicId);
   return (
     <Wrapper>
       <Helmet title="Sign Up" />
@@ -126,6 +130,7 @@ function SignUp() {
                 email: values.email,
                 password: values.password,
                 confirm_password: values.password_confirmation,
+                clinicId: clinicId,
               })
             );
             await dispatch(

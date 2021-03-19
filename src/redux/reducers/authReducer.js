@@ -4,12 +4,14 @@ import {
   signUp as authSignUp,
   userInfo as authUserInfo,
   resetPassword as authResetPassword,
+  clinic,
 } from "../../services/authService";
 import { setMessage } from "./messageReducer";
 
 const initialState = {
   user: undefined,
   loading: false,
+  clinicId: "",
 };
 
 export const slice = createSlice({
@@ -22,10 +24,13 @@ export const slice = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
+    setClinic: (state, action) => {
+      state.clinicId = action.payload._id;
+    },
   },
 });
 
-const { setUser, setLoading } = slice.actions;
+const { setUser, setLoading, setClinic } = slice.actions;
 
 export const signIn = (credentials, onSuccess) => async (dispatch) => {
   dispatch(setLoading(true));
@@ -58,6 +63,20 @@ export const signUp = (credentials) => async (dispatch) => {
     );
   } catch (error) {
     dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+
+  dispatch(setLoading(false));
+};
+
+export const getClinic = () => async (dispatch) => {
+  // dispatch(setLoading(true));
+
+  try {
+    const response = await clinic();
+
+    dispatch(setClinic(response.data));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
 
   dispatch(setLoading(false));

@@ -11,7 +11,7 @@ import Input from "components/reports/Input";
 
 const AudiogramForm = (props) => {
   const { setFieldValue, values } = props;
-  const data = values["audiogram"];
+  const data = values["audioGram"];
   const audiogramQuestions = [
     {
       title: "",
@@ -72,7 +72,7 @@ const AudiogramForm = (props) => {
                   name={`${key}.${fieldKey}`}
                   value={data[key][fieldKey]}
                   onChange={(value) =>
-                    setFieldValue(`audiogram.${key}.${fieldKey}`, value)
+                    setFieldValue(`audioGram.${key}.${fieldKey}`, value)
                   }
                   options={options}
                 />
@@ -83,7 +83,7 @@ const AudiogramForm = (props) => {
                 fieldsize={{ width: "224px" }}
                 value={data[key]["instruction"]}
                 onChange={(e) =>
-                  setFieldValue(`audiogram.${key}.instruction`, e.target.value)
+                  setFieldValue(`audioGram.${key}.instruction`, e.target.value)
                 }
               />
             </BodyCell>
@@ -94,7 +94,7 @@ const AudiogramForm = (props) => {
         rowsMin={3}
         placeholder="Notes"
         value={data["notes"]}
-        onChange={(value) => setFieldValue(`audiogram.notes`, value)}
+        onChange={(value) => setFieldValue(`audioGram.notes`, value)}
       />
     </ReportCard>
   );

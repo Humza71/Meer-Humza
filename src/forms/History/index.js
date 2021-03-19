@@ -41,7 +41,7 @@ const InnerForm = (props) => {
     <div id="historyTab">
       <FlexBox>
         <Tabs rootEl="#historyTab" labels={labels}>
-          <TabWrapper>
+          <TabWrapper style={{ scrollBehavior: "smooth" }}>
             <section id="History of Present Illness (HPI)">
               <HPI
                 values={values}
@@ -75,73 +75,80 @@ const History = (props) => {
     useSelector((state) => state.reportReducer.history) || {};
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
   const initialValues = {
-    hpi: {
+    presentIllness: {
       symptomDurationRoomSpin:
-        historyValues.hpi["symptomDurationRoomSpin"] || "",
+        historyValues.presentIllness["symptomDurationRoomSpin"] || "",
       symptomDurationPatientSpin:
-        historyValues.hpi["symptomDurationPatientSpin"] || "",
+        historyValues.presentIllness["symptomDurationPatientSpin"] || "",
       symptomDurationImbalance:
-        historyValues.hpi["symptomDurationImbalance"] || "",
+        historyValues.presentIllness["symptomDurationImbalance"] || "",
       symptomDurationLightHeaded:
-        historyValues.hpi["symptomDurationLightHeaded"] || "",
-      symptomDurationOther: historyValues.hpi["symptomDurationOther"] || "",
+        historyValues.presentIllness["symptomDurationLightHeaded"] || "",
+      symptomDurationOther:
+        historyValues.presentIllness["symptomDurationOther"] || "",
 
       symptomDurationUnitRoomSpin:
-        historyValues.hpi["symptomDurationUnitRoomSpin"] || "",
+        historyValues.presentIllness["symptomDurationUnitRoomSpin"] || "",
       symptomDurationUnitPatientSpin:
-        historyValues.hpi["symptomDurationUnitPatientSpin"] || "",
+        historyValues.presentIllness["symptomDurationUnitPatientSpin"] || "",
       symptomDurationUnitImbalance:
-        historyValues.hpi["symptomDurationUnitImbalance"] || "",
+        historyValues.presentIllness["symptomDurationUnitImbalance"] || "",
       symptomDurationUnitLightHeaded:
-        historyValues.hpi["symptomDurationUnitLightHeaded"] || "",
-      symptomDurationUnitOther: historyValues.hpi["symptomDuratiOnother"] || "",
+        historyValues.presentIllness["symptomDurationUnitLightHeaded"] || "",
+      symptomDurationUnitOther:
+        historyValues.presentIllness["symptomDurationOther"] || "",
 
-      provokesWithRoomSpin: historyValues.hpi["provokesWithRoomSpin"] || "",
+      provokesWithRoomSpin:
+        historyValues.presentIllness["provokesWithRoomSpin"] || "",
       provokesWithPatientSpin:
-        historyValues.hpi["provokesWithPatientSpin"] || "",
-      provokesWithImbalance: historyValues.hpi["provokesWithImbalance"] || "",
+        historyValues.presentIllness["provokesWithPatientSpin"] || "",
+      provokesWithImbalance:
+        historyValues.presentIllness["provokesWithImbalance"] || "",
       provokesWithLightHeaded:
-        historyValues.hpi["provokesWithLightHeaded"] || "",
-      provokesWithOther: historyValues.hpi["symptomDurationOther"] || "",
+        historyValues.presentIllness["provokesWithLightHeaded"] || "",
+      provokesWithOther:
+        historyValues.presentIllness["provokesWithOther"] || "",
 
-      firstNotedProblem: historyValues.hpi.firstNotedProblem
-        ? new Date(historyValues.hpi.firstNotedProblem)
+      firstNotedProblem: historyValues.presentIllness.firstNotedProblem
+        ? new Date(historyValues.presentIllness.firstNotedProblem)
         : new Date(),
-      mostRecentEpisode: historyValues.hpi.mostRecentEpisode
-        ? new Date(historyValues.hpi.mostRecentEpisode)
+      mostRecentEpisode: historyValues.presentIllness.mostRecentEpisode
+        ? new Date(historyValues.presentIllness.mostRecentEpisode)
         : new Date(),
-      symptoms: historyValues.hpi.symptoms || [],
-      symptomDuration: historyValues.hpi.symptomDuration,
-      symptomDurationUnit: historyValues.hpi.symptomDurationUnit,
-      provokesWith: historyValues.hpi.provokesWith,
-      notes: historyValues.hpi.notes ? historyValues.hpi.notes : "",
+      symptoms: historyValues.presentIllness.symptoms || [],
+      symptomDuration: historyValues.presentIllness.symptomDuration,
+      symptomDurationUnit: historyValues.presentIllness.symptomDurationUnit,
+      provokesWith: historyValues.presentIllness.provokesWith,
+      notes: historyValues.presentIllness.notes
+        ? historyValues.presentIllness.notes
+        : "",
     },
     auralSymptom: {
-      shl: historyValues.auralSymptom.shl,
-      ap: historyValues.auralSymptom.ap,
+      suddenHearingLoss: historyValues.auralSymptom.suddenHearingLoss,
+      auralPressure: historyValues.auralSymptom.auralPressure,
       otorrhea: historyValues.auralSymptom.otorrhea,
       tinnitus: historyValues.auralSymptom.tinnitus,
       otalgia: historyValues.auralSymptom.otalgia,
     },
     healthCondition: {
       conditions: historyValues.healthCondition.conditions || [],
-      Migraine: historyValues.healthCondition.Migraine
-        ? historyValues.healthCondition.Migraine
+      migraine: historyValues.healthCondition.migraine
+        ? historyValues.healthCondition.migraine
         : "",
-      OrthopedicLimitations: historyValues.healthCondition.OrthopedicLimitations
-        ? historyValues.healthCondition.OrthopedicLimitations
+      orthopedicLimitations: historyValues.healthCondition.orthopedicLimitations
+        ? historyValues.healthCondition.orthopedicLimitations
         : "",
-      ConcussionHeadInjury: historyValues.healthCondition.ConcussionHeadInjury
-        ? historyValues.healthCondition.ConcussionHeadInjury
+      concussionHeadInjury: historyValues.healthCondition.concussionHeadInjury
+        ? historyValues.healthCondition.concussionHeadInjury
         : "",
-      CVATIA: historyValues.healthCondition.CVATIA
-        ? historyValues.healthCondition.CVATIA
+      cbatia: historyValues.healthCondition.cvatia
+        ? historyValues.healthCondition.cvatia
         : "",
-      RecentHeadImaging: historyValues.healthCondition.RecentHeadImaging
-        ? historyValues.healthCondition.RecentHeadImaging
+      recentHeadImaging: historyValues.healthCondition.recentHeadImaging
+        ? historyValues.healthCondition.recentHeadImaging
         : "",
-      Other: historyValues.healthCondition.Other
-        ? historyValues.healthCondition.Other
+      other: historyValues.healthCondition.other
+        ? historyValues.healthCondition.other
         : "",
     },
   };
@@ -186,7 +193,6 @@ const History = (props) => {
   //   dispatch(setStepNewReport(stepNewReport + 1));
   // };
 
-  console.log(stepNewReport, "value");
   return (
     <Fragment>
       <Formik

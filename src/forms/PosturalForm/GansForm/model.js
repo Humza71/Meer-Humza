@@ -1,4 +1,4 @@
-export const gsoTestQuestion = [
+export const gsPerformanceTest = [
   {
     title: "Condition1",
     key: "condition1",

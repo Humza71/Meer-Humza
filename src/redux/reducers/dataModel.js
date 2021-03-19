@@ -6,60 +6,60 @@ const initialState = {
     dob: null,
     gender: "",
     encounterDate: null,
-    physician_id: "",
-    technician_id: "",
+    providerId: "",
+    technicianId: "",
     files: [],
   },
   providers: [],
   technicians: [],
   completed: false,
   history: {
-    hpi: {},
+    presentIllness: {},
     auralSymptom: {},
     healthCondition: {},
   },
   posturalStability: {
-    gsoTest: {},
-    cdpTest: {
-      soTest: {},
-      mcTest: {},
-      adTest: {},
+    gsPerformanceTest: {},
+    computerizedDynamicPosturography: {
+      sensoryOrganizationTest: {},
+      motorControlTest: {},
+      adaptationTestt: {},
     },
   },
   vng: {
-    oculuMotors: {},
-    gazeDenied: {
+    oculoMotors: {},
+    gazeVisionDenied: {
       center: {},
       right: {},
       left: {},
       up: {},
     },
-    gazeEnabled: {
+    gazeVisionEnabled: {
       center: {},
       right: {},
       left: {},
       up: {},
     },
-    highFrequecy: {
+    highFrequencyHeadshake: {
       seated: {},
       lateralRight: {},
       lateralLeft: {},
     },
-    positionDenied: {
+    positionalsVisionDenied: {
       supine: {},
       headRight: {},
       headLeft: {},
       bodyRight: {},
       bodyLeft: {},
     },
-    positionEnabled: {
+    positionalsVisionEnabled: {
       supine: {},
       headRight: {},
       headLeft: {},
       bodyRight: {},
       bodyLeft: {},
     },
-    hallPick: {
+    hallPike: {
       left: {},
       right: {},
     },
@@ -81,19 +81,19 @@ const initialState = {
     notes: "",
   },
   electrophys: {
-    abr: {
+    auditoryBrainstemResponse: {
       right: {},
       left: {},
     },
-    eco: {
+    electroCochleoGraphy: {
       right: {},
       left: {},
     },
-    ovemp: {
+    ocularVestibularEvokedMyogenicPotential: {
       right: {},
       left: {},
     },
-    cvemp: {
+    cervicalVestibularEvokedMyogenicPotential: {
       right: {},
       left: {},
     },
@@ -103,38 +103,47 @@ const initialState = {
       rightEar: {},
       leftEar: {},
     },
-    ai: {
+    acousticImmittance: {
       rightEar: {},
       leftEar: {},
     },
-    oe: {
+    otoacousticEmissions: {
       rightEar: {},
       leftEar: {},
     },
-    audiogram: {
+    audioGram: {
       rightEar: {},
       leftEar: {},
     },
   },
   screenings: {
-    vast: {
+    vertebralArteryScreeningTest: {
       right: {},
       left: {},
     },
-    cervical: {
+    cervicalDizzinessScreeningTest: {
       right: {},
       left: {},
     },
-    actuity: {
+    aibComputerizedDynamicVisualAcuityTest: {
       horizontal: {},
       vertical: {},
     },
-    impulse: {
+    headImpulseTest: {
       right: {},
       left: {},
     },
   },
   comments: {},
+  impression: {
+    impressionAndPlan: {
+      overAllImpression: "",
+      macro: [],
+    },
+  },
+  macros: [],
+  selectedMacros: [],
+  // normality: "",
 };
 
 export default initialState;

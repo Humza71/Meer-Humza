@@ -10,7 +10,7 @@ import { TableRow } from "@material-ui/core";
 
 const ABRform = (props) => {
   const { setFieldValue, values } = props;
-  const data = values["abr"];
+  const data = values["auditoryBrainstemResponse"];
   const abrQuestions = [
     {
       title: "ABSOLUTE LATENCIES",
@@ -99,7 +99,10 @@ const ABRform = (props) => {
                   name={`${key}.${fieldKey}`}
                   value={data[key][fieldKey]}
                   onChange={(value) =>
-                    setFieldValue(`abr.${key}.${fieldKey}`, value)
+                    setFieldValue(
+                      `auditoryBrainstemResponse.${key}.${fieldKey}`,
+                      value
+                    )
                   }
                   options={options}
                 />
@@ -112,7 +115,9 @@ const ABRform = (props) => {
         rowsMin={3}
         placeholder="Notes"
         value={data["notes"]}
-        onChange={(value) => setFieldValue(`abr.notes`, value)}
+        onChange={(value) =>
+          setFieldValue(`auditoryBrainstemResponse.notes`, value)
+        }
       />
     </ReportCard>
   );

@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 // import { providers, technicians } from "lib/dumyData";
 // import { postUtil } from "../../utils/apiService";
-import { getReports } from "../../services/allReportsService";
+import { getReports, getPdfReports } from "../../services/allReportsService";
+// import downloadjs from "downloadjs";
 
 export const LoadingStates = {
   ALL_REPORTS_LOADING: "All Report Loading",
@@ -43,6 +44,21 @@ export const getAllReports = () => async (dispatch) => {
     console.log(error, "Erororroor");
   }
   dispatch(setLoading(null));
+};
+
+export const getPdf = () => async (dispatch) => {
+  // dispatch(setLoading(LoadingStates.ALL_REPORTS_LOADING));
+  // Need to be replaced by the service that does API call
+
+  try {
+    const response = await getPdfReports();
+    if (response) {
+      // downloadjs(response.data, "report.pdf", "text/plain");
+    }
+  } catch (error) {
+    console.log(error, "Error");
+  }
+  // dispatch(setLoading(null));
 };
 
 // export const getReportsApi = async (credentials) => {

@@ -6,8 +6,11 @@ import { Formik } from "formik";
 import CreateReportFooter from "components/CreateReportFooter";
 import { Box, CircularProgress } from "@material-ui/core";
 import ReportCard from "components/reports/ReportCard";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import FullEditor from "ckeditor5-build-full";
+// import { CKEditor } from "@ckeditor/ckeditor5-react";
+// import FullEditor from "ckeditor5-build-full";
+
+import CKEditor from "ckeditor4-react";
+
 import styled from "styled-components/macro";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -16,6 +19,7 @@ import {
   getComments,
 } from "../../redux/reducers/reportReducer";
 import { setStepNewReport } from "redux/reducers/uiReducer";
+// import { config } from "../../constants";
 
 const EditorWrapper = styled.div`
   .ck-editor__editable {
@@ -40,22 +44,23 @@ const InnerForm = ({ setFieldValue, values }) => {
       <ReportCard title={"Additional Tests & Comments"}>
         <EditorWrapper>
           <CKEditor
-            enableReinitialize
             data={values["comments"]}
             config={{
               toolbar: [
-                "bold",
-                "italic",
-                "indent",
-                "underline",
-                "fontColor",
-                "bulletedList",
-                "numberedList",
+                {
+                  name: "basicstyles",
+                  groups: ["basicstyles", "cleanup"],
+                  items: ["Bold", "Italic", "Underline"],
+                },
+                {
+                  name: "paragraph",
+                  items: ["NumberedList", "BulletedList"],
+                },
+                { name: "colors", items: ["TextColor"] },
               ],
             }}
-            editor={FullEditor}
-            onChange={(evt, editor) => {
-              const data = editor.getData();
+            onChange={(evt) => {
+              const data = evt.editor.getData();
               setFieldValue(`comments`, data);
             }}
           />
@@ -74,7 +79,7 @@ const CommentsForm = (props) => {
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
 
   const initialValues = {
-    comments: commentsValues ? commentsValues.comments : "",
+    comments: commentsValues,
   };
 
   const handleSave = (values) => {

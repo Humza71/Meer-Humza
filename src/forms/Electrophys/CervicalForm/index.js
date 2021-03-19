@@ -10,7 +10,7 @@ import TextArea from "components/reports/TextArea";
 
 const CervicalForm = (props) => {
   const { setFieldValue, values } = props;
-  const data = values["cvemp"];
+  const data = values["cervicalVestibularEvokedMyogenicPotential"];
   const cervicalQuestions = [
     {
       title: "",
@@ -114,7 +114,10 @@ const CervicalForm = (props) => {
                     name={`${key}.${fieldKey}`}
                     value={data[key][fieldKey]}
                     onChange={(value) => {
-                      setFieldValue(`cvemp.${key}.${fieldKey}`, value);
+                      setFieldValue(
+                        `cervicalVestibularEvokedMyogenicPotential.${key}.${fieldKey}`,
+                        value
+                      );
                     }}
                     options={options}
                   />
@@ -128,7 +131,12 @@ const CervicalForm = (props) => {
         rowsMin={3}
         placeholder="Notes"
         value={data["notes"]}
-        onChange={(value) => setFieldValue(`cvemp.notes`, value)}
+        onChange={(value) =>
+          setFieldValue(
+            `cervicalVestibularEvokedMyogenicPotential.notes`,
+            value
+          )
+        }
       />
     </ReportCard>
   );

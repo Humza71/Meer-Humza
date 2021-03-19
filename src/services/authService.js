@@ -1,4 +1,4 @@
-import { postUtil } from "../utils/apiService";
+import { postUtil, getUtil } from "../utils/apiService";
 import axios from "axios";
 
 export function signIn(credentials, onSuccess) {
@@ -21,6 +21,21 @@ export function signIn(credentials, onSuccess) {
 export const signUp = async (credentials) => {
   return new Promise((resolve, reject) => {
     postUtil("/api/register", credentials)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const clinic = async () => {
+  return new Promise((resolve, reject) => {
+    getUtil("/api/get/clinic")
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);

@@ -10,7 +10,7 @@ import { TableRow } from "@material-ui/core";
 
 const OtoacousticForm = (props) => {
   const { setFieldValue, values } = props;
-  const data = values["oe"];
+  const data = values["otoacousticEmissions"];
   const otoacousticQuestions = [
     {
       title: "DPOAE",
@@ -82,7 +82,10 @@ const OtoacousticForm = (props) => {
                     name={`${key}.${fieldKey}`}
                     value={data[key][fieldKey]}
                     onChange={(value) =>
-                      setFieldValue(`oe.${key}.${fieldKey}`, value)
+                      setFieldValue(
+                        `otoacousticEmissions.${key}.${fieldKey}`,
+                        value
+                      )
                     }
                     options={options}
                   />
@@ -96,7 +99,7 @@ const OtoacousticForm = (props) => {
         rowsMin={3}
         placeholder="Notes"
         value={data["notes"]}
-        onChange={(value) => setFieldValue(`oe.notes`, value)}
+        onChange={(value) => setFieldValue(`otoacousticEmissions.notes`, value)}
       />
     </ReportCard>
   );

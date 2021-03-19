@@ -18,11 +18,10 @@ export function createReport(payload, onSuccess) {
   return new Promise((resolve, reject) => {
     postUtil("/api/add/patient-demographics", data)
       .then((response) => {
-        if (response.status === 200) {
+        if (response.status === 202) {
           if (id === "") {
-            onSuccess();
+            resolve(response.data.data[0]);
           }
-          resolve(response.data);
         }
         reject(response.data);
       })
@@ -33,11 +32,11 @@ export function createReport(payload, onSuccess) {
 }
 export function getTechnicians() {
   return new Promise((resolve, reject) => {
-    getUtil("/api/get/technician")
+    getUtil("/api/clinic/get/technicians")
       .then((response) => {
         if (response.status === 200) {
           if (response.data.data.length > 0) {
-            resolve(response.data.data[0].technicians);
+            resolve(response.data.data);
           } else {
             resolve([]);
           }
@@ -52,11 +51,11 @@ export function getTechnicians() {
 
 export function getProviders() {
   return new Promise((resolve, reject) => {
-    getUtil("/api/get-providers")
+    getUtil("/api/clinic/get/providers")
       .then((response) => {
         if (response.status === 200) {
           if (response.data.data.length > 0) {
-            resolve(response.data.data[0].providers);
+            resolve(response.data.data);
           } else {
             resolve([]);
           }
@@ -71,7 +70,7 @@ export function getProviders() {
 
 export function getReport({ id }) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/get-report/${id}`)
+    getUtil(`/api/get/report/${id}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -91,7 +90,7 @@ export function saveProvider(payload) {
     },
   };
   return new Promise((resolve, reject) => {
-    postUtil("/api/add/provider", provider)
+    postUtil("/api/clinic/add/providers", provider)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -111,7 +110,7 @@ export function saveTechnician(payload) {
     },
   };
   return new Promise((resolve, reject) => {
-    postUtil("/api/add/technician", technician)
+    postUtil("/api/clinic/add/technicians", technician)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -152,10 +151,10 @@ export function patientHistory(payload) {
 
 export function getHistoryById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/get-history-report/${payload.reportId}`)
+    getUtil(`/api/get/history-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
-          resolve(response.data.data.history);
+          resolve(response.data.data);
         }
         reject(response.data);
       })
@@ -188,10 +187,10 @@ export function posturalStability(payload) {
 
 export function getPosturalStabilityById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/get-posture-stability-report/${payload.reportId}`)
+    getUtil(`/api/get/posture-stability-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
-          resolve(response.data);
+          resolve(response.data.data);
         }
         reject(response.data.data.postureStability);
       })
@@ -224,7 +223,7 @@ export function addVng(payload) {
 
 export function getVngById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/get-vng-report/${payload.reportId}`)
+    getUtil(`/api/get/vng-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -260,7 +259,7 @@ export function addRotaryChair(payload) {
 
 export function getRotaryChairById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/get-rotary-chair-report/${payload.reportId}`)
+    getUtil(`/api/get/rotary-chair-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -296,7 +295,7 @@ export function addVHit(payload) {
 
 export function getVHitById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/get-vHIT-report/${payload.reportId}`)
+    getUtil(`/api/get/vHIT-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -332,7 +331,7 @@ export function addVat(payload) {
 
 export function getVatById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/get-vatVorteq-report/${payload.reportId}`)
+    getUtil(`/api/get/vatVorteq-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -368,7 +367,7 @@ export function addElectrophys(payload) {
 
 export function getElectrophysById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/get-electrophys-report/${payload.reportId}`)
+    getUtil(`/api/get/electrophys-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -384,12 +383,12 @@ export function getElectrophysById(payload) {
 export function addAudiometry(payload) {
   const data = {
     reportId: payload.reportId,
-    audiometry: {
+    audioMetry: {
       ...payload,
     },
   };
   return new Promise((resolve, reject) => {
-    postUtil("/api/add/audiometry", data)
+    postUtil("/api/add/audio-metry", data)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -404,7 +403,7 @@ export function addAudiometry(payload) {
 
 export function getAudiometryById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/get-audiometry-report/${payload.reportId}`)
+    getUtil(`/api/get/audio-metry-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -440,7 +439,7 @@ export function addScreenings(payload) {
 
 export function getScreeningsById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/get-screenings-report/${payload.reportId}`)
+    getUtil(`/api/get/screenings-report/${payload.reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -456,12 +455,13 @@ export function getScreeningsById(payload) {
 export function addTestComments(payload) {
   const data = {
     reportId: payload.reportId,
-    testComments: {
-      ...payload,
-    },
+    testAndComments: payload.comments,
+    // testAndComments: {
+    //   ...payload,
+    // },
   };
   return new Promise((resolve, reject) => {
-    postUtil("/api/add/test-comments", data)
+    postUtil("/api/add/test-and-comments", data)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -476,7 +476,76 @@ export function addTestComments(payload) {
 
 export function getTestCommentsById(payload) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/get-test-comments-report/${payload.reportId}`)
+    getUtil(`/api/get/test-and-comments-report/${payload.reportId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function addImpressionPlan(payload) {
+  // debugger;
+  // const data = {
+  //   reportId: payload.reportId,
+  //   impressionPlan: {
+  //     ...payload,
+  //   },
+  // };
+  // debugger;
+
+  return new Promise((resolve, reject) => {
+    postUtil("/api/add/impression-and-plan", payload)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function getImpressionPlanById(payload) {
+  return new Promise((resolve, reject) => {
+    getUtil(`/api/get/impression-and-plan-report/${payload.reportId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function getMacros(payload) {
+  return new Promise((resolve, reject) => {
+    getUtil("/api/get/macros")
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function getMacrosByName(payload) {
+  return new Promise((resolve, reject) => {
+    getUtil(`/api/get/macro/${payload.name}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
