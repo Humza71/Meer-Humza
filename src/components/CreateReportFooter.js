@@ -38,10 +38,12 @@ const MobileStepper = styled(MuiMobileStepper)`
 
 const Wrapper = styled(Box)`
   background: white;
+  position: fixed;
+  width: calc(100% - 308px);
 `;
 
 const CreateReportFooter = (props) => {
-  const { dirty, handleSave, id, isPublish = false, handlePublish } = props;
+  const { dirty, handleSave, id, isPublish = false } = props;
   const dispatch = useDispatch();
   const history = useHistory();
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
@@ -83,19 +85,6 @@ const CreateReportFooter = (props) => {
         </Grid>
         <Grid item xs={12} sm={12} md={5}>
           <Box display="flex" justifyContent="flex-end">
-            {isPublish && (
-              <Button
-                variant="outlined"
-                size="medium"
-                color="primary"
-                mr={5}
-                // disabled={id ? false : !dirty}
-                onClick={handlePublish}
-              >
-                Publish
-              </Button>
-            )}
-
             <Button
               variant="outlined"
               size="medium"
@@ -114,7 +103,7 @@ const CreateReportFooter = (props) => {
               endIcon={<ChevronRightIcon />}
               // disabled={!(isValid && dirty||)}
             >
-              Next Page
+              {isPublish ? "Generate Report" : "Next Page"}
             </Button>
           </Box>
         </Grid>

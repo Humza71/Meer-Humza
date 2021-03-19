@@ -5,6 +5,8 @@ import Header from "../components/AppBar";
 
 import { spacing } from "@material-ui/system";
 import { CssBaseline, Paper as MuiPaper, withWidth } from "@material-ui/core";
+// import { useDispatch } from "react-redux";
+// import { userInfo } from "../redux/reducers/authReducer";
 
 const drawerWidth = 288;
 const drawerMiniWidth = 122;
@@ -64,7 +66,9 @@ const MainContent = styled(Paper)`
 `;
 
 const Dashboard = ({ children, routes }) => {
+  // const dispatch = useDispatch();
   const [navExpand, setNavExpand] = useState(true);
+  // const userProfile = useSelector((state) => state.authReducer.user);
 
   const handleDrawerToggle = () => {
     console.log(navExpand);

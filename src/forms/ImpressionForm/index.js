@@ -180,7 +180,7 @@ const InnerForm = (props) => {
               label: item,
               value: item,
             }))}
-            renderValue={() => "Macros"}
+            renderValue={() => <h4>{selectedNames + ""}</h4>}
           />
         </Box>
         {values.impressionAndPlan.macro.map(({ name, value }, index) => (
@@ -268,6 +268,12 @@ const ImpressionForm = (props) => {
   useEffect(() => {
     dispatch(allMacros());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (id) {
+      props.history.push(`/report/create/${id}/${stepNewReport}`);
+    }
+  }, [id, stepNewReport, props.history]);
 
   const handleSubmit = async (values) => {
     try {

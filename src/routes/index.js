@@ -84,7 +84,11 @@ const reportChildrenRoutes = {
   path: "/report",
   children: [
     {
-      path: [`/report/create`, `/report/create/:id`],
+      path: [
+        `/report/create`,
+        `/report/create/:id`,
+        `/report/create/:id/:step`,
+      ],
       name: "Create Report",
       component: CreateReport,
       guard: AuthGuard,

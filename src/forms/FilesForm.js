@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import styled from "styled-components/macro";
@@ -14,6 +14,7 @@ import { setStepNewReport } from "redux/reducers/uiReducer";
 import ReportCard from "components/reports/ReportCard";
 import FileChip from "components/reports/FileChip";
 import Modal from "components/Modal";
+import { useHistory } from "react-router";
 // import { updateNewReport } from "redux/reducers/reportReducer";
 
 const Alert = styled(MuiAlert)(spacing);
@@ -147,9 +148,13 @@ const InnerForm = (props) => {
   );
 };
 
-const FilesForm = () => {
+const FilesForm = (props) => {
   const newReport = useSelector((state) => state.reportReducer.newReport);
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
+  const history = useHistory();
+  const { match = {} } = props || {};
+  const { params = {} } = match;
+  const { id } = params;
   // const { match = {} } = props || {};
   // const { params = {} } = match;
   // const { id } = params;
@@ -163,6 +168,11 @@ const FilesForm = () => {
     console.log(values);
     // dispatch(updateNewReport(values));
   };
+  useEffect(() => {
+    if (id) {
+      history.push(`/report/create/${id}/${stepNewReport}`);
+    }
+  }, [id, stepNewReport, history]);
 
   const handleSubmit = async (
     values,

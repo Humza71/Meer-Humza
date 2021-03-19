@@ -239,6 +239,8 @@ const InnerForm = (props) => {
                 <Grid container spacing={6}>
                   <Grid item md={6}>
                     <TextField
+                      inputProps={{ maxLength: 4 }}
+                      placeholder="****"
                       type="password"
                       name="ssn"
                       label="SSN"
@@ -378,18 +380,30 @@ const PatientForm = (props) => {
   }, [dispatch]);
   useEffect(() => {
     if (id) {
+      // history.push(`/report/create/${id}/${step}`);
+
       dispatch(
-        getReportById(
-          {
-            id,
-          },
-          () => {}
-        )
+        getReportById({
+          id,
+        })
       );
     } else {
       dispatch(setCompleted());
     }
   }, [dispatch, id]);
+
+  useEffect(() => {
+    if (id) {
+      history.push(`/report/create/${id}/${stepNewReport}`);
+    }
+  }, [id, stepNewReport, history]);
+
+  // useEffect(() => {
+  //   if (step > 0) {
+  //     debugger;
+  //     dispatch(setStepNewReport(stepNewReport + step));
+  //   }
+  // }, [step]);
   const onSuccess = (reportId) => {
     if (!id) {
       history.push(`/report/create/${reportId}`);
@@ -399,7 +413,7 @@ const PatientForm = (props) => {
   //   if (newReport.firstName) {
   //     history.push("/report");
   //   }
-  // }, [newReport.firstName]);
+  // }, []);
   const handleSave = (values) => {
     dispatch(
       updateReport(

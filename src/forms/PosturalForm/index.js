@@ -201,6 +201,11 @@ const PosturalForm = (props) => {
       // setSubmitting(false);
     }
   };
+  useEffect(() => {
+    if (id) {
+      props.history.push(`/report/create/${id}/${stepNewReport}`);
+    }
+  }, [id, stepNewReport, props.history]);
 
   console.log(posturalValues, "hehehe");
   return (
