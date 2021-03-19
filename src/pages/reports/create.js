@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+// import { useHistory } from "react-router";
 import { Helmet } from "react-helmet";
 import styled from "styled-components/macro";
 
@@ -171,6 +172,11 @@ const tabsInfo = [
 ];
 
 const CreateReport = (props) => {
+  // const history = useHistory();
+  const { match = {} } = props || {};
+  const { params = {} } = match;
+  const { step = 0 } = params;
+
   const dispatch = useDispatch();
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
   const completed = useSelector((state) => state.reportReducer.completed);
@@ -180,8 +186,15 @@ const CreateReport = (props) => {
 
   useEffect(() => {
     dispatch(setHeaderTitle("Create Report"));
-    dispatch(setStepNewReport(0));
-    dispatch(clearNewReport());
+
+    if (step > 0) {
+      dispatch(setStepNewReport(parseInt(step)));
+    }
+    // dispatch(setHeaderTitle("Create Report"));
+    else {
+      dispatch(setStepNewReport(0));
+      dispatch(clearNewReport());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 

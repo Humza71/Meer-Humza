@@ -95,26 +95,27 @@ const Reports = () => {
 
   const myData = allReports.map(
     ({
+      created_at,
       encounterDate,
       lastName,
       firstName,
       dob,
       staffInformation,
       impression,
-      updatedAt,
       clinic,
+      updated_at,
       _id,
     }) => ({
-      date: encounterDate
-        ? new Date(encounterDate).toLocaleDateString("en-US")
-        : "",
+      date: created_at ? new Date(created_at).toLocaleDateString("en-US") : "",
       lastName,
       firstName,
       birthday: dob ? new Date(dob).toLocaleDateString("en-US") : "",
       physician: staffInformation.providerName,
       technician: staffInformation.technicianName,
       impression,
-      updatedAt,
+      updatedAt: updated_at
+        ? new Date(updated_at).toLocaleDateString("en-US")
+        : new Date(created_at).toLocaleDateString("en-US"),
       clinic: "Audiology Center of Maine",
       user: _id,
       _id: _id,

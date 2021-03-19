@@ -81,3 +81,18 @@ export function resetPassword(credentials) {
       });
   });
 }
+
+// export const getUserProfile = async () => {
+//   return new Promise((resolve, reject) => {
+//     getUtil("/api/get/")
+//       .then((response) => {
+//         if (response.status === 200) {
+//           resolve(response.data);
+//         }
+//         reject(response.data);
+//       })
+//       .catch((error) => {
+//         reject(error);
+//       });
+//   });
+// };

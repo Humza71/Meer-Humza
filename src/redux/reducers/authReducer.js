@@ -9,7 +9,7 @@ import {
 import { setMessage } from "./messageReducer";
 
 const initialState = {
-  user: undefined,
+  user: {},
   loading: false,
   clinicId: "",
 };
@@ -27,6 +27,9 @@ export const slice = createSlice({
     setClinic: (state, action) => {
       state.clinicId = action.payload._id;
     },
+    // setProfile: (state, action) => {
+    //   state.profile = action.payload;
+    // },
   },
 });
 
@@ -87,7 +90,6 @@ export const userInfo = () => async (dispatch) => {
 
   try {
     const response = await authUserInfo();
-
     if (response) {
       dispatch(
         setUser({
@@ -121,5 +123,19 @@ export const resetPassword = (credentials) => async (dispatch) => {
 
   dispatch(setLoading(false));
 };
+
+// export const getProfile = (credentials) => async (dispatch) => {
+//   dispatch(setLoading(true));
+//   try {
+//     const response = await getUserProfile(credentials);
+//     debugger;
+//     // Just temporarily
+//     dispatch(setProfile(response.data));
+//   } catch (error) {
+//     dispatch(setMessage({ message: error.message }));
+//   }
+
+//   dispatch(setLoading(false));
+// };
 
 export default slice.reducer;
