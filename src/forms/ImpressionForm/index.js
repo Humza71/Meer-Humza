@@ -115,6 +115,7 @@ const InnerForm = (props) => {
         macroIndex = values.impressionAndPlan.macro.findIndex(
           ({ name }) => item !== name
         );
+        return macroIndex;
       });
       dispatch(
         updateMacros({

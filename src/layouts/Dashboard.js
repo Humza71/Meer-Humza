@@ -77,7 +77,7 @@ const Dashboard = ({ children, routes }) => {
     } else {
       setNavExpand(true);
     }
-  }, [window.innerWidth]);
+  }, []);
 
   return (
     <Root>
