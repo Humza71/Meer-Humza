@@ -101,6 +101,12 @@ const CommentsForm = (props) => {
     }
   }, [dispatch, id]);
 
+  useEffect(() => {
+    if (id) {
+      props.history.push(`/report/create/${id}/${stepNewReport}`);
+    }
+  }, [id, stepNewReport, props.history]);
+
   const handleSubmit = async (values) => {
     try {
       handleSave(values);

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components/macro";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   Tooltip,
@@ -23,6 +23,7 @@ function UserDropdown() {
   const [anchorMenu, setAnchorMenu] = React.useState(null);
   const history = useHistory();
   const dispatch = useDispatch();
+  const userProfile = useSelector((state) => state.authReducer.user);
 
   const toggleMenu = (event) => {
     setAnchorMenu(event.currentTarget);
@@ -48,7 +49,7 @@ function UserDropdown() {
         pl={3}
       >
         <Box display="flex" alignItems="center" mr={2}>
-          <Typography variant="subtitle2">Lucy Lavender</Typography>
+          <Typography variant="subtitle2">{userProfile.name}</Typography>
         </Box>
         <Tooltip title="Account">
           <SmallAvatar
