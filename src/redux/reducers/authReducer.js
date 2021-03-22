@@ -103,6 +103,7 @@ export const userInfo = () => async (dispatch) => {
 };
 
 export const signOut = () => (dispatch) => {
+  localStorage.setItem("token", "");
   dispatch(setUser(undefined));
 };
 

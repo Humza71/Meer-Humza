@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components/macro";
 
 import { makeStyles } from "@material-ui/core/styles";
+import { Box, CircularProgress } from "@material-ui/core";
 
 import {
   Grid,
@@ -37,6 +38,8 @@ import { spacing } from "@material-ui/system";
 import SearchInput from "components/SearchInput";
 import AdvancedSelect from "components/AdvancedSelect";
 import { useHistory } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { getPdf, LoadingStates } from "../redux/reducers/dashboardReducer";
 
 const Paper = styled(MuiPaper)(spacing);
 const Toolbar = styled(MuiToolbar)(spacing);
@@ -291,6 +294,7 @@ const ReportTableHead = (props) => {
 const ReportTable = (props) => {
   const { data, columns } = props;
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("date");
   const [tableFormat, setTableFormat] = React.useState("padding");
@@ -300,6 +304,8 @@ const ReportTable = (props) => {
   const [filteredColumns, setFilteredColumns] = React.useState(
     columns.filter((item) => item.id !== "actions").map((item) => item.label)
   );
+  const pdfLoading = useSelector((state) => state.dashboardReducer.loading);
+
   const history = useHistory();
   const getInitialClinics = () => {
     let initialClinics = [];
@@ -313,15 +319,7 @@ const ReportTable = (props) => {
   const [filteredClinics, setFilteredClinics] = React.useState(
     getInitialClinics()
   );
-  const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -336,6 +334,11 @@ const ReportTable = (props) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const downloadPdf = (reportId) => {
+    dispatch(getPdf(reportId));
+  };
+
   const movetoCreate = (id) => {
     history.push(`/report/create/${id}`);
   };
@@ -344,6 +347,73 @@ const ReportTable = (props) => {
 
   // const open = Boolean(anchorEl);
   // const id = open ? "simple-popover" : undefined;
+
+  const Actions = ({ id }) => {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    // const [downloading, setDownloading] = React.useState(false);
+    // React.useEffect(() => {
+    //   debugger;
+    // }, [downloading]);
+
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+
+    return (
+      <>
+        <MoreVertIcon onClick={handleClick} />
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        >
+          <MenuItem>
+            <Typography color="primary" variant="inherit">
+              ACTIONS
+            </Typography>
+          </MenuItem>
+
+          <MenuItem onClick={() => movetoCreate(id)}>
+            <EditIcon color="primary" />
+
+            <Typography variant="inherit">Edit</Typography>
+          </MenuItem>
+          <MenuItem>
+            <SaveAltIcon color="primary" />
+            <Typography
+              onClick={() => {
+                setAnchorEl(true);
+                downloadPdf(id, () => {});
+              }}
+              variant="inherit"
+            >
+              Download
+            </Typography>
+          </MenuItem>
+          <MenuItem>
+            <DeleteIcon color="primary" />
+
+            <Typography variant="inherit">Delete</Typography>
+          </MenuItem>
+        </Menu>
+      </>
+    );
+  };
+
   return (
     <Paper>
       <TableToolbar
@@ -375,78 +445,40 @@ const ReportTable = (props) => {
             order={order}
             orderBy={orderBy}
             onRequestSort={handleRequestSort}
-          />
-          <TableBody>
-            {data.map((row, index) => {
-              const labelId = `report-table-${index}`;
+          />{" "}
+          {pdfLoading === LoadingStates.PDF_LOADING ? (
+            <Box display="flex" justifyContent="center" my={6}>
+              <CircularProgress size="1rem" />
+            </Box>
+          ) : (
+            <TableBody>
+              {data.map((row, index) => {
+                const labelId = `report-table-${index}`;
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={labelId}>
+                    {columns.map(
+                      (headCell) =>
+                        filteredColumns.indexOf(headCell.label) !== -1 &&
+                        headCell.id !== "actions" && (
+                          <TableCell align="left" key={headCell.id}>
+                            {row[headCell.id]}
+                          </TableCell>
+                        )
+                    )}
+                    <TableCell align="left">
+                      <IconButton aria-label="actions">
+                        <Actions id={row._id} />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
 
-              return (
-                <TableRow
-                  // onClick={() => movetoCreate(row._id)}
-                  hover
-                  role="checkbox"
-                  tabIndex={-1}
-                  key={labelId}
-                >
-                  {columns.map(
-                    (headCell) =>
-                      filteredColumns.indexOf(headCell.label) !== -1 &&
-                      headCell.id !== "actions" && (
-                        <TableCell align="left" key={headCell.id}>
-                          {row[headCell.id]}
-                        </TableCell>
-                      )
-                  )}
-                  <TableCell align="left">
-                    <IconButton aria-label="actions">
-                      <MoreVertIcon onClick={handleClick} />
-                    </IconButton>
-
-                    <Menu
-                      id="simple-menu"
-                      anchorEl={anchorEl}
-                      keepMounted
-                      open={Boolean(anchorEl)}
-                      onClose={handleClose}
-                      anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "left",
-                      }}
-                      transformOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                      }}
-                    >
-                      <MenuItem>
-                        <Typography color="primary" variant="inherit">
-                          ACTIONS
-                        </Typography>
-                      </MenuItem>
-
-                      <MenuItem onClick={() => movetoCreate(row._id)}>
-                        <EditIcon color="primary" />
-
-                        <Typography variant="inherit">Edit</Typography>
-                      </MenuItem>
-                      <MenuItem>
-                        <SaveAltIcon color="primary" />
-                        <Typography variant="inherit">Download</Typography>
-                      </MenuItem>
-                      <MenuItem>
-                        <DeleteIcon color="primary" />
-
-                        <Typography variant="inherit">Delete</Typography>
-                      </MenuItem>
-                    </Menu>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-
-            <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
-            </TableRow>
-          </TableBody>
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            </TableBody>
+          )}
         </Table>
       </TableContainer>
     </Paper>

@@ -22,9 +22,9 @@ export const getReports = async () => {
   });
 };
 
-export const getPdfReports = async () => {
+export const getPdfReports = async (reportId) => {
   return new Promise((resolve, reject) => {
-    getUtil("/api/get/pdf")
+    getUtil(`/api/get/pdf/${reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response);
