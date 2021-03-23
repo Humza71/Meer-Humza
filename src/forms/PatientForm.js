@@ -6,7 +6,12 @@ import styled from "styled-components/macro";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 // import queryString from "query-string";
-import { Alert as MuiAlert } from "@material-ui/lab";
+import {
+  Alert as MuiAlert,
+  // AdapterDateFns,
+  // DatePicker,
+  // LocalizationProvider,
+} from "@material-ui/lab";
 import { spacing } from "@material-ui/system";
 import Toggle from "../components/reports/Toggle";
 import DateFnsUtils from "@date-io/date-fns";
@@ -20,6 +25,7 @@ import {
   TextField as MuiTextField,
   Typography as MuiTypography,
 } from "@material-ui/core";
+
 // import {
 //   ToggleButton,
 //   ToggleButtonGroup as MuiToggleButtonGroup,
@@ -29,6 +35,10 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker as MuiKeyboardDatePicker,
 } from "@material-ui/pickers";
+
+// import { AdapterDateFns as MuiAdapterDateFns } from "@material-ui/lab/AdapterDateFns";
+// import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
+// import DatePicker from "@material-ui/lab/DatePicker";
 
 import CreateReportFooter from "components/CreateReportFooter";
 import AdvancedSelect from "components/AdvancedSelect";
@@ -81,7 +91,14 @@ const KeyboardDatePicker = styled(MuiKeyboardDatePicker)`
 // `;
 
 const validationSchema = Yup.object().shape({
-  ssn: Yup.string().required("Required"),
+  ssn: Yup.string()
+    .required("Required")
+    .min(4, "Must be exactly 4 characters")
+    .max(4, "Must be exactly 4 characters"),
+
+  //   Yup.string()
+  // .required()
+
   firstName: Yup.string().required("Required"),
   lastName: Yup.string().required("Required"),
   dob: Yup.date().required("Required"),
@@ -200,6 +217,7 @@ const InnerForm = (props) => {
               </Box>
               <Box mb={2.5}>
                 <KeyboardDatePicker
+                  // type="date"
                   disableToolbar
                   name="dob"
                   variant="inline"
@@ -244,7 +262,7 @@ const InnerForm = (props) => {
                       type="password"
                       name="ssn"
                       label="SSN"
-                      value={values.ssn}
+                      value={values["ssn"]}
                       error={Boolean(touched.ssn && errors.ssn)}
                       fullWidth
                       helperText={touched.ssn && errors.ssn}
@@ -363,6 +381,7 @@ const PatientForm = (props) => {
     encounterDate: newReport.encounterDate
       ? new Date(newReport.encounterDate)
       : new Date(),
+    ssn: "",
     staffInformation: {
       providerId: newReport.staffInformation
         ? newReport.staffInformation.providerId
@@ -414,18 +433,22 @@ const PatientForm = (props) => {
   //     history.push("/report");
   //   }
   // }, []);
-  const handleSave = (values) => {
-    dispatch(
-      updateReport(
-        {
-          ...values,
-          id,
-          dob: values.dob.toISOString(),
-          encounterDate: values.encounterDate.toISOString(),
-        },
-        onSuccess
-      )
-    );
+  const handleSave = (values, isValid) => {
+    if (isValid) {
+      if (values.ssn.length === 4) {
+        dispatch(
+          updateReport(
+            {
+              ...values,
+              id,
+              dob: values.dob.toISOString(),
+              encounterDate: values.encounterDate.toISOString(),
+            },
+            onSuccess
+          )
+        );
+      }
+    }
 
     // dispatch(
     //   saveReport({
@@ -436,16 +459,23 @@ const PatientForm = (props) => {
     // );
   };
 
-  const handleSubmit = async (values) => {
-    try {
-      handleSave(values);
-      dispatch(setStepNewReport(stepNewReport + 1));
-      // setStatus({ sent: true });
-      // setSubmitting(false);
-    } catch (error) {
-      // setStatus({ sent: false });
-      // setErrors({ submit: error.message });
-      // setSubmitting(false);
+  const handleSubmit = (values, isValid, e) => {
+    e.preventDefault();
+    if (isValid) {
+      if (values.ssn.length === 4) {
+        try {
+          handleSave(values);
+          dispatch(setStepNewReport(stepNewReport + 1));
+          // setStatus({ sent: true });
+          // setSubmitting(false);
+        } catch (error) {
+          // setStatus({ sent: false });
+          // setErrors({ submit: error.message });
+          // setSubmitting(false);
+        }
+      }
+    } else {
+      console.log("Invalid form");
     }
   };
 
@@ -459,16 +489,20 @@ const PatientForm = (props) => {
           console.log(values);
           return {};
         }}
-        onSubmit={handleSubmit}
+        // onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <Form onSubmit={() => handleSubmit(formProps.values)}>
+          <Form
+            onSubmit={(e) =>
+              handleSubmit(formProps.values, formProps.isValid, e)
+            }
+          >
             <InnerForm {...formProps} />
             <CreateReportFooter
               {...formProps}
               id={id}
               handleSave={() => {
-                handleSave(formProps.values);
+                handleSave(formProps.values, formProps.isValid);
               }}
             />
           </Form>

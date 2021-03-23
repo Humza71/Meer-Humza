@@ -2,10 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 // import { providers, technicians } from "lib/dumyData";
 // import { postUtil } from "../../utils/apiService";
 import { getReports, getPdfReports } from "../../services/allReportsService";
-// import downloadjs from "downloadjs";
 
 export const LoadingStates = {
   ALL_REPORTS_LOADING: "All Report Loading",
+  PDF_LOADING: "Pdf Loading",
 };
 
 const initialState = {
@@ -27,7 +27,7 @@ export const slice = createSlice({
 });
 
 // export const { clearNewReport, updateNewReport } = slice.actions;
-const { setLoading, updateReports } = slice.actions;
+export const { setLoading, updateReports } = slice.actions;
 
 export const getAllReports = () => async (dispatch) => {
   dispatch(setLoading(LoadingStates.ALL_REPORTS_LOADING));
@@ -46,19 +46,25 @@ export const getAllReports = () => async (dispatch) => {
   dispatch(setLoading(null));
 };
 
-export const getPdf = () => async (dispatch) => {
-  // dispatch(setLoading(LoadingStates.ALL_REPORTS_LOADING));
+export const getPdf = (reportId, setDownloading) => async (dispatch) => {
+  dispatch(setLoading(LoadingStates.PDF_LOADING));
   // Need to be replaced by the service that does API call
 
   try {
-    const response = await getPdfReports();
+    const response = await getPdfReports(reportId);
     if (response) {
-      // downloadjs(response.data, "report.pdf", "text/plain");
+      const linkSource = `data:application/pdf;base64,${response.data}`;
+      const downloadLink = document.createElement("a");
+      const fileName = "report.pdf";
+      downloadLink.href = linkSource;
+      downloadLink.download = fileName;
+      downloadLink.click();
+      setDownloading();
     }
   } catch (error) {
     console.log(error, "Error");
   }
-  // dispatch(setLoading(null));
+  dispatch(setLoading(null));
 };
 
 // export const getReportsApi = async (credentials) => {

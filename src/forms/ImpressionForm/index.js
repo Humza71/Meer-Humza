@@ -95,7 +95,6 @@ const InnerForm = (props) => {
     //   const macroIndex = values.impressionAndPlan.macro.findIndex(
     //     ({ name }) => item !== name
     //   );
-
     if (data.length > values.impressionAndPlan.macro.length) {
       const name = data[data.length - 1];
       // const name = data.find(({ name }) =>
@@ -106,23 +105,44 @@ const InnerForm = (props) => {
         macrosByName({
           name,
           overAllImpression: values.impressionAndPlan.overAllImpression,
-          // names: data,
         })
       );
     } else {
       let macroIndex = -1;
-      data.map((item) => {
-        macroIndex = values.impressionAndPlan.macro.findIndex(
-          ({ name }) => item !== name
-        );
-        return macroIndex;
-      });
+      let count = 0;
+      for (let i = 0; i < values.impressionAndPlan.macro.length; i++) {
+        count = 0;
+        for (let j = 0; j < data.length; j++) {
+          if (values.impressionAndPlan.macro[i].name !== data[j]) {
+            ++count;
+            if (count === data.length) {
+              macroIndex = i;
+              break;
+            }
+          }
+        }
+        if (macroIndex !== -1) break;
+      }
+
+      // data.map((item) => {
+      //   const uniqMacro = values.impressionAndPlan.macro.filter(function ({
+      //     name,
+      //   }) {
+      //     return item !== name;
+      //   }).length;
+      //   macroIndex = values.impressionAndPlan.macro.findIndex(
+      //     ({ name }) => uniqMacro === name
+      //   );
+      //   return macroIndex;
+      // });
+
       dispatch(
         updateMacros({
           macroIndex,
           overAllImpression: values.impressionAndPlan.overAllImpression,
         })
       );
+
       // const name = values.impressionAndPlan.macro.find(
       //   ({ name }) => !data.some((item) => item === name)
       // ).name;

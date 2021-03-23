@@ -49,7 +49,9 @@ function UserDropdown() {
         pl={3}
       >
         <Box display="flex" alignItems="center" mr={2}>
-          <Typography variant="subtitle2">{userProfile.name}</Typography>
+          <Typography variant="subtitle2">
+            {userProfile ? userProfile.name : "Lucy"}
+          </Typography>
         </Box>
         <Tooltip title="Account">
           <SmallAvatar
