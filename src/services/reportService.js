@@ -502,7 +502,7 @@ export function addImpressionPlan(payload) {
   return new Promise((resolve, reject) => {
     postUtil("/api/add/impression-and-plan", payload)
       .then((response) => {
-        if (response.status === 200) {
+        if (response.status === 202) {
           resolve(response.data);
         }
         reject(response.data);

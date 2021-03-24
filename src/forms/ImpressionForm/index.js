@@ -18,7 +18,7 @@ import {
   macrosByName,
   updateMacros,
 } from "../../redux/reducers/reportReducer";
-import { setStepNewReport } from "redux/reducers/uiReducer";
+// import { setStepNewReport } from "redux/reducers/uiReducer";
 import CKEditor from "ckeditor4-react";
 import { config } from "../../constants";
 
@@ -266,9 +266,10 @@ const ImpressionForm = (props) => {
   // }, [impressionValues]);
 
   const handleSave = (values) => {
+    debugger;
     dispatch(
       impressionPlanReport({
-        status: "draft",
+        status: "publish",
         reportId: id,
         ...values,
       })
@@ -295,10 +296,11 @@ const ImpressionForm = (props) => {
     }
   }, [id, stepNewReport, props.history]);
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (e, values) => {
+    e.preventDefault();
     try {
       handleSave(values);
-      dispatch(setStepNewReport(stepNewReport));
+
       // setStatus({ sent: true });
       // setSubmitting(false);
     } catch (error) {
@@ -322,7 +324,7 @@ const ImpressionForm = (props) => {
         onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <form onSubmit={() => handleSubmit(formProps.values)}>
+          <form onSubmit={(e) => handleSubmit(e, formProps.values)}>
             <InnerForm
               {...formProps}
               selectedNames={[...selectedMacros].map(({ name }) => name)}

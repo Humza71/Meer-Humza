@@ -52,7 +52,7 @@ export function userInfo() {
   return new Promise((resolve, reject) => {
     //axios.get("/sanctum/csrf-cookie").then(() => {
     axios
-      .get("/api/user/profile-information")
+      .get("/api/get/user")
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
