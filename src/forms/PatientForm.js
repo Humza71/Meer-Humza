@@ -26,10 +26,6 @@ import {
   Typography as MuiTypography,
 } from "@material-ui/core";
 
-// import {
-//   ToggleButton,
-//   ToggleButtonGroup as MuiToggleButtonGroup,
-// } from "@material-ui/lab";
 import { User as UserIcon } from "react-feather";
 import {
   MuiPickersUtilsProvider,
@@ -78,6 +74,19 @@ const KeyboardDatePicker = styled(MuiKeyboardDatePicker)`
   }
 `;
 
+const DateField = styled(TextField)`
+  label {
+    font-size: 20px;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol";
+    font-weight: 400;
+    color: black;
+    line-height: 25px;
+    margin-top: -10px;
+  }
+`;
+
 // const ToggleButtonGroup = styled(MuiToggleButtonGroup)`
 //   width: 100%;
 //   display: flex;
@@ -101,7 +110,7 @@ const validationSchema = Yup.object().shape({
 
   firstName: Yup.string().required("Required"),
   lastName: Yup.string().required("Required"),
-  dob: Yup.date().required("Required"),
+  dateOfBirth: Yup.date().required("Required"),
   encounterDate: Yup.date().required("Required"),
   gender: Yup.string().required("Required"),
   provider: Yup.number(),
@@ -145,6 +154,7 @@ const InnerForm = (props) => {
     dispatch(addTechnician(newTechnician, saveForFuture));
   };
 
+  console.log(values.encounterDate, "Date");
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <OutCard mb={6}>
@@ -219,16 +229,18 @@ const InnerForm = (props) => {
                 <KeyboardDatePicker
                   // type="date"
                   disableToolbar
-                  name="dob"
+                  name="dateOfBirth"
                   variant="inline"
                   format="MM/dd/yyyy"
                   margin="normal"
                   label="Date of Birth"
-                  value={values.dob}
-                  onChange={(value) => setFieldValue("dob", value)}
-                  error={Boolean(touched.dob && errors.dob)}
+                  value={values.dateOfBirth}
+                  onChange={(value) => {
+                    setFieldValue("dateOfBirth", value);
+                  }}
+                  error={Boolean(touched.dateOfBirth && errors.dateOfBirth)}
                   fullWidth
-                  helperText={touched.dob && errors.dob}
+                  helperText={touched.dateOfBirth && errors.dateOfBirth}
                   onBlur={handleBlur}
                   KeyboardButtonProps={{
                     "aria-label": "change date",
@@ -281,22 +293,24 @@ const InnerForm = (props) => {
               </Box>
 
               <Box mb={2.5}>
-                <KeyboardDatePicker
-                  disableToolbar
+                <DateField
+                  type="date"
                   name="encounterDate"
-                  variant="inline"
-                  format="MM/dd/yyyy"
+                  format="mm/dd/yyyy"
                   margin="normal"
-                  label="Encounter Date"
                   value={values.encounterDate}
-                  onChange={(value) => setFieldValue("encounterDate", value)}
+                  label="Encounter Date"
+                  onChange={(value) => {
+                    debugger;
+                    setFieldValue("encounterDate", value.target.value);
+                  }}
                   error={Boolean(touched.encounterDate && errors.encounterDate)}
                   fullWidth
                   helperText={touched.encounterDate && errors.encounterDate}
                   onBlur={handleBlur}
-                  KeyboardButtonProps={{
-                    "aria-label": "change date",
-                  }}
+                  // InputLabelProps={{
+                  //   shrink: true,
+                  // }}
                 />
               </Box>
               <Box mb={2.5}>
@@ -376,11 +390,13 @@ const PatientForm = (props) => {
   const initialValues = {
     firstName: newReport.firstName,
     lastName: newReport.lastName,
-    dob: newReport.dob ? new Date(newReport.dob) : new Date(),
+    dateOfBirth: newReport.dateOfBirth
+      ? new Date(newReport.dateOfBirth)
+      : new Date(),
     gender: newReport.gender,
     encounterDate: newReport.encounterDate
-      ? new Date(newReport.encounterDate)
-      : new Date(),
+      ? new Date(newReport.encounterDate).toISOString().slice(0, 10)
+      : new Date().toISOString().slice(0, 10),
     ssn: "",
     staffInformation: {
       providerId: newReport.staffInformation
@@ -441,8 +457,8 @@ const PatientForm = (props) => {
             {
               ...values,
               id,
-              dob: values.dob.toISOString(),
-              encounterDate: values.encounterDate.toISOString(),
+              dateOfBirth: values.dateOfBirth.toISOString(),
+              encounterDate: new Date(values.encounterDate).toISOString(),
             },
             onSuccess
           )

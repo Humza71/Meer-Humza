@@ -5,8 +5,12 @@ import Header from "../components/AppBar";
 
 import { spacing } from "@material-ui/system";
 import { CssBaseline, Paper as MuiPaper, withWidth } from "@material-ui/core";
-// import { useDispatch } from "react-redux";
-// import { userInfo } from "../redux/reducers/authReducer";
+import { useDispatch } from "react-redux";
+import { userInfo } from "../redux/reducers/authReducer";
+import {
+  getAllProviders,
+  getAllTechnicians,
+} from "redux/reducers/reportReducer";
 
 const drawerWidth = 288;
 const drawerMiniWidth = 122;
@@ -66,7 +70,7 @@ const MainContent = styled(Paper)`
 `;
 
 const Dashboard = ({ children, routes }) => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [navExpand, setNavExpand] = useState(true);
   // const userProfile = useSelector((state) => state.authReducer.user);
 
@@ -82,6 +86,12 @@ const Dashboard = ({ children, routes }) => {
       setNavExpand(true);
     }
   }, []);
+
+  useEffect(() => {
+    dispatch(userInfo());
+    dispatch(getAllProviders());
+    dispatch(getAllTechnicians());
+  }, [dispatch]);
 
   return (
     <Root>

@@ -2,7 +2,8 @@ import React from "react";
 import styled from "styled-components/macro";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress, InputAdornment } from "@material-ui/core";
+import { User as UserIcon } from "react-feather";
 
 import {
   Grid,
@@ -23,6 +24,7 @@ import {
   Menu,
   MenuItem,
   Typography as MuiTypography,
+  TextField,
 } from "@material-ui/core";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import {
@@ -47,26 +49,10 @@ const Toolbar = styled(MuiToolbar)(spacing);
 const Typography = styled(MuiTypography)`
   margin-left: 10px;
 `;
-// const myListItemIcon = styled(ListItemIcon)`
-//   margin-bottom: 5px;
+
+// const smallTypography = styled(MuiTypography)`
+//   margin-left: 10px;
 // `;
-// const Tooltip = styled(MuiTooltip)`
-//   font-size: 2em;
-// `;
-// const Popover = styled(MuiPopover)`
-//   margin-bottom: 30px;
-// `;
-// const theme = createMuiTheme({
-//   overrides: {
-//     MuiTooltip: {
-//       tooltip: {
-//         fontSize: "2em",
-//         color: "yellow",
-//         backgroundColor: "red",
-//       },
-//     },
-//   },
-// });
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -83,6 +69,20 @@ const useStyles = makeStyles((theme) => ({
 const SmallAdvancedSelect = styled(AdvancedSelect)`
   height: 36px;
   width: 120px;
+`;
+
+const DateField = styled(TextField)`
+  label {
+    font-size: 20px;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol";
+    font-weight: 500;
+    color: black;
+    line-height: 20px;
+    margin-top: -15px;
+    white-space: nowrap;
+  }
 `;
 
 // function descendingComparator(a, b, orderBy) {
@@ -137,6 +137,8 @@ const SmallAdvancedSelect = styled(AdvancedSelect)`
 
 let TableToolbar = (props) => {
   const {
+    setInspectionList,
+    inspectionList,
     data,
     columns,
     rowsPerPage,
@@ -175,6 +177,10 @@ let TableToolbar = (props) => {
       }
     }
     return initialClinics;
+  };
+
+  const setInspection = () => {
+    setInspectionList(!inspectionList);
   };
 
   return (
@@ -235,7 +241,9 @@ let TableToolbar = (props) => {
           />
         </Grid>
         <Grid item>
-          <Button variant="outlined">Inspection List</Button>
+          <Button onClick={setInspection} variant="outlined">
+            Inspection List
+          </Button>
         </Grid>
         <Grid item>
           <ToggleButtonGroup
@@ -301,10 +309,22 @@ const ReportTable = (props) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [searchString, setSearchString] = React.useState("");
+  const [inspectionList, setInspectionList] = React.useState(false);
   const [filteredColumns, setFilteredColumns] = React.useState(
     columns.filter((item) => item.id !== "actions").map((item) => item.label)
   );
+  const [searchParams, setSearchParams] = React.useState({
+    testDate: "",
+    birthday: "",
+    firstName: "",
+    lastName: "",
+    technicianIds: {},
+    providerIds: {},
+  });
   const pdfLoading = useSelector((state) => state.dashboardReducer.loading);
+  const providers = useSelector((state) => state.reportReducer.providers) || [];
+  const technicians =
+    useSelector((state) => state.reportReducer.technicians) || [];
 
   const history = useHistory();
   const getInitialClinics = () => {
@@ -348,7 +368,7 @@ const ReportTable = (props) => {
   // const open = Boolean(anchorEl);
   // const id = open ? "simple-popover" : undefined;
 
-  const Actions = ({ id }) => {
+  const Actions = ({ id, status }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     // const [downloading, setDownloading] = React.useState(false);
     // React.useEffect(() => {
@@ -392,18 +412,21 @@ const ReportTable = (props) => {
 
             <Typography variant="inherit">Edit</Typography>
           </MenuItem>
-          <MenuItem>
-            <SaveAltIcon color="primary" />
-            <Typography
-              onClick={() => {
-                setAnchorEl(true);
-                downloadPdf(id, () => {});
-              }}
-              variant="inherit"
-            >
-              Download
-            </Typography>
-          </MenuItem>
+          {status === "publish" && (
+            <MenuItem>
+              <SaveAltIcon color="primary" />
+
+              <Typography
+                onClick={() => {
+                  setAnchorEl(true);
+                  downloadPdf(id);
+                }}
+                variant="inherit"
+              >
+                Download
+              </Typography>
+            </MenuItem>
+          )}
           <MenuItem>
             <DeleteIcon color="primary" />
 
@@ -417,6 +440,8 @@ const ReportTable = (props) => {
   return (
     <Paper>
       <TableToolbar
+        setInspectionList={setInspectionList}
+        inspectionList={inspectionList}
         data={data}
         columns={columns}
         page={page}
@@ -432,6 +457,169 @@ const ReportTable = (props) => {
         setSearchString={setSearchString}
         setTableFormat={setTableFormat}
       />
+      <Box>
+        {pdfLoading === LoadingStates.PDF_LOADING && (
+          <Box display="flex" my={6} justifyContent="flex-end" marginRight={6}>
+            <CircularProgress size="1rem" />
+            <Typography color="primary" variant="inherit">
+              Downloading Report
+            </Typography>
+          </Box>
+        )}
+      </Box>
+
+      {inspectionList && (
+        <Grid container alignItems="center" justify="space-between">
+          <Grid item>
+            <DateField
+              type="date"
+              // name="encounterDate"
+              // format="mm/dd/yyyy"
+              margin="normal"
+              // value={values.encounterDate}
+              label="Search on Test Date"
+              onChange={(value) =>
+                setSearchParams({
+                  ...searchParams,
+                  testDate: value,
+                })
+              }
+              // error={Boolean(touched.encounterDate && errors.encounterDate)}
+              // fullWidth
+              // helperText={touched.encounterDate && errors.encounterDate}
+              // onBlur={handleBlur}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <DateField
+              type="date"
+              // name="encounterDate"
+              // format="mm/dd/yyyy"
+              margin="normal"
+              // value={values.encounterDate}
+              label="Search on Birth Date"
+              onChange={(value) =>
+                setSearchParams({
+                  ...searchParams,
+                  birthday: value,
+                })
+              }
+              // error={Boolean(touched.encounterDate && errors.encounterDate)}
+              // fullWidth
+              // helperText={touched.encounterDate && errors.encounterDate}
+              // onBlur={handleBlur}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <Typography variant="h6" mb={1}>
+              Patient Name
+            </Typography>
+
+            <TextField
+              name="firstName"
+              placeholder="First Name"
+              // label="Patient Name"
+              // value={values.firstName}
+              // error={Boolean(touched.firstName && errors.firstName)}
+              // fullWidth
+              // helperText={touched.firstName && errors.firstName}
+              // onBlur={handleBlur}
+              onChange={(value) =>
+                setSearchParams({ ...searchParams, firstName: value })
+              }
+              variant="outlined"
+              my={2}
+              // InputProps={{
+              //   startAdornment: (
+              //     <InputAdornment position="start">
+              //       <UserIcon />
+              //     </InputAdornment>
+              //   ),
+              // }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <UserIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              name="lastName"
+              placeholder="Last Name"
+              // value={values.firstName}
+              // error={Boolean(touched.firstName && errors.firstName)}
+              // fullWidth
+              // helperText={touched.firstName && errors.firstName}
+              // onBlur={handleBlur}
+              onChange={(value) =>
+                setSearchParams({ ...searchParams, lastName: value })
+              }
+              variant="outlined"
+              my={2}
+              // InputProps={{
+              //   startAdornment: (
+              //     <InputAdornment position="start">
+              //       <UserIcon />
+              //     </InputAdornment>
+              //   ),
+              // }}
+            />
+          </Grid>
+
+          <Typography variant="body1" mb={1}>
+            Providers and Technicians
+          </Typography>
+          <Grid item>
+            <SmallAdvancedSelect
+              size="small"
+              // error={Boolean(touched.providerId && errors.providerId)}
+              // helperText={touched.providerId && errors.providerId}
+              // value={values.staffInformation.providerId}
+              onChange={(e) => {
+                setSearchParams({ ...searchParams, provider: e.target.value });
+              }}
+              // onBlur={handleBlur}
+              name="providerId"
+              label="Provider"
+              options={providers.map((item, index) => ({
+                label: item.name,
+                value: item.id,
+              }))}
+              variant="outlined"
+              // allowAdd={true}
+              // onAdd={hanldeNewProvider}
+            />
+          </Grid>
+          <Grid item>
+            <SmallAdvancedSelect
+              // error={Boolean(touched.technicianId && errors.technicianId)}
+              // helperText={touched.technicianId && errors.technicianId}
+              // value={values.staffInformation.technicianId}
+              onChange={(e) =>
+                setSearchParams({ ...searchParams, technician: e.target.value })
+              }
+              // onBlur={handleBlur}
+              name="technicianId"
+              label="Technician"
+              options={technicians.map((item, index) => ({
+                label: item.name,
+                value: item.id,
+              }))}
+              variant="outlined"
+              // allowAdd={true}
+              // onAdd={hanldeNewTechnician}
+            />
+          </Grid>
+        </Grid>
+      )}
+
       <TableContainer className={classes.container}>
         <Table
           aria-labelledby="tableTitle"
@@ -445,40 +633,33 @@ const ReportTable = (props) => {
             order={order}
             orderBy={orderBy}
             onRequestSort={handleRequestSort}
-          />{" "}
-          {pdfLoading === LoadingStates.PDF_LOADING ? (
-            <Box display="flex" justifyContent="center" my={6}>
-              <CircularProgress size="1rem" />
-            </Box>
-          ) : (
-            <TableBody>
-              {data.map((row, index) => {
-                const labelId = `report-table-${index}`;
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={labelId}>
-                    {columns.map(
-                      (headCell) =>
-                        filteredColumns.indexOf(headCell.label) !== -1 &&
-                        headCell.id !== "actions" && (
-                          <TableCell align="left" key={headCell.id}>
-                            {row[headCell.id]}
-                          </TableCell>
-                        )
-                    )}
-                    <TableCell align="left">
-                      <IconButton aria-label="actions">
-                        <Actions id={row._id} />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-
-              <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
-              </TableRow>
-            </TableBody>
-          )}
+          />
+          <TableBody>
+            {data.map((row, index) => {
+              const labelId = `report-table-${index}`;
+              return (
+                <TableRow hover role="checkbox" tabIndex={-1} key={labelId}>
+                  {columns.map(
+                    (headCell) =>
+                      filteredColumns.indexOf(headCell.label) !== -1 &&
+                      headCell.id !== "actions" && (
+                        <TableCell align="left" key={headCell.id}>
+                          {row[headCell.id]}
+                        </TableCell>
+                      )
+                  )}
+                  <TableCell align="left">
+                    <IconButton aria-label="actions">
+                      <Actions id={row._id} status={row.status} />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+            <TableRow style={{ height: 53 * emptyRows }}>
+              <TableCell colSpan={6} />
+            </TableRow>
+          </TableBody>
         </Table>
       </TableContainer>
     </Paper>

@@ -44,7 +44,7 @@ const AddButton = styled(Button)`
 
 const AdvancedSelect = ({
   error,
-  value,
+  value = [],
   onChange,
   name,
   label,

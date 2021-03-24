@@ -87,15 +87,14 @@ export const getClinic = () => async (dispatch) => {
 
 export const userInfo = () => async (dispatch) => {
   dispatch(setLoading(true));
-
   try {
     const response = await authUserInfo();
     if (response) {
       dispatch(
         setUser({
-          id: response.id,
-          email: response.email,
-          name: response.name,
+          id: response.data._id,
+          email: response.data.email,
+          name: response.data.name,
         })
       );
     }

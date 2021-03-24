@@ -5,10 +5,19 @@ export const getReports = async () => {
       .then((response) => {
         if (response.status === 200) {
           const newData = response.data.data.map(
-            ({ _id, created_at, updated_at, patientDemographics }) => ({
+            ({
+              _id,
+              status,
+              userName,
+              created_at,
+              updated_at,
+              patientDemographics,
+            }) => ({
+              status,
               _id,
               updated_at,
               created_at,
+              userName,
               ...patientDemographics,
             })
           );
