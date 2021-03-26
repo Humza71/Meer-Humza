@@ -2,7 +2,12 @@ import React from "react";
 import styled from "styled-components/macro";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, CircularProgress, InputAdornment } from "@material-ui/core";
+import {
+  Box,
+  CircularProgress,
+  InputAdornment,
+  Modal,
+} from "@material-ui/core";
 import { User as UserIcon } from "react-feather";
 
 import {
@@ -26,7 +31,12 @@ import {
   Typography as MuiTypography,
   TextField,
 } from "@material-ui/core";
-import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
+import {
+  ToggleButton,
+  ToggleButtonGroup,
+  // Alert,
+  // AlertTitle,
+} from "@material-ui/lab";
 import {
   MoreVert as MoreVertIcon,
   Menu as MenuIcon,
@@ -41,7 +51,11 @@ import SearchInput from "components/SearchInput";
 import AdvancedSelect from "components/AdvancedSelect";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { getPdf, LoadingStates } from "../redux/reducers/dashboardReducer";
+import {
+  getPdf,
+  LoadingStates,
+  deleteReportById,
+} from "../redux/reducers/dashboardReducer";
 
 const Paper = styled(MuiPaper)(spacing);
 const Toolbar = styled(MuiToolbar)(spacing);
@@ -64,6 +78,12 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 120,
     maxWidth: 300,
   },
+  root: {
+    marginBottom: "20px",
+  },
+  item: {
+    width: `40%`,
+  },
 }));
 
 const SmallAdvancedSelect = styled(AdvancedSelect)`
@@ -83,6 +103,11 @@ const DateField = styled(TextField)`
     margin-top: -15px;
     white-space: nowrap;
   }
+`;
+
+const ProvideWrapper = styled.div`
+  display: flex;
+  flex-direction: ${({ direction = "row" }) => direction};
 `;
 
 // function descendingComparator(a, b, orderBy) {
@@ -321,7 +346,7 @@ const ReportTable = (props) => {
     technicianIds: {},
     providerIds: {},
   });
-  const pdfLoading = useSelector((state) => state.dashboardReducer.loading);
+  const loader = useSelector((state) => state.dashboardReducer.loading);
   const providers = useSelector((state) => state.reportReducer.providers) || [];
   const technicians =
     useSelector((state) => state.reportReducer.technicians) || [];
@@ -369,11 +394,58 @@ const ReportTable = (props) => {
   // const id = open ? "simple-popover" : undefined;
 
   const Actions = ({ id, status }) => {
+    function rand() {
+      return Math.round(Math.random() * 20) - 10;
+    }
+
+    function getModalStyle() {
+      const top = 50 + rand();
+      const left = 50 + rand();
+
+      return {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+      };
+    }
+
+    const useStyles = makeStyles((theme) => ({
+      paper: {
+        position: "absolute",
+        width: 400,
+        backgroundColor: theme.palette.background.paper,
+        border: "2px solid #000",
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+      },
+    }));
+    const classes = useStyles();
+    // getModalStyle is not a pure function, we roll the style only on the first render
+    const [modalStyle] = React.useState(getModalStyle);
     const [anchorEl, setAnchorEl] = React.useState(null);
-    // const [downloading, setDownloading] = React.useState(false);
-    // React.useEffect(() => {
-    //   debugger;
-    // }, [downloading]);
+    const [open, setOpen] = React.useState(false);
+    const [myReportId, setMyReportId] = React.useState("");
+    // const [reportId, setReportId] = React.useState("");
+
+    // const deleteSuccess = () => {
+    //   // <Alert severity="success">
+    //   //   <AlertTitle>Success</AlertTitle>
+    //   //   Report deleted successfully
+    //   // </Alert>;
+    // };
+
+    const handleOpen = (id) => {
+      setOpen(true);
+      setMyReportId(id);
+      // setReportId(id);
+      // setOpen(true);
+    };
+
+    const handleCloseDialogue = () => {
+      setOpen(false);
+      setMyReportId("");
+      // setOpen(false);
+    };
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -383,8 +455,38 @@ const ReportTable = (props) => {
       setAnchorEl(null);
     };
 
+    const body = (
+      <div style={modalStyle} className={classes.paper}>
+        <h2 id="simple-modal-title">Confirmation</h2>
+        <p id="simple-modal-description">
+          Are you sure you want to delete this report
+        </p>
+        <Box>
+          <Grid container justifyContent="space-between" spacing={6}>
+            <Grid Item md={2}>
+              <button onClick={() => dispatch(deleteReportById(myReportId))}>
+                Yes
+              </button>
+            </Grid>
+
+            <Grid Item md={2}>
+              <button onClick={handleCloseDialogue}>No</button>
+            </Grid>
+          </Grid>
+        </Box>
+      </div>
+    );
+
     return (
       <>
+        <Modal
+          open={open}
+          onClose={handleCloseDialogue}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          {body}
+        </Modal>
         <MoreVertIcon onClick={handleClick} />
         <Menu
           id="simple-menu"
@@ -429,8 +531,14 @@ const ReportTable = (props) => {
           )}
           <MenuItem>
             <DeleteIcon color="primary" />
-
-            <Typography variant="inherit">Delete</Typography>
+            <Typography
+              onClick={() => {
+                handleOpen(id);
+              }}
+              variant="inherit"
+            >
+              Delete
+            </Typography>
           </MenuItem>
         </Menu>
       </>
@@ -458,7 +566,7 @@ const ReportTable = (props) => {
         setTableFormat={setTableFormat}
       />
       <Box>
-        {pdfLoading === LoadingStates.PDF_LOADING && (
+        {loader === LoadingStates.PDF_LOADING && (
           <Box display="flex" my={6} justifyContent="flex-end" marginRight={6}>
             <CircularProgress size="1rem" />
             <Typography color="primary" variant="inherit">
@@ -466,10 +574,24 @@ const ReportTable = (props) => {
             </Typography>
           </Box>
         )}
+
+        {loader === LoadingStates.DELETE_REPORT_LOADING && (
+          <Box display="flex" my={6} justifyContent="flex-end" marginRight={6}>
+            <CircularProgress size="1rem" />
+            <Typography color="primary" variant="inherit">
+              Deleting Report
+            </Typography>
+          </Box>
+        )}
       </Box>
 
       {inspectionList && (
-        <Grid container alignItems="center" justify="space-between">
+        <Grid
+          container
+          alignItems="center"
+          justify="space-between"
+          className={classes.root}
+        >
           <Grid item>
             <DateField
               type="date"
@@ -516,107 +638,123 @@ const ReportTable = (props) => {
               }}
             />
           </Grid>
-          <Grid item>
+          <Grid>
+            <ProvideWrapper direction="column">
+              <Typography variant="h6" mb={1}>
+                Patient Name
+              </Typography>
+              <ProvideWrapper>
+                <Grid Item className={classes.item}>
+                  <TextField
+                    name="firstName"
+                    placeholder="First Name"
+                    // label="Patient Name"
+                    // value={values.firstName}
+                    // error={Boolean(touched.firstName && errors.firstName)}
+                    // fullWidth
+                    // helperText={touched.firstName && errors.firstName}
+                    // onBlur={handleBlur}
+                    onChange={(value) =>
+                      setSearchParams({ ...searchParams, firstName: value })
+                    }
+                    variant="outlined"
+                    my={2}
+                    // InputProps={{
+                    //   startAdornment: (
+                    //     <InputAdornment position="start">
+                    //       <UserIcon />
+                    //     </InputAdornment>
+                    //   ),
+                    // }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <UserIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid Item className={classes.item}>
+                  <TextField
+                    name="lastName"
+                    placeholder="Last Name"
+                    // value={values.firstName}
+                    // error={Boolean(touched.firstName && errors.firstName)}
+                    // fullWidth
+                    // helperText={touched.firstName && errors.firstName}
+                    // onBlur={handleBlur}
+                    onChange={(value) =>
+                      setSearchParams({ ...searchParams, lastName: value })
+                    }
+                    variant="outlined"
+                    my={2}
+                    // InputProps={{
+                    //   startAdornment: (
+                    //     <InputAdornment position="start">
+                    //       <UserIcon />
+                    //     </InputAdornment>
+                    //   ),
+                    // }}
+                  />
+                </Grid>
+              </ProvideWrapper>
+            </ProvideWrapper>
+          </Grid>
+          <ProvideWrapper direction="column">
             <Typography variant="h6" mb={1}>
-              Patient Name
+              Physician and Technician
             </Typography>
-
-            <TextField
-              name="firstName"
-              placeholder="First Name"
-              // label="Patient Name"
-              // value={values.firstName}
-              // error={Boolean(touched.firstName && errors.firstName)}
-              // fullWidth
-              // helperText={touched.firstName && errors.firstName}
-              // onBlur={handleBlur}
-              onChange={(value) =>
-                setSearchParams({ ...searchParams, firstName: value })
-              }
-              variant="outlined"
-              my={2}
-              // InputProps={{
-              //   startAdornment: (
-              //     <InputAdornment position="start">
-              //       <UserIcon />
-              //     </InputAdornment>
-              //   ),
-              // }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <UserIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <TextField
-              name="lastName"
-              placeholder="Last Name"
-              // value={values.firstName}
-              // error={Boolean(touched.firstName && errors.firstName)}
-              // fullWidth
-              // helperText={touched.firstName && errors.firstName}
-              // onBlur={handleBlur}
-              onChange={(value) =>
-                setSearchParams({ ...searchParams, lastName: value })
-              }
-              variant="outlined"
-              my={2}
-              // InputProps={{
-              //   startAdornment: (
-              //     <InputAdornment position="start">
-              //       <UserIcon />
-              //     </InputAdornment>
-              //   ),
-              // }}
-            />
-          </Grid>
-
-          <Typography variant="body1" mb={1}>
-            Providers and Technicians
-          </Typography>
-          <Grid item>
-            <SmallAdvancedSelect
-              size="small"
-              // error={Boolean(touched.providerId && errors.providerId)}
-              // helperText={touched.providerId && errors.providerId}
-              // value={values.staffInformation.providerId}
-              onChange={(e) => {
-                setSearchParams({ ...searchParams, provider: e.target.value });
-              }}
-              // onBlur={handleBlur}
-              name="providerId"
-              label="Provider"
-              options={providers.map((item, index) => ({
-                label: item.name,
-                value: item.id,
-              }))}
-              variant="outlined"
-              // allowAdd={true}
-              // onAdd={hanldeNewProvider}
-            />
-          </Grid>
-          <Grid item>
-            <SmallAdvancedSelect
-              // error={Boolean(touched.technicianId && errors.technicianId)}
-              // helperText={touched.technicianId && errors.technicianId}
-              // value={values.staffInformation.technicianId}
-              onChange={(e) =>
-                setSearchParams({ ...searchParams, technician: e.target.value })
-              }
-              // onBlur={handleBlur}
-              name="technicianId"
-              label="Technician"
-              options={technicians.map((item, index) => ({
-                label: item.name,
-                value: item.id,
-              }))}
-              variant="outlined"
-              // allowAdd={true}
-              // onAdd={hanldeNewTechnician}
-            />
-          </Grid>
+            <ProvideWrapper>
+              <Grid item>
+                <SmallAdvancedSelect
+                  size="small"
+                  // error={Boolean(touched.providerId && errors.providerId)}
+                  // helperText={touched.providerId && errors.providerId}
+                  // value={values.staffInformation.providerId}
+                  onChange={(e) => {
+                    setSearchParams({
+                      ...searchParams,
+                      provider: e.target.value,
+                    });
+                  }}
+                  // onBlur={handleBlur}
+                  name="providerId"
+                  label="Provider"
+                  options={providers.map((item, index) => ({
+                    label: item.name,
+                    value: item.id,
+                  }))}
+                  variant="outlined"
+                  // allowAdd={true}
+                  // onAdd={hanldeNewProvider}
+                />
+              </Grid>
+              <Grid item>
+                <SmallAdvancedSelect
+                  // error={Boolean(touched.technicianId && errors.technicianId)}
+                  // helperText={touched.technicianId && errors.technicianId}
+                  // value={values.staffInformation.technicianId}
+                  onChange={(e) =>
+                    setSearchParams({
+                      ...searchParams,
+                      technician: e.target.value,
+                    })
+                  }
+                  // onBlur={handleBlur}
+                  name="technicianId"
+                  label="Technician"
+                  options={technicians.map((item, index) => ({
+                    label: item.name,
+                    value: item.id,
+                  }))}
+                  variant="outlined"
+                  // allowAdd={true}
+                  // onAdd={hanldeNewTechnician}
+                />
+              </Grid>
+            </ProvideWrapper>
+          </ProvideWrapper>
         </Grid>
       )}
 

@@ -12,6 +12,7 @@ import { List, Users } from "react-feather";
 
 // Guards
 const AuthGuard = async(() => import("../components/AuthGuard"));
+const CompanyForm = async(() => import("../components/addNewCompany"));
 
 // Auth components
 const SignIn = async(() => import("../pages/auth/SignIn"));
@@ -107,9 +108,23 @@ const billingRoutes = {
 const clientsRoutes = {
   id: "Manage Clients",
   path: "/clients",
+
   icon: <Users />,
   component: Clients,
   // //
+};
+const companyRoutes = {
+  id: "Manage Company",
+  path: "/clients/company/new",
+
+  children: [
+    {
+      path: [`/clients/company/new`, `/clients/company/new/:id`],
+      name: "Create Company",
+      component: CompanyForm,
+      guard: AuthGuard,
+    },
+  ],
 };
 const licenseRoutes = {
   id: "Manage Licences",
@@ -136,6 +151,7 @@ export const dashboardLayoutRoutes = [
   licenseRoutes,
   billingRoutes,
   contactRoutes,
+  companyRoutes,
 ];
 
 // Routes using the Auth layout

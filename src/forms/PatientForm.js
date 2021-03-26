@@ -301,7 +301,6 @@ const InnerForm = (props) => {
                   value={values.encounterDate}
                   label="Encounter Date"
                   onChange={(value) => {
-                    debugger;
                     setFieldValue("encounterDate", value.target.value);
                   }}
                   error={Boolean(touched.encounterDate && errors.encounterDate)}

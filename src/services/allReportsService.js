@@ -1,4 +1,4 @@
-import { getUtil } from "../utils/apiService";
+import { getUtil, deleteUtil } from "../utils/apiService";
 export const getReports = async () => {
   return new Promise((resolve, reject) => {
     getUtil("/api/get/reports")
@@ -34,6 +34,21 @@ export const getReports = async () => {
 export const getPdfReports = async (reportId) => {
   return new Promise((resolve, reject) => {
     getUtil(`/api/get/pdf/${reportId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const deleteReport = async (id) => {
+  return new Promise((resolve, reject) => {
+    deleteUtil(`/api/delete/report/${id}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response);
