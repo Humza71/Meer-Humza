@@ -181,21 +181,20 @@ const SimpleTable = () => {
     dispatch(getLicenses());
     dispatch(getClinic(user.clinicId));
   }, [dispatch, user.clinicId]);
-  {
-    return (
-      <Box p={12}>
-        <Helmet title="Dashboard" />
-        <SimpleTableDemo setOpenModal={setOpenModal} />
-        <LicenseTable
-          myData={myData}
-          data={myData}
-          columns={headCells}
-          openModal={openModal}
-          setOpenModal={setOpenModal}
-        />
-      </Box>
-    );
-  }
+
+  return (
+    <Box p={12}>
+      <Helmet title="Dashboard" />
+      <SimpleTableDemo setOpenModal={setOpenModal} />
+      <LicenseTable
+        myData={myData}
+        data={myData}
+        columns={headCells}
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+      />
+    </Box>
+  );
 };
 
 export default SimpleTable;
