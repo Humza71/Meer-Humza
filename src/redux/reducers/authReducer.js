@@ -11,7 +11,7 @@ import { setMessage } from "./messageReducer";
 const initialState = {
   user: {},
   loading: false,
-  clinicId: "",
+  clinic: {},
 };
 
 export const slice = createSlice({
@@ -25,7 +25,7 @@ export const slice = createSlice({
       state.loading = action.payload;
     },
     setClinic: (state, action) => {
-      state.clinicId = action.payload._id;
+      state.clinic = action.payload;
     },
     // setProfile: (state, action) => {
     //   state.profile = action.payload;
@@ -71,11 +71,11 @@ export const signUp = (credentials) => async (dispatch) => {
   dispatch(setLoading(false));
 };
 
-export const getClinic = () => async (dispatch) => {
+export const getClinic = (id) => async (dispatch) => {
   // dispatch(setLoading(true));
 
   try {
-    const response = await clinic();
+    const response = await clinic(id);
 
     dispatch(setClinic(response.data));
   } catch (error) {
@@ -95,6 +95,7 @@ export const userInfo = () => async (dispatch) => {
           id: response.data._id,
           email: response.data.email,
           name: response.data.name,
+          clinicId: response.data.clinicId,
         })
       );
     }

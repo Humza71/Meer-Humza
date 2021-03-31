@@ -50,7 +50,7 @@ const ReportHeader = () => {
           </Box>
         </Grid>
         <Grid item>
-          <Button variant="outlined" size="medium" color="secondary" mr={3}>
+          <Button variant="outlined" size="medium" color="secondary">
             Reporting View
           </Button>
           <ButtonDropDown

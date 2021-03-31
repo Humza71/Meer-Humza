@@ -1,11 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 // import { providers, technicians } from "lib/dumyData";
 // import { postUtil } from "../../utils/apiService";
-import { getReports, getPdfReports } from "../../services/allReportsService";
+import {
+  getReports,
+  getPdfReports,
+  deleteReport,
+} from "../../services/allReportsService";
 
 export const LoadingStates = {
   ALL_REPORTS_LOADING: "All Report Loading",
   PDF_LOADING: "Pdf Loading",
+  DELETE_REPORT_LOADING: "Delete Report Loading",
 };
 
 const initialState = {
@@ -23,11 +28,17 @@ export const slice = createSlice({
     updateReports: (state, action) => {
       state.allReports = [...action.payload.response];
     },
+    setReports: (state, action) => {
+      const newReports = state.allReports.filter(
+        ({ _id }) => _id !== action.payload
+      );
+      state.allReports = [...newReports];
+    },
   },
 });
 
 // export const { clearNewReport, updateNewReport } = slice.actions;
-export const { setLoading, updateReports } = slice.actions;
+export const { setLoading, updateReports, setReports } = slice.actions;
 
 export const getAllReports = () => async (dispatch) => {
   dispatch(setLoading(LoadingStates.ALL_REPORTS_LOADING));
@@ -60,6 +71,23 @@ export const getPdf = (reportId, setDownloading) => async (dispatch) => {
       downloadLink.download = fileName;
       downloadLink.click();
       setDownloading();
+    }
+  } catch (error) {
+    console.log(error, "Error");
+  }
+  dispatch(setLoading(null));
+};
+
+export const deleteReportById = (reportId) => async (dispatch) => {
+  dispatch(setLoading(LoadingStates.DELETE_REPORT_LOADING));
+  // Need to be replaced by the service that does API call
+
+  try {
+    const response = await deleteReport(reportId);
+    if (response.status === 200) {
+      dispatch(setReports(reportId));
+
+      console.log("report deleted successfully");
     }
   } catch (error) {
     console.log(error, "Error");

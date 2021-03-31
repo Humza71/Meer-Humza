@@ -266,7 +266,6 @@ const ImpressionForm = (props) => {
   // }, [impressionValues]);
 
   const handleSave = (values) => {
-    debugger;
     dispatch(
       impressionPlanReport({
         status: "publish",

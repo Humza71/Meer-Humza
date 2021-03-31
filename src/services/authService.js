@@ -33,9 +33,9 @@ export const signUp = async (credentials) => {
   });
 };
 
-export const clinic = async () => {
+export const clinic = async (id) => {
   return new Promise((resolve, reject) => {
-    getUtil("/api/get/clinic")
+    getUtil(`/api/get/clinic/${id}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
