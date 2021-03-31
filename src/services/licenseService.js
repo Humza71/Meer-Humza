@@ -1,7 +1,7 @@
 import { postUtil, getUtil } from "../utils/apiService";
-export function addCompany(payload) {
+export function addLicense(payload) {
   return new Promise((resolve, reject) => {
-    postUtil("/api/clinic/add", payload)
+    postUtil("/api/add/license", payload)
       .then((response) => {
         if (response.status === 200) {
           resolve(response);
@@ -14,9 +14,9 @@ export function addCompany(payload) {
   });
 }
 
-export function getAllCompany() {
+export function getAllLicense() {
   return new Promise((resolve, reject) => {
-    getUtil("/api/get/clinics")
+    getUtil("/api/get/licenses")
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -29,9 +29,9 @@ export function getAllCompany() {
   });
 }
 
-export function getCompany(id) {
+export function getLicense(id) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/get/clinic/${id}`)
+    getUtil(`/api/get/license/${id}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);

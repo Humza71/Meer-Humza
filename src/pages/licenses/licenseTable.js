@@ -1,8 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components/macro";
 
 import { makeStyles } from "@material-ui/core/styles";
-// import { Box, CircularProgress, InputAdornment } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 // import { User as UserIcon } from "react-feather";
 
 import {
@@ -23,8 +24,10 @@ import {
   Menu,
   MenuItem,
   Typography as MuiTypography,
-  // TextField,
-  Dialog,
+  Dialog as MuiDialog,
+  AppBar,
+  Tabs as MuiTabs,
+  Tab,
 } from "@material-ui/core";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import {
@@ -32,19 +35,23 @@ import {
   Menu as MenuIcon,
   ViewHeadline as ViewHeadlineIcon,
 } from "@material-ui/icons";
-// import EditIcon from "@material-ui/icons/Edit";
+
 import DeleteIcon from "@material-ui/icons/Delete";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
-
 import FilterListIcon from "@material-ui/icons/FilterList";
 import { spacing } from "@material-ui/system";
 
 import SearchInput from "components/SearchInput";
 import AdvancedSelect from "components/AdvancedSelect";
-import CompanyForm from "components/addNewCompany";
-import { getCompanyById, clearClinic } from "redux/reducers/clientReducer";
-// import { useHistory } from "react-router";
-import { useDispatch } from "react-redux";
+import LicenseInfo from "./licenseInfo";
+import UserInfo from "./userInfo";
+import CompanyInfo from "./companyInfo";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearLicenseData,
+  getLicenseById,
+} from "redux/reducers/licenseReducer";
+// import CompanyForm from "components/addNewCompany";
 
 const Paper = styled(MuiPaper)(spacing);
 const Toolbar = styled(MuiToolbar)(spacing);
@@ -52,14 +59,38 @@ const Toolbar = styled(MuiToolbar)(spacing);
 const Typography = styled(MuiTypography)`
   margin-left: 10px;
 `;
-// const Dialog = styled(MuiDialog)`
-//   // MuiPaper-root {
-//   //   height: 550px;
-//   // }
-// `;
 
-// const smallTypography = styled(MuiTypography)`
-//   margin-left: 10px;
+const Tabs = styled(MuiTabs)`
+  .MuiTab-textColorInherit.Mui-selected {
+    background-color: #f5faff;
+    color: #09539e;
+    img {
+    }
+  }
+`;
+
+const Dialog = styled(MuiDialog)`
+  .MuiDialog-paperWidthSm {
+    padding: 30px;
+  }
+`;
+
+const Icon = styled.img`
+  padding-left: 5px;
+  padding-right: 4px;
+  margin-left: 8px;
+  width: 20px;
+`;
+const ActionIcon = styled.img`
+  width: 17px;
+  margin-left: 5px;
+  cursor: pointer;
+`;
+// const Tabs = styled(MuiTabs)`
+//   .MuiTabs-root {
+//     background-color: white;
+//     color: #5f6368;
+//   }
 // `;
 
 const useStyles = makeStyles((theme) => ({
@@ -72,18 +103,20 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 120,
     maxWidth: 300,
   },
+  tabsRoot: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+  },
+  root: {
+    backgroundColor: "white",
+    color: "#5f6368",
+    paddingTop: "5px",
+  },
 }));
 
 const SmallAdvancedSelect = styled(AdvancedSelect)`
   height: 36px;
   width: 120px;
-`;
-
-const Icon = styled.img`
-  // padding-left: 5px;
-  // padding-right: 4px;
-  // margin-left: 0spx;
-  width: 20px;
 `;
 
 let TableToolbar = (props) => {
@@ -236,10 +269,11 @@ const ReportTableHead = (props) => {
   );
 };
 
-const ClientTable = (props) => {
-  const { data, columns } = props;
-
+const LicenseTable = (props) => {
+  const { data, columns, openModal, setOpenModal } = props;
   const dispatch = useDispatch();
+
+  // const dispatch = useDispatch();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("date");
   const [tableFormat, setTableFormat] = React.useState("padding");
@@ -247,34 +281,68 @@ const ClientTable = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [searchString, setSearchString] = React.useState("");
   const [open, setOpen] = React.useState(false);
-  // const [modalStyle] = React.useState(getModalStyle);
-  const [rowRecord, setRowRecord] = React.useState({});
+  const [value, setValue] = React.useState(0);
+  //   const [modalStyle] = React.useState(getModalStyle);
+  //   const [rowRecord, setRowRecord] = React.useState({});
+  const licenseInfo = useSelector((state) => {
+    return state.licenseReducer.license;
+  });
+  const userInfo = useSelector((state) => {
+    return state.licenseReducer.userInfo;
+  });
+  // const companyInfo = useSelector((state) => {
+  //   return state.licenseReducer.companyInfo;
+  // });
 
   const [filteredColumns, setFilteredColumns] = React.useState(
     columns.filter((item) => item.id !== "actions").map((item) => item.label)
   );
-  // function getModalStyle() {
-  //   const top = 50;
-  //   const left = 50;
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props;
 
-  //   return {
-  //     top: `${top}%`,
-  //     left: `${left}%`,
-  //     transform: `translate(-${top}%, -${left}%)`,
-  //   };
-  // }
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box p={3}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
+  };
+
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      "aria-controls": `simple-tabpanel-${index}`,
+    };
+  }
 
   // const useStyles = makeStyles((theme) => ({
-  //   paper: {
-  //     position: "absolute",
-  //     minHeight: 450,
-  //     width: 547,
+  //   tabsRoot: {
+  //     flexGrow: 1,
   //     backgroundColor: theme.palette.background.paper,
-  //     // border: "0px solid grey",
-  //     boxShadow: theme.shadows[5],
-  //     padding: theme.spacing(2, 4, 3),
+  //   },
+  //   root: {
+  //     backgroundColor: "white",
+  //     color: "#5f6368",
+  //     paddingTop: "5px",
   //   },
   // }));
+
+  /* Vector */
 
   const classes = useStyles();
   //   const [searchParams, setSearchParams] = React.useState({
@@ -287,16 +355,16 @@ const ClientTable = (props) => {
   //   });
 
   // const history = useHistory();
-  const handleOpen = (row) => {
+  const handleOpen = (id) => {
     setOpen(true);
-    dispatch(getCompanyById(row.id));
-    setRowRecord(row);
+    dispatch(getLicenseById(id));
   };
 
   const handleCloseDialogue = () => {
     setOpen(false);
-    dispatch(clearClinic());
-    setRowRecord({});
+    setValue(0);
+    setOpenModal(false);
+    //   setRowRecord({});
     // setMyReportId("");
     // setOpen(false);
   };
@@ -315,6 +383,29 @@ const ClientTable = (props) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  const handleTabsChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  React.useEffect(() => {
+    if (open === false) {
+      if (openModal === true) {
+        setOpenModal(false);
+      }
+      if (
+        Object.keys(licenseInfo).length !== 0 ||
+        Object.keys(userInfo).length !== 0
+      ) {
+        dispatch(clearLicenseData());
+      }
+    }
+  }, [open, dispatch, openModal, setOpenModal, licenseInfo, userInfo]);
+
+  React.useEffect(() => {
+    if (openModal === true) {
+      setOpen(true);
+    }
+  }, [openModal]);
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
@@ -322,11 +413,11 @@ const ClientTable = (props) => {
   // const open = Boolean(anchorEl);
   // const id = open ? "simple-popover" : undefined;
 
-  // const body = (
-  //   <div style={modalStyle} className={classes.paper}>
-  //     <CompanyForm editCompany={true} companyInfo={rowRecord} />
-  //   </div>
-  // );
+  //   const body = (
+  //     <div style={modalStyle} className={classes.paper}>
+  //       <CompanyForm editCompany={true} companyInfo={rowRecord} />
+  //     </div>
+  //   );
 
   const Actions = ({ id, status }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -382,6 +473,15 @@ const ClientTable = (props) => {
     );
   };
 
+  const ModalTabs = ({ imgSrc, title }) => {
+    return (
+      <Grid container alignItems="center">
+        <Icon src={"/static/img/" + imgSrc} />
+        <span>{title}</span>
+      </Grid>
+    );
+  };
+
   return (
     <>
       <Dialog
@@ -390,9 +490,61 @@ const ClientTable = (props) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <CompanyForm editCompany={true} companyInfo={rowRecord} />
+        <Typography variant="h4" color="action" gutterBottom>
+          View or Edit License
+        </Typography>
+        <div className={classes.tabsRoot}>
+          <AppBar position="static">
+            <Tabs
+              className={classes.root}
+              value={value}
+              onChange={handleTabsChange}
+              aria-label="simple tabs example"
+            >
+              <Tab
+                label={
+                  <ModalTabs
+                    imgSrc={
+                      value === 0 ? "licenseInfoActive.png" : "licenseInfo.png"
+                    }
+                    title={"License Info"}
+                  />
+                }
+                {...a11yProps(0)}
+              />
+              <Tab
+                label={
+                  <ModalTabs
+                    imgSrc={value === 1 ? "userInfoActive.png" : "userInfo.png"}
+                    title={"User Info"}
+                  />
+                }
+                {...a11yProps(1)}
+              />
+              <Tab
+                label={
+                  <ModalTabs
+                    imgSrc={
+                      value === 2 ? "companyInfoActive.png" : "companyInfo.png"
+                    }
+                    title={"Company Info"}
+                  />
+                }
+                {...a11yProps(2)}
+              />
+            </Tabs>
+          </AppBar>
+          <TabPanel value={value} index={0}>
+            <LicenseInfo value={value} setValue={setValue} />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <UserInfo value={value} setValue={setValue} />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <CompanyInfo setOpen={setOpen} />
+          </TabPanel>
+        </div>
       </Dialog>
-
       <Paper>
         <TableToolbar
           data={data}
@@ -444,13 +596,11 @@ const ClientTable = (props) => {
                         justify="space-between"
                       >
                         <Grid Item>
-                          <Icon src={"./static/img/note.png"} />
+                          <ActionIcon src={"./static/img/circle.png"} />
                         </Grid>
                         <Grid Item>
-                          <Icon
-                            onClick={() => {
-                              handleOpen(row);
-                            }}
+                          <ActionIcon
+                            onClick={() => handleOpen(row.licenseId)}
                             src={"./static/img/Edit.png"}
                           />
                         </Grid>
@@ -475,4 +625,4 @@ const ClientTable = (props) => {
   );
 };
 
-export default ClientTable;
+export default LicenseTable;

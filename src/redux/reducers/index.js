@@ -7,6 +7,8 @@ import messageReducer from "./messageReducer";
 import uiReducer from "./uiReducer";
 import reportReducer from "./reportReducer";
 import dashboardReducer from "./dashboardReducer";
+import clientReducer from "./clientReducer";
+import licenseReducer from "./licenseReducer";
 
 const reducers = (history) =>
   combineReducers({
@@ -17,6 +19,8 @@ const reducers = (history) =>
     uiReducer,
     reportReducer,
     dashboardReducer,
+    clientReducer,
+    licenseReducer,
   });
 
 export default reducers;

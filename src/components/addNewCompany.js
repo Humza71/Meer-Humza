@@ -4,7 +4,8 @@ import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import styled from "styled-components/macro";
 import { makeStyles } from "@material-ui/core/styles";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { createCompany, LoadingStates } from "redux/reducers/clientReducer";
 // import { useHistory } from "react-router";
 // import queryString from "query-string";
 // import { Alert as MuiAlert } from "@material-ui/lab";
@@ -14,7 +15,7 @@ import {
   Box,
   Card as MuiCard,
   CardContent,
-  // CircularProgress,
+  CircularProgress,
   Grid,
   // InputAdornment,
   TextField as MuiTextField,
@@ -31,6 +32,7 @@ const Button = styled(MuiButton)`
 `;
 const FormWrapper = styled.div`
   background-color: #e5e5e5;
+  height: ${({ height }) => height};
 `;
 const Card = styled(MuiCard)(spacing);
 // const Alert = styled(MuiAlert)(spacing);
@@ -42,7 +44,7 @@ const TextField = styled(MuiTextField)`
 const Typography = styled(MuiTypography)(spacing);
 
 const OutCard = styled(Card)`
-  width: 500px;
+  width: 530px;
   margin: 0px auto;
 `;
 
@@ -72,12 +74,12 @@ const useStyles = makeStyles((theme) => ({
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
   email: Yup.string().required("Required"),
-  phone: Yup.date().required("Required"),
-  address_1: Yup.date().required("Required"),
-  address_2: Yup.string().required("Required"),
+  phoneNumber: Yup.string().required("Required"),
+  addressOne: Yup.string().required("Required"),
+  addressTwo: Yup.string().required("Required"),
   city: Yup.string().required("Required"),
   state: Yup.string().required("Required"),
-  zip: Yup.string().required("Required"),
+  zipCode: Yup.string().required("Required"),
 });
 
 const InnerForm = (props) => {
@@ -87,201 +89,268 @@ const InnerForm = (props) => {
     errors,
     handleBlur,
     handleChange,
-    // setFieldValue,
+    setFieldValue,
     // isSubmitting,
     touched,
     values,
     // status,
+    editCompany = false,
   } = props;
 
+  const reportLoading = useSelector((state) => state.clientReducer.loading);
+
   return (
-    <FormWrapper>
-      <OutCard mb={0}>
-        <CardContent>
-          <Typography variant="h5" color="action" gutterBottom>
-            Add New Company
-          </Typography>
-          <Box>
-            <Box mt={6} mb={3}>
-              <Typography variant="subtitle2" color="primary" mb={1}>
-                Company Information
+    <>
+      {reportLoading === LoadingStates.COMPANY_CREATION_LOADING ? (
+        <Box display="flex" justifyContent="center" my={6}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <FormWrapper height={editCompany === true ? "433px" : "660px"}>
+          <OutCard mb={0}>
+            <CardContent>
+              <Typography variant="h5" color="action" gutterBottom>
+                {editCompany
+                  ? "View or Edit Company Information"
+                  : "Add New Company"}
               </Typography>
-              <Grid container spacing={12}>
-                <TextField
-                  name="name"
-                  placeholder="Company name"
-                  // label="First Name"
-                  value={values.name}
-                  error={Boolean(touched.name && errors.name)}
-                  fullWidth
-                  helperText={touched.name && errors.name}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  variant="outlined"
-                  my={2}
-                />
-              </Grid>
-            </Box>
-            <Box mb={3}>
-              <Grid container spacing={12} justify="space-between">
-                <Grid item md={5.9}>
-                  <TextField
-                    name="email"
-                    placeholder="Company email address"
-                    // label="Last Name"
-                    value={values.email}
-                    error={Boolean(touched.email && errors.email)}
-                    fullWidth
-                    helperText={touched.email && errors.email}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
+              <Box>
+                <Box mt={6} mb={3}>
+                  <Typography variant="subtitle2" color="primary" mb={1}>
+                    Company Information
+                  </Typography>
+                  <Grid container spacing={12}>
+                    <TextField
+                      name="name"
+                      placeholder="Company name"
+                      // label="First Name"
+                      value={values.name}
+                      error={Boolean(touched.name && errors.name)}
+                      fullWidth
+                      helperText={touched.name && errors.name}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      variant="outlined"
+                      my={2}
+                    />
+                  </Grid>
+                </Box>
+                <Box mb={3}>
+                  <Grid container spacing={12} justify="space-between">
+                    <Grid item md={5.9}>
+                      <TextField
+                        name="email"
+                        placeholder="Company email address"
+                        // label="Last Name"
+                        value={values.email}
+                        error={Boolean(touched.email && errors.email)}
+                        fullWidth
+                        helperText={touched.email && errors.email}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        variant="outlined"
+                        my={2}
+                      />
+                    </Grid>
+                    <Grid item md={6}>
+                      <TextField
+                        name="phoneNumber"
+                        placeholder="Company phone number"
+                        // label="Last Name"
+                        value={values.phoneNumber}
+                        error={Boolean(
+                          touched.phoneNumber && errors.phoneNumber
+                        )}
+                        fullWidth
+                        helperText={touched.phoneNumber && errors.phoneNumber}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        variant="outlined"
+                        my={2}
+                      />
+                    </Grid>
+                  </Grid>
+                </Box>
+                <Box mb={3}>
+                  <Grid container spacing={12}>
+                    <TextField
+                      name="addressOne"
+                      placeholder="Address line 1"
+                      // label="First Name"
+                      value={values.addressOne}
+                      error={Boolean(touched.addressOne && errors.addressOne)}
+                      fullWidth
+                      helperText={touched.addressOne && errors.addressOne}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      variant="outlined"
+                      my={2}
+                    />
+                  </Grid>
+                </Box>
+                <Box mb={3}>
+                  <Grid container spacing={12}>
+                    <TextField
+                      name="addressTwo"
+                      placeholder="Address line 2"
+                      // label="First Name"
+                      value={values.addressTwo}
+                      error={Boolean(touched.addressTwo && errors.addressTwo)}
+                      fullWidth
+                      helperText={touched.addressTwo && errors.addressTwo}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      variant="outlined"
+                      my={2}
+                    />
+                  </Grid>
+                </Box>
+                <Box mb={3}>
+                  <Grid container spacing={12}>
+                    <TextField
+                      name="city"
+                      placeholder="City"
+                      // label="First Name"
+                      value={values.city}
+                      error={Boolean(touched.city && errors.city)}
+                      fullWidth
+                      helperText={touched.city && errors.city}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      variant="outlined"
+                      my={2}
+                    />
+                  </Grid>
+                </Box>
+                <Box mb={4}>
+                  <Grid container spacing={12} justify="space-between">
+                    <Grid item md={5.9}>
+                      <TextField
+                        name="state"
+                        placeholder="State"
+                        // label="Last Name"
+                        value={values.state}
+                        error={Boolean(touched.state && errors.state)}
+                        fullWidth
+                        helperText={touched.state && errors.state}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        variant="outlined"
+                        my={2}
+                      />
+                    </Grid>
+                    <Grid item md={6}>
+                      <TextField
+                        name="zipCode"
+                        placeholder="ZIP code"
+                        // label="Last Name"
+                        value={values.zipCode}
+                        error={Boolean(touched.zipCode && errors.zipCode)}
+                        fullWidth
+                        helperText={touched.zipCode && errors.zipCode}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        variant="outlined"
+                        my={2}
+                      />
+                    </Grid>
+                  </Grid>
+                </Box>
+                <Box mb={4}>
+                  <Grid container spacing={12}>
+                    <TextField
+                      name="licensesNo"
+                      placeholder="Number of Licenses"
+                      type="number"
+                      // label="Last Name"
+                      value={values.licensesNo}
+                      error={Boolean(touched.licensesNo && errors.licensesNo)}
+                      fullWidth
+                      helperText={touched.licensesNo && errors.licensesNo}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      variant="outlined"
+                      my={2}
+                    />
+                  </Grid>
+                </Box>
+                <Box mb={4}>
+                  <Grid container spacing={12}>
+                    <Button
+                      className={classes.root}
+                      variant="contained"
+                      component="label"
+                    >
+                      Upload Image
+                      <input
+                        // value={values.image}
+                        type="file"
+                        hidden
+                        onChange={(e) => {
+                          setFieldValue(`image`, e.target.files[0]);
+                        }}
+                      />
+                    </Button>
+                  </Grid>
+                </Box>
+                <Box>
+                  <Button
+                    className={classes.root}
+                    type="submit"
+                    color="primary"
                     variant="outlined"
-                    my={2}
-                  />
-                </Grid>
-                <Grid item md={6}>
-                  <TextField
-                    name="phone"
-                    placeholder="Company phone number"
-                    // label="Last Name"
-                    value={values.phone}
-                    error={Boolean(touched.phone && errors.phone)}
-                    fullWidth
-                    helperText={touched.phone && errors.phone}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    variant="outlined"
-                    my={2}
-                  />
-                </Grid>
-              </Grid>
-            </Box>
-            <Box mb={3}>
-              <Grid container spacing={12}>
-                <TextField
-                  name="address_1"
-                  placeholder="Address line 1"
-                  // label="First Name"
-                  value={values.address_1}
-                  error={Boolean(touched.address_1 && errors.address_1)}
-                  fullWidth
-                  helperText={touched.address_1 && errors.address_1}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  variant="outlined"
-                  my={2}
-                />
-              </Grid>
-            </Box>
-            <Box mb={3}>
-              <Grid container spacing={12}>
-                <TextField
-                  name="address_2"
-                  placeholder="Address line 2"
-                  // label="First Name"
-                  value={values.address_2}
-                  error={Boolean(touched.address_2 && errors.address_2)}
-                  fullWidth
-                  helperText={touched.address_2 && errors.address_2}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  variant="outlined"
-                  my={2}
-                />
-              </Grid>
-            </Box>
-            <Box mb={3}>
-              <Grid container spacing={12}>
-                <TextField
-                  name="city"
-                  placeholder="City"
-                  // label="First Name"
-                  value={values.city}
-                  error={Boolean(touched.city && errors.city)}
-                  fullWidth
-                  helperText={touched.city && errors.city}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  variant="outlined"
-                  my={2}
-                />
-              </Grid>
-            </Box>
-            <Box mb={4}>
-              <Grid container spacing={12} justify="space-between">
-                <Grid item md={5.9}>
-                  <TextField
-                    name="state"
-                    placeholder="State"
-                    // label="Last Name"
-                    value={values.state}
-                    error={Boolean(touched.state && errors.state)}
-                    fullWidth
-                    helperText={touched.state && errors.state}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    variant="outlined"
-                    my={2}
-                  />
-                </Grid>
-                <Grid item md={6}>
-                  <TextField
-                    name="zip"
-                    placeholder="ZIP code"
-                    // label="Last Name"
-                    value={values.zip}
-                    error={Boolean(touched.zip && errors.zip)}
-                    fullWidth
-                    helperText={touched.zip && errors.zip}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    variant="outlined"
-                    my={2}
-                  />
-                </Grid>
-              </Grid>
-            </Box>
-            <Box>
-              <Button
-                className={classes.root}
-                type="submit"
-                color="primary"
-                variant="outlined"
-              >
-                Save
-              </Button>
-            </Box>
-          </Box>
-        </CardContent>
-      </OutCard>
-    </FormWrapper>
+                  >
+                    {editCompany ? "Save Changes" : "Save"}
+                  </Button>
+                </Box>
+              </Box>
+            </CardContent>
+          </OutCard>
+        </FormWrapper>
+      )}
+    </>
   );
 };
 
-const CompanyForm = (props) => {
-  const companyInfo = useSelector((state) => {
-    return state.reportReducer.newReport;
-  });
-
-  //   const dispatch = useDispatch();
+const CompanyForm = ({ editCompany = {} }) => {
+  const dispatch = useDispatch();
   //   const history = useHistory();
   //   const { match = {} } = props || {};
   //   const { params = {} } = match;
   //   const { id } = params;
 
+  const companyInfo = useSelector((state) => state.clientReducer.clinic);
+
   const initialValues = {
     name: companyInfo.name ? companyInfo.name : "",
     email: companyInfo.email ? companyInfo.email : "",
-    phone: companyInfo.phone ? companyInfo.phone : "",
-    address_1: companyInfo.address_1 ? companyInfo.address_1 : "",
-    address_2: companyInfo.address_2 ? companyInfo.address_2 : "",
+    phoneNumber: companyInfo.phoneNumber ? companyInfo.phoneNumber : "",
+    addressOne: companyInfo.addresses ? companyInfo.addresses.addressOne : "",
+    addressTwo: companyInfo.addresses ? companyInfo.addresses.addressTwo : "",
     city: companyInfo.city ? companyInfo.city : "",
     state: companyInfo.state ? companyInfo.state : "",
-    zip: companyInfo.zip ? companyInfo.zip : "",
+    zipCode: companyInfo.zipCode ? companyInfo.zipCode : "",
+    noOfLicenses: companyInfo.noOfLicenses ? companyInfo.noOfLicenses : "",
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e, values) => {
     e.preventDefault();
+    dispatch(
+      createCompany({
+        name: values.name,
+        email: values.email,
+        phoneNumber: values.phoneNumber,
+        city: values.city,
+        state: values.state,
+        zipCode: values.zipCode,
+        addresses: {
+          addressOne: values.addressOne,
+          addressTwo: values.addressTwo,
+        },
+        noOfLicenses: values.noOfLicenses,
+        image: values.image,
+      })
+    );
   };
 
   return (
@@ -298,7 +367,7 @@ const CompanyForm = (props) => {
       >
         {(formProps) => (
           <Form onSubmit={(e) => handleSubmit(e, formProps.values)}>
-            <InnerForm {...formProps} />
+            <InnerForm {...formProps} editCompany={editCompany} />
           </Form>
         )}
       </Formik>

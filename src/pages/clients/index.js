@@ -12,6 +12,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { spacing } from "@material-ui/system";
 import ClientTable from "./clientTable";
 import { useHistory } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllClinic } from "redux/reducers/clientReducer";
 
 const Button = styled(MuiButton)`
   .MuiButton-root {
@@ -31,10 +33,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Grid = styled(MuiGrid)(spacing);
-
-function createData(name, email, phone, license) {
-  return { name, email, phone, license };
-}
 
 export const headCells = [
   {
@@ -69,12 +67,12 @@ export const headCells = [
   },
 ];
 
-const myData = [
-  createData("Techverx", "Techverx12@gmail.com", "+923033445678", "1"),
-  createData("Nestle", "Techverx22@gmail.com", "+923034543478", "2"),
-  createData("Fruita", "Techverx45@gmail.com", "+923034545645", "3"),
-  createData("Lik", "Techverx56@gmail.com", "+923034545458", "4"),
-];
+// const myData = [
+//   createData("Techverx", "Techverx12@gmail.com", "+923033445678", "1"),
+//   createData("Nestle", "Techverx22@gmail.com", "+923034543478", "2"),
+//   createData("Fruita", "Techverx45@gmail.com", "+923034545645", "3"),
+//   createData("Lik", "Techverx56@gmail.com", "+923034545458", "4"),
+// ];
 
 const ClientReportHeader = () => {
   const classes = useStyles();
@@ -114,6 +112,34 @@ const ClientReportHeader = () => {
 };
 
 const AdvancedTable = () => {
+  const dispatch = useDispatch();
+  const allClinics = useSelector((state) => state.clientReducer.allClinics);
+
+  React.useEffect(() => {
+    dispatch(getAllClinic());
+  }, [dispatch]);
+
+  const myData = allClinics.map(
+    ({
+      email,
+      addresses,
+      city,
+      created_at,
+      name,
+      phoneNumber,
+      state,
+      updated_at,
+      zipCode,
+      _id,
+    }) => ({
+      name,
+      email,
+      phone: phoneNumber,
+      license: "in process",
+      id: _id,
+    })
+  );
+
   return (
     <Box p={12}>
       <Helmet title="Dashboard" />

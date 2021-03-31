@@ -30,6 +30,11 @@ import {
   MenuItem,
   Typography as MuiTypography,
   TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@material-ui/core";
 import {
   ToggleButton,
@@ -394,45 +399,32 @@ const ReportTable = (props) => {
   // const id = open ? "simple-popover" : undefined;
 
   const Actions = ({ id, status }) => {
-    function rand() {
-      return Math.round(Math.random() * 20) - 10;
-    }
-
-    function getModalStyle() {
-      const top = 50 + rand();
-      const left = 50 + rand();
-
-      return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-      };
-    }
-
-    const useStyles = makeStyles((theme) => ({
-      paper: {
-        position: "absolute",
-        width: 400,
-        backgroundColor: theme.palette.background.paper,
-        border: "2px solid #000",
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-      },
-    }));
-    const classes = useStyles();
     // getModalStyle is not a pure function, we roll the style only on the first render
-    const [modalStyle] = React.useState(getModalStyle);
+    // const [modalStyle] = React.useState(getModalStyle);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [open, setOpen] = React.useState(false);
     const [myReportId, setMyReportId] = React.useState("");
-    // const [reportId, setReportId] = React.useState("");
+    // function getModalStyle() {
+    //   const top = 50;
+    //   const left = 50;
+    //   return {
+    //     top: `${top}%`,
+    //     left: `${left}%`,
+    //     transform: `translate(-${top}%, -${left}%)`,
+    //   };
+    // }
 
-    // const deleteSuccess = () => {
-    //   // <Alert severity="success">
-    //   //   <AlertTitle>Success</AlertTitle>
-    //   //   Report deleted successfully
-    //   // </Alert>;
-    // };
+    // const useStyles = makeStyles((theme) => ({
+    //   paper: {
+    //     position: "absolute",
+    //     width: 400,
+    //     backgroundColor: theme.palette.background.paper,
+    //     border: "2px solid #000",
+    //     boxShadow: theme.shadows[5],
+    //     padding: theme.spacing(2, 4, 3),
+    //   },
+    // }));
+    // const classes = useStyles();
 
     const handleOpen = (id) => {
       setOpen(true);
@@ -456,27 +448,56 @@ const ReportTable = (props) => {
     };
 
     const body = (
-      <div style={modalStyle} className={classes.paper}>
-        <h2 id="simple-modal-title">Confirmation</h2>
-        <p id="simple-modal-description">
-          Are you sure you want to delete this report
-        </p>
-        <Box>
-          <Grid container justifyContent="space-between" spacing={6}>
-            <Grid Item md={2}>
-              <button onClick={() => dispatch(deleteReportById(myReportId))}>
-                Yes
-              </button>
-            </Grid>
-
-            <Grid Item md={2}>
-              <button onClick={handleCloseDialogue}>No</button>
-            </Grid>
-          </Grid>
-        </Box>
-      </div>
+      <Dialog
+        open={open}
+        onClose={handleCloseDialogue}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Confirm Delete Report"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this report?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialogue} color="action">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => dispatch(deleteReportById(myReportId))}
+            color="primary"
+            autoFocus
+          >
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
+    // <div style={modalStyle} className={classes.paper}>
+    //   <h2 id="simple-modal-title">Confirmation</h2>
+    //   <p id="simple-modal-description">
+    //     Are you sure you want to delete this report
+    //   </p>
+    //   <Box>
+    //     <Grid container justifyContent="space-between" spacing={6}>
+    //       <Grid Item md={2}>
+    //         <button
+    //           color="primary"
+    //           onClick={() => dispatch(deleteReportById(myReportId))}
+    //         >
+    //           Yes
+    //         </button>
+    //       </Grid>
 
+    //       <Grid Item md={2}>
+    //         <button onClick={handleCloseDialogue}>No</button>
+    //       </Grid>
+    //     </Grid>
+    //   </Box>
+    // </div>
     return (
       <>
         <Modal
