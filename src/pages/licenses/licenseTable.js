@@ -47,10 +47,7 @@ import LicenseInfo from "./licenseInfo";
 import UserInfo from "./userInfo";
 import CompanyInfo from "./companyInfo";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  clearLicenseData,
-  getLicenseById,
-} from "redux/reducers/licenseReducer";
+import { clearLicense, getLicenseById } from "redux/reducers/licenseReducer";
 // import CompanyForm from "components/addNewCompany";
 
 const Paper = styled(MuiPaper)(spacing);
@@ -396,7 +393,7 @@ const LicenseTable = (props) => {
         Object.keys(licenseInfo).length !== 0 ||
         Object.keys(userInfo).length !== 0
       ) {
-        dispatch(clearLicenseData());
+        dispatch(clearLicense());
       }
     }
   }, [open, dispatch, openModal, setOpenModal, licenseInfo, userInfo]);
@@ -541,7 +538,7 @@ const LicenseTable = (props) => {
             <UserInfo value={value} setValue={setValue} />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <CompanyInfo setOpen={setOpen} />
+            <CompanyInfo setOpen={setOpen} value={value} setValue={setValue} />
           </TabPanel>
         </div>
       </Dialog>

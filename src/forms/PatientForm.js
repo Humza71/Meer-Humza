@@ -3,6 +3,7 @@ import "date-fns";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import styled from "styled-components/macro";
+// import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 // import queryString from "query-string";
@@ -71,6 +72,8 @@ const KeyboardDatePicker = styled(MuiKeyboardDatePicker)`
     color: black;
     line-height: 25px;
     margin-top: -10px;
+
+    // font-family: password-mask;
   }
 `;
 
@@ -86,6 +89,12 @@ const DateField = styled(TextField)`
     margin-top: -10px;
   }
 `;
+
+// const useStyles = makeStyles((theme) => ({
+//   input: {
+//     WebkitTextSecurity: "disc",
+//   },
+// }));
 
 // const ToggleButtonGroup = styled(MuiToggleButtonGroup)`
 //   width: 100%;
@@ -119,6 +128,7 @@ const validationSchema = Yup.object().shape({
 
 const InnerForm = (props) => {
   const dispatch = useDispatch();
+  // const classes = useStyles();
   const {
     errors,
     handleBlur,
@@ -269,9 +279,9 @@ const InnerForm = (props) => {
                 <Grid container spacing={6}>
                   <Grid item md={6}>
                     <TextField
+                      type="password"
                       inputProps={{ maxLength: 4 }}
                       placeholder="****"
-                      type="password"
                       name="ssn"
                       label="SSN"
                       value={values["ssn"]}
@@ -279,7 +289,15 @@ const InnerForm = (props) => {
                       fullWidth
                       helperText={touched.ssn && errors.ssn}
                       onBlur={handleBlur}
-                      onChange={handleChange}
+                      onChange={(e) => {
+                        const regex = new RegExp("^[0-9]+$");
+                        if (e.target.value === "") {
+                          setFieldValue("ssn", "");
+                        }
+                        if (regex.test(e.target.value)) {
+                          return setFieldValue("ssn", e.target.value);
+                        }
+                      }}
                       variant="outlined"
                       my={2}
                       InputProps={{

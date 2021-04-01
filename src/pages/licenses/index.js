@@ -120,7 +120,6 @@ const SimpleTableDemo = ({ setOpenModal }) => {
   // const history = useHistory();
 
   const addNewLicense = () => {
-    // history.push("/licenses/new");
     setOpenModal(true);
   };
 
@@ -179,23 +178,23 @@ const SimpleTable = () => {
 
   React.useEffect(() => {
     dispatch(getLicenses());
-    dispatch(getClinic(user.clinicId));
-  }, [dispatch, user.clinicId]);
-  {
-    return (
-      <Box p={12}>
-        <Helmet title="Dashboard" />
-        <SimpleTableDemo setOpenModal={setOpenModal} />
-        <LicenseTable
-          myData={myData}
-          data={myData}
-          columns={headCells}
-          openModal={openModal}
-          setOpenModal={setOpenModal}
-        />
-      </Box>
-    );
-  }
+    const { clinicId = "" } = user || {};
+    dispatch(getClinic(clinicId));
+  }, [dispatch, user]);
+
+  return (
+    <Box p={12}>
+      <Helmet title="Dashboard" />
+      <SimpleTableDemo setOpenModal={setOpenModal} />
+      <LicenseTable
+        myData={myData}
+        data={myData}
+        columns={headCells}
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+      />
+    </Box>
+  );
 };
 
 export default SimpleTable;

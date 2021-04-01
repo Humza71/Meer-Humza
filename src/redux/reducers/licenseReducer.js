@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addLicense, getLicense, getAllLicense } from "services/licenseService";
+import {
+  addLicense,
+  getLicense,
+  getAllLicense,
+  updateLicense,
+} from "services/licenseService";
 
 export const LoadingStates = {
   LICENSE_CREATION_LOADING: "Create License Loading",
@@ -9,7 +14,7 @@ const initialState = {
   allLicenses: [],
   license: {},
   userInfo: {},
-  companyInfo: {},
+  // companyInfo: {},
   // singleLicense: {},
 };
 
@@ -29,13 +34,13 @@ export const slice = createSlice({
     setLicense: (state, action) => {
       state.license = action.payload;
     },
-    setCompany: (state, action) => {
-      state.companyInfo = action.payload;
-    },
+    // setCompany: (state, action) => {
+    //   state.companyInfo = action.payload;
+    // },
     clearLicense: (state, action) => {
       state.userInfo = initialState.userInfo;
       state.license = initialState.license;
-      state.companyInfo = initialState.companyInfo;
+      // state.companyInfo = initialState.companyInfo;
     },
   },
 });
@@ -55,11 +60,26 @@ export const createLicense = (values, onSubmitForm) => async (dispatch) => {
   try {
     const response = await addLicense(values);
     if (response.status === 200) {
+      dispatch(getLicenses());
       dispatch(clearLicense());
       console.log("License Added Successfully");
     }
   } catch (error) {}
   dispatch(setLoading(null));
+};
+
+export const editLicense = (values, onSubmitForm, id) => async (dispatch) => {
+  // dispatch(setLoading(LoadingStates.LICENSE_CREATION_LOADING));
+  onSubmitForm();
+  try {
+    const response = await updateLicense(values, id);
+    if (response.status === 200) {
+      dispatch(clearLicense());
+      dispatch(getLicenses());
+      console.log("License Edited Successfully");
+    }
+  } catch (error) {}
+  // dispatch(setLoading(null));
 };
 
 export const getLicenses = () => async (dispatch) => {
@@ -91,7 +111,7 @@ export const getLicenseById = (id) => async (dispatch) => {
       dispatch(setCompany(response.data.licenseInfo.company));
     }
   } catch (error) {
-    console.log(error, "Erororroor");
+    console.log(error, "Error");
   }
   dispatch(setLoading(null));
 };
@@ -106,18 +126,15 @@ export const userData = (data, dataSubmitted) => async (dispatch) => {
   //   dispatch(setLoading(null));
 };
 export const licenseData = (values, dataSubmitted) => async (dispatch) => {
+  const data = {
+    ...values,
+    user: {
+      email: values.userEmail,
+    },
+  };
   try {
-    dispatch(setLicense(values));
+    dispatch(setLicense(data));
     dataSubmitted();
-  } catch (error) {
-    console.log(error, "Error");
-  }
-  //   dispatch(setLoading(null));
-};
-
-export const clearLicenseData = () => async (dispatch) => {
-  try {
-    dispatch(clearLicense());
   } catch (error) {
     console.log(error, "Error");
   }

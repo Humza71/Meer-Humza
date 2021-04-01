@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addCompany, getAllCompany, getCompany } from "services/clientService";
+import {
+  addCompany,
+  getAllCompany,
+  getCompany,
+  updateCompany,
+} from "services/clientService";
 
 export const LoadingStates = {
   COMPANY_CREATION_LOADING: "Create Company Loading",
@@ -36,15 +41,32 @@ export const {
   clearClinic,
 } = slice.actions;
 
-export const createCompany = (values) => async (dispatch) => {
+export const createCompany = (values, onCreationCompany) => async (
+  dispatch
+) => {
   dispatch(setLoading(LoadingStates.COMPANY_CREATION_LOADING));
   try {
     const response = await addCompany(values);
     if (response.status === 200) {
+      onCreationCompany();
       console.log("Company Added Successfully");
     }
   } catch (error) {}
   dispatch(setLoading(null));
+};
+
+export const editCompanyById = (values, onSubmitForm) => async (dispatch) => {
+  // dispatch(setLoading(LoadingStates.COMPANY_CREATION_LOADING));
+  try {
+    const response = await updateCompany(values);
+    if (response.status === 200) {
+      dispatch(getAllClinic());
+      dispatch(clearClinic());
+      onSubmitForm();
+      console.log("Company Edit Successfully");
+    }
+  } catch (error) {}
+  // dispatch(setLoading(null));
 };
 
 export const getAllClinic = () => async (dispatch) => {

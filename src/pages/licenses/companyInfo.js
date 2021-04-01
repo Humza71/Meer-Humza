@@ -5,7 +5,7 @@ import { Formik, Form } from "formik";
 import styled from "styled-components/macro";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
-import { createLicense } from "redux/reducers/licenseReducer";
+import { createLicense, editLicense } from "redux/reducers/licenseReducer";
 // import { useHistory } from "react-router";
 // import queryString from "query-string";
 // import { Alert as MuiAlert } from "@material-ui/lab";
@@ -302,25 +302,46 @@ const CompanyInfo = (props) => {
 
   const onSubmitForm = () => {
     props.setOpen(false);
+    props.setValue(props.value + 1);
   };
 
-  const handleSubmit = (e, values) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      createLicense(
-        {
-          clinicId: userClinic.clinicId,
-          license: {
-            ...licenseInfo,
+
+    if (licenseInfo.licenseId === "") {
+      dispatch(
+        createLicense(
+          {
+            clinicId: userClinic.clinicId,
+            license: {
+              ...licenseInfo,
+            },
+            user: {
+              ...userInfo,
+              email: licenseInfo.user.email,
+            },
           },
-          user: {
-            ...userInfo,
-            email: licenseInfo.userEmail,
+          onSubmitForm
+        )
+      );
+    } else {
+      dispatch(
+        editLicense(
+          {
+            clinicId: userClinic.clinicId,
+            license: {
+              ...licenseInfo,
+            },
+            user: {
+              ...userInfo,
+              email: licenseInfo.user.email,
+            },
           },
-        },
-        onSubmitForm
-      )
-    );
+          onSubmitForm,
+          licenseInfo.licenseId
+        )
+      );
+    }
   };
 
   // React.useEffect(() => {

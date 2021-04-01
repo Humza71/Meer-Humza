@@ -1,7 +1,24 @@
 import { postUtil, getUtil } from "../utils/apiService";
+
 export function addCompany(payload) {
   return new Promise((resolve, reject) => {
     postUtil("/api/clinic/add", payload)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function updateCompany(payload) {
+  const { id = "" } = payload || {};
+  return new Promise((resolve, reject) => {
+    postUtil(`/api/update/clinic/${id}`, payload)
       .then((response) => {
         if (response.status === 200) {
           resolve(response);

@@ -14,6 +14,21 @@ export function addLicense(payload) {
   });
 }
 
+export function updateLicense(payload, id) {
+  return new Promise((resolve, reject) => {
+    postUtil(`/api/update/license/${id}`, payload)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
 export function getAllLicense() {
   return new Promise((resolve, reject) => {
     getUtil("/api/get/licenses")

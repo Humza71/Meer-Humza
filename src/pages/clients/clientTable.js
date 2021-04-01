@@ -80,9 +80,7 @@ const SmallAdvancedSelect = styled(AdvancedSelect)`
 `;
 
 const Icon = styled.img`
-  // padding-left: 5px;
-  // padding-right: 4px;
-  // margin-left: 0spx;
+  cursor: pointer;
   width: 20px;
 `;
 
@@ -248,7 +246,7 @@ const ClientTable = (props) => {
   const [searchString, setSearchString] = React.useState("");
   const [open, setOpen] = React.useState(false);
   // const [modalStyle] = React.useState(getModalStyle);
-  const [rowRecord, setRowRecord] = React.useState({});
+  // const [rowRecord, setRowRecord] = React.useState({});
 
   const [filteredColumns, setFilteredColumns] = React.useState(
     columns.filter((item) => item.id !== "actions").map((item) => item.label)
@@ -290,13 +288,12 @@ const ClientTable = (props) => {
   const handleOpen = (row) => {
     setOpen(true);
     dispatch(getCompanyById(row.id));
-    setRowRecord(row);
   };
 
   const handleCloseDialogue = () => {
     setOpen(false);
     dispatch(clearClinic());
-    setRowRecord({});
+
     // setMyReportId("");
     // setOpen(false);
   };
@@ -390,7 +387,7 @@ const ClientTable = (props) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <CompanyForm editCompany={true} companyInfo={rowRecord} />
+        <CompanyForm setOpen={setOpen} editCompany={true} />
       </Dialog>
 
       <Paper>

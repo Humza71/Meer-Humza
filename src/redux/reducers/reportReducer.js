@@ -83,7 +83,7 @@ export const slice = createSlice({
       state.providers = action.payload;
     },
     addItemToProviders: (state, action) => {
-      // state.providers.push({ name: action.payload });
+      state.providers.push({ name: action.payload });
     },
     setTechnicians: (state, action) => {
       state.technicians = action.payload;

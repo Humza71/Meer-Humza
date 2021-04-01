@@ -130,12 +130,13 @@ const AdvancedTable = () => {
       state,
       updated_at,
       zipCode,
+      noOfLicenses,
       _id,
     }) => ({
       name,
       email,
       phone: phoneNumber,
-      license: "in process",
+      license: noOfLicenses,
       id: _id,
     })
   );
