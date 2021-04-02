@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components/macro";
 import { NavLink, withRouter } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { darken } from "polished";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "../vendor/perfect-scrollbar.css";
@@ -147,6 +148,7 @@ const SidebarCategory = ({ name, icon, badge, navExpand, ...rest }) => {
 };
 
 const Sidebar = ({ staticContext, location, navExpand, ...rest }) => {
+  const user = useSelector((state) => state.authReducer.user) || {};
   return (
     <Drawer variant="permanent" {...rest}>
       <Brand component={NavLink} to="/" button>
@@ -156,23 +158,26 @@ const Sidebar = ({ staticContext, location, navExpand, ...rest }) => {
       <Scrollbar>
         <List>
           <Items>
-            {routes.map((category, index) => (
-              <React.Fragment key={index}>
-                {category.icon ? (
-                  <SidebarCategory
-                    name={category.id}
-                    to={category.path}
-                    activeClassName="active"
-                    component={NavLink}
-                    icon={category.icon}
-                    navExpand={navExpand}
-                    exact
-                    button
-                    badge={category.badge}
-                  />
-                ) : null}
-              </React.Fragment>
-            ))}
+            {routes.map(
+              (category, index) =>
+                category.role.some((name) => user.role === name) && (
+                  <React.Fragment key={index}>
+                    {category.icon ? (
+                      <SidebarCategory
+                        name={category.id}
+                        to={category.path}
+                        activeClassName="active"
+                        component={NavLink}
+                        icon={category.icon}
+                        navExpand={navExpand}
+                        exact
+                        button
+                        badge={category.badge}
+                      />
+                    ) : null}
+                  </React.Fragment>
+                )
+            )}
           </Items>
         </List>
       </Scrollbar>

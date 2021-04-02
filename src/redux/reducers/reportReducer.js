@@ -83,13 +83,13 @@ export const slice = createSlice({
       state.providers = action.payload;
     },
     addItemToProviders: (state, action) => {
-      // state.providers.push({ name: action.payload });
+      state.providers.push(action.payload);
     },
     setTechnicians: (state, action) => {
       state.technicians = action.payload;
     },
     addItemToTechnicians: (state, action) => {
-      state.technicians.push({ name: action.payload });
+      state.technicians.push(action.payload);
     },
     setHistory: (state, action) => {
       if (action.payload.response) {
@@ -323,10 +323,11 @@ export const getAllTechnicians = () => async (dispatch) => {
 };
 
 export const addProvider = (newProvider, save) => async (dispatch) => {
-  dispatch(addItemToProviders(newProvider));
+  // dispatch(addItemToProviders(newProvider));
   try {
     const response = await saveProvider(newProvider);
     if (response) {
+      dispatch(addItemToProviders({ name: newProvider, id: response.data.id }));
       console.log("providerAddedSuccessfully");
     }
   } catch (error) {
@@ -336,11 +337,13 @@ export const addProvider = (newProvider, save) => async (dispatch) => {
 };
 
 export const addTechnician = (newTechnician, save) => async (dispatch) => {
-  dispatch(addItemToTechnicians(newTechnician));
+  // dispatch(addItemToTechnicians(newTechnician));
   try {
     const response = await saveTechnician(newTechnician);
     if (response) {
-      console.log("providerAddedSuccessfully");
+      dispatch(
+        addItemToTechnicians({ name: newTechnician, id: response.data.id })
+      );
     }
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));

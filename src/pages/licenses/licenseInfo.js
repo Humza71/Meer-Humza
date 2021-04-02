@@ -4,12 +4,9 @@ import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import styled from "styled-components/macro";
 import { makeStyles } from "@material-ui/core/styles";
+// import { spacing } from "@material-ui/system";
 import { useSelector, useDispatch } from "react-redux";
-import { licenseData } from "redux/reducers/licenseReducer";
-// import { useHistory } from "react-router";
-// import queryString from "query-string";
-// import { Alert as MuiAlert } from "@material-ui/lab";
-import { spacing } from "@material-ui/system";
+import { licenseData, LoadingStates } from "redux/reducers/licenseReducer";
 
 import {
   Box,
@@ -17,9 +14,13 @@ import {
   TextField as MuiTextField,
   Typography as MuiTypography,
   Button as MuiButton,
+  CircularProgress,
 } from "@material-ui/core";
 
-const Typography = styled(MuiTypography)(spacing);
+const Typography = styled(MuiTypography)`
+  color: #888888;
+  margin-bottom: 12px;
+`;
 const TextField = styled(MuiTextField)`
   .MuiOutlinedInput-root {
     height: 40px;
@@ -56,57 +57,71 @@ const InnerForm = (props) => {
     touched,
     values,
     // status,
+    editLicense = false,
   } = props;
   const classes = useStyles();
+  const licenseLoading = useSelector((state) => state.licenseReducer.loading);
 
   return (
-    <Box>
-      <Box mt={6} mb={3}>
-        <Typography variant="subtitle2" color="action" mb={1}></Typography>
-        <Grid container spacing={12}>
-          <TextField
-            name="userEmail"
-            placeholder="User email address"
-            // label="Email"
-            value={values.userEmail}
-            error={Boolean(touched.userEmail && errors.userEmail)}
-            fullWidth
-            helperText={touched.userEmail && errors.userEmail}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            variant="outlined"
-            my={2}
-          />
-        </Grid>
-      </Box>
-      <Box mt={6} mb={3}>
-        <Grid container spacing={12}>
-          <TextField
-            name="dateExpiry"
-            type="date"
-            // label="Expiry Date"
-            value={values.dateExpiry}
-            error={Boolean(touched.dateExpiry && errors.dateExpiry)}
-            fullWidth
-            helperText={touched.dateExpiry && errors.dateExpiry}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            variant="outlined"
-            my={2}
-          />
-        </Grid>
-      </Box>
-      <Box>
-        <Button
-          className={classes.root}
-          type="submit"
-          color="primary"
-          variant="outlined"
-        >
-          Save Changes
-        </Button>
-      </Box>
-    </Box>
+    <>
+      {licenseLoading === LoadingStates.LICENSE_CREATION_LOADING ? (
+        <Box display="flex" justifyContent="center" my={6}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box>
+          <Box mt={6} mb={3}>
+            <Typography variant="subtitle2" color="action">
+              License ID:{values.licenseId}
+            </Typography>
+            <Grid container spacing={12}>
+              <TextField
+                disabled={editLicense}
+                name="userEmail"
+                placeholder="User email address"
+                // label="Email"
+                value={values.userEmail}
+                error={Boolean(touched.userEmail && errors.userEmail)}
+                fullWidth
+                helperText={touched.userEmail && errors.userEmail}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                variant="outlined"
+                my={2}
+              />
+            </Grid>
+          </Box>
+          <Box mt={6} mb={3}>
+            <Grid container spacing={12}>
+              <TextField
+                name="dateExpiry"
+                type="date"
+                // label="Expiry Date"
+                value={values.dateExpiry}
+                error={Boolean(touched.dateExpiry && errors.dateExpiry)}
+                fullWidth
+                helperText={touched.dateExpiry && errors.dateExpiry}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                variant="outlined"
+                my={2}
+              />
+            </Grid>
+          </Box>
+          <Box>
+            <Button
+              className={classes.root}
+              type="submit"
+              color="primary"
+              variant="outlined"
+              size="large"
+            >
+              Next
+            </Button>
+          </Box>
+        </Box>
+      )}
+    </>
   );
 };
 
@@ -122,6 +137,7 @@ const LicenseInfo = (props) => {
       ? new Date(licenseInfo.dateExpiry).toISOString().slice(0, 10)
       : "",
     issueDate: licenseInfo.issueDate ? licenseInfo.issueDate : "",
+    licenseId: licenseInfo.id ? licenseInfo.id : "",
   };
 
   const dataSubmitted = () => {
@@ -153,7 +169,10 @@ const LicenseInfo = (props) => {
       >
         {(formProps) => (
           <Form onSubmit={(e) => handleSubmit(e, formProps.values)}>
-            <InnerForm {...formProps} />
+            <InnerForm
+              {...formProps}
+              editLicense={initialValues.licenseId !== "" && true}
+            />
           </Form>
         )}
       </Formik>

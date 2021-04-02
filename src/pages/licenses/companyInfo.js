@@ -5,7 +5,7 @@ import { Formik, Form } from "formik";
 import styled from "styled-components/macro";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
-import { createLicense } from "redux/reducers/licenseReducer";
+import { createLicense, editLicense } from "redux/reducers/licenseReducer";
 // import { useHistory } from "react-router";
 // import queryString from "query-string";
 // import { Alert as MuiAlert } from "@material-ui/lab";
@@ -279,9 +279,15 @@ const CompanyInfo = (props) => {
     return state.authReducer.user;
   });
 
+  const user = useSelector((state) => {
+    return state.authReducer.user;
+  });
+
   const companyInfo = useSelector((state) => {
     return state.authReducer.clinic;
   });
+  const clinicInfo = useSelector((state) => state.clientReducer.clinic);
+  // const clinicInfo = useSelector((state) => state.clientReducer.clinic);
 
   //   const dispatch = useDispatch();
   //   const history = useHistory();
@@ -299,28 +305,66 @@ const CompanyInfo = (props) => {
     state: companyInfo.state ? companyInfo.state : "",
     zipCode: companyInfo.zipCode ? companyInfo.zipCode : "",
   };
+  const adminInitialValues = {
+    name: clinicInfo.name ? clinicInfo.name : "",
+    email: clinicInfo.email ? clinicInfo.email : "",
+    phone: clinicInfo.phoneNumber ? clinicInfo.phoneNumber : "",
+    addressOne: clinicInfo.addresses ? clinicInfo.addresses.addressOne : "",
+    addressTwo: clinicInfo.addresses ? clinicInfo.addresses.addressTwo : "",
+    city: clinicInfo.city ? clinicInfo.city : "",
+    state: clinicInfo.state ? clinicInfo.state : "",
+    zipCode: clinicInfo.zipCode ? clinicInfo.zipCode : "",
+  };
 
   const onSubmitForm = () => {
     props.setOpen(false);
+    props.setValue(props.value + 1);
   };
 
-  const handleSubmit = (e, values) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      createLicense(
-        {
-          clinicId: userClinic.clinicId,
-          license: {
-            ...licenseInfo,
+
+    if (licenseInfo.licenseId === "") {
+      dispatch(
+        createLicense(
+          {
+            clinicId:
+              user.role === "super_admin"
+                ? clinicInfo._id
+                : userClinic.clinicId,
+            license: {
+              ...licenseInfo,
+            },
+            user: {
+              ...userInfo,
+              email: licenseInfo.user.email,
+            },
+            role: user.role,
           },
-          user: {
-            ...userInfo,
-            email: licenseInfo.userEmail,
+          onSubmitForm
+        )
+      );
+    } else {
+      dispatch(
+        editLicense(
+          {
+            clinicId:
+              user.role === "super_admin"
+                ? clinicInfo._id
+                : userClinic.clinicId,
+            license: {
+              ...licenseInfo,
+            },
+            user: {
+              ...userInfo,
+              email: licenseInfo.user.email,
+            },
           },
-        },
-        onSubmitForm
-      )
-    );
+          onSubmitForm,
+          licenseInfo.licenseId
+        )
+      );
+    }
   };
 
   // React.useEffect(() => {
@@ -333,7 +377,9 @@ const CompanyInfo = (props) => {
     <React.Fragment>
       <Formik
         enableReinitialize
-        initialValues={initialValues}
+        initialValues={
+          user.role === "super_admin" ? adminInitialValues : initialValues
+        }
         validationSchema={validationSchema}
         validate={(values) => {
           console.log(values);

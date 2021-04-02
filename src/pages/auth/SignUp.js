@@ -25,7 +25,7 @@ import {
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 
-import { signIn, signUp, getClinic } from "redux/reducers/authReducer";
+import { signIn, signUp, resolveToken } from "redux/reducers/authReducer";
 
 const Alert = styled(MuiAlert)(spacing);
 const TextField = styled(MuiTextField)(spacing);
@@ -63,13 +63,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignUp() {
+function SignUp({ match }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  const clinicId = useSelector((state) => state.authReducer.clinicId);
+  const { params } = match || {};
+  const { encodeString } = params || {};
+  // const clinicId = useSelector((state) => state.authReducer.clinicId);
   const [showPassword, setShowPassword] = React.useState(false);
-
+  const signUpInfo = useSelector((state) => {
+    return state.authReducer.signUpData;
+  });
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -78,9 +82,9 @@ function SignUp() {
   };
 
   useEffect(() => {
-    dispatch(getClinic());
-  }, [dispatch]);
-  console.log("id", clinicId);
+    dispatch(resolveToken(encodeString));
+  }, [dispatch, encodeString]);
+
   return (
     <Wrapper>
       <Helmet title="Sign Up" />
@@ -96,11 +100,14 @@ function SignUp() {
       </Typography>
 
       <Formik
+        enableReinitialize
         initialValues={{
-          name: "",
-          email: "",
-          password: "",
-          password_confirmation: "",
+          name: signUpInfo.name ? signUpInfo.name : "",
+          email: signUpInfo.email ? signUpInfo.email : "",
+          password: signUpInfo.password ? signUpInfo.password : "",
+          password_confirmation: signUpInfo.password ? signUpInfo.password : "",
+          clinicId: signUpInfo.clinicId ? signUpInfo.clinicId : "",
+          _id: signUpInfo._id ? signUpInfo._id : "",
           submit: false,
         }}
         validationSchema={Yup.object().shape({
@@ -125,12 +132,9 @@ function SignUp() {
           try {
             await dispatch(
               signUp({
+                id: values._id,
                 name: values.name,
-                company: "test",
-                email: values.email,
                 password: values.password,
-                confirm_password: values.password_confirmation,
-                clinicId: clinicId,
               })
             );
             await dispatch(
@@ -176,6 +180,7 @@ function SignUp() {
               my={3}
             />
             <TextField
+              disabled
               type="email"
               name="email"
               label="Email Address"

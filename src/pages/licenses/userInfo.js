@@ -219,8 +219,9 @@ const InnerForm = (props) => {
             type="submit"
             color="primary"
             variant="outlined"
+            size="large"
           >
-            Save Changes
+            Next
           </Button>
         </Box>
       </Box>
@@ -253,7 +254,23 @@ const UserInfo = (props) => {
 
   const handleSubmit = (e, values) => {
     e.preventDefault();
-    dispatch(userData(values, dataSubmitted));
+    dispatch(
+      userData(
+        {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          phoneNumber: values.phoneNumber,
+          addresses: {
+            addressOne: values.addressOne,
+            addressTwo: values.addressTwo,
+          },
+          city: values.city,
+          state: values.state,
+          zipCode: values.zipCode,
+        },
+        dataSubmitted
+      )
+    );
   };
 
   // React.useEffect(() => {

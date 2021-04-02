@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { spacing } from "@material-ui/system";
 import { useDispatch, useSelector } from "react-redux";
 // import { useHistory } from "react-router";
-import { getLicenses } from "redux/reducers/licenseReducer";
+import { getLicenses, getLicensesByAdmin } from "redux/reducers/licenseReducer";
 import { getClinic } from "redux/reducers/authReducer";
 import LicenseTable from "./licenseTable";
 
@@ -120,7 +120,6 @@ const SimpleTableDemo = ({ setOpenModal }) => {
   // const history = useHistory();
 
   const addNewLicense = () => {
-    // history.push("/licenses/new");
     setOpenModal(true);
   };
 
@@ -178,24 +177,28 @@ const SimpleTable = () => {
   );
 
   React.useEffect(() => {
-    dispatch(getLicenses());
-    dispatch(getClinic(user.clinicId));
-  }, [dispatch, user.clinicId]);
-  {
-    return (
-      <Box p={12}>
-        <Helmet title="Dashboard" />
-        <SimpleTableDemo setOpenModal={setOpenModal} />
-        <LicenseTable
-          myData={myData}
-          data={myData}
-          columns={headCells}
-          openModal={openModal}
-          setOpenModal={setOpenModal}
-        />
-      </Box>
-    );
-  }
+    const { clinicId = "", role = "" } = user || {};
+    if (role === "super_admin") {
+      dispatch(getLicensesByAdmin());
+    } else {
+      dispatch(getClinic(clinicId));
+      dispatch(getLicenses());
+    }
+  }, [dispatch, user]);
+
+  return (
+    <Box p={12}>
+      <Helmet title="Dashboard" />
+      <SimpleTableDemo setOpenModal={setOpenModal} />
+      <LicenseTable
+        myData={myData}
+        data={myData}
+        columns={headCells}
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+      />
+    </Box>
+  );
 };
 
 export default SimpleTable;

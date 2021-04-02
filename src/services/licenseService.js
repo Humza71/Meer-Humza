@@ -14,9 +14,39 @@ export function addLicense(payload) {
   });
 }
 
+export function updateLicense(payload, id) {
+  return new Promise((resolve, reject) => {
+    postUtil(`/api/update/license/${id}`, payload)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
 export function getAllLicense() {
   return new Promise((resolve, reject) => {
     getUtil("/api/get/licenses")
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function getAllLicenseByAdmin() {
+  return new Promise((resolve, reject) => {
+    getUtil("/api/get/all-licenses")
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);

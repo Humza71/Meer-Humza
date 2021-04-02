@@ -5,8 +5,12 @@ import { Formik, Form } from "formik";
 import styled from "styled-components/macro";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
-import { createCompany, LoadingStates } from "redux/reducers/clientReducer";
-// import { useHistory } from "react-router";
+import {
+  createCompany,
+  LoadingStates,
+  editCompanyById,
+} from "redux/reducers/clientReducer";
+import { useHistory } from "react-router";
 // import queryString from "query-string";
 // import { Alert as MuiAlert } from "@material-ui/lab";
 import { spacing } from "@material-ui/system";
@@ -106,7 +110,7 @@ const InnerForm = (props) => {
           <CircularProgress />
         </Box>
       ) : (
-        <FormWrapper height={editCompany === true ? "433px" : "660px"}>
+        <FormWrapper height={editCompany === true ? "530" : "660px"}>
           <OutCard mb={0}>
             <CardContent>
               <Typography variant="h5" color="action" gutterBottom>
@@ -259,14 +263,16 @@ const InnerForm = (props) => {
                 <Box mb={4}>
                   <Grid container spacing={12}>
                     <TextField
-                      name="licensesNo"
+                      name="noOfLicenses"
                       placeholder="Number of Licenses"
                       type="number"
                       // label="Last Name"
-                      value={values.licensesNo}
-                      error={Boolean(touched.licensesNo && errors.licensesNo)}
+                      value={values.noOfLicenses}
+                      error={Boolean(
+                        touched.noOfLicenses && errors.noOfLicenses
+                      )}
                       fullWidth
-                      helperText={touched.licensesNo && errors.licensesNo}
+                      helperText={touched.noOfLicenses && errors.noOfLicenses}
                       onBlur={handleBlur}
                       onChange={handleChange}
                       variant="outlined"
@@ -276,21 +282,15 @@ const InnerForm = (props) => {
                 </Box>
                 <Box mb={4}>
                   <Grid container spacing={12}>
-                    <Button
-                      className={classes.root}
-                      variant="contained"
-                      component="label"
-                    >
-                      Upload Image
-                      <input
-                        // value={values.image}
-                        type="file"
-                        hidden
-                        onChange={(e) => {
-                          setFieldValue(`image`, e.target.files[0]);
-                        }}
-                      />
-                    </Button>
+                    Upload Company logo
+                    <input
+                      // value={values.image}
+                      type="file"
+                      // hidden
+                      onChange={(e) => {
+                        setFieldValue(`image`, e.target.files[0]);
+                      }}
+                    />
                   </Grid>
                 </Box>
                 <Box>
@@ -312,9 +312,9 @@ const InnerForm = (props) => {
   );
 };
 
-const CompanyForm = ({ editCompany = {} }) => {
+const CompanyForm = ({ editCompany = {}, setOpen }) => {
   const dispatch = useDispatch();
-  //   const history = useHistory();
+  const history = useHistory();
   //   const { match = {} } = props || {};
   //   const { params = {} } = match;
   //   const { id } = params;
@@ -331,26 +331,61 @@ const CompanyForm = ({ editCompany = {} }) => {
     state: companyInfo.state ? companyInfo.state : "",
     zipCode: companyInfo.zipCode ? companyInfo.zipCode : "",
     noOfLicenses: companyInfo.noOfLicenses ? companyInfo.noOfLicenses : "",
+    companyId: companyInfo._id ? companyInfo._id : "",
+  };
+
+  const onCreationCompany = () => {
+    history.push("/clients");
+  };
+
+  const onSubmitForm = () => {
+    setOpen(false);
   };
 
   const handleSubmit = (e, values) => {
     e.preventDefault();
-    dispatch(
-      createCompany({
-        name: values.name,
-        email: values.email,
-        phoneNumber: values.phoneNumber,
-        city: values.city,
-        state: values.state,
-        zipCode: values.zipCode,
-        addresses: {
-          addressOne: values.addressOne,
-          addressTwo: values.addressTwo,
-        },
-        noOfLicenses: values.noOfLicenses,
-        image: values.image,
-      })
-    );
+    if (values.companyId === "") {
+      dispatch(
+        createCompany(
+          {
+            name: values.name,
+            email: values.email,
+            phoneNumber: values.phoneNumber,
+            city: values.city,
+            state: values.state,
+            zipCode: values.zipCode,
+            addresses: {
+              addressOne: values.addressOne,
+              addressTwo: values.addressTwo,
+            },
+            noOfLicenses: values.noOfLicenses,
+            image: values.image,
+          },
+          onCreationCompany
+        )
+      );
+    } else {
+      dispatch(
+        editCompanyById(
+          {
+            name: values.name,
+            email: values.email,
+            phoneNumber: values.phoneNumber,
+            city: values.city,
+            state: values.state,
+            zipCode: values.zipCode,
+            addresses: {
+              addressOne: values.addressOne,
+              addressTwo: values.addressTwo,
+            },
+            noOfLicenses: values.noOfLicenses,
+            image: values.image,
+            id: values.companyId,
+          },
+          onSubmitForm
+        )
+      );
+    }
   };
 
   return (
@@ -360,7 +395,6 @@ const CompanyForm = ({ editCompany = {} }) => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         validate={(values) => {
-          console.log(values);
           return {};
         }}
         // onSubmit={handleSubmit}
