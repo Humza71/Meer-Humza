@@ -5,6 +5,7 @@ import {
   userInfo as authUserInfo,
   resetPassword as authResetPassword,
   clinic,
+  tokenData,
 } from "../../services/authService";
 import { setMessage } from "./messageReducer";
 
@@ -12,6 +13,7 @@ const initialState = {
   user: {},
   loading: false,
   clinic: {},
+  signUpData: {},
 };
 
 export const slice = createSlice({
@@ -27,25 +29,30 @@ export const slice = createSlice({
     setClinic: (state, action) => {
       state.clinic = action.payload;
     },
-    // setProfile: (state, action) => {
-    //   state.profile = action.payload;
-    // },
+    setSignUpData: (state, action) => {
+      state.signUpData = action.payload;
+    },
   },
 });
 
-const { setUser, setLoading, setClinic } = slice.actions;
+const { setUser, setLoading, setClinic, setSignUpData } = slice.actions;
 
 export const signIn = (credentials, onSuccess) => async (dispatch) => {
   dispatch(setLoading(true));
   try {
-    const response = await authSignIn(credentials, onSuccess);
-    dispatch(
-      setUser({
-        id: response.id,
-        email: response.email,
-        name: response.name,
-      })
-    );
+    const response = await authSignIn(credentials);
+    if (response.status === 200) {
+      console.log("token", localStorage.getItem("token"));
+      dispatch(userInfo());
+      onSuccess();
+    }
+    // dispatch(
+    //   setUser({
+    //     id: response.id,
+    //     email: response.email,
+    //     name: response.name,
+    //   })
+    // );
   } catch (error) {
     dispatch(setMessage({ message: error.message }));
   }
@@ -96,6 +103,8 @@ export const userInfo = () => async (dispatch) => {
           email: response.data.email,
           name: response.data.name,
           clinicId: response.data.clinicId,
+          //role: "super_admin",
+          role: response.data.type,
         })
       );
     }
@@ -125,18 +134,16 @@ export const resetPassword = (credentials) => async (dispatch) => {
   dispatch(setLoading(false));
 };
 
-// export const getProfile = (credentials) => async (dispatch) => {
-//   dispatch(setLoading(true));
-//   try {
-//     const response = await getUserProfile(credentials);
-//     debugger;
-//     // Just temporarily
-//     dispatch(setProfile(response.data));
-//   } catch (error) {
-//     dispatch(setMessage({ message: error.message }));
-//   }
+export const resolveToken = (token) => async (dispatch) => {
+  // dispatch(setLoading(true));
+  try {
+    const response = await tokenData(token);
+    dispatch(setSignUpData(response.data));
+  } catch (error) {
+    dispatch(setMessage({ message: "No User Found" }));
+  }
 
-//   dispatch(setLoading(false));
-// };
+  // dispatch(setLoading(false));
+};
 
 export default slice.reducer;

@@ -6,7 +6,7 @@ import Header from "../components/AppBar";
 import { spacing } from "@material-ui/system";
 import { CssBaseline, Paper as MuiPaper, withWidth } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import { userInfo } from "../redux/reducers/authReducer";
+// import { userInfo } from "../redux/reducers/authReducer";
 import {
   getAllProviders,
   getAllTechnicians,
@@ -88,7 +88,7 @@ const Dashboard = ({ children, routes }) => {
   }, []);
 
   useEffect(() => {
-    dispatch(userInfo());
+    // dispatch(userInfo());
     dispatch(getAllProviders());
     dispatch(getAllTechnicians());
   }, [dispatch]);

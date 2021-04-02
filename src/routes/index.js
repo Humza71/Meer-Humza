@@ -34,7 +34,8 @@ const Clients = async(() => import("../pages/clients"));
 const authRoutes = {
   id: "Auth",
   path: "/auth",
-  icon: <Users />,
+  icon: <users />,
+  role: ["super_admin", "admin", "user"],
   children: [
     {
       path: "/auth/sign-in",
@@ -42,7 +43,7 @@ const authRoutes = {
       component: SignIn,
     },
     {
-      path: "/auth/sign-up",
+      path: "/auth/sign-up/:encodeString",
       name: "Sign Up",
       component: SignUp,
     },
@@ -71,6 +72,7 @@ const landingRoute = {
   name: "Landing",
   component: () => <Redirect to="/report" />,
   guard: AuthGuard,
+  role: ["super_admin", "admin", "user"],
 };
 const reportRoutes = {
   id: "Dashboard",
@@ -80,10 +82,12 @@ const reportRoutes = {
   name: "Dashboard",
   component: Reports,
   guard: AuthGuard,
+  role: ["super_admin", "admin", "user"],
 };
 const reportChildrenRoutes = {
   id: "Report Children",
   path: "/report",
+  role: ["super_admin", "admin", "user"],
   children: [
     {
       path: [
@@ -103,6 +107,7 @@ const billingRoutes = {
   path: "/billing",
   icon: <CreditCard />,
   component: Billing,
+  role: ["super_admin", "admin", "user"],
   // //
 };
 
@@ -112,12 +117,13 @@ const clientsRoutes = {
 
   icon: <Users />,
   component: Clients,
+  role: ["super_admin"],
   // //
 };
 const companyRoutes = {
   id: "Manage Company",
   path: "/clients/company/new",
-
+  role: ["super_admin", "admin"],
   children: [
     {
       path: [`/clients/company/new`, `/clients/company/new/:id`],
@@ -131,6 +137,7 @@ const licenseRoutes = {
   id: "Manage Licences",
   path: "/licenses",
   icon: <List />,
+  role: ["super_admin", "admin"],
   component: Licenses,
   // //
 };
@@ -138,6 +145,7 @@ const licenseRoutes = {
 const addLicenseRoutes = {
   id: "Manage new Licences",
   path: "/licenses/new",
+  role: ["super_admin", "admin"],
   children: [
     {
       path: [`/licenses/new`, `/licenses/new/:id`],
@@ -154,6 +162,7 @@ const contactRoutes = {
   path: "/contact",
   icon: <ContactIcon />,
   component: Contact,
+  role: ["super_admin", "admin", "user"],
   // //
 };
 

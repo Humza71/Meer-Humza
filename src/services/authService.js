@@ -1,14 +1,14 @@
-import { postUtil, getUtil } from "../utils/apiService";
+import { postUtil, getUtil, setDefault } from "../utils/apiService";
 import axios from "axios";
 
-export function signIn(credentials, onSuccess) {
+export function signIn(credentials) {
   return new Promise((resolve, reject) => {
     postUtil("/api/login", credentials)
       .then((response) => {
         if (response.status === 200) {
           localStorage.setItem("token", response.data.data.access_token);
-          onSuccess();
-          resolve(response.data);
+          // onSuccess();
+          resolve(response);
         }
         reject(response.data);
       })
@@ -20,7 +20,7 @@ export function signIn(credentials, onSuccess) {
 
 export const signUp = async (credentials) => {
   return new Promise((resolve, reject) => {
-    postUtil("/api/register", credentials)
+    postUtil("/api/user-password", credentials)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -50,9 +50,8 @@ export const clinic = async (id) => {
 
 export function userInfo() {
   return new Promise((resolve, reject) => {
-    //axios.get("/sanctum/csrf-cookie").then(() => {
-    axios
-      .get("/api/get/user")
+    setDefault();
+    getUtil(`/api/get/user`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -63,7 +62,6 @@ export function userInfo() {
         reject(error);
       });
   });
-  // });
 }
 
 export function resetPassword(credentials) {
@@ -82,17 +80,17 @@ export function resetPassword(credentials) {
   });
 }
 
-// export const getUserProfile = async () => {
-//   return new Promise((resolve, reject) => {
-//     getUtil("/api/get/")
-//       .then((response) => {
-//         if (response.status === 200) {
-//           resolve(response.data);
-//         }
-//         reject(response.data);
-//       })
-//       .catch((error) => {
-//         reject(error);
-//       });
-//   });
-// };
+export const tokenData = async (token) => {
+  return new Promise((resolve, reject) => {
+    postUtil(`/api/signup`, { token })
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

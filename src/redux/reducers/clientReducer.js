@@ -94,7 +94,7 @@ export const getCompanyById = (id) => async (dispatch) => {
       dispatch(setClinic(response.data));
     }
   } catch (error) {
-    console.log(error, "Erororroor");
+    console.log(error, "Error");
   }
   dispatch(setLoading(null));
 };

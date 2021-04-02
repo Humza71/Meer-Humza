@@ -44,6 +44,21 @@ export function getAllLicense() {
   });
 }
 
+export function getAllLicenseByAdmin() {
+  return new Promise((resolve, reject) => {
+    getUtil("/api/get/all-licenses")
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
 export function getLicense(id) {
   return new Promise((resolve, reject) => {
     getUtil(`/api/get/license/${id}`)

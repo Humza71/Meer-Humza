@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { dashboardLayoutRoutes, authLayoutRoutes } from "./index";
+import { userInfo } from "redux/reducers/authReducer";
 
 import DashboardLayout from "../layouts/Dashboard";
 import AuthLayout from "../layouts/Auth";
@@ -45,20 +47,34 @@ const childRoutes = (Layout, routes) =>
     ) : null;
   });
 
-const Routes = () => (
-  <Router>
-    <Switch>
-      {childRoutes(DashboardLayout, dashboardLayoutRoutes)}
-      {childRoutes(AuthLayout, authLayoutRoutes)}
-      <Route
-        render={() => (
-          <AuthLayout>
-            <Page404 />
-          </AuthLayout>
+const Routes = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.authReducer.user) || {};
+
+  React.useEffect(() => {
+    dispatch(userInfo());
+  }, [dispatch]);
+
+  return (
+    <Router>
+      <Switch>
+        {childRoutes(
+          DashboardLayout,
+          dashboardLayoutRoutes.filter((category) =>
+            category.role.some((name) => name === user.role)
+          )
         )}
-      />
-    </Switch>
-  </Router>
-);
+        {childRoutes(AuthLayout, authLayoutRoutes)}
+        <Route
+          render={() => (
+            <AuthLayout>
+              <Page404 />
+            </AuthLayout>
+          )}
+        />
+      </Switch>
+    </Router>
+  );
+};
 
 export default Routes;

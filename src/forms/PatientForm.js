@@ -340,12 +340,12 @@ const InnerForm = (props) => {
                       error={Boolean(touched.providerId && errors.providerId)}
                       helperText={touched.providerId && errors.providerId}
                       value={values.staffInformation.providerId}
-                      onChange={(e) =>
+                      onChange={(e) => {
                         setFieldValue(
                           "staffInformation.providerId",
                           e.target.value
-                        )
-                      }
+                        );
+                      }}
                       onBlur={handleBlur}
                       name="providerId"
                       label="Provider"

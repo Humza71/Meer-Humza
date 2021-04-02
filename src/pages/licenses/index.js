@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { spacing } from "@material-ui/system";
 import { useDispatch, useSelector } from "react-redux";
 // import { useHistory } from "react-router";
-import { getLicenses } from "redux/reducers/licenseReducer";
+import { getLicenses, getLicensesByAdmin } from "redux/reducers/licenseReducer";
 import { getClinic } from "redux/reducers/authReducer";
 import LicenseTable from "./licenseTable";
 
@@ -177,9 +177,13 @@ const SimpleTable = () => {
   );
 
   React.useEffect(() => {
-    dispatch(getLicenses());
-    const { clinicId = "" } = user || {};
-    dispatch(getClinic(clinicId));
+    const { clinicId = "", role = "" } = user || {};
+    if (role === "super_admin") {
+      dispatch(getLicensesByAdmin());
+    } else {
+      dispatch(getClinic(clinicId));
+      dispatch(getLicenses());
+    }
   }, [dispatch, user]);
 
   return (

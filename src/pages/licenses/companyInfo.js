@@ -279,9 +279,15 @@ const CompanyInfo = (props) => {
     return state.authReducer.user;
   });
 
+  const user = useSelector((state) => {
+    return state.authReducer.user;
+  });
+
   const companyInfo = useSelector((state) => {
     return state.authReducer.clinic;
   });
+  const clinicInfo = useSelector((state) => state.clientReducer.clinic);
+  // const clinicInfo = useSelector((state) => state.clientReducer.clinic);
 
   //   const dispatch = useDispatch();
   //   const history = useHistory();
@@ -299,6 +305,16 @@ const CompanyInfo = (props) => {
     state: companyInfo.state ? companyInfo.state : "",
     zipCode: companyInfo.zipCode ? companyInfo.zipCode : "",
   };
+  const adminInitialValues = {
+    name: clinicInfo.name ? clinicInfo.name : "",
+    email: clinicInfo.email ? clinicInfo.email : "",
+    phone: clinicInfo.phoneNumber ? clinicInfo.phoneNumber : "",
+    addressOne: clinicInfo.addresses ? clinicInfo.addresses.addressOne : "",
+    addressTwo: clinicInfo.addresses ? clinicInfo.addresses.addressTwo : "",
+    city: clinicInfo.city ? clinicInfo.city : "",
+    state: clinicInfo.state ? clinicInfo.state : "",
+    zipCode: clinicInfo.zipCode ? clinicInfo.zipCode : "",
+  };
 
   const onSubmitForm = () => {
     props.setOpen(false);
@@ -312,7 +328,10 @@ const CompanyInfo = (props) => {
       dispatch(
         createLicense(
           {
-            clinicId: userClinic.clinicId,
+            clinicId:
+              user.role === "super_admin"
+                ? clinicInfo._id
+                : userClinic.clinicId,
             license: {
               ...licenseInfo,
             },
@@ -320,6 +339,7 @@ const CompanyInfo = (props) => {
               ...userInfo,
               email: licenseInfo.user.email,
             },
+            role: user.role,
           },
           onSubmitForm
         )
@@ -328,7 +348,10 @@ const CompanyInfo = (props) => {
       dispatch(
         editLicense(
           {
-            clinicId: userClinic.clinicId,
+            clinicId:
+              user.role === "super_admin"
+                ? clinicInfo._id
+                : userClinic.clinicId,
             license: {
               ...licenseInfo,
             },
@@ -354,7 +377,9 @@ const CompanyInfo = (props) => {
     <React.Fragment>
       <Formik
         enableReinitialize
-        initialValues={initialValues}
+        initialValues={
+          user.role === "super_admin" ? adminInitialValues : initialValues
+        }
         validationSchema={validationSchema}
         validate={(values) => {
           console.log(values);

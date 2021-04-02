@@ -282,7 +282,7 @@ const InnerForm = (props) => {
                 </Box>
                 <Box mb={4}>
                   <Grid container spacing={12}>
-                    Upload Image
+                    Upload Company logo
                     <input
                       // value={values.image}
                       type="file"
@@ -395,7 +395,6 @@ const CompanyForm = ({ editCompany = {}, setOpen }) => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         validate={(values) => {
-          console.log(values);
           return {};
         }}
         // onSubmit={handleSubmit}

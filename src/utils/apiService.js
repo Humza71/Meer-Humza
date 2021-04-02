@@ -3,6 +3,7 @@ import axios from "axios";
 axios.defaults.baseURL = process.env.REACT_APP_BACKEND_ENDPOINT;
 axios.defaults.headers = {
   Authorization: `Bearer ${localStorage.getItem("token")}`,
+  accept: "application/json",
 };
 
 const postUtil = (url, data) => axios.post(url, data);
