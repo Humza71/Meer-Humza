@@ -27,6 +27,7 @@ const TextField = styled(MuiTextField)`
     height: 40px;
   }
 `;
+const BackButton = styled(MuiButton)(spacing);
 const Button = styled(MuiButton)`
   .MuiButton-label {
     color: white;
@@ -70,6 +71,7 @@ const InnerForm = (props) => {
     touched,
     values,
     // status,
+    setValue,
   } = props;
   const classes = useStyles();
   return (
@@ -214,6 +216,14 @@ const InnerForm = (props) => {
           </Grid>
         </Box>
         <Box>
+          <BackButton
+            onClick={() => setValue(0)}
+            color="secondary"
+            variant="outlined"
+            size="large"
+          >
+            Back
+          </BackButton>
           <Button
             className={classes.root}
             type="submit"
@@ -293,7 +303,7 @@ const UserInfo = (props) => {
       >
         {(formProps) => (
           <Form onSubmit={(e) => handleSubmit(e, formProps.values)}>
-            <InnerForm {...formProps} />
+            <InnerForm {...formProps} setValue={props.setValue} />
           </Form>
         )}
       </Formik>

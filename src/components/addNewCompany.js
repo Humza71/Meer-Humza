@@ -315,11 +315,8 @@ const InnerForm = (props) => {
 const CompanyForm = ({ editCompany = {}, setOpen }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  //   const { match = {} } = props || {};
-  //   const { params = {} } = match;
-  //   const { id } = params;
-
   const companyInfo = useSelector((state) => state.clientReducer.clinic);
+  // const clinic = useSelector((state) => state.clientReducer.clinic);
 
   const initialValues = {
     name: companyInfo.name ? companyInfo.name : "",
@@ -341,6 +338,13 @@ const CompanyForm = ({ editCompany = {}, setOpen }) => {
   const onSubmitForm = () => {
     setOpen(false);
   };
+
+  // React.useEffect(() => {
+  //   if (Object.keys(clinic).length > 0) {
+  //     debugger;
+  //     dispatch(clearClinic());
+  //   }
+  // }, [dispatch, clinic]);
 
   const handleSubmit = (e, values) => {
     e.preventDefault();

@@ -1,5 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  useHistory,
+  Redirect,
+} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { dashboardLayoutRoutes, authLayoutRoutes } from "./index";
 import { userInfo } from "redux/reducers/authReducer";
@@ -49,10 +55,14 @@ const childRoutes = (Layout, routes) =>
 
 const Routes = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const user = useSelector((state) => state.authReducer.user) || {};
+  const token = localStorage.getItem("token");
 
   React.useEffect(() => {
-    dispatch(userInfo());
+    if (token) {
+      dispatch(userInfo());
+    }
   }, [dispatch]);
 
   return (
@@ -65,13 +75,15 @@ const Routes = () => {
           )
         )}
         {childRoutes(AuthLayout, authLayoutRoutes)}
-        <Route
-          render={() => (
-            <AuthLayout>
-              <Page404 />
-            </AuthLayout>
-          )}
-        />
+        {Object.keys(user).length > 0 && (
+          <Route
+            render={() => (
+              <AuthLayout>
+                <Page404 />
+              </AuthLayout>
+            )}
+          />
+        )}
       </Switch>
     </Router>
   );

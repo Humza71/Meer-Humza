@@ -9,6 +9,10 @@ import {
 } from "../../services/authService";
 import { setMessage } from "./messageReducer";
 
+export const LoadingStates = {
+  GET_USER_LOADING: "Loading User",
+};
+
 const initialState = {
   user: {},
   loading: false,
@@ -42,7 +46,6 @@ export const signIn = (credentials, onSuccess) => async (dispatch) => {
   try {
     const response = await authSignIn(credentials);
     if (response.status === 200) {
-      console.log("token", localStorage.getItem("token"));
       dispatch(userInfo());
       onSuccess();
     }
@@ -93,7 +96,7 @@ export const getClinic = (id) => async (dispatch) => {
 };
 
 export const userInfo = () => async (dispatch) => {
-  dispatch(setLoading(true));
+  dispatch(setLoading(LoadingStates.GET_USER_LOADING));
   try {
     const response = await authUserInfo();
     if (response) {
@@ -109,6 +112,7 @@ export const userInfo = () => async (dispatch) => {
       );
     }
   } catch (error) {}
+  dispatch(setLoading(null));
 };
 
 export const signOut = () => (dispatch) => {

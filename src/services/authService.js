@@ -7,7 +7,6 @@ export function signIn(credentials) {
       .then((response) => {
         if (response.status === 200) {
           localStorage.setItem("token", response.data.data.access_token);
-          // onSuccess();
           resolve(response);
         }
         reject(response.data);

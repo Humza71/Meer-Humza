@@ -68,7 +68,7 @@ function SignUp({ match }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const { params } = match || {};
-  const { encodeString } = params || {};
+  const { encodeString = "" } = params || {};
   // const clinicId = useSelector((state) => state.authReducer.clinicId);
   const [showPassword, setShowPassword] = React.useState(false);
   const signUpInfo = useSelector((state) => {
@@ -82,7 +82,8 @@ function SignUp({ match }) {
   };
 
   useEffect(() => {
-    dispatch(resolveToken(encodeString));
+    if (encodeString !== "") dispatch(resolveToken(encodeString));
+    else history.push("/auth/sign-in");
   }, [dispatch, encodeString]);
 
   return (

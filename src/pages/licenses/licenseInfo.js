@@ -94,6 +94,7 @@ const InnerForm = (props) => {
           <Box mt={6} mb={3}>
             <Grid container spacing={12}>
               <TextField
+                disabled={editLicense}
                 name="dateExpiry"
                 type="date"
                 // label="Expiry Date"
