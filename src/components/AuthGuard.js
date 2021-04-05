@@ -10,7 +10,6 @@ function AuthGuard({ children }) {
     setDefault();
     return children;
   }
-
   return <Redirect to="/auth/sign-in" />;
 }
 

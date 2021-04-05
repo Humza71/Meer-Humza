@@ -78,15 +78,21 @@ export const createLicense = (values, onSubmitForm) => async (dispatch) => {
   dispatch(setLoading(null));
 };
 
-export const editLicense = (values, onSubmitForm, id) => async (dispatch) => {
+export const editLicense = (values, onSubmitForm, id, userRole) => async (
+  dispatch
+) => {
   // dispatch(setLoading(LoadingStates.LICENSE_CREATION_LOADING));
   onSubmitForm();
   try {
     const response = await updateLicense(values, id);
     if (response.status === 200) {
-      dispatch(clearLicense());
-      dispatch(getLicenses());
       console.log("License Edited Successfully");
+      dispatch(clearLicense());
+      if (userRole === "super_admin") {
+        dispatch(getLicensesByAdmin());
+      } else {
+        dispatch(getLicenses());
+      }
     }
   } catch (error) {}
   // dispatch(setLoading(null));
@@ -155,6 +161,7 @@ export const licenseData = (values, dataSubmitted) => async (dispatch) => {
     user: {
       email: values.userEmail,
     },
+    id: values.licenseId,
   };
   try {
     dispatch(setLicense(data));

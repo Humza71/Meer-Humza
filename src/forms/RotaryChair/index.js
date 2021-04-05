@@ -41,9 +41,9 @@ const InnerForm = (props) => {
         <Section size={{ width: "183px" }}>
           <span>Right</span>
           <Toggle
-            name={`right`}
-            value={values["right"]}
-            onChange={(value) => setFieldValue(`right`, value)}
+            name={`normality`}
+            value={values["right"]["normality"]}
+            onChange={(value) => setFieldValue(`right.normality`, value)}
             options={[
               { title: "Normal", value: "normal" },
               { title: "Abnormal", value: "abnormal" },
@@ -55,9 +55,9 @@ const InnerForm = (props) => {
           <Section size={{ width: "88%" }}>
             <span>Left</span>
             <Toggle
-              name={`left`}
-              value={values["left"]}
-              onChange={(value) => setFieldValue(`left`, value)}
+              name={`normality`}
+              value={values["left"]["normality"]}
+              onChange={(value) => setFieldValue(`left.normality`, value)}
               options={[
                 { title: "Normal", value: "normal" },
                 { title: "Abnormal", value: "abnormal" },
@@ -68,9 +68,9 @@ const InnerForm = (props) => {
                 width: "144px",
                 height: "38px",
               }}
-              name={`left`}
-              value={values["left"]}
-              onChange={(value) => setFieldValue(`left`, value)}
+              name={`gain`}
+              value={values["left"]["gain"]}
+              onChange={(value) => setFieldValue(`left.gain`, value)}
               options={[
                 { title: "High Gain", value: "highGain" },
                 { title: "Reduced Gain", value: "rg" },
@@ -81,9 +81,9 @@ const InnerForm = (props) => {
                 width: "210px",
                 height: "38px",
               }}
-              name={`left`}
-              value={values["left"]}
-              onChange={(value) => setFieldValue(`left`, value)}
+              name={`timeConstants`}
+              value={values["left"]["timeConstants"]}
+              onChange={(value) => setFieldValue(`left.timeConstants`, value)}
               options={[
                 { title: "Short Time Constants", value: "stp" },
                 { title: "Long Time Constants", value: "ltc" },
@@ -112,9 +112,15 @@ const RotaryChair = (props) => {
   );
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
   const initialValues = {
-    right: rotaryChairValues?.right,
-    left: rotaryChairValues?.left,
-    notes: rotaryChairValues?.notes,
+    right: {
+      normality: rotaryChairValues.right?.normality,
+    },
+    left: {
+      normality: rotaryChairValues.left?.normality,
+      gain: rotaryChairValues.left?.gain,
+      timeConstants: rotaryChairValues.left?.timeConstants,
+    },
+    notes: rotaryChairValues.notes,
   };
 
   const handleSave = (values) => {

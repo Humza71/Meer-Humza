@@ -1,12 +1,11 @@
 import React from "react";
 
 import async from "../components/Async";
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 
 import {
   Dashboard as DashboardIcon,
-  CreditCard,
-  Contacts as ContactIcon,
+  // Contacts as ContactIcon,
 } from "@material-ui/icons";
 import { List, Users } from "react-feather";
 
@@ -26,8 +25,8 @@ const Page500 = async(() => import("../pages/auth/Page500"));
 const Reports = async(() => import("../pages/reports"));
 const CreateReport = async(() => import("../pages/reports/create"));
 
-const Contact = async(() => import("../pages/contact"));
-const Billing = async(() => import("../pages/billing"));
+// const Contact = async(() => import("../pages/contact"));
+// const Billing = async(() => import("../pages/billing"));
 const Licenses = async(() => import("../pages/licenses"));
 const Clients = async(() => import("../pages/clients"));
 
@@ -43,7 +42,12 @@ const authRoutes = {
       component: SignIn,
     },
     {
-      path: "/auth/sign-up/:encodeString",
+      path: "/",
+      name: "Sign In",
+      component: SignIn,
+    },
+    {
+      path: ["/auth/sign-up/:encodeString", `/auth/sign-up`],
       name: "Sign Up",
       component: SignUp,
     },
@@ -70,7 +74,12 @@ const landingRoute = {
   id: "Landing",
   path: "/",
   name: "Landing",
-  component: () => <Redirect to="/report" />,
+  component: Reports,
+  //   () => (
+  //   <Redirect
+  //     to={localStorage.getItem("token") === "" ? "/auth/sign-in" : "/report"}
+  //   />
+  // ),
   guard: AuthGuard,
   role: ["super_admin", "admin", "user"],
 };
@@ -102,14 +111,14 @@ const reportChildrenRoutes = {
   ],
 };
 
-const billingRoutes = {
-  id: "Billing Settings",
-  path: "/billing",
-  icon: <CreditCard />,
-  component: Billing,
-  role: ["super_admin", "admin", "user"],
-  // //
-};
+// const billingRoutes = {
+//   id: "Billing Settings",
+//   path: "/billing",
+//   icon: <CreditCard />,
+//   component: Billing,
+//   role: ["super_admin", "admin", "user"],
+//   // //
+// };
 
 const clientsRoutes = {
   id: "Manage Clients",
@@ -157,14 +166,14 @@ const addLicenseRoutes = {
   // //
 };
 
-const contactRoutes = {
-  id: "Contact Support",
-  path: "/contact",
-  icon: <ContactIcon />,
-  component: Contact,
-  role: ["super_admin", "admin", "user"],
-  // //
-};
+// const contactRoutes = {
+//   id: "Contact Support",
+//   path: "/contact",
+//   icon: <ContactIcon />,
+//   component: Contact,
+//   role: ["super_admin", "admin", "user"],
+//   // //
+// };
 
 // Routes using the Dashboard layout
 export const dashboardLayoutRoutes = [
@@ -173,8 +182,8 @@ export const dashboardLayoutRoutes = [
   reportChildrenRoutes,
   clientsRoutes,
   licenseRoutes,
-  billingRoutes,
-  contactRoutes,
+  // billingRoutes,
+  // contactRoutes,
   companyRoutes,
   addLicenseRoutes,
 ];
@@ -187,6 +196,6 @@ export const sidebarRoutes = [
   reportRoutes,
   clientsRoutes,
   licenseRoutes,
-  billingRoutes,
-  contactRoutes,
+  // billingRoutes,
+  // contactRoutes,
 ];

@@ -54,11 +54,7 @@ function UserDropdown() {
           </Typography>
         </Box>
         <Tooltip title="Account">
-          <SmallAvatar
-            alt="Lucy Lavender"
-            src="/static/img/avatars/avatar-1.jpg"
-            onClick={toggleMenu}
-          />
+          <SmallAvatar alt="Lucy Lavender" src="" onClick={toggleMenu} />
         </Tooltip>
       </Box>
       <Menu

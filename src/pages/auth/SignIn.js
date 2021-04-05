@@ -15,7 +15,6 @@ import {
   Typography,
   InputAdornment,
   IconButton,
-  Box,
   FormControl,
   InputLabel,
   OutlinedInput,
@@ -26,7 +25,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { spacing } from "@material-ui/system";
 import { Alert as MuiAlert } from "@material-ui/lab";
 
-import config from "config";
 import { signIn } from "redux/reducers/authReducer";
 
 const Alert = styled(MuiAlert)(spacing);
@@ -65,18 +63,18 @@ const Wrapper = styled(Paper)`
     width: 500px;
   }
 `;
-const ImageInButton = styled.img`
-  height: ${(props) => props.height}px;
-  width: ${(props) => props.width}px;
-  margin-top: ${(props) => props.mt}px;
-  margin-right: 10px;
-`;
-const Bar = styled(Box)`
-  height: 1px;
-  background: #ccc;
-  flex-grow: 1;
-  margin: auto 0;
-`;
+// const ImageInButton = styled.img`
+//   height: ${(props) => props.height}px;
+//   width: ${(props) => props.width}px;
+//   margin-top: ${(props) => props.mt}px;
+//   margin-right: 10px;
+// `;
+// const Bar = styled(Box)`
+//   height: 1px;
+//   background: #ccc;
+//   flex-grow: 1;
+//   margin: auto 0;
+// `;
 const TextButton = styled(Button)`
   padding-left: 0;
   paddint-right: 0;
@@ -102,12 +100,6 @@ function SignIn() {
 
       <Typography component="h1" variant="h3" gutterBottom>
         Sign in
-      </Typography>
-      <Typography component="h2" variant="body1">
-        Don't have an account?
-        <Button component={RouterLink} to="/auth/sign-up" color="primary">
-          Create an account
-        </Button>
       </Typography>
 
       <Formik
@@ -214,62 +206,6 @@ function SignIn() {
             >
               Sign in
             </Button>
-            <Box display="flex" mb={3}>
-              <Bar />
-              <Box mx={3} color="#999999" fontWeight={500}>
-                or
-              </Box>
-              <Bar />
-            </Box>
-            <a href={process.env.REACT_APP_GOOGLE_REDIRECT_URI}>
-              <Button
-                fullWidth
-                variant="outlined"
-                color="default"
-                disabled={isSubmitting}
-                my={2}
-              >
-                <ImageInButton
-                  src="/static/img/auth/google-icon.png"
-                  width="12"
-                  height="12"
-                  mt="0"
-                />
-                Continue with Google
-              </Button>
-            </a>
-            <a href={config.facebookRedirectURI}>
-              <Button
-                fullWidth
-                variant="outlined"
-                color="default"
-                disabled={isSubmitting}
-                my={2}
-              >
-                <ImageInButton
-                  src="/static/img/auth/facebook-icon.png"
-                  width="14"
-                  height="14"
-                  mt="0"
-                />
-                Continue with Facebook
-              </Button>
-            </a>
-            {/*<Button
-              fullWidth
-              variant="outlined"
-              color="default"
-              disabled={isSubmitting}
-              my={2}
-            >
-              <ImageInButton
-                src="/static/img/auth/amazon-icon.png"
-                width="40"
-                height="12"
-                mt="6"
-              />
-              Continue with Amazon
-            </Button>*/}
           </form>
         )}
       </Formik>

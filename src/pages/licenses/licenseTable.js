@@ -4,7 +4,6 @@ import styled from "styled-components/macro";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@material-ui/core";
-// import { User as UserIcon } from "react-feather";
 
 import {
   Grid,
@@ -19,8 +18,6 @@ import {
   TableRow,
   TableSortLabel,
   Toolbar as MuiToolbar,
-  // Popover,
-  // Tooltip as MuiTooltip,
   Menu,
   MenuItem,
   Typography as MuiTypography,
@@ -48,8 +45,11 @@ import UserInfo from "./userInfo";
 import CompanyInfo from "./companyInfo";
 import { useDispatch, useSelector } from "react-redux";
 import { clearLicense, getLicenseById } from "redux/reducers/licenseReducer";
-import { getAllClinic, getCompanyById } from "redux/reducers/clientReducer";
-// import CompanyForm from "components/addNewCompany";
+import {
+  getAllClinic,
+  getCompanyById,
+  clearClinic,
+} from "redux/reducers/clientReducer";
 
 const Paper = styled(MuiPaper)(spacing);
 const Toolbar = styled(MuiToolbar)(spacing);
@@ -84,12 +84,6 @@ const ActionIcon = styled.img`
   margin-left: 5px;
   cursor: pointer;
 `;
-// const Tabs = styled(MuiTabs)`
-//   .MuiTabs-root {
-//     background-color: white;
-//     color: #5f6368;
-//   }
-// `;
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -270,8 +264,6 @@ const ReportTableHead = (props) => {
 const LicenseTable = (props) => {
   const { data, columns, openModal, setOpenModal } = props;
   const dispatch = useDispatch();
-
-  // const dispatch = useDispatch();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("date");
   const [tableFormat, setTableFormat] = React.useState("padding");
@@ -282,8 +274,8 @@ const LicenseTable = (props) => {
   const [value, setValue] = React.useState(0);
   const [clinicSelected, setClinicSelected] = React.useState(false);
   const [editForAdmin, setEditForAdmin] = React.useState(true);
-  //   const [modalStyle] = React.useState(getModalStyle);
-  //   const [rowRecord, setRowRecord] = React.useState({});
+  const classes = useStyles();
+
   const licenseInfo = useSelector((state) => {
     return state.licenseReducer.license;
   });
@@ -295,10 +287,6 @@ const LicenseTable = (props) => {
     return state.authReducer.user;
   });
   const allClinics = useSelector((state) => state.clientReducer.allClinics);
-  // const companyInfo = useSelector((state) => {
-  //   return state.licenseReducer.companyInfo;
-  // });
-  // const clinic = useSelector((state) => state.clientReducer.clinic);
 
   const [filteredColumns, setFilteredColumns] = React.useState(
     columns.filter((item) => item.id !== "actions").map((item) => item.label)
@@ -336,31 +324,6 @@ const LicenseTable = (props) => {
     };
   }
 
-  // const useStyles = makeStyles((theme) => ({
-  //   tabsRoot: {
-  //     flexGrow: 1,
-  //     backgroundColor: theme.palette.background.paper,
-  //   },
-  //   root: {
-  //     backgroundColor: "white",
-  //     color: "#5f6368",
-  //     paddingTop: "5px",
-  //   },
-  // }));
-
-  /* Vector */
-
-  const classes = useStyles();
-  //   const [searchParams, setSearchParams] = React.useState({
-  //     testDate: "",
-  //     birthday: "",
-  //     firstName: "",
-  //     lastName: "",
-  //     technicianIds: {},
-  //     providerIds: {},
-  //   });
-
-  // const history = useHistory();
   const handleOpen = (id) => {
     setOpen(true);
     if (user.role === "super_admin") {
@@ -377,10 +340,8 @@ const LicenseTable = (props) => {
     if (user.role === "super_admin") {
       setEditForAdmin(true);
       setClinicSelected(false);
+      dispatch(clearClinic());
     }
-    //   setRowRecord({});
-    // setMyReportId("");
-    // setOpen(false);
   };
 
   const handleRequestSort = (event, property) => {
@@ -438,10 +399,6 @@ const LicenseTable = (props) => {
 
   const Actions = ({ id, status }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
-    // const [downloading, setDownloading] = React.useState(false);
-    // React.useEffect(() => {
-    //   debugger;
-    // }, [downloading]);
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -519,6 +476,7 @@ const LicenseTable = (props) => {
               aria-label="simple tabs example"
             >
               <Tab
+                disabled
                 label={
                   <ModalTabs
                     imgSrc={
@@ -530,6 +488,7 @@ const LicenseTable = (props) => {
                 {...a11yProps(0)}
               />
               <Tab
+                disabled
                 label={
                   <ModalTabs
                     imgSrc={value === 1 ? "userInfoActive.png" : "userInfo.png"}
@@ -539,6 +498,7 @@ const LicenseTable = (props) => {
                 {...a11yProps(1)}
               />
               <Tab
+                disabled
                 label={
                   <ModalTabs
                     imgSrc={
@@ -561,31 +521,17 @@ const LicenseTable = (props) => {
             {user.role === "super_admin" && editForAdmin === true ? (
               <Grid container spacing={12}>
                 <AdvancedSelect
-                  // error={Boolean(touched.providerId && errors.providerId)}
-                  // helperText={touched.providerId && errors.providerId}
-                  // value={values.staffInformation.providerId}
                   onChange={(e) => {
-                    if (e.target.value === "") {
-                      setClinicSelected(false);
-                    } else {
-                      handleClinicAddition(e.target.value);
-                      setClinicSelected(true);
-                    }
+                    handleClinicAddition(e.target.value);
+                    setClinicSelected(true);
                   }}
-                  // onBlur={handleBlur}
+                  renderValue={() => "Columns"}
                   name="clinics"
                   label="Clinics"
                   options={allClinics.map((item, index) => ({
                     label: item.name,
                     value: item._id,
                   }))}
-                  variant="outlined" // error={Boolean(touched.providerId && errors.providerId)}
-                  // helperText={touched.providerId && errors.providerId}
-                  // value={values.staffInformation.providerId}
-                  // allowAdd={true}
-                  // onAdd={hanldeNewProvider} // error={Boolean(touched.providerId && errors.providerId)}
-                  // helperText={touched.providerId && errors.providerId}
-                  // value={values.staffInformation.providerId}
                 />
               </Grid>
             ) : (

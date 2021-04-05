@@ -5,7 +5,13 @@ import { Formik, Form } from "formik";
 import styled from "styled-components/macro";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
-import { createLicense, editLicense } from "redux/reducers/licenseReducer";
+import {
+  createLicense,
+  editLicense,
+  clearLicense,
+} from "redux/reducers/licenseReducer";
+
+import { clearClinic } from "redux/reducers/clientReducer";
 // import { useHistory } from "react-router";
 // import queryString from "query-string";
 // import { Alert as MuiAlert } from "@material-ui/lab";
@@ -24,6 +30,7 @@ import {
 } from "@material-ui/core";
 
 // import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+const BackButton = styled(MuiButton)(spacing);
 const Button = styled(MuiButton)`
   .MuiButton-label {
     color: white;
@@ -93,6 +100,7 @@ const InnerForm = (props) => {
     touched,
     values,
     // status,
+    setValue,
   } = props;
 
   return (
@@ -248,6 +256,14 @@ const InnerForm = (props) => {
               </Grid>
             </Box>
             <Box>
+              <BackButton
+                onClick={() => setValue(1)}
+                color="secondary"
+                variant="outlined"
+                size="large"
+              >
+                Back
+              </BackButton>
               <Button
                 className={classes.root}
                 type="submit"
@@ -266,17 +282,12 @@ const InnerForm = (props) => {
 
 const CompanyInfo = (props) => {
   const dispatch = useDispatch();
-  // const companyInfo = useSelector((state) => {
-  //   return state.licenseReducer.companyInfo;
-  // });
+
   const userInfo = useSelector((state) => {
     return state.licenseReducer.userInfo;
   });
   const licenseInfo = useSelector((state) => {
     return state.licenseReducer.license;
-  });
-  const userClinic = useSelector((state) => {
-    return state.authReducer.user;
   });
 
   const user = useSelector((state) => {
@@ -318,7 +329,11 @@ const CompanyInfo = (props) => {
 
   const onSubmitForm = () => {
     props.setOpen(false);
-    props.setValue(props.value + 1);
+    dispatch(clearLicense());
+    props.setValue(0);
+    if (user.role === "super_admin") {
+      dispatch(clearClinic());
+    }
   };
 
   const handleSubmit = (e) => {
@@ -329,9 +344,7 @@ const CompanyInfo = (props) => {
         createLicense(
           {
             clinicId:
-              user.role === "super_admin"
-                ? clinicInfo._id
-                : userClinic.clinicId,
+              user.role === "super_admin" ? clinicInfo.clinicId : user.clinicId,
             license: {
               ...licenseInfo,
             },
@@ -349,9 +362,7 @@ const CompanyInfo = (props) => {
         editLicense(
           {
             clinicId:
-              user.role === "super_admin"
-                ? clinicInfo._id
-                : userClinic.clinicId,
+              user.role === "super_admin" ? clinicInfo.clinicId : user.clinicId,
             license: {
               ...licenseInfo,
             },
@@ -361,17 +372,12 @@ const CompanyInfo = (props) => {
             },
           },
           onSubmitForm,
-          licenseInfo.licenseId
+          licenseInfo.licenseId,
+          user.role
         )
       );
     }
   };
-
-  // React.useEffect(() => {
-  //   if (props.open === false) {
-  //     dispatch(clearLicenseData());
-  //   }
-  // }, [props.open, dispatch]);
 
   return (
     <React.Fragment>
@@ -385,11 +391,10 @@ const CompanyInfo = (props) => {
           console.log(values);
           return {};
         }}
-        // onSubmit={handleSubmit}
       >
         {(formProps) => (
           <Form onSubmit={(e) => handleSubmit(e, formProps.values)}>
-            <InnerForm {...formProps} />
+            <InnerForm {...formProps} setValue={props.setValue} />
           </Form>
         )}
       </Formik>
