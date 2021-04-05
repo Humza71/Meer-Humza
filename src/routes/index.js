@@ -1,12 +1,11 @@
 import React from "react";
 
 import async from "../components/Async";
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 
 import {
   Dashboard as DashboardIcon,
-  CreditCard,
-  Contacts as ContactIcon,
+  // Contacts as ContactIcon,
 } from "@material-ui/icons";
 import { List, Users } from "react-feather";
 
@@ -26,8 +25,8 @@ const Page500 = async(() => import("../pages/auth/Page500"));
 const Reports = async(() => import("../pages/reports"));
 const CreateReport = async(() => import("../pages/reports/create"));
 
-const Contact = async(() => import("../pages/contact"));
-const Billing = async(() => import("../pages/billing"));
+// const Contact = async(() => import("../pages/contact"));
+// const Billing = async(() => import("../pages/billing"));
 const Licenses = async(() => import("../pages/licenses"));
 const Clients = async(() => import("../pages/clients"));
 

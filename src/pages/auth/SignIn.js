@@ -15,7 +15,6 @@ import {
   Typography,
   InputAdornment,
   IconButton,
-  Box,
   FormControl,
   InputLabel,
   OutlinedInput,
@@ -26,7 +25,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { spacing } from "@material-ui/system";
 import { Alert as MuiAlert } from "@material-ui/lab";
 
-import config from "config";
 import { signIn } from "redux/reducers/authReducer";
 
 const Alert = styled(MuiAlert)(spacing);
@@ -65,18 +63,18 @@ const Wrapper = styled(Paper)`
     width: 500px;
   }
 `;
-const ImageInButton = styled.img`
-  height: ${(props) => props.height}px;
-  width: ${(props) => props.width}px;
-  margin-top: ${(props) => props.mt}px;
-  margin-right: 10px;
-`;
-const Bar = styled(Box)`
-  height: 1px;
-  background: #ccc;
-  flex-grow: 1;
-  margin: auto 0;
-`;
+// const ImageInButton = styled.img`
+//   height: ${(props) => props.height}px;
+//   width: ${(props) => props.width}px;
+//   margin-top: ${(props) => props.mt}px;
+//   margin-right: 10px;
+// `;
+// const Bar = styled(Box)`
+//   height: 1px;
+//   background: #ccc;
+//   flex-grow: 1;
+//   margin: auto 0;
+// `;
 const TextButton = styled(Button)`
   padding-left: 0;
   paddint-right: 0;

@@ -114,7 +114,7 @@ const ClientReportHeader = () => {
 const AdvancedTable = () => {
   const dispatch = useDispatch();
   const allClinics = useSelector((state) => state.clientReducer.allClinics);
-  const clinic = useSelector((state) => state.clientReducer.clinic);
+  //  const clinic = useSelector((state) => state.clientReducer.clinic);
 
   React.useEffect(() => {
     dispatch(getAllClinic());

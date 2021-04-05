@@ -84,7 +84,7 @@ function SignUp({ match }) {
   useEffect(() => {
     if (encodeString !== "") dispatch(resolveToken(encodeString));
     else history.push("/auth/sign-in");
-  }, [dispatch, encodeString]);
+  }, [dispatch, encodeString, history]);
 
   return (
     <Wrapper>
