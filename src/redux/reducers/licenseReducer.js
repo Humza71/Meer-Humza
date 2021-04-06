@@ -5,6 +5,7 @@ import {
   getAllLicense,
   updateLicense,
   getAllLicenseByAdmin,
+  deleteLicense,
 } from "services/licenseService";
 import { setClinic } from "redux/reducers/clientReducer";
 export const LoadingStates = {
@@ -42,6 +43,12 @@ export const slice = createSlice({
     setCompany: (state, action) => {
       state.companyInfo = action.payload;
     },
+    setLicenses: (state, action) => {
+      const newLicenses = state.allLicenses.filter(
+        ({ _id }) => _id !== action.payload
+      );
+      state.allLicenses = [...newLicenses];
+    },
     clearLicense: (state, action) => {
       state.userInfo = initialState.userInfo;
       state.license = initialState.license;
@@ -57,6 +64,7 @@ export const {
   setCompany,
   clearLicense,
   setAllLicenses,
+  setLicenses,
   // setAdminLicenses,
 } = slice.actions;
 
@@ -170,6 +178,24 @@ export const licenseData = (values, dataSubmitted) => async (dispatch) => {
     console.log(error, "Error");
   }
   //   dispatch(setLoading(null));
+};
+
+export const deleteLicenseById = (id, handleDeleteDialogue) => async (
+  dispatch
+) => {
+  // dispatch(setLoading(LoadingStates.DELETE_REPORT_LOADING));
+
+  try {
+    const response = await deleteLicense(id);
+    if (response.status === 200) {
+      dispatch(setLicenses(id));
+      handleDeleteDialogue();
+      console.log("License deleted successfully");
+    }
+  } catch (error) {
+    console.log(error, "Error");
+  }
+  // dispatch(setLoading(null));
 };
 
 export default slice.reducer;

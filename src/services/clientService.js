@@ -1,6 +1,20 @@
-import { postUtil, getUtil } from "../utils/apiService";
+import { postUtil, getUtil, deleteUtil } from "../utils/apiService";
+
+// const parseClinicInfo = (data) => {
+//   const formData = new FormData();
+//   Object.keys(data).map((key) => {
+//     if (key === "addresses") {
+//       const address = JSON.stringify(data[key]);
+//       formData.append("addresses", address);
+//     } else {
+//       formData.append(key, data[key]);
+//     }
+//   });
+//   return formData;
+// };
 
 export function addCompany(payload) {
+  // const data = parseClinicInfo(payload);
   return new Promise((resolve, reject) => {
     postUtil("/api/clinic/add", payload)
       .then((response) => {
@@ -17,6 +31,7 @@ export function addCompany(payload) {
 
 export function updateCompany(payload) {
   const { id = "" } = payload || {};
+  // const data = parseClinicInfo(payload);
   return new Promise((resolve, reject) => {
     postUtil(`/api/update/clinic/${id}`, payload)
       .then((response) => {
@@ -60,3 +75,18 @@ export function getCompany(id) {
       });
   });
 }
+
+export const deleteClinic = async (id) => {
+  return new Promise((resolve, reject) => {
+    deleteUtil(`/api/delete/clinic/${id}`)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

@@ -123,7 +123,7 @@ const Reports = () => {
       clinic: "Audiology Center of Maine",
       user: userName,
       _id: _id,
-      status,
+      status: status === "generated" ? "Generated" : "Draft",
     })
   );
 

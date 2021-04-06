@@ -476,28 +476,7 @@ const ReportTable = (props) => {
         </DialogActions>
       </Dialog>
     );
-    // <div style={modalStyle} className={classes.paper}>
-    //   <h2 id="simple-modal-title">Confirmation</h2>
-    //   <p id="simple-modal-description">
-    //     Are you sure you want to delete this report
-    //   </p>
-    //   <Box>
-    //     <Grid container justifyContent="space-between" spacing={6}>
-    //       <Grid Item md={2}>
-    //         <button
-    //           color="primary"
-    //           onClick={() => dispatch(deleteReportById(myReportId))}
-    //         >
-    //           Yes
-    //         </button>
-    //       </Grid>
 
-    //       <Grid Item md={2}>
-    //         <button onClick={handleCloseDialogue}>No</button>
-    //       </Grid>
-    //     </Grid>
-    //   </Box>
-    // </div>
     return (
       <>
         <Modal
@@ -535,7 +514,7 @@ const ReportTable = (props) => {
 
             <Typography variant="inherit">Edit</Typography>
           </MenuItem>
-          {status === "publish" && (
+          {status === "Generated" && (
             <MenuItem>
               <SaveAltIcon color="primary" />
 

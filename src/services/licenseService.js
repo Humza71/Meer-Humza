@@ -1,4 +1,4 @@
-import { postUtil, getUtil } from "../utils/apiService";
+import { postUtil, getUtil, deleteUtil } from "../utils/apiService";
 export function addLicense(payload) {
   return new Promise((resolve, reject) => {
     postUtil("/api/add/license", payload)
@@ -73,3 +73,18 @@ export function getLicense(id) {
       });
   });
 }
+
+export const deleteLicense = async (id) => {
+  return new Promise((resolve, reject) => {
+    deleteUtil(`/api/delete/license/${id}`)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

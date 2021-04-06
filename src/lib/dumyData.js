@@ -3,6 +3,7 @@ function createData(
   lastName,
   firstName,
   birthday,
+  status,
   physician,
   technician,
   headDoctor,
@@ -16,6 +17,7 @@ function createData(
     lastName,
     firstName,
     birthday,
+    status,
     physician,
     technician,
     headDoctor,
@@ -226,6 +228,12 @@ export const headCells = [
     label: "FIRST NAME",
   },
   { id: "birthday", numeric: false, disablePadding: false, label: "DOB" },
+  {
+    id: "status",
+    numeric: false,
+    disablePadding: false,
+    label: "STATUS",
+  },
   {
     id: "physician",
     numeric: false,

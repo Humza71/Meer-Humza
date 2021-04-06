@@ -31,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
   marginSetting: {
     marginRight: "15px",
   },
+  container: {
+    justifyContent: "flex-end",
+    paddingBottom: "15px",
+  },
 }));
 
 const Grid = styled(MuiGrid)(spacing);
@@ -115,9 +119,8 @@ export const headCells = [
 //   ),
 // ];
 
-const SimpleTableDemo = ({ setOpenModal }) => {
+const SimpleTableDemo = ({ setOpenModal, role, licenseRemaining }) => {
   const classes = useStyles();
-  // const history = useHistory();
 
   const addNewLicense = () => {
     setOpenModal(true);
@@ -125,6 +128,15 @@ const SimpleTableDemo = ({ setOpenModal }) => {
 
   return (
     <React.Fragment>
+      {role === "super_admin" && (
+        <Grid container spacing={24} className={classes.container}>
+          <Grid item justifyContent="end">
+            <Typography color="primary">
+              License Remaining:{licenseRemaining}
+            </Typography>
+          </Grid>
+        </Grid>
+      )}
       <Grid container justify="space-between" alignItems="center" mb={5}>
         <Grid item>
           <Box alignItems="center" display="flex" justifyContent="start">
@@ -145,14 +157,16 @@ const SimpleTableDemo = ({ setOpenModal }) => {
           >
             Reporting View
           </Button>
-          <Button
-            className={[classes.root, classes.label]}
-            onClick={addNewLicense}
-            variant="outlined"
-            size="medium"
-          >
-            New License
-          </Button>
+          {licenseRemaining > 0 && (
+            <Button
+              className={[classes.root, classes.label]}
+              onClick={addNewLicense}
+              variant="outlined"
+              size="medium"
+            >
+              New License
+            </Button>
+          )}
         </Grid>
       </Grid>
     </React.Fragment>
@@ -189,7 +203,11 @@ const SimpleTable = () => {
   return (
     <Box p={12}>
       <Helmet title="Dashboard" />
-      <SimpleTableDemo setOpenModal={setOpenModal} />
+      <SimpleTableDemo
+        setOpenModal={setOpenModal}
+        role={user.role}
+        licenseRemaining={10}
+      />
       <LicenseTable
         myData={myData}
         data={myData}

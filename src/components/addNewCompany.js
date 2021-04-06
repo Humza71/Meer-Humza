@@ -80,7 +80,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().required("Required"),
   phoneNumber: Yup.string().required("Required"),
   addressOne: Yup.string().required("Required"),
-  addressTwo: Yup.string().required("Required"),
+  addressTwo: Yup.string(),
   city: Yup.string().required("Required"),
   state: Yup.string().required("Required"),
   zipCode: Yup.string().required("Required"),
@@ -102,6 +102,7 @@ const InnerForm = (props) => {
   } = props;
 
   const reportLoading = useSelector((state) => state.clientReducer.loading);
+  // const [error, setError] = React.useState("");
 
   return (
     <>
@@ -348,6 +349,7 @@ const CompanyForm = ({ editCompany = {}, setOpen }) => {
 
   const handleSubmit = (e, values) => {
     e.preventDefault();
+
     if (values.companyId === "") {
       dispatch(
         createCompany(

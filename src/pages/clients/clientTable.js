@@ -23,8 +23,14 @@ import {
   Menu,
   MenuItem,
   Typography as MuiTypography,
+  Modal,
+  Button,
   // TextField,
   Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@material-ui/core";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import {
@@ -34,7 +40,6 @@ import {
 } from "@material-ui/icons";
 // import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import SaveAltIcon from "@material-ui/icons/SaveAlt";
 
 import FilterListIcon from "@material-ui/icons/FilterList";
 import { spacing } from "@material-ui/system";
@@ -42,7 +47,11 @@ import { spacing } from "@material-ui/system";
 import SearchInput from "components/SearchInput";
 import AdvancedSelect from "components/AdvancedSelect";
 import CompanyForm from "components/addNewCompany";
-import { getCompanyById, clearClinic } from "redux/reducers/clientReducer";
+import {
+  getCompanyById,
+  clearClinic,
+  deleteClinicById,
+} from "redux/reducers/clientReducer";
 // import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 
@@ -327,6 +336,8 @@ const ClientTable = (props) => {
 
   const Actions = ({ id, status }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [openDelete, setOpenDelete] = React.useState(null);
+    // const [clientId, setClientId] = React.useState(null);
     // const [downloading, setDownloading] = React.useState(false);
     // React.useEffect(() => {
     //   debugger;
@@ -339,9 +350,57 @@ const ClientTable = (props) => {
     const handleClose = () => {
       setAnchorEl(null);
     };
+    const handleDeleteOpen = () => {
+      setOpenDelete(true);
+    };
+
+    const handleDeleteDialogue = () => {
+      setOpenDelete(false);
+    };
+    // const deleteClient = () => {
+    //   dispatch(deleteClinicById(id));
+    // };
+
+    const DeleteBody = (
+      <Dialog
+        open={openDelete}
+        onClose={handleDeleteDialogue}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Confirm Delete Report"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this report?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteDialogue} color="action">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => dispatch(deleteClinicById(id, handleDeleteDialogue))}
+            color="primary"
+            autoFocus
+          >
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
 
     return (
       <>
+        <Modal
+          open={openDelete}
+          onClose={handleDeleteDialogue}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          {DeleteBody}
+        </Modal>
         <MoreVertIcon onClick={handleClick} />
         <Menu
           id="simple-menu"
@@ -365,14 +424,16 @@ const ClientTable = (props) => {
           </MenuItem>
 
           <MenuItem>
-            <SaveAltIcon color="primary" />
-
-            <Typography variant="inherit">Download</Typography>
-          </MenuItem>
-          <MenuItem>
             <DeleteIcon color="primary" />
 
-            <Typography variant="inherit">Delete</Typography>
+            <Typography
+              variant="inherit"
+              onClick={() => {
+                handleDeleteOpen();
+              }}
+            >
+              Delete
+            </Typography>
           </MenuItem>
         </Menu>
       </>
@@ -435,14 +496,7 @@ const ClientTable = (props) => {
                         )
                     )}
                     <TableCell align="left">
-                      <Grid
-                        container
-                        alignItems="center"
-                        justify="space-between"
-                      >
-                        <Grid Item>
-                          <Icon src={"./static/img/note.png"} />
-                        </Grid>
+                      <Grid container alignItems="center">
                         <Grid Item>
                           <Icon
                             onClick={() => {
@@ -453,7 +507,7 @@ const ClientTable = (props) => {
                         </Grid>
                         <Grid Item>
                           <IconButton aria-label="actions">
-                            <Actions id={row._id} />
+                            <Actions id={row.id} />
                           </IconButton>
                         </Grid>
                       </Grid>
