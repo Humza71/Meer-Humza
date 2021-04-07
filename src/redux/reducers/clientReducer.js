@@ -4,6 +4,7 @@ import {
   getAllCompany,
   getCompany,
   updateCompany,
+  deleteClinic,
 } from "services/clientService";
 
 export const LoadingStates = {
@@ -28,6 +29,12 @@ export const slice = createSlice({
     setClinic: (state, action) => {
       state.clinic = action.payload;
     },
+    setClinics: (state, action) => {
+      const newClinics = state.allClinics.filter(
+        ({ _id }) => _id !== action.payload
+      );
+      state.allClinics = [...newClinics];
+    },
     clearClinic: (state, action) => {
       state.clinic = initialState.clinic;
     },
@@ -39,6 +46,7 @@ export const {
   setAllClinics,
   setClinic,
   clearClinic,
+  setClinics,
 } = slice.actions;
 
 export const createCompany = (values, onCreationCompany) => async (
@@ -97,6 +105,25 @@ export const getCompanyById = (id) => async (dispatch) => {
     console.log(error, "Error");
   }
   dispatch(setLoading(null));
+};
+
+export const deleteClinicById = (id, handleDeleteDialogue) => async (
+  dispatch
+) => {
+  // dispatch(setLoading(LoadingStates.DELETE_REPORT_LOADING));
+  // Need to be replaced by the service that does API call
+
+  try {
+    const response = await deleteClinic(id);
+    if (response.status === 200) {
+      dispatch(setClinics(id));
+      handleDeleteDialogue();
+      console.log("Clinic deleted successfully");
+    }
+  } catch (error) {
+    console.log(error, "Error");
+  }
+  // dispatch(setLoading(null));
 };
 
 export default slice.reducer;

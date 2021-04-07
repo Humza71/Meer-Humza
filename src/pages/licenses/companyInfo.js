@@ -333,6 +333,7 @@ const CompanyInfo = (props) => {
     props.setValue(0);
     if (user.role === "super_admin") {
       dispatch(clearClinic());
+      props.setClinicSelected(false);
     }
   };
 

@@ -468,19 +468,17 @@ const PatientForm = (props) => {
   // }, []);
   const handleSave = (values, isValid) => {
     if (isValid) {
-      if (values.ssn.length === 4) {
-        dispatch(
-          updateReport(
-            {
-              ...values,
-              id,
-              dateOfBirth: values.dateOfBirth.toISOString(),
-              encounterDate: new Date(values.encounterDate).toISOString(),
-            },
-            onSuccess
-          )
-        );
-      }
+      dispatch(
+        updateReport(
+          {
+            ...values,
+            id,
+            dateOfBirth: values.dateOfBirth.toISOString(),
+            encounterDate: new Date(values.encounterDate).toISOString(),
+          },
+          onSuccess
+        )
+      );
     }
 
     // dispatch(
@@ -495,17 +493,15 @@ const PatientForm = (props) => {
   const handleSubmit = (values, isValid, e) => {
     e.preventDefault();
     if (isValid) {
-      if (values.ssn.length === 4) {
-        try {
-          handleSave(values);
-          dispatch(setStepNewReport(stepNewReport + 1));
-          // setStatus({ sent: true });
-          // setSubmitting(false);
-        } catch (error) {
-          // setStatus({ sent: false });
-          // setErrors({ submit: error.message });
-          // setSubmitting(false);
-        }
+      try {
+        handleSave(values, true);
+        dispatch(setStepNewReport(stepNewReport + 1));
+        // setStatus({ sent: true });
+        // setSubmitting(false);
+      } catch (error) {
+        // setStatus({ sent: false });
+        // setErrors({ submit: error.message });
+        // setSubmitting(false);
       }
     } else {
       console.log("Invalid form");

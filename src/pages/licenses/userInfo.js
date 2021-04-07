@@ -55,7 +55,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().required("Required"),
   phoneNumber: Yup.string().required("Required"),
   addressOne: Yup.string().required("Required"),
-  addressTwo: Yup.string().required("Required"),
+  addressTwo: Yup.string(),
   city: Yup.string().required("Required"),
   state: Yup.string().required("Required"),
   zipCode: Yup.string().required("Required"),

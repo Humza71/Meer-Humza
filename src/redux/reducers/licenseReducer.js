@@ -5,6 +5,7 @@ import {
   getAllLicense,
   updateLicense,
   getAllLicenseByAdmin,
+  deleteLicense,
 } from "services/licenseService";
 import { setClinic } from "redux/reducers/clientReducer";
 export const LoadingStates = {
@@ -15,6 +16,8 @@ const initialState = {
   allLicenses: [],
   license: {},
   userInfo: {},
+  availableLicenses: "",
+
   // adminLicenses: [],
   companyInfo: {},
   // singleLicense: {},
@@ -29,6 +32,9 @@ export const slice = createSlice({
     },
     setAllLicenses: (state, action) => {
       state.allLicenses = action.payload.licenseInfo;
+      state.availableLicenses = action.payload.availableLicenses
+        ? action.payload.availableLicenses
+        : 0;
     },
     setUser: (state, action) => {
       state.userInfo = action.payload;
@@ -41,6 +47,17 @@ export const slice = createSlice({
     // },
     setCompany: (state, action) => {
       state.companyInfo = action.payload;
+    },
+    setLicenses: (state, action) => {
+      const newLicenses = state.allLicenses.filter(
+        ({ id }) => id !== action.payload
+      );
+      state.allLicenses = [...newLicenses];
+    },
+    setRemainingLicense: (state, action) => {
+      if (state.availableLicenses > 0) {
+        state.availableLicenses = state.availableLicenses + 1;
+      }
     },
     clearLicense: (state, action) => {
       state.userInfo = initialState.userInfo;
@@ -57,6 +74,8 @@ export const {
   setCompany,
   clearLicense,
   setAllLicenses,
+  setLicenses,
+  setRemainingLicense,
   // setAdminLicenses,
 } = slice.actions;
 
@@ -170,6 +189,25 @@ export const licenseData = (values, dataSubmitted) => async (dispatch) => {
     console.log(error, "Error");
   }
   //   dispatch(setLoading(null));
+};
+
+export const deleteLicenseById = (id, handleDeleteDialogue) => async (
+  dispatch
+) => {
+  // dispatch(setLoading(LoadingStates.DELETE_REPORT_LOADING));
+
+  try {
+    const response = await deleteLicense(id);
+    if (response.status === 200) {
+      dispatch(setLicenses(id));
+      dispatch(setRemainingLicense());
+      handleDeleteDialogue();
+      console.log("License deleted successfully");
+    }
+  } catch (error) {
+    console.log(error, "Error");
+  }
+  // dispatch(setLoading(null));
 };
 
 export default slice.reducer;

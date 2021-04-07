@@ -5,13 +5,13 @@ import Header from "../components/AppBar";
 
 import { spacing } from "@material-ui/system";
 import { CssBaseline, Paper as MuiPaper, withWidth } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // import { userInfo } from "../redux/reducers/authReducer";
 import {
   getAllProviders,
   getAllTechnicians,
 } from "redux/reducers/reportReducer";
-
+import { getClinic } from "redux/reducers/authReducer";
 const drawerWidth = 288;
 const drawerMiniWidth = 122;
 
@@ -72,7 +72,7 @@ const MainContent = styled(Paper)`
 const Dashboard = ({ children, routes }) => {
   const dispatch = useDispatch();
   const [navExpand, setNavExpand] = useState(true);
-  // const userProfile = useSelector((state) => state.authReducer.user);
+  const user = useSelector((state) => state.authReducer.user);
 
   const handleDrawerToggle = () => {
     console.log(navExpand);
@@ -91,7 +91,8 @@ const Dashboard = ({ children, routes }) => {
     // dispatch(userInfo());
     dispatch(getAllProviders());
     dispatch(getAllTechnicians());
-  }, [dispatch]);
+    dispatch(getClinic(user.clinicId));
+  }, [dispatch, user]);
 
   return (
     <Root>

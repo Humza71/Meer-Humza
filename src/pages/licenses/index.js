@@ -13,7 +13,7 @@ import { spacing } from "@material-ui/system";
 import { useDispatch, useSelector } from "react-redux";
 // import { useHistory } from "react-router";
 import { getLicenses, getLicensesByAdmin } from "redux/reducers/licenseReducer";
-import { getClinic } from "redux/reducers/authReducer";
+// import { getClinic } from "redux/reducers/authReducer";
 import LicenseTable from "./licenseTable";
 
 const Button = styled(MuiButton)``;
@@ -30,6 +30,10 @@ const useStyles = makeStyles((theme) => ({
 
   marginSetting: {
     marginRight: "15px",
+  },
+  container: {
+    justifyContent: "flex-end",
+    paddingBottom: "15px",
   },
 }));
 
@@ -115,9 +119,8 @@ export const headCells = [
 //   ),
 // ];
 
-const SimpleTableDemo = ({ setOpenModal }) => {
+const SimpleTableDemo = ({ setOpenModal, role, licenseRemaining }) => {
   const classes = useStyles();
-  // const history = useHistory();
 
   const addNewLicense = () => {
     setOpenModal(true);
@@ -125,6 +128,15 @@ const SimpleTableDemo = ({ setOpenModal }) => {
 
   return (
     <React.Fragment>
+      {role === "admin" && (
+        <Grid container spacing={24} className={classes.container}>
+          <Grid item justifyContent="end">
+            <Typography color="primary">
+              License Remaining:{licenseRemaining}
+            </Typography>
+          </Grid>
+        </Grid>
+      )}
       <Grid container justify="space-between" alignItems="center" mb={5}>
         <Grid item>
           <Box alignItems="center" display="flex" justifyContent="start">
@@ -145,14 +157,27 @@ const SimpleTableDemo = ({ setOpenModal }) => {
           >
             Reporting View
           </Button>
-          <Button
-            className={[classes.root, classes.label]}
-            onClick={addNewLicense}
-            variant="outlined"
-            size="medium"
-          >
-            New License
-          </Button>
+          {role === "super_admin" ? (
+            <Button
+              className={[classes.root, classes.label]}
+              onClick={addNewLicense}
+              variant="outlined"
+              size="medium"
+            >
+              New License
+            </Button>
+          ) : (
+            licenseRemaining > 0 && (
+              <Button
+                className={[classes.root, classes.label]}
+                onClick={addNewLicense}
+                variant="outlined"
+                size="medium"
+              >
+                New License
+              </Button>
+            )
+          )}
         </Grid>
       </Grid>
     </React.Fragment>
@@ -164,6 +189,9 @@ const SimpleTable = () => {
   const [openModal, setOpenModal] = React.useState(false);
   const allLicenses = useSelector((state) => state.licenseReducer.allLicenses);
   const user = useSelector((state) => state.authReducer.user);
+  const licenseRemaining = useSelector(
+    (state) => state.licenseReducer.availableLicenses
+  );
 
   const myData = allLicenses.map(
     ({ dateCreated, dateExpiry, id, userName, userEmail, companyName }) => ({
@@ -177,11 +205,11 @@ const SimpleTable = () => {
   );
 
   React.useEffect(() => {
-    const { clinicId = "", role = "" } = user || {};
+    const { role = "" } = user || {};
     if (role === "super_admin") {
       dispatch(getLicensesByAdmin());
     } else {
-      dispatch(getClinic(clinicId));
+      // dispatch(getClinic(clinicId));
       dispatch(getLicenses());
     }
   }, [dispatch, user]);
@@ -189,7 +217,11 @@ const SimpleTable = () => {
   return (
     <Box p={12}>
       <Helmet title="Dashboard" />
-      <SimpleTableDemo setOpenModal={setOpenModal} />
+      <SimpleTableDemo
+        setOpenModal={setOpenModal}
+        role={user.role}
+        licenseRemaining={licenseRemaining}
+      />
       <LicenseTable
         myData={myData}
         data={myData}

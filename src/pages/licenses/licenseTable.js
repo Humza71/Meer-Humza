@@ -8,6 +8,7 @@ import { Box } from "@material-ui/core";
 import {
   Grid,
   IconButton,
+  Button,
   Paper as MuiPaper,
   Table,
   TableBody,
@@ -25,6 +26,12 @@ import {
   AppBar,
   Tabs as MuiTabs,
   Tab,
+  Modal,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  CircularProgress,
 } from "@material-ui/core";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import {
@@ -34,7 +41,6 @@ import {
 } from "@material-ui/icons";
 
 import DeleteIcon from "@material-ui/icons/Delete";
-import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import { spacing } from "@material-ui/system";
 
@@ -44,7 +50,12 @@ import LicenseInfo from "./licenseInfo";
 import UserInfo from "./userInfo";
 import CompanyInfo from "./companyInfo";
 import { useDispatch, useSelector } from "react-redux";
-import { clearLicense, getLicenseById } from "redux/reducers/licenseReducer";
+import {
+  LoadingStates,
+  clearLicense,
+  getLicenseById,
+  deleteLicenseById,
+} from "redux/reducers/licenseReducer";
 import {
   getAllClinic,
   getCompanyById,
@@ -287,6 +298,7 @@ const LicenseTable = (props) => {
     return state.authReducer.user;
   });
   const allClinics = useSelector((state) => state.clientReducer.allClinics);
+  const licenseCreating = useSelector((state) => state.licenseReducer.loading);
 
   const [filteredColumns, setFilteredColumns] = React.useState(
     columns.filter((item) => item.id !== "actions").map((item) => item.label)
@@ -397,8 +409,9 @@ const LicenseTable = (props) => {
     }
   }, [dispatch, user]);
 
-  const Actions = ({ id, status }) => {
+  const Actions = ({ id }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [openDelete, setOpenDelete] = React.useState(null);
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -407,9 +420,56 @@ const LicenseTable = (props) => {
     const handleClose = () => {
       setAnchorEl(null);
     };
+    const handleDeleteOpen = () => {
+      setOpenDelete(true);
+    };
+
+    const handleDeleteDialogue = () => {
+      setOpenDelete(false);
+    };
+
+    const DeleteBody = (
+      <Dialog
+        open={openDelete}
+        onClose={handleDeleteDialogue}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Confirm Delete License"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this License?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            color="secondary"
+            onClick={() =>
+              dispatch(deleteLicenseById(id, handleDeleteDialogue))
+            }
+            autoFocus
+          >
+            Confirm
+          </Button>
+          <Button color="primary" onClick={handleDeleteDialogue}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
 
     return (
       <>
+        <Modal
+          open={openDelete}
+          onClose={handleDeleteDialogue}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          {DeleteBody}
+        </Modal>
         <MoreVertIcon onClick={handleClick} />
         <Menu
           id="simple-menu"
@@ -433,14 +493,16 @@ const LicenseTable = (props) => {
           </MenuItem>
 
           <MenuItem>
-            <SaveAltIcon color="primary" />
-
-            <Typography variant="inherit">Download</Typography>
-          </MenuItem>
-          <MenuItem>
             <DeleteIcon color="primary" />
 
-            <Typography variant="inherit">Delete</Typography>
+            <Typography
+              variant="inherit"
+              onClick={() => {
+                handleDeleteOpen();
+              }}
+            >
+              Delete
+            </Typography>
           </MenuItem>
         </Menu>
       </>
@@ -525,7 +587,7 @@ const LicenseTable = (props) => {
                     handleClinicAddition(e.target.value);
                     setClinicSelected(true);
                   }}
-                  renderValue={() => "Columns"}
+                  // renderValue={() => "Columns"}
                   name="clinics"
                   label="Clinics"
                   options={allClinics.map((item, index) => ({
@@ -543,6 +605,7 @@ const LicenseTable = (props) => {
             )}
             {clinicSelected === true && (
               <CompanyInfo
+                setClinicSelected={setClinicSelected}
                 setOpen={setOpen}
                 value={value}
                 setValue={setValue}
@@ -551,82 +614,85 @@ const LicenseTable = (props) => {
           </TabPanel>
         </div>
       </Dialog>
-      <Paper>
-        <TableToolbar
-          data={data}
-          columns={columns}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          handleChangePage={handleChangePage}
-          handleChangeRowsPerPage={handleChangeRowsPerPage}
-          filteredColumns={filteredColumns}
-          searchString={searchString}
-          tableFormat={tableFormat}
-          setFilteredColumns={setFilteredColumns}
-          setSearchString={setSearchString}
-          setTableFormat={setTableFormat}
-        />
+      {licenseCreating === LoadingStates.LICENSE_CREATION_LOADING ? (
+        <Box display="flex" justifyContent="center" my={6}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Paper>
+          <TableToolbar
+            data={data}
+            columns={columns}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            handleChangePage={handleChangePage}
+            handleChangeRowsPerPage={handleChangeRowsPerPage}
+            filteredColumns={filteredColumns}
+            searchString={searchString}
+            tableFormat={tableFormat}
+            setFilteredColumns={setFilteredColumns}
+            setSearchString={setSearchString}
+            setTableFormat={setTableFormat}
+          />
 
-        <TableContainer className={classes.container}>
-          <Table
-            aria-labelledby="tableTitle"
-            size="medium"
-            aria-label="reports table"
-            stickyHeader
-          >
-            <ReportTableHead
-              columns={columns}
-              filteredColumns={filteredColumns}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
-            <TableBody>
-              {data.map((row, index) => {
-                const labelId = `report-table-${index}`;
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={labelId}>
-                    {columns.map(
-                      (headCell) =>
-                        filteredColumns.indexOf(headCell.label) !== -1 &&
-                        headCell.id !== "actions" && (
-                          <TableCell align="left" key={headCell.id}>
-                            {row[headCell.id]}
-                          </TableCell>
-                        )
-                    )}
-                    <TableCell align="left">
-                      <Grid
-                        container
-                        alignItems="center"
-                        justify="space-between"
-                      >
-                        <Grid Item>
-                          <ActionIcon src={"./static/img/circle.png"} />
+          <TableContainer className={classes.container}>
+            <Table
+              aria-labelledby="tableTitle"
+              size="medium"
+              aria-label="reports table"
+              stickyHeader
+            >
+              <ReportTableHead
+                columns={columns}
+                filteredColumns={filteredColumns}
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+              />
+              <TableBody>
+                {data.map((row, index) => {
+                  const labelId = `report-table-${index}`;
+                  return (
+                    <TableRow hover role="checkbox" tabIndex={-1} key={labelId}>
+                      {columns.map(
+                        (headCell) =>
+                          filteredColumns.indexOf(headCell.label) !== -1 &&
+                          headCell.id !== "actions" && (
+                            <TableCell align="left" key={headCell.id}>
+                              {row[headCell.id]}
+                            </TableCell>
+                          )
+                      )}
+                      <TableCell align="left">
+                        <Grid
+                          container
+                          alignItems="center"
+                          justify="space-between"
+                        >
+                          <Grid Item>
+                            <ActionIcon
+                              onClick={() => handleOpen(row.licenseId)}
+                              src={"./static/img/Edit.png"}
+                            />
+                          </Grid>
+                          <Grid Item>
+                            <IconButton aria-label="actions">
+                              <Actions id={row.licenseId} />
+                            </IconButton>
+                          </Grid>
                         </Grid>
-                        <Grid Item>
-                          <ActionIcon
-                            onClick={() => handleOpen(row.licenseId)}
-                            src={"./static/img/Edit.png"}
-                          />
-                        </Grid>
-                        <Grid Item>
-                          <IconButton aria-label="actions">
-                            <Actions id={row._id} />
-                          </IconButton>
-                        </Grid>
-                      </Grid>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-              <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+                <TableRow style={{ height: 53 * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+      )}
     </>
   );
 };

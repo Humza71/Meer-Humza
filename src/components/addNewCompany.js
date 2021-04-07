@@ -80,7 +80,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().required("Required"),
   phoneNumber: Yup.string().required("Required"),
   addressOne: Yup.string().required("Required"),
-  addressTwo: Yup.string().required("Required"),
+  addressTwo: Yup.string(),
   city: Yup.string().required("Required"),
   state: Yup.string().required("Required"),
   zipCode: Yup.string().required("Required"),
@@ -102,6 +102,7 @@ const InnerForm = (props) => {
   } = props;
 
   const reportLoading = useSelector((state) => state.clientReducer.loading);
+  const [error, setError] = React.useState("");
 
   return (
     <>
@@ -288,9 +289,28 @@ const InnerForm = (props) => {
                       type="file"
                       // hidden
                       onChange={(e) => {
-                        setFieldValue(`image`, e.target.files[0]);
+                        var _URL = window.URL || window.webkitURL;
+                        var img = new Image();
+                        var objectUrl = _URL.createObjectURL(e.target.files[0]);
+                        img.onload = function () {
+                          // alert(this.width + " " + this.height);
+                          if (this.width < 251 && this.height < 101) {
+                            setFieldValue(`logo`, e.target.files[0]);
+                            setError("");
+                          } else {
+                            setError(
+                              "image dimension should be 250*100 or less"
+                            );
+                          }
+                          _URL.revokeObjectURL(objectUrl);
+                        };
+                        img.src = objectUrl;
                       }}
                     />
+                    <div>image dimension 250*100px</div>
+                    <Box>
+                      <Typography color="error">{error}</Typography>
+                    </Box>
                   </Grid>
                 </Box>
                 <Box>
@@ -348,6 +368,7 @@ const CompanyForm = ({ editCompany = {}, setOpen }) => {
 
   const handleSubmit = (e, values) => {
     e.preventDefault();
+
     if (values.companyId === "") {
       dispatch(
         createCompany(
@@ -363,7 +384,7 @@ const CompanyForm = ({ editCompany = {}, setOpen }) => {
               addressTwo: values.addressTwo,
             },
             noOfLicenses: values.noOfLicenses,
-            image: values.image,
+            logo: values.logo,
           },
           onCreationCompany
         )
@@ -383,7 +404,7 @@ const CompanyForm = ({ editCompany = {}, setOpen }) => {
               addressTwo: values.addressTwo,
             },
             noOfLicenses: values.noOfLicenses,
-            image: values.image,
+            logo: values.logo,
             id: values.companyId,
           },
           onSubmitForm

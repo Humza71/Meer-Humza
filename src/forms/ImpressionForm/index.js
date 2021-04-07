@@ -268,7 +268,7 @@ const ImpressionForm = (props) => {
   const handleSave = (values) => {
     dispatch(
       impressionPlanReport({
-        status: "publish",
+        status: "generated",
         reportId: id,
         ...values,
       })
