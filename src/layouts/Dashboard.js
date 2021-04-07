@@ -92,7 +92,7 @@ const Dashboard = ({ children, routes }) => {
     dispatch(getAllProviders());
     dispatch(getAllTechnicians());
     dispatch(getClinic(user.clinicId));
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   return (
     <Root>

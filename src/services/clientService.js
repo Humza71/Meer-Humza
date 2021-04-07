@@ -6,8 +6,10 @@ const parseClinicInfo = (data) => {
     if (key === "addresses") {
       const address = JSON.stringify(data[key]);
       formData.append("addresses", address);
+      return formData;
     } else {
       formData.append(key, data[key]);
+      return formData;
     }
   });
   return formData;
