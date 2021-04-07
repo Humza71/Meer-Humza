@@ -436,25 +436,25 @@ const LicenseTable = (props) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Confirm Delete Report"}
+          {"Confirm Delete License"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this report?
+            Are you sure you want to delete this License?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteDialogue} color="action">
-            Cancel
-          </Button>
           <Button
+            color="secondary"
             onClick={() =>
               dispatch(deleteLicenseById(id, handleDeleteDialogue))
             }
-            color="primary"
             autoFocus
           >
-            Agree
+            Confirm
+          </Button>
+          <Button color="primary" onClick={handleDeleteDialogue}>
+            Cancel
           </Button>
         </DialogActions>
       </Dialog>

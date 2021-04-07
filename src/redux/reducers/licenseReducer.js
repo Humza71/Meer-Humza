@@ -16,6 +16,8 @@ const initialState = {
   allLicenses: [],
   license: {},
   userInfo: {},
+  availableLicenses: "",
+
   // adminLicenses: [],
   companyInfo: {},
   // singleLicense: {},
@@ -30,6 +32,9 @@ export const slice = createSlice({
     },
     setAllLicenses: (state, action) => {
       state.allLicenses = action.payload.licenseInfo;
+      state.availableLicenses = action.payload.availableLicenses
+        ? action.payload.availableLicenses
+        : 0;
     },
     setUser: (state, action) => {
       state.userInfo = action.payload;
@@ -45,9 +50,14 @@ export const slice = createSlice({
     },
     setLicenses: (state, action) => {
       const newLicenses = state.allLicenses.filter(
-        ({ _id }) => _id !== action.payload
+        ({ id }) => id !== action.payload
       );
       state.allLicenses = [...newLicenses];
+    },
+    setRemainingLicense: (state, action) => {
+      if (state.availableLicenses > 0) {
+        state.availableLicenses = state.availableLicenses + 1;
+      }
     },
     clearLicense: (state, action) => {
       state.userInfo = initialState.userInfo;
@@ -65,6 +75,7 @@ export const {
   clearLicense,
   setAllLicenses,
   setLicenses,
+  setRemainingLicense,
   // setAdminLicenses,
 } = slice.actions;
 
@@ -189,6 +200,7 @@ export const deleteLicenseById = (id, handleDeleteDialogue) => async (
     const response = await deleteLicense(id);
     if (response.status === 200) {
       dispatch(setLicenses(id));
+      dispatch(setRemainingLicense());
       handleDeleteDialogue();
       console.log("License deleted successfully");
     }

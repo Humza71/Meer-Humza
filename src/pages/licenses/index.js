@@ -13,7 +13,7 @@ import { spacing } from "@material-ui/system";
 import { useDispatch, useSelector } from "react-redux";
 // import { useHistory } from "react-router";
 import { getLicenses, getLicensesByAdmin } from "redux/reducers/licenseReducer";
-import { getClinic } from "redux/reducers/authReducer";
+// import { getClinic } from "redux/reducers/authReducer";
 import LicenseTable from "./licenseTable";
 
 const Button = styled(MuiButton)``;
@@ -128,7 +128,7 @@ const SimpleTableDemo = ({ setOpenModal, role, licenseRemaining }) => {
 
   return (
     <React.Fragment>
-      {role === "super_admin" && (
+      {role === "admin" && (
         <Grid container spacing={24} className={classes.container}>
           <Grid item justifyContent="end">
             <Typography color="primary">
@@ -157,7 +157,7 @@ const SimpleTableDemo = ({ setOpenModal, role, licenseRemaining }) => {
           >
             Reporting View
           </Button>
-          {licenseRemaining > 0 && (
+          {role === "super_admin" ? (
             <Button
               className={[classes.root, classes.label]}
               onClick={addNewLicense}
@@ -166,6 +166,17 @@ const SimpleTableDemo = ({ setOpenModal, role, licenseRemaining }) => {
             >
               New License
             </Button>
+          ) : (
+            licenseRemaining > 0 && (
+              <Button
+                className={[classes.root, classes.label]}
+                onClick={addNewLicense}
+                variant="outlined"
+                size="medium"
+              >
+                New License
+              </Button>
+            )
           )}
         </Grid>
       </Grid>
@@ -178,6 +189,9 @@ const SimpleTable = () => {
   const [openModal, setOpenModal] = React.useState(false);
   const allLicenses = useSelector((state) => state.licenseReducer.allLicenses);
   const user = useSelector((state) => state.authReducer.user);
+  const licenseRemaining = useSelector(
+    (state) => state.licenseReducer.availableLicenses
+  );
 
   const myData = allLicenses.map(
     ({ dateCreated, dateExpiry, id, userName, userEmail, companyName }) => ({
@@ -191,11 +205,11 @@ const SimpleTable = () => {
   );
 
   React.useEffect(() => {
-    const { clinicId = "", role = "" } = user || {};
+    const { role = "" } = user || {};
     if (role === "super_admin") {
       dispatch(getLicensesByAdmin());
     } else {
-      dispatch(getClinic(clinicId));
+      // dispatch(getClinic(clinicId));
       dispatch(getLicenses());
     }
   }, [dispatch, user]);
@@ -206,7 +220,7 @@ const SimpleTable = () => {
       <SimpleTableDemo
         setOpenModal={setOpenModal}
         role={user.role}
-        licenseRemaining={10}
+        licenseRemaining={licenseRemaining}
       />
       <LicenseTable
         myData={myData}

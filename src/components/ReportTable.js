@@ -89,6 +89,20 @@ const useStyles = makeStyles((theme) => ({
   item: {
     width: `40%`,
   },
+  body: {
+    width: "35px",
+    backgroundColor: "green",
+    padding: "9px",
+    borderRadius: "4px",
+    color: "white",
+  },
+  _body: {
+    width: "35px",
+    backgroundColor: "orange",
+    padding: "9px",
+    borderRadius: "4px",
+    color: "white",
+  },
 }));
 
 const SmallAdvancedSelect = styled(AdvancedSelect)`
@@ -463,15 +477,15 @@ const ReportTable = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialogue} color="action">
-            Cancel
-          </Button>
           <Button
             onClick={() => dispatch(deleteReportById(myReportId))}
-            color="primary"
+            color="secondary"
             autoFocus
           >
-            Agree
+            Confirm
+          </Button>
+          <Button onClick={handleCloseDialogue} color="primary">
+            Cancel
           </Button>
         </DialogActions>
       </Dialog>
@@ -782,11 +796,23 @@ const ReportTable = (props) => {
                       filteredColumns.indexOf(headCell.label) !== -1 &&
                       headCell.id !== "actions" && (
                         <TableCell align="left" key={headCell.id}>
-                          {row[headCell.id]}
+                          {headCell.id === "status" ? (
+                            <span
+                              className={
+                                row[headCell.id] === "Generated"
+                                  ? classes.body
+                                  : classes._body
+                              }
+                            >
+                              {row[headCell.id]}
+                            </span>
+                          ) : (
+                            row[headCell.id]
+                          )}
                         </TableCell>
                       )
                   )}
-                  <TableCell align="left">
+                  <TableCell>
                     <IconButton aria-label="actions">
                       <Actions id={row._id} status={row.status} />
                     </IconButton>

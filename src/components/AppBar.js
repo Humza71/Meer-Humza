@@ -23,7 +23,8 @@ const AppBar = styled(MuiAppBar)`
 `;
 
 const HeaderLogoIcon = styled.div`
-  background: url(/static/img/dashboard/header-logo.png);
+  background: ${({ background = `/static/img/dashboard/header-logo.png` }) =>
+    `url(${background})`};
   width: 186px;
   height: 24px;
   background-size: 100% 100%;
@@ -39,6 +40,8 @@ const IconButton = styled(MuiIconButton)`
 
 const AppBarComponent = ({ navExpand, onDrawerToggle }) => {
   const headerTitle = useSelector((state) => state.uiReducer.headerTitle);
+  const companyInfo = useSelector((state) => state.authReducer.clinic);
+  const user = useSelector((state) => state.authReducer.user);
 
   return (
     <React.Fragment>
@@ -60,7 +63,11 @@ const AppBarComponent = ({ navExpand, onDrawerToggle }) => {
               </Box>
             </Grid>
             <Grid item xs>
-              <HeaderLogoIcon />
+              {user.role === "super_admin" ? (
+                <HeaderLogoIcon />
+              ) : (
+                <HeaderLogoIcon background={companyInfo.logo} />
+              )}
             </Grid>
             <Grid item>
               <UserDropdown />

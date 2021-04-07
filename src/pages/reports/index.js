@@ -22,7 +22,9 @@ import ReportTable from "components/ReportTable";
 import { setHeaderTitle } from "redux/reducers/uiReducer";
 import { headCells } from "lib/dumyData";
 
-const Button = styled(MuiButton)(spacing);
+const Button = styled(MuiButton)`
+  margin-right: 20px;
+`;
 const Grid = styled(MuiGrid)(spacing);
 
 const ReportHeader = () => {
