@@ -108,24 +108,6 @@ const DateField = styled(TextField)`
 //   }
 // `;
 
-const validationSchema = Yup.object().shape({
-  ssn: Yup.string()
-    .required("Required")
-    .min(4, "Must be exactly 4 characters")
-    .max(4, "Must be exactly 4 characters"),
-
-  //   Yup.string()
-  // .required()
-
-  firstName: Yup.string().required("Required"),
-  lastName: Yup.string().required("Required"),
-  dateOfBirth: Yup.date().required("Required"),
-  encounterDate: Yup.date().required("Required"),
-  gender: Yup.string().required("Required"),
-  provider: Yup.number(),
-  technician: Yup.number(),
-});
-
 const InnerForm = (props) => {
   const dispatch = useDispatch();
   // const classes = useStyles();
@@ -193,6 +175,7 @@ const InnerForm = (props) => {
                 <Grid container spacing={6}>
                   <Grid item md={6}>
                     <TextField
+                      autoComplete="off"
                       name="firstName"
                       label="First Name"
                       value={values.firstName}
@@ -214,6 +197,7 @@ const InnerForm = (props) => {
                   </Grid>
                   <Grid item md={6}>
                     <TextField
+                      autoComplete="off"
                       name="lastName"
                       label="Last Name"
                       value={values.lastName}
@@ -279,6 +263,7 @@ const InnerForm = (props) => {
                 <Grid container spacing={6}>
                   <Grid item md={6}>
                     <TextField
+                      autoComplete="off"
                       type="password"
                       inputProps={{ maxLength: 4 }}
                       placeholder="****"
@@ -461,11 +446,7 @@ const PatientForm = (props) => {
       history.push(`/report/create/${reportId}`);
     }
   };
-  // useEffect(() => {
-  //   if (newReport.firstName) {
-  //     history.push("/report");
-  //   }
-  // }, []);
+
   const handleSave = (values, isValid) => {
     if (isValid) {
       dispatch(
@@ -480,21 +461,13 @@ const PatientForm = (props) => {
         )
       );
     }
-
-    // dispatch(
-    //   saveReport({
-    //     ...values,
-    //     dob: values.dob.toISOString(),
-    //     encounterDate: values.encounterDate.toISOString(),
-    //   })
-    // );
   };
 
   const handleSubmit = (values, isValid, e) => {
     e.preventDefault();
     if (isValid) {
       try {
-        handleSave(values, true);
+        handleSave(values, isValid);
         dispatch(setStepNewReport(stepNewReport + 1));
         // setStatus({ sent: true });
         // setSubmitting(false);
@@ -508,23 +481,51 @@ const PatientForm = (props) => {
     }
   };
 
+  const validationSchema = Yup.object().shape({
+    ssn: Yup.string()
+      .required("Required")
+      .min(4, "Must be exactly 4 characters")
+      .max(4, "Must be exactly 4 characters"),
+    firstName: Yup.string().required("Required"),
+    lastName: Yup.string().required("Required"),
+    dateOfBirth: Yup.date().required("Required"),
+    encounterDate: Yup.date().required("Required"),
+    gender: Yup.string().required("Required"),
+    provider: Yup.number(),
+    technician: Yup.number(),
+  });
+
+  const EditValidationSchema = Yup.object().shape({
+    ssn: Yup.string()
+      .min(4, "Must be exactly 4 characters")
+      .max(4, "Must be exactly 4 characters"),
+    firstName: Yup.string().required("Required"),
+    lastName: Yup.string().required("Required"),
+    dateOfBirth: Yup.date().required("Required"),
+    encounterDate: Yup.date().required("Required"),
+    gender: Yup.string().required("Required"),
+    provider: Yup.number(),
+    technician: Yup.number(),
+  });
+
   return (
     <React.Fragment>
       <Formik
         enableReinitialize
         initialValues={initialValues}
-        validationSchema={validationSchema}
+        validationSchema={!id ? validationSchema : EditValidationSchema}
         validate={(values) => {
           console.log(values);
           return {};
         }}
+        validateOnMount={true}
         // onSubmit={handleSubmit}
       >
         {(formProps) => (
           <Form
-            onSubmit={(e) =>
-              handleSubmit(formProps.values, formProps.isValid, e)
-            }
+            onSubmit={(e) => {
+              handleSubmit(formProps.values, formProps.isValid, e);
+            }}
           >
             <InnerForm {...formProps} />
             <CreateReportFooter

@@ -31,9 +31,11 @@ const EditorWrapper = styled.div`
 //   comments: "",
 // };
 
-const validationSchema = Yup.object().shape({});
+const validationSchema = Yup.object().shape({
+  comments: Yup.string().required("Required"),
+});
 
-const InnerForm = ({ setFieldValue, values }) => {
+const InnerForm = ({ setFieldValue, values, touched, errors }) => {
   const reportLoading = useSelector((state) => state.reportReducer.loading);
   return reportLoading === LoadingStates.REPORT_CREATION_LOADING ? (
     <Box display="flex" justifyContent="center" my={6}>
@@ -44,6 +46,8 @@ const InnerForm = ({ setFieldValue, values }) => {
       <ReportCard title={"Additional Tests & Comments"}>
         <EditorWrapper>
           <CKEditor
+            name="comments"
+            error={Boolean(touched.comments && errors.comments)}
             data={values["comments"]}
             config={{
               toolbar: [
@@ -107,7 +111,9 @@ const CommentsForm = (props) => {
     }
   }, [id, stepNewReport, props.history]);
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (e, values) => {
+    e.preventDefault();
+
     try {
       handleSave(values);
       dispatch(setStepNewReport(stepNewReport + 1));
@@ -134,12 +140,16 @@ const CommentsForm = (props) => {
         onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <form onSubmit={() => handleSubmit(formProps.values)}>
+          <form
+            onSubmit={(e) =>
+              handleSubmit(e, formProps.values, formProps.isValid)
+            }
+          >
             <InnerForm {...formProps} />
             <CreateReportFooter
               {...formProps}
               handleSave={() => {
-                handleSave(formProps.values);
+                handleSave(formProps.values, formProps.isValid);
               }}
             />
           </form>
