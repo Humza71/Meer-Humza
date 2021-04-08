@@ -37,6 +37,8 @@ import {
 // import { setMessage } from "./messageReducer";
 // import { createNewReport } from "services/reportService";
 
+import { getPdf } from "redux/reducers/dashboardReducer";
+
 export const LoadingStates = {
   REPORT_CREATION_LOADING: "Create Report Loading",
 };
@@ -572,12 +574,16 @@ export const getComments = (values) => async (dispatch) => {
   }
 };
 
-export const impressionPlanReport = (values) => async (dispatch) => {
+export const impressionPlanReport = (values, generateReport) => async (
+  dispatch
+) => {
   dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
   try {
     const response = await addImpressionPlan(values);
-    if (response) {
-      console.log("Comments added Successfully");
+    if (response.status === "SUCCESS") {
+      if (generateReport) {
+        dispatch(getPdf(response.data[0]));
+      }
     }
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));

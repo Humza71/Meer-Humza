@@ -38,7 +38,7 @@ const InnerForm = (props) => {
   ) : (
     <>
       <ReportCard cardsize={{ width: "680px" }} title="Rotary Chair">
-        <Section size={{ width: "183px" }}>
+        <Section size={{ width: "88%" }}>
           <span>Right</span>
           <Toggle
             name={`normality`}
@@ -47,6 +47,32 @@ const InnerForm = (props) => {
             options={[
               { title: "Normal", value: "normal" },
               { title: "Abnormal", value: "abnormal" },
+            ]}
+          />
+          <Toggle
+            togglesize={{
+              width: "144px",
+              height: "38px",
+            }}
+            name={`gain`}
+            value={values["right"]["gain"]}
+            onChange={(value) => setFieldValue(`right.gain`, value)}
+            options={[
+              { title: "High Gain", value: "highGain" },
+              { title: "Reduced Gain", value: "rg" },
+            ]}
+          />
+          <Toggle
+            togglesize={{
+              width: "210px",
+              height: "38px",
+            }}
+            name={`timeConstants`}
+            value={values["right"]["timeConstants"]}
+            onChange={(value) => setFieldValue(`right.timeConstants`, value)}
+            options={[
+              { title: "Short Time Constants", value: "stp" },
+              { title: "Long Time Constants", value: "ltc" },
             ]}
           />
         </Section>

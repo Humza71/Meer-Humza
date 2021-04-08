@@ -52,7 +52,6 @@ const useStyles = makeStyles((theme) => ({
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("Required"),
   lastName: Yup.string().required("Required"),
-  email: Yup.string().required("Required"),
   phoneNumber: Yup.string().required("Required"),
   addressOne: Yup.string().required("Required"),
   addressTwo: Yup.string(),
@@ -84,6 +83,7 @@ const InnerForm = (props) => {
           <Grid container spacing={12} justify="space-between">
             <Grid Item md={5.9}>
               <TextField
+                autoComplete="off"
                 name="firstName"
                 placeholder="First Name"
                 //   label="First Name"
@@ -99,6 +99,7 @@ const InnerForm = (props) => {
             </Grid>
             <Grid Item md={6}>
               <TextField
+                autoComplete="off"
                 name="lastName"
                 placeholder="Last Name "
                 //   label="First Name"
@@ -117,6 +118,7 @@ const InnerForm = (props) => {
         <Box mb={3}>
           <Grid container spacing={12}>
             <TextField
+              autoComplete="off"
               name="phoneNumber"
               placeholder="User phone number"
               value={values.phoneNumber}
@@ -133,6 +135,7 @@ const InnerForm = (props) => {
         <Box mb={3}>
           <Grid container spacing={12}>
             <TextField
+              autoComplete="off"
               name="addressOne"
               placeholder="Address line 1"
               // label="First Name"
@@ -150,6 +153,7 @@ const InnerForm = (props) => {
         <Box mb={3}>
           <Grid container spacing={12}>
             <TextField
+              autoComplete="off"
               name="addressTwo"
               placeholder="Address line 2"
               // label="First Name"
@@ -167,6 +171,7 @@ const InnerForm = (props) => {
         <Box mb={3}>
           <Grid container spacing={12}>
             <TextField
+              autoComplete="off"
               name="city"
               placeholder="City"
               // label="First Name"
@@ -185,6 +190,7 @@ const InnerForm = (props) => {
           <Grid container spacing={12} justify="space-between">
             <Grid item md={5.9}>
               <TextField
+                autoComplete="off"
                 name="state"
                 placeholder="State"
                 // label="Last Name"
@@ -200,6 +206,7 @@ const InnerForm = (props) => {
             </Grid>
             <Grid item md={6}>
               <TextField
+                autoComplete="off"
                 name="zipCode"
                 placeholder="ZIP code"
                 // label="Last Name"
@@ -262,25 +269,27 @@ const UserInfo = (props) => {
     props.setValue(props.value + 1);
   };
 
-  const handleSubmit = (e, values) => {
+  const handleSubmit = (e, values, isValid) => {
     e.preventDefault();
-    dispatch(
-      userData(
-        {
-          firstName: values.firstName,
-          lastName: values.lastName,
-          phoneNumber: values.phoneNumber,
-          addresses: {
-            addressOne: values.addressOne,
-            addressTwo: values.addressTwo,
+    if (isValid) {
+      dispatch(
+        userData(
+          {
+            firstName: values.firstName,
+            lastName: values.lastName,
+            phoneNumber: values.phoneNumber,
+            addresses: {
+              addressOne: values.addressOne,
+              addressTwo: values.addressTwo,
+            },
+            city: values.city,
+            state: values.state,
+            zipCode: values.zipCode,
           },
-          city: values.city,
-          state: values.state,
-          zipCode: values.zipCode,
-        },
-        dataSubmitted
-      )
-    );
+          dataSubmitted
+        )
+      );
+    }
   };
 
   // React.useEffect(() => {
@@ -299,10 +308,15 @@ const UserInfo = (props) => {
           console.log(values);
           return {};
         }}
+        // validateOnMount={true}
         // onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <Form onSubmit={(e) => handleSubmit(e, formProps.values)}>
+          <Form
+            onSubmit={(e) => {
+              handleSubmit(e, formProps.values, formProps.isValid);
+            }}
+          >
             <InnerForm {...formProps} setValue={props.setValue} />
           </Form>
         )}

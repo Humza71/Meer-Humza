@@ -126,6 +126,7 @@ const InnerForm = (props) => {
                   </Typography>
                   <Grid container spacing={12}>
                     <TextField
+                      autoComplete="off"
                       name="name"
                       placeholder="Company name"
                       // label="First Name"
@@ -144,6 +145,7 @@ const InnerForm = (props) => {
                   <Grid container spacing={12} justify="space-between">
                     <Grid item md={5.9}>
                       <TextField
+                        autoComplete="off"
                         name="email"
                         placeholder="Company email address"
                         // label="Last Name"
@@ -159,6 +161,7 @@ const InnerForm = (props) => {
                     </Grid>
                     <Grid item md={6}>
                       <TextField
+                        autoComplete="off"
                         name="phoneNumber"
                         placeholder="Company phone number"
                         // label="Last Name"
@@ -179,6 +182,7 @@ const InnerForm = (props) => {
                 <Box mb={3}>
                   <Grid container spacing={12}>
                     <TextField
+                      autoComplete="off"
                       name="addressOne"
                       placeholder="Address line 1"
                       // label="First Name"
@@ -196,6 +200,7 @@ const InnerForm = (props) => {
                 <Box mb={3}>
                   <Grid container spacing={12}>
                     <TextField
+                      autoComplete="off"
                       name="addressTwo"
                       placeholder="Address line 2"
                       // label="First Name"
@@ -213,6 +218,7 @@ const InnerForm = (props) => {
                 <Box mb={3}>
                   <Grid container spacing={12}>
                     <TextField
+                      autoComplete="off"
                       name="city"
                       placeholder="City"
                       // label="First Name"
@@ -231,6 +237,7 @@ const InnerForm = (props) => {
                   <Grid container spacing={12} justify="space-between">
                     <Grid item md={5.9}>
                       <TextField
+                        autoComplete="off"
                         name="state"
                         placeholder="State"
                         // label="Last Name"
@@ -246,6 +253,7 @@ const InnerForm = (props) => {
                     </Grid>
                     <Grid item md={6}>
                       <TextField
+                        autoComplete="off"
                         name="zipCode"
                         placeholder="ZIP code"
                         // label="Last Name"
@@ -264,6 +272,7 @@ const InnerForm = (props) => {
                 <Box mb={4}>
                   <Grid container spacing={12}>
                     <TextField
+                      autoComplete="off"
                       name="noOfLicenses"
                       placeholder="Number of Licenses"
                       type="number"
@@ -359,57 +368,52 @@ const CompanyForm = ({ editCompany = {}, setOpen }) => {
     setOpen(false);
   };
 
-  // React.useEffect(() => {
-  //   if (Object.keys(clinic).length > 0) {
-  //     debugger;
-  //     dispatch(clearClinic());
-  //   }
-  // }, [dispatch, clinic]);
-
-  const handleSubmit = (e, values) => {
+  const handleSubmit = (e, values, isValid) => {
     e.preventDefault();
 
-    if (values.companyId === "") {
-      dispatch(
-        createCompany(
-          {
-            name: values.name,
-            email: values.email,
-            phoneNumber: values.phoneNumber,
-            city: values.city,
-            state: values.state,
-            zipCode: values.zipCode,
-            addresses: {
-              addressOne: values.addressOne,
-              addressTwo: values.addressTwo,
+    if (isValid) {
+      if (values.companyId === "") {
+        dispatch(
+          createCompany(
+            {
+              name: values.name,
+              email: values.email,
+              phoneNumber: values.phoneNumber,
+              city: values.city,
+              state: values.state,
+              zipCode: values.zipCode,
+              addresses: {
+                addressOne: values.addressOne,
+                addressTwo: values.addressTwo,
+              },
+              noOfLicenses: values.noOfLicenses,
+              logo: values.logo,
             },
-            noOfLicenses: values.noOfLicenses,
-            logo: values.logo,
-          },
-          onCreationCompany
-        )
-      );
-    } else {
-      dispatch(
-        editCompanyById(
-          {
-            name: values.name,
-            email: values.email,
-            phoneNumber: values.phoneNumber,
-            city: values.city,
-            state: values.state,
-            zipCode: values.zipCode,
-            addresses: {
-              addressOne: values.addressOne,
-              addressTwo: values.addressTwo,
+            onCreationCompany
+          )
+        );
+      } else {
+        dispatch(
+          editCompanyById(
+            {
+              name: values.name,
+              email: values.email,
+              phoneNumber: values.phoneNumber,
+              city: values.city,
+              state: values.state,
+              zipCode: values.zipCode,
+              addresses: {
+                addressOne: values.addressOne,
+                addressTwo: values.addressTwo,
+              },
+              noOfLicenses: values.noOfLicenses,
+              logo: values.logo,
+              id: values.companyId,
             },
-            noOfLicenses: values.noOfLicenses,
-            logo: values.logo,
-            id: values.companyId,
-          },
-          onSubmitForm
-        )
-      );
+            onSubmitForm
+          )
+        );
+      }
     }
   };
 
@@ -425,7 +429,11 @@ const CompanyForm = ({ editCompany = {}, setOpen }) => {
         // onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <Form onSubmit={(e) => handleSubmit(e, formProps.values)}>
+          <Form
+            onSubmit={(e) =>
+              handleSubmit(e, formProps.values, formProps.isValid)
+            }
+          >
             <InnerForm {...formProps} editCompany={editCompany} />
           </Form>
         )}

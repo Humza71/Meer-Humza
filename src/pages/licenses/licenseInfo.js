@@ -57,10 +57,11 @@ const InnerForm = (props) => {
     touched,
     values,
     // status,
-    editLicense = false,
+    // editLicense = false,
   } = props;
   const classes = useStyles();
   const licenseLoading = useSelector((state) => state.licenseReducer.loading);
+  const user = useSelector((state) => state.authReducer.user);
 
   return (
     <>
@@ -76,7 +77,7 @@ const InnerForm = (props) => {
             </Typography>
             <Grid container spacing={12}>
               <TextField
-                disabled={editLicense}
+                autoComplete="off"
                 name="userEmail"
                 placeholder="User email address"
                 // label="Email"
@@ -94,10 +95,10 @@ const InnerForm = (props) => {
           <Box mt={6} mb={3}>
             <Grid container spacing={12}>
               <TextField
-                disabled={editLicense}
+                disabled={user.role === "admin" ? true : false}
                 name="dateExpiry"
                 type="date"
-                // label="Expiry Date"
+                label="Expiry Date"
                 value={values.dateExpiry}
                 error={Boolean(touched.dateExpiry && errors.dateExpiry)}
                 fullWidth
@@ -106,6 +107,7 @@ const InnerForm = (props) => {
                 onChange={handleChange}
                 variant="outlined"
                 my={2}
+                InputLabelProps={{ shrink: true, required: true }}
               />
             </Grid>
           </Box>
@@ -131,12 +133,17 @@ const LicenseInfo = (props) => {
   const licenseInfo = useSelector((state) => {
     return state.licenseReducer.license;
   });
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = d.getMonth();
+  const day = d.getDate();
+  const myDate = new Date(year + 1, month, day);
 
   const initialValues = {
     userEmail: licenseInfo.user ? licenseInfo.user.email : "",
     dateExpiry: licenseInfo.dateExpiry
       ? new Date(licenseInfo.dateExpiry).toISOString().slice(0, 10)
-      : "",
+      : new Date(myDate).toISOString().slice(0, 10),
     issueDate: licenseInfo.issueDate ? licenseInfo.issueDate : "",
     licenseId: licenseInfo.id ? licenseInfo.id : "",
   };
@@ -145,16 +152,12 @@ const LicenseInfo = (props) => {
     props.setValue(props.value + 1);
   };
 
-  const handleSubmit = (e, values) => {
+  const handleSubmit = (e, values, isValid) => {
     e.preventDefault();
-    dispatch(licenseData(values, dataSubmitted));
+    if (isValid) {
+      dispatch(licenseData(values, dataSubmitted));
+    }
   };
-
-  // React.useEffect(() => {
-  //   if (props.open === false) {
-  //     dispatch(clearLicenseData());
-  //   }
-  // }, [props.open, dispatch]);
 
   return (
     <React.Fragment>
@@ -162,17 +165,26 @@ const LicenseInfo = (props) => {
         enableReinitialize
         validationSchema={validationSchema}
         initialValues={initialValues}
-        validate={(values) => {
+        validateOnBlur={false}
+        validate={(values, errors) => {
           console.log(values);
           return {};
         }}
-        // onSubmit={handleSubmit}
+        initialTouched={{
+          userEmail: true,
+        }}
+        validateOnMount={true}
+        //onSubmit={handleSubmit}
       >
         {(formProps) => (
-          <Form onSubmit={(e) => handleSubmit(e, formProps.values)}>
+          <Form
+            onSubmit={(e) =>
+              handleSubmit(e, formProps.values, formProps.isValid)
+            }
+          >
             <InnerForm
               {...formProps}
-              editLicense={initialValues.licenseId !== "" && true}
+              // editLicense={initialValues.licenseId !== "" && true}
             />
           </Form>
         )}

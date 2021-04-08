@@ -265,13 +265,16 @@ const ImpressionForm = (props) => {
   //   debugger;
   // }, [impressionValues]);
 
-  const handleSave = (values) => {
+  const handleSave = (values, generateReport = false) => {
     dispatch(
-      impressionPlanReport({
-        status: "generated",
-        reportId: id,
-        ...values,
-      })
+      impressionPlanReport(
+        {
+          status: "generated",
+          reportId: id,
+          ...values,
+        },
+        generateReport
+      )
     );
   };
 
@@ -298,7 +301,7 @@ const ImpressionForm = (props) => {
   const handleSubmit = async (e, values) => {
     e.preventDefault();
     try {
-      handleSave(values);
+      handleSave(values, true);
 
       // setStatus({ sent: true });
       // setSubmitting(false);
