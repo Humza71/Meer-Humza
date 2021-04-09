@@ -64,6 +64,7 @@ export const getPdf = (reportId, setDownloading) => async (dispatch) => {
   try {
     const response = await getPdfReports(reportId);
     if (response) {
+      console.log(response.data);
       const linkSource = `data:application/pdf;base64,${response.data}`;
       const downloadLink = document.createElement("a");
       const fileName = "report.pdf";
