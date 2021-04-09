@@ -482,23 +482,14 @@ const PatientForm = (props) => {
   };
 
   const validationSchema = Yup.object().shape({
-    ssn: Yup.string()
-      .required("Required")
-      .min(4, "Must be exactly 4 characters")
-      .max(4, "Must be exactly 4 characters"),
-    firstName: Yup.string().required("Required"),
-    lastName: Yup.string().required("Required"),
-    dateOfBirth: Yup.date().required("Required"),
-    encounterDate: Yup.date().required("Required"),
-    gender: Yup.string().required("Required"),
-    provider: Yup.number(),
-    technician: Yup.number(),
-  });
-
-  const EditValidationSchema = Yup.object().shape({
-    ssn: Yup.string()
-      .min(4, "Must be exactly 4 characters")
-      .max(4, "Must be exactly 4 characters"),
+    ssn: !id
+      ? Yup.string()
+          .required("Required")
+          .min(4, "Must be exactly 4 characters")
+          .max(4, "Must be exactly 4 characters")
+      : Yup.string()
+          .min(4, "Must be exactly 4 characters")
+          .max(4, "Must be exactly 4 characters"),
     firstName: Yup.string().required("Required"),
     lastName: Yup.string().required("Required"),
     dateOfBirth: Yup.date().required("Required"),
@@ -513,7 +504,7 @@ const PatientForm = (props) => {
       <Formik
         enableReinitialize
         initialValues={initialValues}
-        validationSchema={!id ? validationSchema : EditValidationSchema}
+        validationSchema={validationSchema}
         validate={(values) => {
           console.log(values);
           return {};

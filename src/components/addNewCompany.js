@@ -14,6 +14,7 @@ import { useHistory } from "react-router";
 // import queryString from "query-string";
 // import { Alert as MuiAlert } from "@material-ui/lab";
 import { spacing } from "@material-ui/system";
+import CropImage from "./CropImage";
 
 import {
   Box,
@@ -63,16 +64,6 @@ const useStyles = makeStyles((theme) => ({
   outlinedPrimary: {
     color: "white",
   },
-
-  //   container: {
-  //     maxHeight: 500,
-  //     overflow: "auto",
-  //   },
-  //   columnsSelect: {
-  //     margin: theme.spacing(1),
-  //     minWidth: 120,
-  //     maxWidth: 300,
-  //   },
 }));
 
 const validationSchema = Yup.object().shape({
@@ -88,6 +79,7 @@ const validationSchema = Yup.object().shape({
 
 const InnerForm = (props) => {
   const classes = useStyles();
+
   // const dispatch = useDispatch();
   const {
     errors,
@@ -102,7 +94,6 @@ const InnerForm = (props) => {
   } = props;
 
   const reportLoading = useSelector((state) => state.clientReducer.loading);
-  const [error, setError] = React.useState("");
 
   return (
     <>
@@ -291,36 +282,7 @@ const InnerForm = (props) => {
                   </Grid>
                 </Box>
                 <Box mb={4}>
-                  <Grid container spacing={12}>
-                    Upload Company logo
-                    <input
-                      // value={values.image}
-                      type="file"
-                      // hidden
-                      onChange={(e) => {
-                        var _URL = window.URL || window.webkitURL;
-                        var img = new Image();
-                        var objectUrl = _URL.createObjectURL(e.target.files[0]);
-                        img.onload = function () {
-                          // alert(this.width + " " + this.height);
-                          if (this.width < 251 && this.height < 101) {
-                            setFieldValue(`logo`, e.target.files[0]);
-                            setError("");
-                          } else {
-                            setError(
-                              "image dimension should be 250*100 or less"
-                            );
-                          }
-                          _URL.revokeObjectURL(objectUrl);
-                        };
-                        img.src = objectUrl;
-                      }}
-                    />
-                    <div>image dimension 250*100px</div>
-                    <Box>
-                      <Typography color="error">{error}</Typography>
-                    </Box>
-                  </Grid>
+                  <CropImage setFieldValue={setFieldValue} />
                 </Box>
                 <Box>
                   <Button

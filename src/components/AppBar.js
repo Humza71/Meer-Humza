@@ -66,7 +66,9 @@ const AppBarComponent = ({ navExpand, onDrawerToggle }) => {
               {user.role === "super_admin" ? (
                 <HeaderLogoIcon />
               ) : (
-                <HeaderLogoIcon background={companyInfo.logo} />
+                <HeaderLogoIcon
+                  background={`${process.env.REACT_APP_BACKEND_ENDPOINT}/${companyInfo.logo}`}
+                />
               )}
             </Grid>
             <Grid item>
