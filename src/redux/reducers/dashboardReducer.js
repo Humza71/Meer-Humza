@@ -70,7 +70,9 @@ export const getPdf = (reportId, setDownloading) => async (dispatch) => {
       downloadLink.href = linkSource;
       downloadLink.download = fileName;
       downloadLink.click();
-      setDownloading();
+      if (setDownloading) {
+        setDownloading();
+      }
     }
   } catch (error) {
     console.log(error, "Error");
