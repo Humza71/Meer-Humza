@@ -63,9 +63,6 @@ export const getPdf = (reportId) => async (dispatch) => {
   // Need to be replaced by the service that does API call
 
   try {
-    const result = await getPdfHtml(reportId);
-    var newWindow = window.open();
-    newWindow.document.write(result.data);
     const response = await getPdfReports(reportId);
     if (response) {
       const linkSource = `data:application/pdf;base64,${response.data}`;
@@ -74,6 +71,9 @@ export const getPdf = (reportId) => async (dispatch) => {
       downloadLink.href = linkSource;
       downloadLink.download = fileName;
       downloadLink.click();
+      const result = await getPdfHtml(reportId);
+      var newWindow = window.open();
+      newWindow.document.write(result.data);
     }
   } catch (error) {
     console.log(error, "Error");
