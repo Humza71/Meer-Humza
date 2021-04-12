@@ -51,7 +51,7 @@ const Gaze = ({ formTitle, formKey, setFieldValue, values }) => {
         >
           {sections.map(({ title, parentKey, key }) => (
             <TableRow key={key}>
-              <BodyCell>{title}</BodyCell>
+              <BodyCell verticalAlign={"middle"}>{title}</BodyCell>
               <BodyCell>
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
@@ -82,9 +82,10 @@ const Gaze = ({ formTitle, formKey, setFieldValue, values }) => {
                   />
                 </Box>
               </BodyCell>
-              <BodyCell>
+              <BodyCell verticalAlign={"middle"}>
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
+                    // exclusive={false}
                     direction={"row"}
                     togglesize={{
                       width: "51px",
@@ -104,8 +105,8 @@ const Gaze = ({ formTitle, formKey, setFieldValue, values }) => {
                   />
                 </Box>
               </BodyCell>
-              <BodyCell>
-                <Box mb={2.5} mt={2.5}>
+              <BodyCell verticalAlign={"middle"}>
+                <Box mb={2.5} mt={1.5}>
                   <NumberPopUp
                     value={data[key]["deg"]}
                     onChange={(value) =>

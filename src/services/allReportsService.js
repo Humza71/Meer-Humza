@@ -46,6 +46,21 @@ export const getPdfReports = async (reportId) => {
   });
 };
 
+export function getPdfHtml(reportId) {
+  return new Promise((resolve, reject) => {
+    getUtil(`/api/view/pdf/${reportId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
 export const deleteReport = async (id) => {
   return new Promise((resolve, reject) => {
     deleteUtil(`/api/delete/report/${id}`)

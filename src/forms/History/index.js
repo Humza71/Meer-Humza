@@ -28,7 +28,7 @@ const InnerForm = (props) => {
 
   const labels = [
     "History of Present Illness (HPI)",
-    "AURAL SYMPTOMS",
+    "Aural Symptoms",
     "Other health conditions",
   ];
 
@@ -49,7 +49,7 @@ const InnerForm = (props) => {
                 isSubmitting={isSubmitting}
               />
             </section>
-            <section id="AURAL SYMPTOMS">
+            <section id="Aural Symptoms">
               <AuralSymptom
                 values={values}
                 setFieldValue={setFieldValue}

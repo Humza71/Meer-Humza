@@ -27,20 +27,20 @@ const OculuMotors = ({ formTitle, formKey, setFieldValue, values }) => {
         },
       ],
     },
-    {
-      title: "Vertigo",
-      key: "vertigo",
-      options: [
-        {
-          title: "Yes",
-          value: "yes",
-        },
-        {
-          title: "No",
-          value: "no",
-        },
-      ],
-    },
+    // {
+    //   title: "Vertigo",
+    //   key: "vertigo",
+    //   options: [
+    //     {
+    //       title: "Yes",
+    //       value: "yes",
+    //     },
+    //     {
+    //       title: "No",
+    //       value: "no",
+    //     },
+    //   ],
+    // },
     {
       title: "Smooth Pursuit",
       key: "smoothPursuit",

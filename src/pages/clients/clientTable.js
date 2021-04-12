@@ -338,7 +338,6 @@ const ClientTable = (props) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [openDelete, setOpenDelete] = React.useState(null);
     // const [clientId, setClientId] = React.useState(null);
-    // const [downloading, setDownloading] = React.useState(false);
     // React.useEffect(() => {
     //   debugger;
     // }, [downloading]);

@@ -43,7 +43,7 @@ const HallPick = ({ formTitle, formKey, setFieldValue, values }) => {
         >
           {sections.map(({ title, parentKey, key }) => (
             <TableRow key={key}>
-              <BodyCell>{title}</BodyCell>
+              <BodyCell verticalAlign={"middle"}>{title}</BodyCell>
               <BodyCell>
                 <Box mb={2.5} mt={2.5}>
                   <Toggle

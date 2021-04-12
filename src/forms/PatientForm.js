@@ -25,6 +25,7 @@ import {
   InputAdornment,
   TextField as MuiTextField,
   Typography as MuiTypography,
+  Snackbar,
 } from "@material-ui/core";
 
 import { User as UserIcon } from "react-feather";
@@ -110,7 +111,7 @@ const DateField = styled(TextField)`
 
 const InnerForm = (props) => {
   const dispatch = useDispatch();
-  // const classes = useStyles();
+  // const [open, setOpen] = React.useState(false);
   const {
     errors,
     handleBlur,
@@ -146,7 +147,6 @@ const InnerForm = (props) => {
     dispatch(addTechnician(newTechnician, saveForFuture));
   };
 
-  console.log(values.encounterDate, "Date");
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <OutCard mb={6}>
@@ -294,7 +294,6 @@ const InnerForm = (props) => {
                   </Grid>
                 </Grid>
               </Box>
-
               <Box mb={2.5}>
                 <DateField
                   type="date"
@@ -332,7 +331,7 @@ const InnerForm = (props) => {
                         );
                       }}
                       onBlur={handleBlur}
-                      name="providerId"
+                      name="provider Id"
                       label="Provider"
                       options={providers.map((item, index) => ({
                         label: item.name,
@@ -357,7 +356,7 @@ const InnerForm = (props) => {
                         )
                       }
                       onBlur={handleBlur}
-                      name="technicianId"
+                      name="technician Id"
                       label="Technician"
                       options={technicians.map((item, index) => ({
                         label: item.name,
@@ -379,6 +378,7 @@ const InnerForm = (props) => {
 };
 
 const PatientForm = (props) => {
+  const [open, setOpen] = React.useState(false);
   const newReport = useSelector((state) => {
     return state.reportReducer.newReport;
   });
@@ -460,6 +460,8 @@ const PatientForm = (props) => {
           onSuccess
         )
       );
+    } else {
+      setOpen(true);
     }
   };
 
@@ -477,28 +479,22 @@ const PatientForm = (props) => {
         // setSubmitting(false);
       }
     } else {
-      console.log("Invalid form");
+      setOpen(true);
     }
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const validationSchema = Yup.object().shape({
-    ssn: Yup.string()
-      .required("Required")
-      .min(4, "Must be exactly 4 characters")
-      .max(4, "Must be exactly 4 characters"),
-    firstName: Yup.string().required("Required"),
-    lastName: Yup.string().required("Required"),
-    dateOfBirth: Yup.date().required("Required"),
-    encounterDate: Yup.date().required("Required"),
-    gender: Yup.string().required("Required"),
-    provider: Yup.number(),
-    technician: Yup.number(),
-  });
-
-  const EditValidationSchema = Yup.object().shape({
-    ssn: Yup.string()
-      .min(4, "Must be exactly 4 characters")
-      .max(4, "Must be exactly 4 characters"),
+    ssn: !id
+      ? Yup.string()
+          .required("Required")
+          .min(4, "Must be exactly 4 characters")
+          .max(4, "Must be exactly 4 characters")
+      : Yup.string()
+          .min(4, "Must be exactly 4 characters")
+          .max(4, "Must be exactly 4 characters"),
     firstName: Yup.string().required("Required"),
     lastName: Yup.string().required("Required"),
     dateOfBirth: Yup.date().required("Required"),
@@ -510,10 +506,20 @@ const PatientForm = (props) => {
 
   return (
     <React.Fragment>
+      <Snackbar
+        position="left"
+        open={open}
+        autoHideDuration={2000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="error">
+          Unable to Proceed
+        </Alert>
+      </Snackbar>
       <Formik
         enableReinitialize
         initialValues={initialValues}
-        validationSchema={!id ? validationSchema : EditValidationSchema}
+        validationSchema={validationSchema}
         validate={(values) => {
           console.log(values);
           return {};

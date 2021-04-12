@@ -1,6 +1,6 @@
 export const computerizedDynamicPosturographyTestQuestions = [
   {
-    title: "Sensory Organization Test",
+    title: "",
     key: "Sensory Organization Test",
     options: [],
   },
@@ -116,12 +116,12 @@ export const computerizedDynamicPosturographyTestQuestions = [
 
 export const motorControlTestQuestions = [
   {
-    title: "Motor Control Test",
+    title: "",
     key: "Motor Control Test",
     options: [],
   },
   {
-    title: "Motor Control Test",
+    title: "Backward Translations",
     key: "backwardTranslations",
     options: [
       {
@@ -152,7 +152,7 @@ export const motorControlTestQuestions = [
 
 export const adaptationTest = [
   {
-    title: "Adaptation Test",
+    title: "",
     key: "Adaptation Test",
     options: [],
   },
@@ -165,7 +165,7 @@ export const adaptationTest = [
         value: "normal",
       },
       {
-        title: "Abnoraml",
+        title: "Abnormal",
         value: "abnormal",
       },
     ],
@@ -179,7 +179,7 @@ export const adaptationTest = [
         value: "normal",
       },
       {
-        title: "Abnoraml",
+        title: "Abnormal",
         value: "abnormal",
       },
     ],

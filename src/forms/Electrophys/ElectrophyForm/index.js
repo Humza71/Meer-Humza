@@ -43,13 +43,13 @@ const ElectrophyForm = (props) => {
       <ReportTable
         Columns={() => (
           <>
-            <Cell align="center" width="20%"></Cell>
+            <Cell align="center" width="40%"></Cell>
             {ecoQuestions.map(({ title, key }) => (
-              <Cell align="left" key={key} width="20%">
+              <Cell align="left" key={key} width="50%">
                 {title}
               </Cell>
             ))}
-            <Cell align="center" width="50%">
+            <Cell align="center" width="5%">
               SP/AP Ratio
             </Cell>
           </>
@@ -57,7 +57,7 @@ const ElectrophyForm = (props) => {
       >
         {rows.map(({ title: rowTitle, key }) => (
           <TableRow key={key}>
-            <BodyCell>{rowTitle}</BodyCell>
+            <BodyCell verticalAlign={"middle"}>{rowTitle}</BodyCell>
             {ecoQuestions.map(({ key: fieldKey, options, direction }) => (
               <BodyCell key={fieldKey}>
                 <Toggle

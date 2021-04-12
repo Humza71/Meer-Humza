@@ -89,7 +89,7 @@ const OcularForm = (props) => {
       >
         {rows.map(({ title: rowTitle, key }) => (
           <TableRow key={key}>
-            <BodyCell>{rowTitle}</BodyCell>
+            <BodyCell verticalAlign={"middle"}>{rowTitle}</BodyCell>
             {cervicalQuestions.map(
               ({ key: fieldKey, options, direction, width = "84px" }) => (
                 <BodyCell key={fieldKey}>

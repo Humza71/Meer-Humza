@@ -19,12 +19,12 @@ const HighFrequency = ({ formTitle, formKey, setFieldValue, values }) => {
       parentKey: `${formKey}.seated`,
     },
     {
-      title: "Lateral Right",
+      title: "Lateral Body Right",
       parentKey: `${formKey}.lateralRight`,
       key: "lateralRight",
     },
     {
-      title: "Lateral Left",
+      title: "Lateral Body Left",
       parentKey: `${formKey}.lateralLeft`,
       key: "lateralLeft",
     },
@@ -39,14 +39,16 @@ const HighFrequency = ({ formTitle, formKey, setFieldValue, values }) => {
               <Cell align="center" />
               <Cell align="center" />
               <Cell align="center">Vertigo</Cell>
-              <Cell align="center">Beat Direction</Cell>
+              <Cell align="center" width="18%">
+                Beat Direction
+              </Cell>
               <Cell align="center"> DEG./SEC</Cell>
             </>
           )}
         >
           {sections.map(({ title, parentKey, key }) => (
             <TableRow key={key}>
-              <BodyCell>{title}</BodyCell>
+              <BodyCell verticalAlign={"middle"}>{title}</BodyCell>
               <BodyCell>
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
@@ -77,7 +79,7 @@ const HighFrequency = ({ formTitle, formKey, setFieldValue, values }) => {
                   />
                 </Box>
               </BodyCell>
-              <BodyCell>
+              <BodyCell verticalAlign={"middle"}>
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
                     direction={"row"}
@@ -97,7 +99,7 @@ const HighFrequency = ({ formTitle, formKey, setFieldValue, values }) => {
                   />
                 </Box>
               </BodyCell>
-              <BodyCell>
+              <BodyCell verticalAlign={"middle"}>
                 <Box mb={2.5} mt={2.5}>
                   <NumberPopUp
                     value={data[key]["deg"]}

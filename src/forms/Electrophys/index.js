@@ -18,61 +18,6 @@ import Tabs from "components/Tabs";
 import { Box, CircularProgress } from "@material-ui/core";
 import { TabWrapper } from "components/Tabs";
 
-// const initialValues = {
-//   abr: {
-//     right: {
-//       absoluteLatency: "",
-//       interWaveLatency: "",
-//       morphology: "",
-//     },
-//     left: {
-//       absoluteLatency: "",
-//       interWaveLatency: "",
-//       morphology: "",
-//     },
-//     notes: "",
-//   },
-//   eco: {
-//     right: {
-//       normality: "",
-//       ratio: "",
-//     },
-//     left: {
-//       normality: "",
-//       ratio: "",
-//     },
-//     notes: "",
-//   },
-//   cvemp: {
-//     right: {
-//       normality: "",
-//       precense: "",
-//       threshold: "",
-//       trend: "",
-//     },
-//     left: {
-//       normality: "",
-//       precense: "",
-//       threshold: "",
-//       trend: "",
-//     },
-//     notes: "",
-//   },
-//   ovemp: {
-//     right: {
-//       negPositive: "",
-//       presence: "",
-//       trend: "",
-//     },
-//     left: {
-//       negPositive: "",
-//       presence: "",
-//       trend: "",
-//     },
-//     notes: "",
-//   },
-// };
-
 const validationSchema = Yup.object().shape({});
 
 const InnerForm = (props) => {
