@@ -51,7 +51,7 @@ const OutoscopyForm = (props) => {
       >
         {rows.map(({ title: rowTitle, key }) => (
           <TableRow key={key}>
-            <BodyCell>{rowTitle}</BodyCell>
+            <BodyCell verticalAlign={"middle"}>{rowTitle}</BodyCell>
             {otoscopyQuestions.map(({ key: fieldKey, options, direction }) => (
               <BodyCell key={fieldKey}>
                 <Toggle

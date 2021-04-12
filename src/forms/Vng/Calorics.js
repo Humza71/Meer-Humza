@@ -19,6 +19,7 @@ export const Checkbox = styled(MuiCheckBox)`
 
 const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
   const data = values[formKey];
+  const [weakness, setWeakness] = React.useState(false);
 
   const sections = [
     {
@@ -32,6 +33,52 @@ const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
       key: "left",
     },
   ];
+
+  // const isBilateralWeakness = (value = "0") => {
+  //   const myNum =
+  //     parseInt(value) +
+  //     parseInt(values.calorics.left?.warm) +
+  //     parseInt(values.calorics.right?.warm) +
+  //     parseInt(values.calorics.left?.cool) +
+  //     parseInt(values.calorics.right?.cool);
+  //   debugger;
+  //   if (myNum <= 20) {
+  //     return true;
+  //   }
+  //   return false;
+  // };
+
+  // React.useEffect(() => {
+  //   const bilateralWeakness = isBilateralWeakness();
+  //   setFieldValue(`${formKey}.bilateralWeakness`, bilateralWeakness);
+  //   setWeakness(bilateralWeakness);
+  // }, []);
+
+  React.useEffect(() => {
+    let leftWarm = parseInt(values.calorics.left.warm);
+    let rightWarm = parseInt(values.calorics.right.warm);
+    let leftCool = parseInt(values.calorics.left.cool);
+    let rightCool = parseInt(values.calorics.right.cool);
+    if (isNaN(leftWarm)) leftWarm = 0;
+    if (isNaN(rightWarm)) rightWarm = 0;
+    if (isNaN(leftCool)) leftCool = 0;
+    if (isNaN(rightCool)) rightCool = 0;
+    const myNum = leftWarm + rightWarm + leftCool + rightCool;
+    if (myNum <= 20) {
+      setFieldValue(`${formKey}.bilateralWeakness`, true);
+      setWeakness(true);
+    } else {
+      setFieldValue(`${formKey}.bilateralWeakness`, false);
+      setWeakness(false);
+    }
+  }, [
+    values.calorics.left?.warm,
+    values.calorics.right?.warm,
+    values.calorics.left?.cool,
+    values.calorics.right?.cool,
+    setFieldValue,
+    formKey,
+  ]);
 
   return (
     <ReportCard title={formTitle}>
@@ -51,14 +98,14 @@ const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
         >
           {sections.map(({ title, parentKey, key }) => (
             <TableRow key={key}>
-              <BodyCell>{title}</BodyCell>
+              <BodyCell verticalAlign={"middle"}>{title}</BodyCell>
               <BodyCell>
                 <Box mb={2.5} mt={2.5}>
                   <NumberPopUp
                     value={data[key]["warm"]}
-                    onChange={(value) =>
-                      setFieldValue(`${formKey}.${key}.warm`, value)
-                    }
+                    onChange={(value) => {
+                      setFieldValue(`${formKey}.${key}.warm`, value);
+                    }}
                   />
                 </Box>
               </BodyCell>
@@ -66,9 +113,9 @@ const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
                 <Box mb={2.5} mt={2.5}>
                   <NumberPopUp
                     value={data[key]["cool"]}
-                    onChange={(value) =>
-                      setFieldValue(`${formKey}.${key}.cool`, value)
-                    }
+                    onChange={(value) => {
+                      setFieldValue(`${formKey}.${key}.cool`, value);
+                    }}
                   />
                 </Box>
               </BodyCell>
@@ -123,7 +170,8 @@ const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
                 <BodyCell style={{}}>
                   <Box pt={5}>
                     <Checkbox
-                      checked={data["bilateralWeakness"]}
+                      checked={weakness}
+                      // checked={data["bilateralWeakness"]}
                       inputProps={{
                         "aria-label": "checked",
                       }}

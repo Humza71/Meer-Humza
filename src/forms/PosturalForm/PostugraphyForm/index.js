@@ -41,7 +41,9 @@ const PostugraphyForm = ({ values, setFieldValue }) => {
             {computerizedDynamicPosturographyTestQuestions.map(
               ({ title, options, key }, index) =>
                 options.length === 0 ? (
-                  <BodyCell key={key}>{title}</BodyCell>
+                  <BodyCell key={key} verticalAlign={"middle"}>
+                    {key}
+                  </BodyCell>
                 ) : (
                   <BodyCell key={key}>
                     <Box mb={2.5} mt={2.5}>
@@ -84,7 +86,9 @@ const PostugraphyForm = ({ values, setFieldValue }) => {
           <TableRow>
             {motorControlTestQuestions.map(({ title, options, key }, index) =>
               options.length === 0 ? (
-                <BodyCell key={index}>{title}</BodyCell>
+                <BodyCell key={index} verticalAlign={"middle"}>
+                  {key}
+                </BodyCell>
               ) : (
                 <BodyCell key={index}>
                   <Box mb={2.5} mt={2.5}>
@@ -130,7 +134,9 @@ const PostugraphyForm = ({ values, setFieldValue }) => {
           <TableRow>
             {adaptationTest.map(({ title, options, key }, index) =>
               options.length === 0 ? (
-                <BodyCell key={key}>{title}</BodyCell>
+                <BodyCell key={key} verticalAlign={"middle"}>
+                  {key}
+                </BodyCell>
               ) : (
                 <BodyCell key={key}>
                   <Box mb={2.5} mt={2.5}>

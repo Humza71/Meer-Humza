@@ -38,15 +38,12 @@ const AuralSymptom = (props) => {
       title: "Thyroid Dysfunction",
       value: "thyroidDysfunction",
     },
-  ];
-
-  const conditionCol2 = [
     {
       title: "Hypertension",
       value: "hypertension",
     },
     {
-      title: "Hypotensionnxiety/Stress",
+      title: "Hypotension",
       value: "hypotension",
     },
     {
@@ -78,6 +75,7 @@ const AuralSymptom = (props) => {
       value: "Other",
     },
   ];
+
   return isSubmitting ? (
     <Box display="flex" justifyContent="center" my={6}>
       <CircularProgress />
@@ -100,23 +98,8 @@ const AuralSymptom = (props) => {
             options={conditionCol1}
           />
         </Grid>
-        <Grid item xs={5}>
-          <Toggle
-            togglesize={{
-              width: "210px",
-              height: "38px",
-            }}
-            exclusive={false}
-            name={`healthCondition.conditions`}
-            value={values["healthCondition"]["conditions"]}
-            onChange={(value) =>
-              setFieldValue(`healthCondition.conditions`, value)
-            }
-            options={conditionCol2}
-          />
-        </Grid>
         <Grid item xs={3}>
-          <Box pt={35}>
+          <Box pl={5} pt={117}>
             <Box mb={2.5}>
               <Input
                 disabled={

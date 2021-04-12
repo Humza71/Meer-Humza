@@ -71,11 +71,11 @@ const HPI = (props) => {
     },
     {
       title: "Days",
-      value: "day",
+      value: "Day",
     },
     {
-      title: "Contant",
-      value: "constant",
+      title: "Constant",
+      value: "Const",
     },
   ];
 
@@ -103,6 +103,10 @@ const HPI = (props) => {
     {
       title: "Walking",
       value: "Walking",
+    },
+    {
+      title: "Nothing",
+      value: "Nothing",
     },
   ];
 
@@ -277,9 +281,11 @@ const HPI = (props) => {
                         id: "filled-age-native-simple",
                       }}
                     >
-                      <option value="Seconds">Seconds</option>
-                      <option value="Minutes">Minutes</option>
-                      <option value="Hours">Hours</option>
+                      {durationOption.map(({ title, value }) => (
+                        <option value={value} key={value}>
+                          {title}
+                        </option>
+                      ))}
                     </Select>
                   </Box>
                 ))}

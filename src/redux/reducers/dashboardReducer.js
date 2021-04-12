@@ -5,6 +5,7 @@ import {
   getReports,
   getPdfReports,
   deleteReport,
+  getPdfHtml,
 } from "../../services/allReportsService";
 
 export const LoadingStates = {
@@ -57,11 +58,14 @@ export const getAllReports = () => async (dispatch) => {
   dispatch(setLoading(null));
 };
 
-export const getPdf = (reportId, setDownloading) => async (dispatch) => {
+export const getPdf = (reportId) => async (dispatch) => {
   dispatch(setLoading(LoadingStates.PDF_LOADING));
   // Need to be replaced by the service that does API call
 
   try {
+    const result = await getPdfHtml(reportId);
+    var newWindow = window.open();
+    newWindow.document.write(result.data);
     const response = await getPdfReports(reportId);
     if (response) {
       const linkSource = `data:application/pdf;base64,${response.data}`;
@@ -70,7 +74,6 @@ export const getPdf = (reportId, setDownloading) => async (dispatch) => {
       downloadLink.href = linkSource;
       downloadLink.download = fileName;
       downloadLink.click();
-      setDownloading();
     }
   } catch (error) {
     console.log(error, "Error");

@@ -60,7 +60,7 @@ const AudiogramForm = (props) => {
       >
         {rows.map(({ title: rowTitle, key }) => (
           <TableRow key={key}>
-            <BodyCell>{rowTitle}</BodyCell>
+            <BodyCell verticalAlign={"middle"}>{rowTitle}</BodyCell>
             {audiogramQuestions.map(({ key: fieldKey, options, direction }) => (
               <BodyCell key={fieldKey}>
                 <Toggle
@@ -80,6 +80,9 @@ const AudiogramForm = (props) => {
             ))}
             <BodyCell>
               <Input
+                placeholder={
+                  `${key}` === "leftEar" ? "Left Ear Notes" : "Right Ear Notes"
+                }
                 fieldsize={{ width: "224px" }}
                 value={data[key]["instruction"]}
                 onChange={(e) =>

@@ -58,7 +58,7 @@ const Positional = ({ formTitle, formKey, setFieldValue, values }) => {
         >
           {sections.map(({ title, parentKey, key }) => (
             <TableRow key={key}>
-              <BodyCell>{title}</BodyCell>
+              <BodyCell verticalAlign={"middle"}>{title}</BodyCell>
               <BodyCell>
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
@@ -89,7 +89,7 @@ const Positional = ({ formTitle, formKey, setFieldValue, values }) => {
                   />
                 </Box>
               </BodyCell>
-              <BodyCell>
+              <BodyCell verticalAlign={"middle"}>
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
                     direction={"row"}
@@ -111,8 +111,8 @@ const Positional = ({ formTitle, formKey, setFieldValue, values }) => {
                   />
                 </Box>
               </BodyCell>
-              <BodyCell>
-                <Box mb={2.5} mt={2.5}>
+              <BodyCell verticalAlign={"middle"}>
+                <Box mb={2.5} mt={1.5}>
                   <NumberPopUp
                     value={data[key]["deg"]}
                     onChange={(value) =>

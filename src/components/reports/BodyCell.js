@@ -4,8 +4,8 @@ import TableCell from "@material-ui/core/TableCell";
 
 const StyledBodyCell = styled(TableCell)`
   text-align: center;
-  padding: 5px;
-  vertical-align: baseline;
+  // padding: 5px;
+  vertical-align: ${({ verticalAlign = "baseline" }) => verticalAlign};
 `;
 
 const BodyCell = (props) => {
