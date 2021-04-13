@@ -142,7 +142,9 @@ const VngForm = (props) => {
       center: {
         consent: vngValues.gazeVisionDenied.center.consent,
         vertigo: vngValues.gazeVisionDenied.center.vertigo,
-        beatDirection: vngValues.gazeVisionDenied.center.beatDirection,
+        beatDirection: vngValues.gazeVisionDenied.center.beatDirection
+          ? vngValues.gazeVisionDenied.center.beatDirection
+          : [],
         deg: vngValues.gazeVisionDenied.center.deg
           ? vngValues.gazeVisionDenied.center.deg
           : "",
@@ -150,7 +152,9 @@ const VngForm = (props) => {
       right: {
         consent: vngValues.gazeVisionDenied.right.consent,
         vertigo: vngValues.gazeVisionDenied.right.vertigo,
-        beatDirection: vngValues.gazeVisionDenied.right.beatDirection,
+        beatDirection: vngValues.gazeVisionDenied.right.beatDirection
+          ? vngValues.gazeVisionDenied.right.beatDirection
+          : [],
         deg: vngValues.gazeVisionDenied.right.deg
           ? vngValues.gazeVisionDenied.right.deg
           : "",
@@ -158,7 +162,9 @@ const VngForm = (props) => {
       left: {
         consent: vngValues.gazeVisionDenied.left.consent,
         vertigo: vngValues.gazeVisionDenied.left.vertigo,
-        beatDirection: vngValues.gazeVisionDenied.left.beatDirection,
+        beatDirection: vngValues.gazeVisionDenied.left.beatDirection
+          ? vngValues.gazeVisionDenied.left.beatDirection
+          : [],
         deg: vngValues.gazeVisionDenied.left.deg
           ? vngValues.gazeVisionDenied.left.deg
           : "",
@@ -166,7 +172,9 @@ const VngForm = (props) => {
       up: {
         consent: vngValues.gazeVisionDenied.up.consent,
         vertigo: vngValues.gazeVisionDenied.up.vertigo,
-        beatDirection: vngValues.gazeVisionDenied.up.beatDirection,
+        beatDirection: vngValues.gazeVisionDenied.up.beatDirection
+          ? vngValues.gazeVisionDenied.up.beatDirection
+          : [],
         deg: vngValues.gazeVisionDenied.up.deg
           ? vngValues.gazeVisionDenied.up.deg
           : "",
@@ -179,7 +187,9 @@ const VngForm = (props) => {
       center: {
         consent: vngValues.gazeVisionEnabled.center.consent,
         vertigo: vngValues.gazeVisionEnabled.center.vertigo,
-        beatDirection: vngValues.gazeVisionEnabled.center.beatDirection,
+        beatDirection: vngValues.gazeVisionEnabled.center.beatDirection
+          ? vngValues.gazeVisionEnabled.center.beatDirection
+          : [],
         deg: vngValues.gazeVisionEnabled.center.deg
           ? vngValues.gazeVisionEnabled.center.deg
           : "",
@@ -187,7 +197,9 @@ const VngForm = (props) => {
       right: {
         consent: vngValues.gazeVisionEnabled.right.consent,
         vertigo: vngValues.gazeVisionEnabled.right.vertigo,
-        beatDirection: vngValues.gazeVisionEnabled.right.beatDirection,
+        beatDirection: vngValues.gazeVisionEnabled.right.beatDirection
+          ? vngValues.gazeVisionEnabled.right.beatDirection
+          : [],
         deg: vngValues.gazeVisionEnabled.right.deg
           ? vngValues.gazeVisionEnabled.right.deg
           : "",
@@ -195,7 +207,9 @@ const VngForm = (props) => {
       left: {
         cconsent: vngValues.gazeVisionEnabled.left.consent,
         vertigo: vngValues.gazeVisionEnabled.left.vertigo,
-        beatDirection: vngValues.gazeVisionEnabled.left.beatDirection,
+        beatDirection: vngValues.gazeVisionEnabled.left.beatDirection
+          ? vngValues.gazeVisionEnabled.left.beatDirection
+          : [],
         deg: vngValues.gazeVisionEnabled.left.deg
           ? vngValues.gazeVisionEnabled.left.deg
           : "",
@@ -203,7 +217,9 @@ const VngForm = (props) => {
       up: {
         consent: vngValues.gazeVisionEnabled.up.consent,
         vertigo: vngValues.gazeVisionEnabled.up.vertigo,
-        beatDirection: vngValues.gazeVisionEnabled.up.beatDirection,
+        beatDirection: vngValues.gazeVisionEnabled.up.beatDirection
+          ? vngValues.gazeVisionEnabled.up.beatDirection
+          : [],
         deg: vngValues.gazeVisionEnabled.up.deg
           ? vngValues.gazeVisionEnabled.up.deg
           : "",
@@ -216,7 +232,9 @@ const VngForm = (props) => {
       seated: {
         normality: vngValues.highFrequencyHeadshake.seated.normality,
         vertigo: vngValues.highFrequencyHeadshake.seated.vertigo,
-        beatDirection: vngValues.highFrequencyHeadshake.seated.beatDirection,
+        beatDirection: vngValues.highFrequencyHeadshake.seated.beatDirection
+          ? vngValues.highFrequencyHeadshake.seated.beatDirection
+          : [],
         deg: vngValues.highFrequencyHeadshake.seated.deg
           ? vngValues.highFrequencyHeadshake.seated.deg
           : "",
@@ -224,8 +242,10 @@ const VngForm = (props) => {
       lateralRight: {
         normality: vngValues.highFrequencyHeadshake.lateralRight.normality,
         vertigo: vngValues.highFrequencyHeadshake.lateralRight.vertigo,
-        beatDirection:
-          vngValues.highFrequencyHeadshake.lateralRight.beatDirection,
+        beatDirection: vngValues.highFrequencyHeadshake.lateralRight
+          .beatDirection
+          ? vngValues.highFrequencyHeadshake.lateralRight.beatDirection
+          : [],
         deg: vngValues.highFrequencyHeadshake.lateralRight.deg
           ? vngValues.highFrequencyHeadshake.lateralRight.deg
           : "",
@@ -233,8 +253,10 @@ const VngForm = (props) => {
       lateralLeft: {
         normality: vngValues.highFrequencyHeadshake.lateralLeft.normality,
         vertigo: vngValues.highFrequencyHeadshake.lateralLeft.vertigo,
-        beatDirection:
-          vngValues.highFrequencyHeadshake.lateralLeft.beatDirection,
+        beatDirection: vngValues.highFrequencyHeadshake.lateralLeft
+          .beatDirection
+          ? vngValues.highFrequencyHeadshake.lateralLeft.beatDirection
+          : [],
         deg: vngValues.highFrequencyHeadshake.lateralLeft.deg
           ? vngValues.highFrequencyHeadshake.lateralLeft.deg
           : "",
@@ -247,7 +269,9 @@ const VngForm = (props) => {
       supine: {
         normality: vngValues.positionalsVisionDenied.supine.normality,
         vertigo: vngValues.positionalsVisionDenied.supine.vertigo,
-        beatDirection: vngValues.positionalsVisionDenied.supine.beatDirection,
+        beatDirection: vngValues.positionalsVisionDenied.supine.beatDirection
+          ? vngValues.positionalsVisionDenied.supine.beatDirection
+          : [],
         deg: vngValues.positionalsVisionDenied.supine.deg
           ? vngValues.positionalsVisionDenied.supine.deg
           : "",
@@ -255,8 +279,9 @@ const VngForm = (props) => {
       headRight: {
         normality: vngValues.positionalsVisionDenied.headRight.normality,
         vertigo: vngValues.positionalsVisionDenied.headRight.vertigo,
-        beatDirection:
-          vngValues.positionalsVisionDenied.headRight.beatDirection,
+        beatDirection: vngValues.positionalsVisionDenied.headRight.beatDirection
+          ? vngValues.positionalsVisionDenied.headRight.beatDirection
+          : [],
         deg: vngValues.positionalsVisionDenied.headRight.deg
           ? vngValues.positionalsVisionDenied.headRight.deg
           : "",
@@ -264,7 +289,9 @@ const VngForm = (props) => {
       headLeft: {
         normality: vngValues.positionalsVisionDenied.headLeft.normality,
         vertigo: vngValues.positionalsVisionDenied.headLeft.vertigo,
-        beatDirection: vngValues.positionalsVisionDenied.headLeft.beatDirection,
+        beatDirection: vngValues.positionalsVisionDenied.headLeft.beatDirection
+          ? vngValues.positionalsVisionDenied.headLeft.beatDirection
+          : [],
         deg: vngValues.positionalsVisionDenied.headLeft.deg
           ? vngValues.positionalsVisionDenied.headLeft.deg
           : "",
@@ -272,8 +299,9 @@ const VngForm = (props) => {
       bodyRight: {
         normality: vngValues.positionalsVisionDenied.bodyRight.normality,
         vertigo: vngValues.positionalsVisionDenied.bodyRight.vertigo,
-        beatDirection:
-          vngValues.positionalsVisionDenied.bodyRight.beatDirection,
+        beatDirection: vngValues.positionalsVisionDenied.bodyRight.beatDirection
+          ? vngValues.positionalsVisionDenied.bodyRight.beatDirection
+          : [],
         deg: vngValues.positionalsVisionDenied.bodyRight.deg
           ? vngValues.positionalsVisionDenied.bodyRight.deg
           : "",
@@ -281,7 +309,9 @@ const VngForm = (props) => {
       bodyLeft: {
         normality: vngValues.positionalsVisionDenied.bodyLeft.normality,
         vertigo: vngValues.positionalsVisionDenied.bodyLeft.vertigo,
-        beatDirection: vngValues.positionalsVisionDenied.bodyLeft.beatDirection,
+        beatDirection: vngValues.positionalsVisionDenied.bodyLeft.beatDirection
+          ? vngValues.positionalsVisionDenied.bodyLeft.beatDirection
+          : [],
         deg: vngValues.positionalsVisionDenied.bodyLeft.deg
           ? vngValues.positionalsVisionDenied.bodyLeft.deg
           : "",
@@ -294,7 +324,9 @@ const VngForm = (props) => {
       supine: {
         normality: vngValues.positionalsVisionEnabled.supine.normality,
         vertigo: vngValues.positionalsVisionEnabled.supine.vertigo,
-        beatDirection: vngValues.positionalsVisionEnabled.supine.beatDirection,
+        beatDirection: vngValues.positionalsVisionEnabled.supine.beatDirection
+          ? vngValues.positionalsVisionEnabled.supine.beatDirection
+          : [],
         deg: vngValues.positionalsVisionEnabled.supine.deg
           ? vngValues.positionalsVisionEnabled.supine.deg
           : "",
@@ -302,8 +334,10 @@ const VngForm = (props) => {
       headRight: {
         normality: vngValues.positionalsVisionEnabled.headRight.normality,
         vertigo: vngValues.positionalsVisionEnabled.headRight.vertigo,
-        beatDirection:
-          vngValues.positionalsVisionEnabled.headRight.beatDirection,
+        beatDirection: vngValues.positionalsVisionEnabled.headRight
+          .beatDirection
+          ? vngValues.positionalsVisionEnabled.headRight.beatDirection
+          : [],
         deg: vngValues.positionalsVisionEnabled.headRight.deg
           ? vngValues.positionalsVisionEnabled.headRight.deg
           : "",
@@ -311,8 +345,9 @@ const VngForm = (props) => {
       headLeft: {
         normality: vngValues.positionalsVisionEnabled.headLeft.normality,
         vertigo: vngValues.positionalsVisionEnabled.headLeft.vertigo,
-        beatDirection:
-          vngValues.positionalsVisionEnabled.headLeft.beatDirection,
+        beatDirection: vngValues.positionalsVisionEnabled.headLeft.beatDirection
+          ? vngValues.positionalsVisionEnabled.headLeft.beatDirection
+          : [],
         deg: vngValues.positionalsVisionEnabled.headLeft.deg
           ? vngValues.positionalsVisionEnabled.headLeft.deg
           : "",
@@ -320,8 +355,10 @@ const VngForm = (props) => {
       bodyRight: {
         normality: vngValues.positionalsVisionEnabled.bodyRight.normality,
         vertigo: vngValues.positionalsVisionEnabled.bodyRight.vertigo,
-        beatDirection:
-          vngValues.positionalsVisionEnabled.bodyRight.beatDirection,
+        beatDirection: vngValues.positionalsVisionEnabled.bodyRight
+          .beatDirection
+          ? vngValues.positionalsVisionEnabled.bodyRight.beatDirection
+          : [],
         deg: vngValues.positionalsVisionEnabled.bodyRight.deg
           ? vngValues.positionalsVisionEnabled.bodyRight.deg
           : "",
@@ -329,8 +366,9 @@ const VngForm = (props) => {
       bodyLeft: {
         normality: vngValues.positionalsVisionEnabled.bodyLeft.normality,
         vertigo: vngValues.positionalsVisionEnabled.bodyLeft.vertigo,
-        beatDirection:
-          vngValues.positionalsVisionEnabled.bodyLeft.beatDirection,
+        beatDirection: vngValues.positionalsVisionEnabled.bodyLeft.beatDirection
+          ? vngValues.positionalsVisionEnabled.bodyLeft.beatDirection
+          : [],
         deg: vngValues.positionalsVisionEnabled.bodyLeft.deg
           ? vngValues.positionalsVisionEnabled.bodyLeft.deg
           : "",
@@ -343,13 +381,17 @@ const VngForm = (props) => {
       right: {
         index: vngValues.hallPike.right.index,
         vertigo: vngValues.hallPike.right.vertigo,
-        beatDirection: vngValues.hallPike.right.beatDirection,
+        beatDirection: vngValues.hallPike.right.beatDirection
+          ? vngValues.hallPike.right.beatDirection
+          : [],
         deg: vngValues.hallPike.right.deg ? vngValues.hallPike.right.deg : "",
       },
       left: {
         index: vngValues.hallPike.left.index,
         vertigo: vngValues.hallPike.left.vertigo,
-        beatDirection: vngValues.hallPike.left.beatDirection,
+        beatDirection: vngValues.hallPike.left.beatDirection
+          ? vngValues.hallPike.left.beatDirection
+          : [],
         deg: vngValues.hallPike.left.deg ? vngValues.hallPike.left.deg : "",
       },
       notes: vngValues.hallPike.notes ? vngValues.hallPike.notes : "",

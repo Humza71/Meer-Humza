@@ -212,18 +212,24 @@ export const slice = createSlice({
       }
     },
     updateMacro: (state, action) => {
-      // const array = [...state.selectedMacros];
-      // const newArray = array.filter(
-      //   (item, index) => index !== action.payload.macroIndex
-      // );
-      var newArray = [...state.selectedMacros];
-      newArray.splice(action.payload.macroIndex, 1);
-
-      if (action.payload) {
-        state.selectedMacros = [...newArray];
-        state.impression.impressionAndPlan.overAllImpression =
-          action.payload.overAllImpression;
-      }
+      // const newArray = state.macros.filter((item) => {
+      //   state.selectedMacros.map((macro, index) => {
+      //     if (macro === item.value) {
+      //       return { index, macro };
+      //     }
+      //   });
+      // });
+      // newArray.map((item) => {
+      //   state.macros[item.index] = item.macro;
+      // });
+      // debugger;
+      // var newArray = [...state.selectedMacros];
+      // newArray.splice(action.payload.macroIndex, 1);
+      // if (action.payload) {
+      //   state.selectedMacros = [...newArray];
+      //   state.impression.impressionAndPlan.overAllImpression =
+      //     action.payload.overAllImpression;
+      // }
     },
   },
 });
@@ -574,7 +580,7 @@ export const getComments = (values) => async (dispatch) => {
   }
 };
 
-export const impressionPlanReport = (values, generateReport) => async (
+export const impressionPlanReport = (values, generateReport = false) => async (
   dispatch
 ) => {
   dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
@@ -582,13 +588,15 @@ export const impressionPlanReport = (values, generateReport) => async (
     const response = await addImpressionPlan(values);
     if (response.status === "SUCCESS") {
       if (generateReport) {
-        dispatch(getPdf(response.data[0]));
+        dispatch(getPdf(response.data[0], generateReport));
       }
     }
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
-  dispatch(setLoading(null));
+  if (!generateReport) {
+    dispatch(setLoading(null));
+  }
 };
 
 export const getImpressionPlan = (values) => async (dispatch) => {
@@ -630,6 +638,10 @@ export const macrosByName = (values) => async (dispatch) => {
 export const updateMacros = (values) => async (dispatch) => {
   dispatch(updateMacro(values));
   // dispatch(setNormality(values.overAllImpression));
+};
+
+export const pdfLoader = () => async (dispatch) => {
+  dispatch(setLoading(null));
 };
 
 export default slice.reducer;

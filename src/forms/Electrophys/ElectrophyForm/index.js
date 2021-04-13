@@ -19,11 +19,11 @@ const ElectrophyForm = (props) => {
       direction: "row",
       options: [
         {
-          title: "Normal",
+          title: "Positive",
           value: "normal",
         },
         {
-          title: "Abnormal",
+          title: "Negative",
           value: "abnormal",
         },
       ],

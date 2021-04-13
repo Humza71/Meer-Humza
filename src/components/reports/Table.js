@@ -7,14 +7,14 @@ import TableRow from "@material-ui/core/TableRow";
 import styled from "styled-components/macro";
 
 const StyledHeader = styled(TableHead)`
-  background: #f8fbff;
+  background: ${({ headerColor = "#f8fbff" }) => headerColor};
 `;
 
-const ReportTable = ({ Columns, children }) => {
+const ReportTable = ({ Columns, children, headerColor }) => {
   return (
     <TableContainer>
       <Table aria-label="simple table">
-        <StyledHeader>
+        <StyledHeader headerColor={headerColor}>
           <TableRow>
             <Columns />
           </TableRow>

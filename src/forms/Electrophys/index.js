@@ -104,29 +104,23 @@ const Electrophys = (props) => {
         normality:
           electrophysValues.cervicalVestibularEvokedMyogenicPotential.right
             .normality,
-        precense:
+        presence:
           electrophysValues.cervicalVestibularEvokedMyogenicPotential.right
-            .precense,
-        threshold:
+            .presence,
+        delayed:
           electrophysValues.cervicalVestibularEvokedMyogenicPotential.right
-            .threshold,
-        trend:
-          electrophysValues.cervicalVestibularEvokedMyogenicPotential.right
-            .trend,
+            .delayed,
       },
       left: {
         normality:
           electrophysValues.cervicalVestibularEvokedMyogenicPotential.left
             .normality,
-        precense:
+        presence:
           electrophysValues.cervicalVestibularEvokedMyogenicPotential.left
-            .precense,
-        threshold:
+            .presence,
+        delayed:
           electrophysValues.cervicalVestibularEvokedMyogenicPotential.left
-            .threshold,
-        trend:
-          electrophysValues.cervicalVestibularEvokedMyogenicPotential.left
-            .trend,
+            .delayed,
       },
       notes: electrophysValues.cervicalVestibularEvokedMyogenicPotential.notes
         ? electrophysValues.cervicalVestibularEvokedMyogenicPotential.notes
@@ -134,24 +128,26 @@ const Electrophys = (props) => {
     },
     ocularVestibularEvokedMyogenicPotential: {
       right: {
-        negPositive:
+        normality:
           electrophysValues.ocularVestibularEvokedMyogenicPotential.right
-            .negPositive,
+            .normality,
         presence:
           electrophysValues.ocularVestibularEvokedMyogenicPotential.right
             .presence,
-        trend:
-          electrophysValues.ocularVestibularEvokedMyogenicPotential.right.trend,
+        delayed:
+          electrophysValues.ocularVestibularEvokedMyogenicPotential.right
+            .delayed,
       },
       left: {
-        negPositive:
+        normality:
           electrophysValues.ocularVestibularEvokedMyogenicPotential.left
-            .negPositive,
+            .normality,
         presence:
           electrophysValues.ocularVestibularEvokedMyogenicPotential.left
             .presence,
-        trend:
-          electrophysValues.ocularVestibularEvokedMyogenicPotential.left.trend,
+        delayed:
+          electrophysValues.ocularVestibularEvokedMyogenicPotential.left
+            .delayed,
       },
       notes: electrophysValues.ocularVestibularEvokedMyogenicPotential.notes
         ? electrophysValues.ocularVestibularEvokedMyogenicPotential.notes

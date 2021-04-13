@@ -37,10 +37,6 @@ const OtoacousticForm = (props) => {
           value: "present",
         },
         {
-          title: "Reduced",
-          value: "reduced",
-        },
-        {
           title: "Absent",
           value: "absent",
         },

@@ -69,9 +69,12 @@ const OutoscopyForm = (props) => {
                 />
               </BodyCell>
             ))}
-            <BodyCell>
+            <BodyCell verticalAlign={"middle"}>
               <Input
                 fieldsize={{ width: "185px" }}
+                placeholder={
+                  `${key}` === "leftEar" ? "Left Ear Notes" : "Right Ear Notes"
+                }
                 value={data[key]["instruction"]}
                 onChange={(e) =>
                   setFieldValue(`otoscopy.${key}.instruction`, e.target.value)

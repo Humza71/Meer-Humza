@@ -36,7 +36,9 @@ const HallPick = ({ formTitle, formKey, setFieldValue, values }) => {
               <Cell align="center" />
               <Cell align="center" />
               <Cell align="center">Vertigo</Cell>
-              <Cell align="center">Beat Direction</Cell>
+              <Cell align="center" width="110%">
+                Beat Direction
+              </Cell>
               <Cell align="center"> DEG./SEC</Cell>
             </>
           )}
@@ -74,11 +76,12 @@ const HallPick = ({ formTitle, formKey, setFieldValue, values }) => {
                   />
                 </Box>
               </BodyCell>
-              <BodyCell>
+              <BodyCell verticalAlign={"middle"}>
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
+                    exclusive={false}
                     togglesize={{
-                      width: "126px",
+                      width: "110px",
                       height: "59px",
                     }}
                     direction={"row"}
@@ -96,7 +99,7 @@ const HallPick = ({ formTitle, formKey, setFieldValue, values }) => {
                   />
                 </Box>
               </BodyCell>
-              <BodyCell>
+              <BodyCell verticalAlign={"middle"}>
                 <Box mb={2.5} mt={2.5}>
                   <NumberPopUp
                     value={data[key]["deg"]}
