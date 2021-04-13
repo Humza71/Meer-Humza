@@ -3,16 +3,9 @@ import "date-fns";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import styled from "styled-components/macro";
-// import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-// import queryString from "query-string";
-import {
-  Alert as MuiAlert,
-  // AdapterDateFns,
-  // DatePicker,
-  // LocalizationProvider,
-} from "@material-ui/lab";
+import { Alert as MuiAlert } from "@material-ui/lab";
 import { spacing } from "@material-ui/system";
 import Toggle from "../components/reports/Toggle";
 import DateSelect from "../components/DateSelect";
@@ -32,10 +25,6 @@ import {
 import { User as UserIcon } from "react-feather";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 
-// import { AdapterDateFns as MuiAdapterDateFns } from "@material-ui/lab/AdapterDateFns";
-// import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
-// import DatePicker from "@material-ui/lab/DatePicker";
-
 import CreateReportFooter from "components/CreateReportFooter";
 import AdvancedSelect from "components/AdvancedSelect";
 import {
@@ -47,7 +36,6 @@ import {
   addProvider,
   addTechnician,
   setCompleted,
-  // saveReport,
 } from "redux/reducers/reportReducer";
 import { setStepNewReport } from "redux/reducers/uiReducer";
 
@@ -60,37 +48,6 @@ const OutCard = styled(Card)`
   width: 500px;
   margin: 20px auto;
 `;
-
-const DateField = styled(TextField)`
-  label {
-    font-size: 20px;
-    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-      "Segoe UI Symbol";
-    font-weight: 400;
-    color: black;
-    line-height: 25px;
-    margin-top: -10px;
-  }
-`;
-
-// const useStyles = makeStyles((theme) => ({
-//   input: {
-//     WebkitTextSecurity: "disc",
-//   },
-// }));
-
-// const ToggleButtonGroup = styled(MuiToggleButtonGroup)`
-//   width: 100%;
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: space-between;
-//   .MuiToggleButton-root {
-//     border: 1px solid rgba(0, 0, 0, 0.12) !important;
-//     border-radius: 4px !important;
-//     min-width: 100px;
-//   }
-// `;
 
 const InnerForm = (props) => {
   const dispatch = useDispatch();
