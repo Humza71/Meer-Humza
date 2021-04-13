@@ -15,6 +15,7 @@ import {
 } from "@material-ui/lab";
 import { spacing } from "@material-ui/system";
 import Toggle from "../components/reports/Toggle";
+import DateSelect from "../components/DateSelect";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   Box,
@@ -29,10 +30,7 @@ import {
 } from "@material-ui/core";
 
 import { User as UserIcon } from "react-feather";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker as MuiKeyboardDatePicker,
-} from "@material-ui/pickers";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 // import { AdapterDateFns as MuiAdapterDateFns } from "@material-ui/lab/AdapterDateFns";
 // import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
@@ -61,21 +59,6 @@ const Typography = styled(MuiTypography)(spacing);
 const OutCard = styled(Card)`
   width: 500px;
   margin: 20px auto;
-`;
-
-const KeyboardDatePicker = styled(MuiKeyboardDatePicker)`
-  .MuiFormLabel-filled {
-    font-size: 20px;
-    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-      "Segoe UI Symbol";
-    font-weight: 400;
-    color: black;
-    line-height: 25px;
-    margin-top: -10px;
-
-    // font-family: password-mask;
-  }
 `;
 
 const DateField = styled(TextField)`
@@ -220,24 +203,11 @@ const InnerForm = (props) => {
                 </Grid>
               </Box>
               <Box mb={2.5}>
-                <KeyboardDatePicker
-                  // type="date"
-                  disableToolbar
-                  name="dateOfBirth"
-                  variant="inline"
-                  format="MM/dd/yyyy"
-                  margin="normal"
+                <DateSelect
                   label="Date of Birth"
                   value={values.dateOfBirth}
                   onChange={(value) => {
                     setFieldValue("dateOfBirth", value);
-                  }}
-                  error={Boolean(touched.dateOfBirth && errors.dateOfBirth)}
-                  fullWidth
-                  helperText={touched.dateOfBirth && errors.dateOfBirth}
-                  onBlur={handleBlur}
-                  KeyboardButtonProps={{
-                    "aria-label": "change date",
                   }}
                 />
               </Box>
@@ -295,23 +265,12 @@ const InnerForm = (props) => {
                 </Grid>
               </Box>
               <Box mb={2.5}>
-                <DateField
-                  type="date"
-                  name="encounterDate"
-                  format="mm/dd/yyyy"
-                  margin="normal"
-                  value={values.encounterDate}
+                <DateSelect
                   label="Encounter Date"
+                  value={values.encounterDate}
                   onChange={(value) => {
-                    setFieldValue("encounterDate", value.target.value);
+                    setFieldValue("encounterDate", value);
                   }}
-                  error={Boolean(touched.encounterDate && errors.encounterDate)}
-                  fullWidth
-                  helperText={touched.encounterDate && errors.encounterDate}
-                  onBlur={handleBlur}
-                  // InputLabelProps={{
-                  //   shrink: true,
-                  // }}
                 />
               </Box>
               <Box mb={2.5}>
