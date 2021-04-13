@@ -66,7 +66,6 @@ const Months = [
 const DateSelect = (props) => {
   const { value, label, onChange } = props;
   const [date, setDate] = useState(new Date(value).getUTCDate());
-  console.log(value, date);
   const [month, setMonth] = useState(new Date(value).getMonth() + 1);
   const [year, setYear] = useState(new Date(value).getFullYear());
 
