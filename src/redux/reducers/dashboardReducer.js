@@ -7,6 +7,7 @@ import {
   deleteReport,
   getPdfHtml,
 } from "../../services/allReportsService";
+import { pdfLoader } from "redux/reducers/reportReducer";
 
 export const LoadingStates = {
   ALL_REPORTS_LOADING: "All Report Loading",
@@ -58,7 +59,9 @@ export const getAllReports = () => async (dispatch) => {
   dispatch(setLoading(null));
 };
 
-export const getPdf = (reportId) => async (dispatch) => {
+export const getPdf = (reportId, generateReport = false) => async (
+  dispatch
+) => {
   dispatch(setLoading(LoadingStates.PDF_LOADING));
   // Need to be replaced by the service that does API call
 
@@ -71,11 +74,15 @@ export const getPdf = (reportId) => async (dispatch) => {
       downloadLink.href = linkSource;
       downloadLink.download = fileName;
       downloadLink.click();
+      if (generateReport) {
+        dispatch(pdfLoader(null));
+      }
       const result = await getPdfHtml(reportId);
       var newWindow = window.open();
       newWindow.document.write(result.data);
     }
   } catch (error) {
+    dispatch(pdfLoader(null));
     console.log(error, "Error");
   }
   dispatch(setLoading(null));

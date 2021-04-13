@@ -89,7 +89,6 @@ const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
               <Cell align="center" />
               <Cell align="center">WARM</Cell>
               <Cell align="center">COOL</Cell>
-              <Cell align="center">VERTIGO</Cell>
               <Cell align="center"></Cell>
               <Cell align="center">FIXATION INDEX</Cell>
               <Cell align="center">BILATERAL WEAKNESS</Cell>
@@ -99,7 +98,7 @@ const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
           {sections.map(({ title, parentKey, key }) => (
             <TableRow key={key}>
               <BodyCell verticalAlign={"middle"}>{title}</BodyCell>
-              <BodyCell>
+              <BodyCell verticalAlign={"middle"}>
                 <Box mb={2.5} mt={2.5}>
                   <NumberPopUp
                     value={data[key]["warm"]}
@@ -109,28 +108,13 @@ const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
                   />
                 </Box>
               </BodyCell>
-              <BodyCell>
+              <BodyCell verticalAlign={"middle"}>
                 <Box mb={2.5} mt={2.5}>
                   <NumberPopUp
                     value={data[key]["cool"]}
                     onChange={(value) => {
                       setFieldValue(`${formKey}.${key}.cool`, value);
                     }}
-                  />
-                </Box>
-              </BodyCell>
-              <BodyCell>
-                <Box mb={2.5} mt={2.5}>
-                  <Toggle
-                    name={`${formKey}.${key}`}
-                    value={data[key]["vertigo"]}
-                    onChange={(value) =>
-                      setFieldValue(`${formKey}.${key}.vertigo`, value)
-                    }
-                    options={[
-                      { title: "Yes", value: "yes" },
-                      { title: "No", value: "no" },
-                    ]}
                   />
                 </Box>
               </BodyCell>
@@ -167,7 +151,7 @@ const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
                 </Box>
               </BodyCell>
               {title === "Right" && (
-                <BodyCell style={{}}>
+                <BodyCell>
                   <Box pt={5}>
                     <Checkbox
                       checked={weakness}

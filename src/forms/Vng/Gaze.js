@@ -85,7 +85,7 @@ const Gaze = ({ formTitle, formKey, setFieldValue, values }) => {
               <BodyCell verticalAlign={"middle"}>
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
-                    // exclusive={false}
+                    exclusive={false}
                     direction={"row"}
                     togglesize={{
                       width: "51px",

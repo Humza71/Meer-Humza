@@ -201,7 +201,7 @@ const AdvancedSelect = ({
             >
               {props.multiple ? (
                 <>
-                  <Checkbox checked={value.indexOf(option.label) > -1} />
+                  <Checkbox checked={value.indexOf(option.value) > -1} />
                   <ListItemText primary={option.label} />
                 </>
               ) : (

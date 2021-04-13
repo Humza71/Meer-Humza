@@ -39,7 +39,7 @@ const HighFrequency = ({ formTitle, formKey, setFieldValue, values }) => {
               <Cell align="center" />
               <Cell align="center" />
               <Cell align="center">Vertigo</Cell>
-              <Cell align="center" width="18%">
+              <Cell align="center" width="16%">
                 Beat Direction
               </Cell>
               <Cell align="center"> DEG./SEC</Cell>
@@ -82,6 +82,7 @@ const HighFrequency = ({ formTitle, formKey, setFieldValue, values }) => {
               <BodyCell verticalAlign={"middle"}>
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
+                    exclusive={false}
                     direction={"row"}
                     togglesize={{
                       width: "51px",

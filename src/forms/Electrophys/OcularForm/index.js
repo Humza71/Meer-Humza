@@ -14,7 +14,7 @@ const OcularForm = (props) => {
   const cervicalQuestions = [
     {
       title: "",
-      key: "negPositive",
+      key: "normality",
       direction: "column",
       options: [
         {
@@ -45,8 +45,8 @@ const OcularForm = (props) => {
     },
     {
       title: "",
-      key: "trend",
-      width: "240px",
+      key: "presence",
+      width: "209px",
       direction: "column",
       options: [
         {
@@ -54,14 +54,17 @@ const OcularForm = (props) => {
           value: "enhanced",
         },
         {
-          title: "Delayed",
-          value: "delayed",
-        },
-        {
           title: "Reduced",
           value: "reduced",
         },
       ],
+    },
+    {
+      title: "",
+      key: "threshold",
+      width: "240px",
+      direction: "column",
+      options: [],
     },
   ];
 
@@ -91,7 +94,10 @@ const OcularForm = (props) => {
           <TableRow key={key}>
             <BodyCell verticalAlign={"middle"}>{rowTitle}</BodyCell>
             {cervicalQuestions.map(
-              ({ key: fieldKey, options, direction, width = "84px" }) => (
+              (
+                { key: fieldKey, options, direction, width = "84px" },
+                index
+              ) => (
                 <BodyCell key={fieldKey}>
                   <Toggle
                     direction={direction}
@@ -109,6 +115,29 @@ const OcularForm = (props) => {
                     }}
                     options={options}
                   />
+                  {cervicalQuestions.length === index + 1 && (
+                    <Toggle
+                      direction={"column"}
+                      togglesize={{
+                        width: width,
+                        height: "38px",
+                      }}
+                      name={`${key}.${"delayed"}`}
+                      value={data[key]["delayed"]}
+                      onChange={(value) => {
+                        setFieldValue(
+                          `ocularVestibularEvokedMyogenicPotential.${key}.delayed`,
+                          value
+                        );
+                      }}
+                      options={[
+                        {
+                          title: "Delayed",
+                          value: "delayed",
+                        },
+                      ]}
+                    />
+                  )}
                 </BodyCell>
               )
             )}

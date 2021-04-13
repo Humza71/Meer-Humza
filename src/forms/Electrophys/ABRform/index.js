@@ -78,7 +78,11 @@ const ABRform = (props) => {
           <>
             <Cell align="center"></Cell>
             {abrQuestions.map(({ title, key }) => (
-              <Cell align="center" key={key}>
+              <Cell
+                align="center"
+                width={key === "morphology" && "34%"}
+                key={key}
+              >
                 {title}
               </Cell>
             ))}
@@ -89,11 +93,14 @@ const ABRform = (props) => {
           <TableRow key={key}>
             <BodyCell verticalAlign={"middle"}>{rowTitle}</BodyCell>
             {abrQuestions.map(({ key: fieldKey, options, direction }) => (
-              <BodyCell key={fieldKey}>
+              <BodyCell
+                verticalAlign={fieldKey === "morphology" && "middle"}
+                key={fieldKey}
+              >
                 <Toggle
                   direction={direction}
                   togglesize={{
-                    width: "84px",
+                    width: "80px",
                     height: "38px",
                   }}
                   name={`${key}.${fieldKey}`}

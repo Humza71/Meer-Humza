@@ -29,7 +29,7 @@ const CervicalForm = (props) => {
     },
     {
       title: "",
-      key: "precense",
+      key: "presence",
       width: "209px",
       direction: "column",
       options: [
@@ -45,33 +45,36 @@ const CervicalForm = (props) => {
     },
     {
       title: "",
+      key: "presence",
+      width: "209px",
+      direction: "column",
+      options: [
+        {
+          title: "Postive Threshold Search",
+          value: "positive",
+        },
+        {
+          title: "Reduced",
+          value: "reduced",
+        },
+      ],
+    },
+    {
+      title: "",
       key: "threshold",
+      width: "240px",
+      direction: "column",
+      options: [],
+    },
+    {
+      title: "",
+      key: "presence",
       width: "240px",
       direction: "column",
       options: [
         {
           title: "Enhanced",
           value: "enhanced",
-        },
-        {
-          title: "Postive Threshold Search",
-          value: "positive",
-        },
-      ],
-    },
-    {
-      title: "",
-      key: "trend",
-      width: "240px",
-      direction: "column",
-      options: [
-        {
-          title: "Reduced",
-          value: "reduced",
-        },
-        {
-          title: "Delayed",
-          value: "delayed",
         },
       ],
     },
@@ -88,11 +91,25 @@ const CervicalForm = (props) => {
       title="Cervical Vestibular Evoked Myogenic Potential (cVEMP)"
     >
       <ReportTable
+        headerColor={
+          cervicalQuestions.some(({ title }) => title)
+            ? "#f8fbff"
+            : "transparent"
+        }
         Columns={() => (
           <>
-            <Cell align="center" width="20%"></Cell>
+            <Cell
+              align="center"
+              width="20%"
+              backgroundColor="transparent"
+            ></Cell>
             {cervicalQuestions.map(({ title, key }) => (
-              <Cell align="left" key={key} width="20%">
+              <Cell
+                align="left"
+                backgroundColor={title ? "#09539e" : "transparent"}
+                key={key}
+                width="20%"
+              >
                 {title}
               </Cell>
             ))}
@@ -103,7 +120,10 @@ const CervicalForm = (props) => {
           <TableRow key={key}>
             <BodyCell verticalAlign={"middle"}>{rowTitle}</BodyCell>
             {cervicalQuestions.map(
-              ({ key: fieldKey, options, direction, width = "84px" }) => (
+              (
+                { key: fieldKey, options, direction, width = "84px" },
+                index
+              ) => (
                 <BodyCell key={fieldKey}>
                   <Toggle
                     direction={direction}
@@ -121,6 +141,29 @@ const CervicalForm = (props) => {
                     }}
                     options={options}
                   />
+                  {cervicalQuestions.length === index + 1 && (
+                    <Toggle
+                      direction={"column"}
+                      togglesize={{
+                        width: width,
+                        height: "38px",
+                      }}
+                      name={`${key}.${"delayed"}`}
+                      value={data[key]["delayed"]}
+                      onChange={(value) => {
+                        setFieldValue(
+                          `cervicalVestibularEvokedMyogenicPotential.${key}.delayed`,
+                          value
+                        );
+                      }}
+                      options={[
+                        {
+                          title: "Delayed",
+                          value: "delayed",
+                        },
+                      ]}
+                    />
+                  )}
                 </BodyCell>
               )
             )}

@@ -78,7 +78,7 @@ const AudiogramForm = (props) => {
                 />
               </BodyCell>
             ))}
-            <BodyCell>
+            <BodyCell verticalAlign={"middle"}>
               <Input
                 placeholder={
                   `${key}` === "leftEar" ? "Left Ear Notes" : "Right Ear Notes"

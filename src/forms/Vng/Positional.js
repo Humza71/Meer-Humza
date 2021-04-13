@@ -21,12 +21,12 @@ const Positional = ({ formTitle, formKey, setFieldValue, values }) => {
       parentKey: `${formKey}.supine`,
     },
     {
-      title: "Head Right",
+      title: "Head Body Right",
       parentKey: `${formKey}.headRight`,
       key: "headRight",
     },
     {
-      title: "Head Left",
+      title: "Head Body Left",
       parentKey: `${formKey}.headLeft`,
       key: "headLeft",
     },
@@ -92,6 +92,7 @@ const Positional = ({ formTitle, formKey, setFieldValue, values }) => {
               <BodyCell verticalAlign={"middle"}>
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
+                    exclusive={false}
                     direction={"row"}
                     togglesize={{
                       width: "51px",

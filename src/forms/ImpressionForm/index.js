@@ -49,6 +49,10 @@ const InnerForm = (props) => {
   const reportLoading = useSelector((state) => state.reportReducer.loading);
   const macrosValues = useSelector((state) => state.reportReducer.macros) || [];
 
+  // React.useEffect(() => {
+  //   dispatch(updateMacros());
+  // }, [macrosValues]);
+
   return reportLoading === LoadingStates.REPORT_CREATION_LOADING ? (
     <Box display="flex" justifyContent="center" my={6}>
       <CircularProgress />
@@ -79,10 +83,6 @@ const InnerForm = (props) => {
         </OptionWrapper>
         <Divider />
         <Box mt={2}>
-          {console.log(
-            "22222222222",
-            values.impressionAndPlan.selectedMacroNames
-          )}
           <AdvancedSelect
             multiple
             value={values.impressionAndPlan.selectedMacroNames}
@@ -94,18 +94,21 @@ const InnerForm = (props) => {
               setFieldValue(
                 "impressionAndPlan.macro",
                 e.target.value.map((item) => {
-                  const itemName = item.split("-")[0];
+                  const itemValue = macrosValues.find(
+                    ({ name }) => name === item
+                  )?.value;
+
                   const macroIndex = values.impressionAndPlan.macro.findIndex(
-                    ({ name }) => name === itemName
+                    ({ name }) => name === item
                   );
                   if (macroIndex === -1) {
                     return {
-                      name: itemName,
-                      value: item.split("-")[1],
+                      name: item,
+                      value: itemValue,
                     };
                   }
                   return {
-                    name: itemName,
+                    name: item,
                     value: values.impressionAndPlan.macro[macroIndex].value,
                   };
                 })
@@ -115,16 +118,19 @@ const InnerForm = (props) => {
             name="macro"
             variant="outlined"
             options={macrosValues.map((item) => {
-              // const descriptionText = item.value.replace(/<[^>]*>/g, "");
-              const label = `${item.name} - ${item.value}`;
+              const descriptionText = item.value
+                .replace(/<[^>]*>/g, "")
+                .substring(0, 150);
+              const label = `${item.name} - ${item.longName} (${descriptionText})`;
+              console.log(item.name, "check", item.value, "check");
               return {
                 label: label,
-                value: label,
+                value: item.name,
               };
             })}
             renderValue={(value = "") => (
               <>
-                <h4>{value.map((name) => `${name.split("-")[0]},`)}</h4>
+                <h4>{value.map((item) => `${item},`)}</h4>
               </>
             )}
           />
@@ -176,9 +182,7 @@ const ImpressionForm = (props) => {
     impressionAndPlan: {
       overAllImpression: impressionValues.impressionAndPlan.overAllImpression,
       macro: selectedMacros.length > 0 ? selectedMacros : [],
-      selectedMacroNames: [
-        ...selectedMacros.map(({ name, value }) => `${name} - ${value}`),
-      ],
+      selectedMacroNames: [...selectedMacros.map(({ name }) => name)],
     },
   };
 

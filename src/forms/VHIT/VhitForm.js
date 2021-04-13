@@ -79,7 +79,11 @@ const VhitForm = (props) => {
           <>
             <Cell align="center"></Cell>
             {vhitQuestions.map(({ title, key }) => (
-              <Cell align="center" key={key}>
+              <Cell
+                align="center"
+                width={key !== "normality" && "32%"}
+                key={key}
+              >
                 {title}
               </Cell>
             ))}
@@ -90,7 +94,7 @@ const VhitForm = (props) => {
           <TableRow key={key}>
             <BodyCell verticalAlign={"middle"}>{rowTitle}</BodyCell>
             {vhitQuestions.map(({ key: fieldKey, options, direction }) => (
-              <BodyCell key={fieldKey}>
+              <BodyCell verticalAlign={"middle"} key={fieldKey}>
                 <Toggle
                   direction={direction}
                   togglesize={{
