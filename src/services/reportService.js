@@ -1,4 +1,4 @@
-import { postUtil, getUtil } from "../utils/apiService";
+import { postUtil, getUtil, deleteUtil } from "../utils/apiService";
 export function createReport(payload, onSuccess) {
   let data = {};
   const { id = "" } = payload || {};
@@ -548,6 +548,130 @@ export function getMacrosByName(payload) {
     getUtil(`/api/get/macro/${payload.name}`)
       .then((response) => {
         if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function addFiles(payload) {
+  const formData = new FormData();
+  [...payload.files].forEach((image) => {
+    formData.append("images", image);
+  });
+  return new Promise((resolve, reject) => {
+    postUtil("/api/add/files", formData)
+      .then((response) => {
+        if (response.status === 202) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function getFilesById(reportId) {
+  return new Promise((resolve, reject) => {
+    getUtil(`/api/get/files-report/${reportId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function getTechnicianById(id) {
+  return new Promise((resolve, reject) => {
+    getUtil(`/api/get/technician/${id}`)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function getProviderById(id) {
+  return new Promise((resolve, reject) => {
+    getUtil(`/api/get/provider/${id}`)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export const deleteTechnician = async (id) => {
+  return new Promise((resolve, reject) => {
+    deleteUtil(`/api/delete/technician/${id}`)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const deleteProvider = async (id) => {
+  return new Promise((resolve, reject) => {
+    deleteUtil(`/api/delete/provider/${id}`)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export function updateProv(payload) {
+  return new Promise((resolve, reject) => {
+    postUtil("/api/update/provider", payload)
+      .then((response) => {
+        if (response.status === 202) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function updateTech(payload) {
+  return new Promise((resolve, reject) => {
+    postUtil("/api/update/technician", payload)
+      .then((response) => {
+        if (response.status === 202) {
           resolve(response.data);
         }
         reject(response.data);

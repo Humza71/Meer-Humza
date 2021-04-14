@@ -15,7 +15,7 @@ import ReportCard from "components/reports/ReportCard";
 import FileChip from "components/reports/FileChip";
 import Modal from "components/Modal";
 import { useHistory } from "react-router";
-// import { updateNewReport } from "redux/reducers/reportReducer";
+import { getFiles, filesReport } from "redux/reducers/reportReducer";
 
 const Alert = styled(MuiAlert)(spacing);
 
@@ -149,7 +149,7 @@ const InnerForm = (props) => {
 };
 
 const FilesForm = (props) => {
-  const newReport = useSelector((state) => state.reportReducer.newReport);
+  const files = useSelector((state) => state.reportReducer.files);
   const stepNewReport = useSelector((state) => state.uiReducer.stepNewReport);
   const history = useHistory();
   const { match = {} } = props || {};
@@ -161,12 +161,11 @@ const FilesForm = (props) => {
   const dispatch = useDispatch();
 
   const initialValues = {
-    files: newReport.files,
+    files: files,
   };
 
   const handleSave = (values) => {
-    console.log(values);
-    // dispatch(updateNewReport(values));
+    dispatch(filesReport(values));
   };
   useEffect(() => {
     if (id) {
@@ -174,21 +173,18 @@ const FilesForm = (props) => {
     }
   }, [id, stepNewReport, history]);
 
-  const handleSubmit = async (
-    values,
-    { resetForm, setErrors, setStatus, setSubmitting }
-  ) => {
+  const handleSubmit = async (values) => {
     try {
       handleSave(values);
       dispatch(setStepNewReport(stepNewReport + 1));
-      setStatus({ sent: true });
-      setSubmitting(false);
-    } catch (error) {
-      setStatus({ sent: false });
-      setErrors({ submit: error.message });
-      setSubmitting(false);
-    }
+    } catch (error) {}
   };
+
+  React.useEffect(() => {
+    if (id) {
+      dispatch(getFiles(id));
+    }
+  }, [id, dispatch]);
 
   return (
     <React.Fragment>

@@ -118,10 +118,10 @@ const InnerForm = (props) => {
             name="macro"
             variant="outlined"
             options={macrosValues.map((item) => {
-              const descriptionText = item.value
-                .replace(/<[^>]*>/g, "")
-                .substring(0, 150);
-              const label = `${item.name} - ${item.longName} (${descriptionText})`;
+              // const descriptionText = item.value
+              //   .replace(/<[^>]*>/g, "")
+              //   .substring(0, 150);
+              const label = `${item.name} - ${item.longName}`;
               console.log(item.name, "check", item.value, "check");
               return {
                 label: label,

@@ -10,9 +10,11 @@ const initialState = {
     technicianId: "",
     files: [],
   },
+  files: [],
   providers: [],
   technicians: [],
   completed: false,
+
   history: {
     presentIllness: {},
     auralSymptom: {},
@@ -143,7 +145,8 @@ const initialState = {
   },
   macros: [],
   selectedMacros: [],
-  // normality: "",
+  singleTechnician: {},
+  singleProvider: {},
 };
 
 export default initialState;

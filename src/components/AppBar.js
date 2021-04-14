@@ -25,8 +25,8 @@ const AppBar = styled(MuiAppBar)`
 const HeaderLogoIcon = styled.div`
   background: ${({ background = `/static/img/dashboard/header-logo.png` }) =>
     `url(${background})`};
-  width: 186px;
-  height: 24px;
+  width: 141px;
+  height: 54px;
   background-size: 100% 100%;
   margin: auto;
 `;
