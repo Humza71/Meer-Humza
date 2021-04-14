@@ -26,7 +26,7 @@ const HeaderLogoIcon = styled.div`
   background: ${({ background = `/static/img/dashboard/header-logo.png` }) =>
     `url(${background})`};
   width: 141px;
-  height: 54px;
+  height: 65px;
   background-size: 100% 100%;
   margin: auto;
 `;
