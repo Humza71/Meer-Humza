@@ -22,7 +22,47 @@
       }
       #launcher-frame{
         bottom: 33px !important;
+            }
+      ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+          color:    #909;
       }
+      :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color:    #909;
+        opacity:  1;
+      }
+      ::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color:    #909;
+        opacity:  1;
+      }
+      :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color:    #909;
+      }
+      ::-ms-input-placeholder { /* Microsoft Edge */
+        color:    #909;
+      }
+
+      ::placeholder { /* Most modern browsers support this now. */
+        color:    #909;
+      }
+    textarea::-webkit-input-placeholder {
+  color: black !important;
+}
+
+textarea:-moz-placeholder { /* Firefox 18- */
+  color: black !important;  
+}
+
+textarea::-moz-placeholder {  /* Firefox 19+ */
+  color: black !important;  
+}
+
+textarea:-ms-input-placeholder {
+  color: black !important;  
+}
+
+textarea::placeholder {
+  color: black !important;  
+}
     </style>
   </head>
   <body>

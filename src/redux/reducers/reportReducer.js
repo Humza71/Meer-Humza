@@ -9,6 +9,8 @@ import {
   getTechnicians,
   saveProvider,
   saveTechnician,
+  addFiles,
+  getFilesById,
   patientHistory,
   getHistoryById,
   posturalStability,
@@ -33,6 +35,12 @@ import {
   getImpressionPlanById,
   getMacros,
   getMacrosByName,
+  getProviderById,
+  getTechnicianById,
+  deleteTechnician,
+  deleteProvider,
+  updateTech,
+  updateProv,
 } from "../../services/reportService";
 // import { setMessage } from "./messageReducer";
 // import { createNewReport } from "services/reportService";
@@ -84,6 +92,37 @@ export const slice = createSlice({
     setProviders: (state, action) => {
       state.providers = action.payload;
     },
+
+    UpdateProviders: (state, action) => {
+      const newProviders = state.providers.filter(
+        ({ id }) => id !== action.payload
+      );
+      state.providers = newProviders;
+    },
+
+    UpdateTechnicians: (state, action) => {
+      const newTechnicians = state.technicians.filter(
+        ({ id }) => id !== action.payload
+      );
+      state.technicians = newTechnicians;
+    },
+
+    editProviders: (state, action) => {
+      let newProviders = state.providers.filter(
+        ({ id }) => id !== action.payload.id
+      );
+      newProviders = [...newProviders, action.payload];
+      state.providers = newProviders;
+    },
+
+    editTechnicians: (state, action) => {
+      let newTechnicians = state.technicians.filter(
+        ({ id }) => id !== action.payload
+      );
+      newTechnicians = [...newTechnicians, action.payload];
+      state.technicians = newTechnicians;
+    },
+
     addItemToProviders: (state, action) => {
       state.providers.push(action.payload);
     },
@@ -211,26 +250,37 @@ export const slice = createSlice({
         state.macros = action.payload;
       }
     },
-    updateMacro: (state, action) => {
-      // const newArray = state.macros.filter((item) => {
-      //   state.selectedMacros.map((macro, index) => {
-      //     if (macro === item.value) {
-      //       return { index, macro };
-      //     }
-      //   });
-      // });
-      // newArray.map((item) => {
-      //   state.macros[item.index] = item.macro;
-      // });
-      // debugger;
-      // var newArray = [...state.selectedMacros];
-      // newArray.splice(action.payload.macroIndex, 1);
-      // if (action.payload) {
-      //   state.selectedMacros = [...newArray];
-      //   state.impression.impressionAndPlan.overAllImpression =
-      //     action.payload.overAllImpression;
-      // }
+    setFiles: (state, action) => {
+      if (action.payload) {
+        state.files = action.payload;
+      }
     },
+    setSingleProvider: (state, action) => {
+      state.singleProvider = action.payload;
+    },
+    setSingleTechnician: (state, action) => {
+      state.singleTechnician = action.payload;
+    },
+    // updateMacro: (state, action) => {
+    //   const newArray = state.macros.filter((item) => {
+    //     state.selectedMacros.map((macro, index) => {
+    //       if (macro === item.value) {
+    //         return { index, macro };
+    //       }
+    //     });
+    //   });
+    //   newArray.map((item) => {
+    //     state.macros[item.index] = item.macro;
+    //   });
+    //   debugger;
+    //   var newArray = [...state.selectedMacros];
+    //   newArray.splice(action.payload.macroIndex, 1);
+    //   if (action.payload) {
+    //     state.selectedMacros = [...newArray];
+    //     state.impression.impressionAndPlan.overAllImpression =
+    //       action.payload.overAllImpression;
+    //   }
+    // },
   },
 });
 
@@ -254,7 +304,14 @@ const {
   setImpression,
   setMacros,
   addMacro,
-  updateMacro,
+  setFiles,
+  setSingleProvider,
+  setSingleTechnician,
+  UpdateProviders,
+  UpdateTechnicians,
+  editTechnicians,
+  editProviders,
+  // updateMacro,
   // setNormality,
 } = slice.actions;
 
@@ -608,6 +665,89 @@ export const getImpressionPlan = (values) => async (dispatch) => {
   }
 };
 
+export const filesReport = (values) => async (dispatch) => {
+  dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
+  try {
+    const response = await addFiles(values);
+    if (response.status === "SUCCESS") {
+      console.log("files added successfully");
+    }
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const getFiles = (values) => async (dispatch) => {
+  try {
+    const response = await getFilesById(values);
+    dispatch(setFiles(response.data));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const getTech = (values) => async (dispatch) => {
+  try {
+    const response = await getTechnicianById(values);
+    dispatch(setSingleTechnician(response.data));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const getProv = (values) => async (dispatch) => {
+  try {
+    const response = await getProviderById(values);
+    dispatch(setSingleProvider(response.data));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const removeProvider = (id) => async (dispatch) => {
+  try {
+    const response = await deleteProvider(id);
+    if (response.status === 200) {
+      dispatch(UpdateProviders(id));
+    }
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const removeTechnician = (id) => async (dispatch) => {
+  try {
+    const response = await deleteTechnician(id);
+    if (response.status === 200) {
+      dispatch(UpdateTechnicians(id));
+    }
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const updateTechnician = (data) => async (dispatch) => {
+  try {
+    const response = await updateTech(data);
+    if (response.status === 200) {
+      dispatch(editTechnicians(data));
+    }
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const updateProvider = (data) => async (dispatch) => {
+  try {
+    const response = await updateProv(data);
+    if (response.status === 200) {
+      dispatch(editProviders(data));
+    }
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
 export const allMacros = () => async (dispatch) => {
   // dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
   try {
@@ -635,10 +775,10 @@ export const macrosByName = (values) => async (dispatch) => {
   }
 };
 
-export const updateMacros = (values) => async (dispatch) => {
-  dispatch(updateMacro(values));
-  // dispatch(setNormality(values.overAllImpression));
-};
+// export const updateMacros = (values) => async (dispatch) => {
+//   dispatch(updateMacro(values));
+//   // dispatch(setNormality(values.overAllImpression));
+// };
 
 export const pdfLoader = () => async (dispatch) => {
   dispatch(setLoading(null));

@@ -54,6 +54,7 @@ const AdvancedSelect = ({
   allowAdd,
   onAdd,
   hidelabeltop,
+  optionActions = false,
   ...props
 }) => {
   const [open, setOpen] = useState(false);
@@ -205,7 +206,16 @@ const AdvancedSelect = ({
                   <ListItemText primary={option.label} />
                 </>
               ) : (
-                <>{option.label}</>
+                <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div>{option.label}</div>
+                  {optionActions && <div>{optionActions(option)}</div>}
+                </div>
               )}
             </MenuItem>
           ))}

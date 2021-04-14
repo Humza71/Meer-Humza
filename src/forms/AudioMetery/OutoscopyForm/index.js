@@ -7,7 +7,13 @@ import Toggle from "components/reports/Toggle";
 import BodyCell from "components/reports/BodyCell";
 import TextArea from "components/reports/TextArea";
 import { TableRow } from "@material-ui/core";
+// import styled from "styled-components/macro";
 import Input from "components/reports/Input";
+
+// const Te = styled(Card)`
+//   width: 500px;
+//   margin: 20px auto;
+// `;
 
 const OutoscopyForm = (props) => {
   const { setFieldValue, values } = props;
