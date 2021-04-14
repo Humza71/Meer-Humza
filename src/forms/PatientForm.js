@@ -139,10 +139,10 @@ const InnerForm = (props) => {
     dispatch(addTechnician(newTechnician, saveForFuture));
   };
 
-  const singleTechnician =
-    useSelector((state) => state.reportReducer.singleTechnician) || {};
-  const singleProvider =
-    useSelector((state) => state.reportReducer.singleProvider) || {};
+  // const singleTechnician =
+  //   useSelector((state) => state.reportReducer.singleTechnician) || {};
+  // const singleProvider =
+  //   useSelector((state) => state.reportReducer.singleProvider) || {};
 
   // const handleNameChange = (e) => {
   //   setName(e.target.value);
