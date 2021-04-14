@@ -27,7 +27,7 @@ const AudiogramForm = (props) => {
           value: "conductive",
         },
         {
-          title: "sensorineural",
+          title: "Sensorineural",
           value: "Sensorineural",
         },
         {
