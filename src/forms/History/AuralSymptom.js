@@ -50,7 +50,7 @@ const AuralSymptom = (props) => {
           <BodyCell>
             <Toggle
               togglesize={{
-                width: "148px",
+                width: "120px",
                 height: "38px",
               }}
               name={`auralSymptom.suddenHearingLoss`}
@@ -64,7 +64,7 @@ const AuralSymptom = (props) => {
           <BodyCell>
             <Toggle
               togglesize={{
-                width: "148px",
+                width: "120px",
                 height: "38px",
               }}
               name={`auralSymptom.auralPressure`}
@@ -78,7 +78,7 @@ const AuralSymptom = (props) => {
           <BodyCell>
             <Toggle
               togglesize={{
-                width: "148px",
+                width: "120px",
                 height: "38px",
               }}
               name={`auralSymptom.otorrhea`}
@@ -92,7 +92,7 @@ const AuralSymptom = (props) => {
           <BodyCell>
             <Toggle
               togglesize={{
-                width: "148px",
+                width: "120px",
                 height: "38px",
               }}
               name={`auralSymptom.tinnitus`}
@@ -106,7 +106,7 @@ const AuralSymptom = (props) => {
           <BodyCell>
             <Toggle
               togglesize={{
-                width: "148px",
+                width: "120px",
                 height: "38px",
               }}
               name={`auralSymptom.otalgia`}

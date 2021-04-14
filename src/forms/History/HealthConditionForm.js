@@ -46,6 +46,8 @@ const AuralSymptom = (props) => {
       title: "Hypotension",
       value: "hypotension",
     },
+  ];
+  const conditionCol2 = [
     {
       title: "Meniere’s Disease",
       value: "Meniere’s Disease",
@@ -81,12 +83,12 @@ const AuralSymptom = (props) => {
       <CircularProgress />
     </Box>
   ) : (
-    <ReportCard cardsize={{ width: "850px" }} title="Our Health Conditions">
-      <Grid container spacing={2}>
+    <ReportCard cardsize={{ width: "850px" }} title="Other Health Conditions">
+      <Grid container spacing={4}>
         <Grid item xs={3}>
           <Toggle
             togglesize={{
-              width: "210px",
+              width: "100%",
               height: "38px",
             }}
             exclusive={false}
@@ -99,7 +101,22 @@ const AuralSymptom = (props) => {
           />
         </Grid>
         <Grid item xs={3}>
-          <Box pl={5} pt={117}>
+          <Toggle
+            togglesize={{
+              width: "100%",
+              height: "38px",
+            }}
+            exclusive={false}
+            name={`healthCondition.conditions`}
+            value={values["healthCondition"]["conditions"]}
+            onChange={(value) =>
+              setFieldValue(`healthCondition.conditions`, value)
+            }
+            options={conditionCol2}
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <Box pt={12}>
             <Box mb={2.5}>
               <Input
                 disabled={
