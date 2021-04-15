@@ -22,18 +22,20 @@ const VHIT = (props) => {
   const initialValues = {
     lateral: {
       normality: vHitValues.lateral.normality || "",
-      saccades: vHitValues.lateral.saccades || "",
-      reduceGain: vHitValues.lateral.reduceGain || "",
+      saccades: vHitValues.lateral.saccades ? vHitValues.lateral.saccades : [],
+      reduceGain: vHitValues.lateral.reduceGain
+        ? vHitValues.lateral.reduceGain
+        : [],
     },
     ralp: {
       normality: vHitValues.ralp.normality || "",
-      saccades: vHitValues.ralp.saccades || "",
-      reduceGain: vHitValues.ralp.reduceGain || "",
+      saccades: vHitValues.ralp.saccades ? vHitValues.ralp.saccades : [],
+      reduceGain: vHitValues.ralp.reduceGain ? vHitValues.ralp.reduceGain : [],
     },
     larp: {
       normality: vHitValues.larp.normality || "",
-      saccades: vHitValues.larp.saccades || "",
-      reduceGain: vHitValues.larp.reduceGain || "",
+      saccades: vHitValues.larp.saccades ? vHitValues.larp.saccades : [],
+      reduceGain: vHitValues.larp.reduceGain ? vHitValues.larp.reduceGain : [],
     },
     notes: vHitValues.notes || "",
   };

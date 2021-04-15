@@ -93,6 +93,7 @@ const InnerForm = (props) => {
               <span>{title}</span>
               {questions.map(({ key: fieldKey, options }) => (
                 <Toggle
+                  exclusive={fieldKey === "lag" ? false : true}
                   key={fieldKey}
                   togglesize={{
                     width: "120px",
@@ -100,9 +101,16 @@ const InnerForm = (props) => {
                   }}
                   name={`${key}.${fieldKey}`}
                   value={values[key][fieldKey]}
-                  onChange={(value) =>
-                    setFieldValue(`${key}.${fieldKey}`, value)
-                  }
+                  onChange={(value) => {
+                    if (fieldKey === "gain") {
+                      if (key === "lateral") {
+                        setFieldValue(`vertical.gain`, "");
+                      } else {
+                        setFieldValue(`lateral.gain`, "");
+                      }
+                    }
+                    setFieldValue(`${key}.${fieldKey}`, value);
+                  }}
                   options={options}
                 />
               ))}
@@ -135,12 +143,12 @@ const VAT = (props) => {
         ? vatVorteqValues.lateral.normality
         : "",
       gain: vatVorteqValues.lateral.gain ? vatVorteqValues.lateral.gain : "",
-      lag: vatVorteqValues.lateral.lag ? vatVorteqValues.lateral.lag : "",
+      lag: vatVorteqValues.lateral.lag ? vatVorteqValues.lateral.lag : [],
     },
     vertical: {
       normality: vatVorteqValues.vertical.normality,
       gain: vatVorteqValues.vertical.gain,
-      lag: vatVorteqValues.vertical.lag,
+      lag: vatVorteqValues.vertical.lag ? vatVorteqValues.vertical.lag : [],
     },
     notes: vatVorteqValues.notes ? vatVorteqValues.notes : "",
   };

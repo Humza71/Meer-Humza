@@ -96,6 +96,11 @@ const VhitForm = (props) => {
             {vhitQuestions.map(({ key: fieldKey, options, direction }) => (
               <BodyCell verticalAlign={"middle"} key={fieldKey}>
                 <Toggle
+                  exclusive={
+                    fieldKey === "saccades" || fieldKey === "reduceGain"
+                      ? false
+                      : true
+                  }
                   direction={direction}
                   togglesize={{
                     width: "84px",

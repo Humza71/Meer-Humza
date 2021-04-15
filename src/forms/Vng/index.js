@@ -401,14 +401,16 @@ const VngForm = (props) => {
         warm: vngValues.calorics.right.warm || "",
         cool: vngValues.calorics.right.cool || "",
         vertigo: vngValues.calorics.right.vertigo || "",
-        uwDp: vngValues.calorics.right.uwDp || "",
+        uwDp: vngValues.calorics.right.uwDp
+          ? vngValues.calorics.right.uwDp
+          : [],
         fixationIndex: vngValues.calorics.right.fixationIndex || "",
       },
       left: {
         warm: vngValues.calorics.left.warm || "",
         cool: vngValues.calorics.left.cool || "",
         vertigo: vngValues.calorics.left.vertigo || "",
-        uwDp: vngValues.calorics.left.uwDp || "",
+        uwDp: vngValues.calorics.left.uwDp ? vngValues.calorics.left.uwDp : [],
         fixationIndex: vngValues.calorics.left.fixationIndex || "",
       },
       notes: vngValues.calorics.notes ? vngValues.calorics.notes : "",

@@ -26,6 +26,7 @@ export const ToggleButtonGroup = styled(MuiToggleButtonGroup)`
 `;
 
 const Toggle = ({
+  disabled = false,
   options,
   name,
   handleBlur,
@@ -41,6 +42,7 @@ const Toggle = ({
 }) => (
   <>
     <ToggleButtonGroup
+      disabled={disabled}
       exclusive={exclusive}
       togglesize={togglesize}
       direction={direction}
@@ -52,7 +54,12 @@ const Toggle = ({
       aria-label={name}
     >
       {options.map(({ value, title, addText = false }, index, props) => (
-        <ToggleButton value={value} aria-label={value} key={index}>
+        <ToggleButton
+          disabled={disabled}
+          value={value}
+          aria-label={value}
+          key={index}
+        >
           {title}
         </ToggleButton>
       ))}

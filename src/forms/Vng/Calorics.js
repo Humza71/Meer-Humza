@@ -59,17 +59,64 @@ const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
     let rightWarm = parseInt(values.calorics.right.warm);
     let leftCool = parseInt(values.calorics.left.cool);
     let rightCool = parseInt(values.calorics.right.cool);
-    if (isNaN(leftWarm)) leftWarm = 0;
-    if (isNaN(rightWarm)) rightWarm = 0;
-    if (isNaN(leftCool)) leftCool = 0;
-    if (isNaN(rightCool)) rightCool = 0;
-    const myNum = leftWarm + rightWarm + leftCool + rightCool;
-    if (myNum <= 20) {
-      setFieldValue(`${formKey}.bilateralWeakness`, true);
-      setWeakness(true);
-    } else {
-      setFieldValue(`${formKey}.bilateralWeakness`, false);
-      setWeakness(false);
+    if (
+      !isNaN(leftWarm) ||
+      !isNaN(rightWarm) ||
+      !isNaN(leftCool) ||
+      !isNaN(rightCool)
+    ) {
+      if (isNaN(leftWarm)) leftWarm = 0;
+      if (isNaN(rightWarm)) rightWarm = 0;
+      if (isNaN(leftCool)) leftCool = 0;
+      if (isNaN(rightCool)) rightCool = 0;
+      const myNum = leftWarm + rightWarm + leftCool + rightCool;
+      if (myNum <= 20) {
+        setFieldValue(`${formKey}.bilateralWeakness`, true);
+        setWeakness(true);
+      } else {
+        setFieldValue(`${formKey}.bilateralWeakness`, false);
+        setWeakness(false);
+      }
+      let uw =
+        rightWarm +
+        rightCool -
+        (leftWarm + leftCool) / (rightWarm + rightCool + leftWarm + leftCool);
+      if (isNaN(uw)) uw = 0;
+      let dp =
+        rightWarm +
+        leftCool -
+        (leftWarm + rightCool) / (rightWarm + rightCool + leftWarm + leftCool);
+      if (isNaN(dp)) dp = 0;
+      let leftArray = [];
+      let rightArray = [];
+      if (uw >= 0.25) {
+        rightArray.push("uw");
+        setFieldValue(`${formKey}.right.uwDp`, rightArray);
+      } else {
+        const newArray = rightArray.filter((item) => item !== "uw");
+        setFieldValue(`${formKey}.right.uwDp`, newArray);
+      }
+      if (uw >= -0.25) {
+        leftArray.push("uw");
+        setFieldValue(`${formKey}.left.uwDp`, leftArray);
+      } else {
+        const newArray = leftArray.filter((item) => item !== "uw");
+        setFieldValue(`${formKey}.left.uwDp`, newArray);
+      }
+      if (dp >= 0.3) {
+        rightArray.push("dp");
+        setFieldValue(`${formKey}.right.uwDp`, rightArray);
+      } else {
+        const newArray = rightArray.filter((item) => item !== "dp");
+        setFieldValue(`${formKey}.right.uwDp`, newArray);
+      }
+      if (dp >= -0.3) {
+        leftArray.push("dp");
+        setFieldValue(`${formKey}.left.uwDp`, leftArray);
+      } else {
+        const newArray = leftArray.filter((item) => item !== "dp");
+        setFieldValue(`${formKey}.left.uwDp`, newArray);
+      }
     }
   }, [
     values.calorics.left?.warm,
@@ -121,6 +168,8 @@ const Calorics = ({ formTitle, formKey, setFieldValue, values }) => {
               <BodyCell>
                 <Box mb={2.5} mt={2.5}>
                   <Toggle
+                    disabled
+                    exclusive={false}
                     name={`${formKey}.${key}`}
                     value={data[key]["uwDp"]}
                     onChange={(value) =>

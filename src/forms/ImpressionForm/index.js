@@ -121,8 +121,12 @@ const InnerForm = (props) => {
               // const descriptionText = item.value
               //   .replace(/<[^>]*>/g, "")
               //   .substring(0, 150);
-              const label = `${item.name} - ${item.longName}`;
-              console.log(item.name, "check", item.value, "check");
+              let label = "";
+              if (item.longName.length === 0) {
+                label = `${item.name}`;
+              } else {
+                label = `${item.name} - (${item.longName})`;
+              }
               return {
                 label: label,
                 value: item.name,

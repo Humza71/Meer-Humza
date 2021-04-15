@@ -165,7 +165,7 @@ let TableToolbar = (props) => {
       <Grid container alignItems="center" justify="space-between">
         <Grid item>
           <SearchInput
-            placeholder="Search for a Company"
+            placeholder="Search for a License"
             value={searchString}
             onChange={handleSearchChange}
             grayBackground={true}

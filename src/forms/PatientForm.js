@@ -45,8 +45,8 @@ import {
   addProvider,
   addTechnician,
   setCompleted,
-  getTech,
-  getProv,
+  // getTech,
+  // getProv,
   removeProvider,
   removeTechnician,
   updateTechnician,
@@ -159,63 +159,27 @@ const InnerForm = (props) => {
     if (name.length > 0) {
       if (edit === "provider") {
         dispatch(
-          updateTechnician({
-            id: editId,
-            name,
-          })
+          updateProvider(
+            {
+              id: editId,
+              name,
+            },
+            handleCloseDialogue
+          )
         );
       } else {
         dispatch(
-          updateProvider({
-            id: editId,
-            name,
-          })
+          updateTechnician(
+            {
+              id: editId,
+              name,
+            },
+            handleCloseDialogue
+          )
         );
       }
     }
   };
-
-  // const Edition = ({ id }) => {
-  //   return (
-  //     <OutCard mb={0}>
-  //       <CardContent>
-  //         <Box>
-  //           <Typography variant="h5" color="action">
-  //             Edit {edit} Information
-  //           </Typography>
-  //           <Box mt={3}>
-  //             <Grid>
-  //               <TextField
-  //                 autoComplete="off"
-  //                 name="name"
-  //                 placeholder="Enter Name"
-  //                 // label="Enter Name"
-  //                 // label="Email"
-  //                 value={name}
-  //                 fullWidth
-  //                 onChange={(e) => setName(e.target.value)}
-  //                 variant="outlined"
-  //                 my={2}
-  //               />
-  //             </Grid>
-  //           </Box>
-  //           <Box>
-  //             <MyButton
-  //               className={classes.root}
-  //               type="submit"
-  //               color="primary"
-  //               variant="outlined"
-  //               size="large"
-  //               onClick={() => updateStaff(id)}
-  //             >
-  //               Done
-  //             </MyButton>
-  //           </Box>
-  //         </Box>
-  //       </CardContent>
-  //     </OutCard>
-  //   );
-  // };
 
   const handleDeleteOpen = (id, edit) => {
     setDeleteId(id);
@@ -230,16 +194,11 @@ const InnerForm = (props) => {
   };
 
   // const history = useHistory();
-  const handleOpen = (id, edit) => {
-    if (edit === "technician") {
-      dispatch(getTech(id));
-    } else {
-      dispatch(getProv(id));
-    }
+  const handleOpen = (id, name, edit) => {
     setEditId(id);
+    setName(name);
     setEdit(edit);
     setOpen(true);
-    // dispatch(getCompanyById(row.id));
   };
 
   const handleCloseDialogue = () => {
@@ -251,9 +210,9 @@ const InnerForm = (props) => {
 
   const deleteStaff = () => {
     if (edit === "technician") {
-      dispatch(removeTechnician(deleteId));
+      dispatch(removeTechnician(deleteId, handleDeleteDialogue));
     } else {
-      dispatch(removeProvider(deleteId));
+      dispatch(removeProvider(deleteId, handleDeleteDialogue));
     }
   };
 
@@ -285,10 +244,9 @@ const InnerForm = (props) => {
     return (
       <LabelWrapper>
         <Grid container>
-          <span>{name}</span>
           <Icon
             src={"/static/img/Edit.png"}
-            onClick={() => handleOpen(id, edit)}
+            onClick={() => handleOpen(id, name, edit)}
           />
           <Icon
             src={"/static/img/delete.svg"}
@@ -519,7 +477,7 @@ const InnerForm = (props) => {
                         }))}
                         optionActions={(data) => (
                           <Label
-                            name={data.name}
+                            name={data.label}
                             id={data.value}
                             edit={"provider"}
                           />
@@ -527,7 +485,7 @@ const InnerForm = (props) => {
                         renderValue={(value = "") => (
                           <>
                             <p>
-                              {providers.find(({ id }) => id === value).name}
+                              {providers.find(({ id }) => id === value)?.name}
                             </p>
                           </>
                         )}
@@ -558,7 +516,7 @@ const InnerForm = (props) => {
                         }))}
                         optionActions={(data) => (
                           <Label
-                            name={data.name}
+                            name={data.label}
                             id={data.value}
                             edit={"technician"}
                           />
@@ -569,7 +527,7 @@ const InnerForm = (props) => {
                         renderValue={(value = "") => (
                           <>
                             <p>
-                              {technicians.find(({ id }) => id === value).name}
+                              {technicians.find(({ id }) => id === value)?.name}
                             </p>
                           </>
                         )}

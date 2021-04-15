@@ -35,8 +35,8 @@ import {
   getImpressionPlanById,
   getMacros,
   getMacrosByName,
-  getProviderById,
-  getTechnicianById,
+  // getProviderById,
+  // getTechnicianById,
   deleteTechnician,
   deleteProvider,
   updateTech,
@@ -117,7 +117,7 @@ export const slice = createSlice({
 
     editTechnicians: (state, action) => {
       let newTechnicians = state.technicians.filter(
-        ({ id }) => id !== action.payload
+        ({ id }) => id !== action.payload.id
       );
       newTechnicians = [...newTechnicians, action.payload];
       state.technicians = newTechnicians;
@@ -255,12 +255,12 @@ export const slice = createSlice({
         state.files = action.payload;
       }
     },
-    setSingleProvider: (state, action) => {
-      state.singleProvider = action.payload;
-    },
-    setSingleTechnician: (state, action) => {
-      state.singleTechnician = action.payload;
-    },
+    // setSingleProvider: (state, action) => {
+    //   state.singleProvider = action.payload;
+    // },
+    // setSingleTechnician: (state, action) => {
+    //   state.singleTechnician = action.payload;
+    // },
     // updateMacro: (state, action) => {
     //   const newArray = state.macros.filter((item) => {
     //     state.selectedMacros.map((macro, index) => {
@@ -305,8 +305,8 @@ const {
   setMacros,
   addMacro,
   setFiles,
-  setSingleProvider,
-  setSingleTechnician,
+  // setSingleProvider,
+  // setSingleTechnician,
   UpdateProviders,
   UpdateTechnicians,
   editTechnicians,
@@ -686,62 +686,74 @@ export const getFiles = (values) => async (dispatch) => {
   }
 };
 
-export const getTech = (values) => async (dispatch) => {
-  try {
-    const response = await getTechnicianById(values);
-    dispatch(setSingleTechnician(response.data));
-  } catch (error) {
-    // dispatch(setMessage({ message: "Email or password already exist!" }));
-  }
-};
+// export const getTech = (values) => async (dispatch) => {
+//   try {
+//     const response = await getTechnicianById(values);
+//     dispatch(setSingleTechnician(response.data));
+//   } catch (error) {
+//     // dispatch(setMessage({ message: "Email or password already exist!" }));
+//   }
+// };
 
-export const getProv = (values) => async (dispatch) => {
-  try {
-    const response = await getProviderById(values);
-    dispatch(setSingleProvider(response.data));
-  } catch (error) {
-    // dispatch(setMessage({ message: "Email or password already exist!" }));
-  }
-};
+// export const getProv = (values) => async (dispatch) => {
+//   try {
+//     const response = await getProviderById(values);
+//     dispatch(setSingleProvider(response.data));
+//   } catch (error) {
+//     // dispatch(setMessage({ message: "Email or password already exist!" }));
+//   }
+// };
 
-export const removeProvider = (id) => async (dispatch) => {
+export const removeProvider = (id, handleDeleteDialogue) => async (
+  dispatch
+) => {
   try {
     const response = await deleteProvider(id);
     if (response.status === 200) {
       dispatch(UpdateProviders(id));
+      handleDeleteDialogue();
     }
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
 };
 
-export const removeTechnician = (id) => async (dispatch) => {
+export const removeTechnician = (id, handleDeleteDialogue) => async (
+  dispatch
+) => {
   try {
     const response = await deleteTechnician(id);
     if (response.status === 200) {
       dispatch(UpdateTechnicians(id));
+      handleDeleteDialogue();
     }
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
 };
 
-export const updateTechnician = (data) => async (dispatch) => {
+export const updateTechnician = (data, handleCloseDialogue) => async (
+  dispatch
+) => {
   try {
     const response = await updateTech(data);
-    if (response.status === 200) {
+    if (response.status === "SUCCESS") {
       dispatch(editTechnicians(data));
+      handleCloseDialogue();
     }
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
 };
 
-export const updateProvider = (data) => async (dispatch) => {
+export const updateProvider = (data, handleCloseDialogue) => async (
+  dispatch
+) => {
   try {
     const response = await updateProv(data);
-    if (response.status === 200) {
+    if (response.status === "SUCCESS") {
       dispatch(editProviders(data));
+      handleCloseDialogue();
     }
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));

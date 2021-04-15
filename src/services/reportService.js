@@ -592,39 +592,39 @@ export function getFilesById(reportId) {
   });
 }
 
-export function getTechnicianById(id) {
-  return new Promise((resolve, reject) => {
-    getUtil(`/api/get/technician/${id}`)
-      .then((response) => {
-        if (response.status === 200) {
-          resolve(response.data);
-        }
-        reject(response.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-}
+// export function getTechnicianById(id) {
+//   return new Promise((resolve, reject) => {
+//     getUtil(`/api/get/technician/${id}`)
+//       .then((response) => {
+//         if (response.status === 200) {
+//           resolve(response.data);
+//         }
+//         reject(response.data);
+//       })
+//       .catch((error) => {
+//         reject(error);
+//       });
+//   });
+// }
 
-export function getProviderById(id) {
-  return new Promise((resolve, reject) => {
-    getUtil(`/api/get/provider/${id}`)
-      .then((response) => {
-        if (response.status === 200) {
-          resolve(response.data);
-        }
-        reject(response.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-}
+// export function getProviderById(id) {
+//   return new Promise((resolve, reject) => {
+//     getUtil(`/api/get/provider/${id}`)
+//       .then((response) => {
+//         if (response.status === 200) {
+//           resolve(response.data);
+//         }
+//         reject(response.data);
+//       })
+//       .catch((error) => {
+//         reject(error);
+//       });
+//   });
+// }
 
 export const deleteTechnician = async (id) => {
   return new Promise((resolve, reject) => {
-    deleteUtil(`/api/delete/technician/${id}`)
+    deleteUtil(`/api/clinic/delete/technician/${id}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response);
@@ -639,7 +639,7 @@ export const deleteTechnician = async (id) => {
 
 export const deleteProvider = async (id) => {
   return new Promise((resolve, reject) => {
-    deleteUtil(`/api/delete/provider/${id}`)
+    deleteUtil(`/api/clinic/delete/provider/${id}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response);
@@ -653,10 +653,14 @@ export const deleteProvider = async (id) => {
 };
 
 export function updateProv(payload) {
+  const data = {
+    providers: { name: payload.name },
+  };
+
   return new Promise((resolve, reject) => {
-    postUtil("/api/update/provider", payload)
+    postUtil(`/api/clinic/edit/provider/${payload.id}`, data)
       .then((response) => {
-        if (response.status === 202) {
+        if (response.status === 200) {
           resolve(response.data);
         }
         reject(response.data);
@@ -668,10 +672,13 @@ export function updateProv(payload) {
 }
 
 export function updateTech(payload) {
+  const data = {
+    technicians: { name: payload.name },
+  };
   return new Promise((resolve, reject) => {
-    postUtil("/api/update/technician", payload)
+    postUtil(`/api/clinic/edit/technician/${payload.id}`, data)
       .then((response) => {
-        if (response.status === 202) {
+        if (response.status === 200) {
           resolve(response.data);
         }
         reject(response.data);
