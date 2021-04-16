@@ -174,6 +174,7 @@ let TableToolbar = (props) => {
 
         <Grid item>
           <SmallAdvancedSelect
+            disabled
             value={filteredColumns}
             onChange={handleColumnFilterChange}
             name="columns"
@@ -203,6 +204,7 @@ let TableToolbar = (props) => {
         </Grid>
         <Grid item>
           <SmallAdvancedSelect
+            disabled
             value={filteredColumns}
             onChange={handleColumnFilterChange}
             name="filter"

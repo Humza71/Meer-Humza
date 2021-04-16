@@ -1,6 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import SignIn from "../pages/auth/SignIn";
+
+// import history from "utils/history";
+
+// import { Redirect } from "react-router-dom";
 import { dashboardLayoutRoutes, authLayoutRoutes } from "./index";
 import { userInfo } from "redux/reducers/authReducer";
 
@@ -52,6 +57,12 @@ const Routes = () => {
   const user = useSelector((state) => state.authReducer.user) || {};
   const token = localStorage.getItem("token");
 
+  // const tokenExpired = () => {
+  //   debugger;
+  //   // <Redirect to="/auth/sign-in" />;
+  //   history.push("/auth/sign-in");
+  // };
+
   React.useEffect(() => {
     if (token) {
       dispatch(userInfo());
@@ -77,6 +88,14 @@ const Routes = () => {
             )}
           />
         )}
+        <Route
+          to="/auth/sign-in"
+          render={() => (
+            <AuthLayout>
+              <SignIn />
+            </AuthLayout>
+          )}
+        />
       </Switch>
     </Router>
   );

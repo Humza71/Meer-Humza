@@ -30,7 +30,7 @@ const CervicalForm = (props) => {
     {
       title: "",
       key: "presence",
-      width: "209px",
+      width: "190px",
       direction: "column",
       options: [
         {
@@ -46,7 +46,7 @@ const CervicalForm = (props) => {
     {
       title: "",
       key: "presence",
-      width: "209px",
+      width: "190px",
       direction: "column",
       options: [
         {
@@ -62,14 +62,14 @@ const CervicalForm = (props) => {
     {
       title: "",
       key: "threshold",
-      width: "240px",
+      width: "190px",
       direction: "column",
       options: [],
     },
     {
       title: "",
       key: "presence",
-      width: "240px",
+      width: "190px",
       direction: "column",
       options: [
         {

@@ -77,6 +77,7 @@ const InnerForm = (props) => {
             </Typography>
             <Grid container spacing={12}>
               <TextField
+                disabled={user.role === "admin" ? true : false}
                 autoComplete="off"
                 name="userEmail"
                 placeholder="User email address"

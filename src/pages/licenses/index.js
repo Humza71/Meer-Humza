@@ -144,7 +144,7 @@ const SimpleTableDemo = ({ setOpenModal, role, licenseRemaining }) => {
               <BallotIcon />
             </Box>
             <Typography variant="h4" gutterBottom display="inline">
-              View and manage Clients
+              View and manage Licenses
             </Typography>
           </Box>
         </Grid>

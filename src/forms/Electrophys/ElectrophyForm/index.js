@@ -43,13 +43,13 @@ const ElectrophyForm = (props) => {
       <ReportTable
         Columns={() => (
           <>
-            <Cell align="center" width="40%"></Cell>
+            <Cell align="center" width="3%"></Cell>
             {ecoQuestions.map(({ title, key }) => (
-              <Cell align="left" key={key} width="50%">
+              <Cell align="left" key={key} width="20%">
                 {title}
               </Cell>
             ))}
-            <Cell align="center" width="5%">
+            <Cell align="center" width="26%">
               SP/AP Ratio
             </Cell>
           </>

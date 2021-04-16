@@ -1,9 +1,10 @@
 import axios from "axios";
+import history from "utils/history";
 
 axios.defaults.baseURL = process.env.REACT_APP_BACKEND_ENDPOINT;
 axios.defaults.headers = {
   Authorization: `Bearer ${localStorage.getItem("token")}`,
-  accept: "application/json",
+  Accept: `application/json`,
 };
 
 const postUtil = (url, data) => axios.post(url, data);
@@ -30,6 +31,7 @@ export function setDefault() {
   const token = localStorage.getItem("token");
   const headers = {
     Authorization: `Bearer ${token}`,
+    Accept: `application/json`,
   };
   axios.defaults.headers = headers;
 }
@@ -41,6 +43,7 @@ axios.interceptors.response.use(
   (error) => {
     if (error.response.status === 401) {
       localStorage.clear();
+      history.push("/auth/sign-in");
     }
     if (
       error.response.status === 401 ||

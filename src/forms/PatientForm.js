@@ -92,6 +92,9 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#09539e",
     },
   },
+  setHeight: {
+    height: "52px",
+  },
 }));
 
 const InnerForm = (props) => {
@@ -459,6 +462,7 @@ const InnerForm = (props) => {
                   <Grid container spacing={6}>
                     <Grid item md={6}>
                       <AdvancedSelect
+                        className={classes.setHeight}
                         error={Boolean(touched.providerId && errors.providerId)}
                         helperText={touched.providerId && errors.providerId}
                         value={values.staffInformation.providerId}
@@ -496,6 +500,7 @@ const InnerForm = (props) => {
                     </Grid>
                     <Grid item md={6}>
                       <AdvancedSelect
+                        className={classes.setHeight}
                         error={Boolean(
                           touched.technicianId && errors.technicianId
                         )}

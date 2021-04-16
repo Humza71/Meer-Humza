@@ -118,7 +118,7 @@ const DateSelect = (props) => {
           onChange={handleYearChange}
           variant="outlined"
         >
-          {[...Array(200).keys()].map((item) => (
+          {[...Array(101).keys()].map((item) => (
             <MenuItem value={year + item - 100}>{year + item - 100}</MenuItem>
           ))}
         </Select>

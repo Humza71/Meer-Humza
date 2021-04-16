@@ -30,7 +30,7 @@ const OcularForm = (props) => {
     {
       title: "",
       key: "presence",
-      width: "209px",
+      width: "190px",
       direction: "column",
       options: [
         {
@@ -46,7 +46,7 @@ const OcularForm = (props) => {
     {
       title: "",
       key: "presence",
-      width: "209px",
+      width: "190px",
       direction: "column",
       options: [
         {
@@ -62,7 +62,7 @@ const OcularForm = (props) => {
     {
       title: "",
       key: "threshold",
-      width: "240px",
+      width: "190px",
       direction: "column",
       options: [],
     },

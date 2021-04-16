@@ -76,7 +76,7 @@ const ABRform = (props) => {
       <ReportTable
         Columns={() => (
           <>
-            <Cell align="center"></Cell>
+            <Cell align="center" width="8%"></Cell>
             {abrQuestions.map(({ title, key }) => (
               <Cell
                 align="center"
