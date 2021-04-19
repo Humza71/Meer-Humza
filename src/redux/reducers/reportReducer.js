@@ -41,6 +41,7 @@ import {
   deleteProvider,
   updateTech,
   updateProv,
+  deleteFile,
 } from "../../services/reportService";
 // import { setMessage } from "./messageReducer";
 // import { createNewReport } from "services/reportService";
@@ -62,6 +63,7 @@ export const slice = createSlice({
     },
     clearNewReport: (state, action) => {
       state.newReport = initialState.newReport;
+      state.files = initialState.files;
       state.history = initialState.history;
       state.posturalStability = initialState.posturalStability;
       state.vng = initialState.vng;
@@ -121,6 +123,11 @@ export const slice = createSlice({
       );
       newTechnicians = [...newTechnicians, action.payload];
       state.technicians = newTechnicians;
+    },
+
+    updateFiles: (state, action) => {
+      const newFiles = state.files.filter(({ id }) => id !== action.payload);
+      state.files = newFiles;
     },
 
     addItemToProviders: (state, action) => {
@@ -305,6 +312,7 @@ const {
   setMacros,
   addMacro,
   setFiles,
+  updateFiles,
   // setSingleProvider,
   // setSingleTechnician,
   UpdateProviders,
@@ -665,10 +673,10 @@ export const getImpressionPlan = (values) => async (dispatch) => {
   }
 };
 
-export const filesReport = (values) => async (dispatch) => {
+export const filesReport = (values, id) => async (dispatch) => {
   dispatch(setLoading(LoadingStates.REPORT_CREATION_LOADING));
   try {
-    const response = await addFiles(values);
+    const response = await addFiles(values, id);
     if (response.status === "SUCCESS") {
       console.log("files added successfully");
     }
@@ -681,6 +689,20 @@ export const getFiles = (values) => async (dispatch) => {
   try {
     const response = await getFilesById(values);
     dispatch(setFiles(response.data));
+  } catch (error) {
+    // dispatch(setMessage({ message: "Email or password already exist!" }));
+  }
+};
+
+export const removeFile = (id, fileId, index, onDeleteSuccess) => async (
+  dispatch
+) => {
+  try {
+    const response = await deleteFile(id, fileId);
+    if (response.status === 200) {
+      dispatch(updateFiles(fileId));
+      onDeleteSuccess(index);
+    }
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }

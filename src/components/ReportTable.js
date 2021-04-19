@@ -198,6 +198,7 @@ let TableToolbar = (props) => {
     handleChangePage,
     handleChangeRowsPerPage,
   } = props;
+  const user = useSelector((state) => state.authReducer.user) || [];
 
   const handleColumnFilterChange = (event) => {
     setFilteredColumns(event.target.value);
@@ -259,6 +260,7 @@ let TableToolbar = (props) => {
 
         <Grid item>
           <SmallAdvancedSelect
+            disabled={user.role === "super_admin" ? false : true}
             value={filteredClinics}
             onChange={handleClinicFilterChange}
             name="clinics"

@@ -19,8 +19,9 @@ import {
   // updateMacros,
 } from "../../redux/reducers/reportReducer";
 // import { setStepNewReport } from "redux/reducers/uiReducer";
-import CKEditor from "ckeditor4-react";
-import { config } from "../../constants";
+// import CKEditor from "ckeditor4-react";
+import { Editor } from "@tinymce/tinymce-react";
+// import { config } from "../../constants";
 // import props from "theme/props";
 
 const EditorWrapper = styled.div`
@@ -142,12 +143,25 @@ const InnerForm = (props) => {
         {values.impressionAndPlan.macro.map(({ name, value }, index) => (
           <EditorWrapper key={index}>
             <h3>{name}:</h3>
-            <CKEditor
-              data={value}
-              config={config}
-              onChange={(evt) => {
-                const data = evt.editor.getData();
-                const plainText = evt.editor.document.getBody().getText();
+            <Editor
+              apiKey={"ji56jrdfs6d3rmcwswuo3pa9mgwk69c2f482vdq771qytwml"}
+              value={value}
+              init={{
+                height: 250,
+                menubar: false,
+                plugins: [
+                  "advlist autolink lists link image charmap print preview anchor",
+                  "searchreplace visualblocks code fullscreen",
+                  "insertdatetime media table paste code help wordcount advcode",
+                ],
+                toolbar:
+                  "undo redo | formatselect | bold italic backcolor | \
+             alignleft aligncenter alignright alignjustify | \
+             bullist numlist outdent indent | removeformat | help",
+              }}
+              onEditorChange={(content) => {
+                const data = content;
+                const plainText = data.replace(/<[^>]*>/g, "");
                 let { impressionAndPlan = {} } = values || {};
                 let { macro = [] } = impressionAndPlan || {};
                 let macroIndex = macro.findIndex((item) => item.name === name);

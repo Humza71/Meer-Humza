@@ -8,6 +8,7 @@ import { Alert as MuiAlert } from "@material-ui/lab";
 import { spacing } from "@material-ui/system";
 import { Box, CircularProgress } from "@material-ui/core";
 import { DropzoneArea } from "material-ui-dropzone";
+import Viewer from "components/reports/FileViewer";
 
 import CreateReportFooter from "components/CreateReportFooter";
 import { setStepNewReport } from "redux/reducers/uiReducer";
@@ -15,7 +16,11 @@ import ReportCard from "components/reports/ReportCard";
 import FileChip from "components/reports/FileChip";
 import Modal from "components/Modal";
 import { useHistory } from "react-router";
-import { getFiles, filesReport } from "redux/reducers/reportReducer";
+import {
+  getFiles,
+  filesReport,
+  removeFile,
+} from "redux/reducers/reportReducer";
 
 const Alert = styled(MuiAlert)(spacing);
 
@@ -52,9 +57,7 @@ const DropZoneWrapper = styled.div`
   }
 `;
 
-const MainWrapper = styled.div`
-  height: 700px;
-`;
+const MainWrapper = styled.div``;
 
 const validationSchema = Yup.object().shape({
   files: Yup.array(),
@@ -63,6 +66,7 @@ const validationSchema = Yup.object().shape({
 const InnerForm = (props) => {
   const [preview, setPreview] = useState(false);
   const [currentFile, setCurrentFile] = useState({});
+  const [type, setType] = useState("");
   const {
     errors,
     handleBlur,
@@ -72,16 +76,26 @@ const InnerForm = (props) => {
     values,
     status,
   } = props;
+  const dispatch = useDispatch();
+  const { match = {} } = props || {};
+  const { params = {} } = match;
+  const { id } = params;
+  const reportFiles = useSelector((state) => state.reportReducer.files);
 
   const { files = [] } = values;
-  const hasFiles = files.length > 0;
+  const hasFiles = reportFiles.length > 0;
 
-  const handleDelete = (index) => {
+  const onDeleteSuccess = (index) => {
     const newFiles = [...files];
     newFiles.splice(index, 1);
     setFieldValue("files", newFiles);
   };
 
+  const handleDelete = (index) => {
+    const { id: fileId = "" } = files[index] || [];
+
+    dispatch(removeFile(id, fileId, index, onDeleteSuccess));
+  };
   return (
     <ReportCard
       title="Upload your files"
@@ -125,8 +139,14 @@ const InnerForm = (props) => {
                   key={i}
                   name={name}
                   handlePreview={() => {
-                    setPreview(true);
+                    const arr = files[i].filePath.split(".");
+                    const length = arr.length;
+                    const type = arr[length - 1];
+                    debugger;
+                    setType(type);
+
                     setCurrentFile(files[i]);
+                    setPreview(true);
                   }}
                   handleDelete={() => handleDelete(i)}
                 />
@@ -142,7 +162,7 @@ const InnerForm = (props) => {
         width="55%"
         height="400px"
       >
-        <div />
+        <Viewer file={currentFile.filePath} type={type} />
       </Modal>
     </ReportCard>
   );
@@ -161,11 +181,11 @@ const FilesForm = (props) => {
   const dispatch = useDispatch();
 
   const initialValues = {
-    files: files,
+    files: files ? files : [],
   };
 
   const handleSave = (values) => {
-    dispatch(filesReport(values));
+    dispatch(filesReport(values, id));
   };
   useEffect(() => {
     if (id) {
@@ -189,6 +209,7 @@ const FilesForm = (props) => {
   return (
     <React.Fragment>
       <Formik
+        enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}
         validate={(values) => {
@@ -201,7 +222,7 @@ const FilesForm = (props) => {
         {(formProps) => (
           <MainWrapper>
             <Form>
-              <InnerForm {...formProps} />
+              <InnerForm {...formProps} {...props} />
               <CreateReportFooter
                 {...formProps}
                 handleSave={() => handleSave(formProps.values)}

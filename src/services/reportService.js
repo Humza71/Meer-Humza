@@ -558,11 +558,12 @@ export function getMacrosByName(payload) {
   });
 }
 
-export function addFiles(payload) {
+export function addFiles(payload, id) {
   const formData = new FormData();
   [...payload.files].forEach((image) => {
-    formData.append("images", image);
+    formData.append("files[]", image);
   });
+  formData.append("reportId", id);
   return new Promise((resolve, reject) => {
     postUtil("/api/add/files", formData)
       .then((response) => {
@@ -579,7 +580,7 @@ export function addFiles(payload) {
 
 export function getFilesById(reportId) {
   return new Promise((resolve, reject) => {
-    getUtil(`/api/get/files-report/${reportId}`)
+    getUtil(`/api/get/files/${reportId}`)
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
@@ -591,6 +592,21 @@ export function getFilesById(reportId) {
       });
   });
 }
+
+export const deleteFile = async (id, fileId) => {
+  return new Promise((resolve, reject) => {
+    deleteUtil(`/api/delete/file/${fileId}/${id}`)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
 
 // export function getTechnicianById(id) {
 //   return new Promise((resolve, reject) => {

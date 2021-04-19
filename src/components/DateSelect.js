@@ -86,6 +86,14 @@ const DateSelect = (props) => {
     onChange(new Date(`${event.target.value}/${month}/${date}`));
   };
 
+  const getAllYears = () => {
+    const now = new Date().getUTCFullYear();
+    return Array(now - (now - 100))
+      .fill("")
+      .map((v, idx) => now - idx)
+      .reverse();
+  };
+
   return (
     <>
       <Typography variant="subtitle1" mb={1}>
@@ -118,8 +126,8 @@ const DateSelect = (props) => {
           onChange={handleYearChange}
           variant="outlined"
         >
-          {[...Array(101).keys()].map((item) => (
-            <MenuItem value={year + item - 100}>{year + item - 100}</MenuItem>
+          {[...getAllYears()].map((item) => (
+            <MenuItem value={item}>{item}</MenuItem>
           ))}
         </Select>
       </Box>
