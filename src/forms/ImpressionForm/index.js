@@ -155,9 +155,7 @@ const InnerForm = (props) => {
                   "insertdatetime media table paste code help wordcount advcode",
                 ],
                 toolbar:
-                  "undo redo | formatselect | bold italic backcolor | \
-             alignleft aligncenter alignright alignjustify | \
-             bullist numlist outdent indent | removeformat | help",
+                  "undo redo | formatselect | bold italic backcolor |  alignleft aligncenter alignright alignjustify |  bullist numlist outdent indent | removeformat | help",
               }}
               onEditorChange={(content) => {
                 const data = content;
