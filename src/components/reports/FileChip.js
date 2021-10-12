@@ -51,7 +51,7 @@ const DeleteIcon = styled.img`
   padding-left: 15px;
 `;
 
-const FileChip = ({ name, handleDelete, handlePreview }) => {
+const FileChip = ({ name, handleDelete, handlePreview, item }) => {
   const today = new Date();
 
   return (
@@ -63,8 +63,9 @@ const FileChip = ({ name, handleDelete, handlePreview }) => {
           <span>{today.toLocaleDateString("en-US")}</span>
         </FileNameWrapper>
       </FileInfo>
+
       <LeftContainer>
-        <p onClick={handlePreview}>Preview</p>
+        {!item.type && <p onClick={handlePreview}>Preview</p>}
         <DeleteIcon src="/static/img/delete.svg" onClick={handleDelete} />
       </LeftContainer>
     </Chip>

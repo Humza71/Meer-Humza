@@ -560,7 +560,7 @@ export function getMacrosByName(payload) {
 
 export function addFiles(payload, id) {
   const formData = new FormData();
-  [...payload.files].forEach((image) => {
+  [...payload].forEach((image) => {
     formData.append("files[]", image);
   });
   formData.append("reportId", id);

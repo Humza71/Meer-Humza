@@ -59,6 +59,9 @@ const DropZoneWrapper = styled.div`
 
 const MainWrapper = styled.div``;
 
+const ImageWrapper = styled.div`
+  height: 400px;
+`;
 const validationSchema = Yup.object().shape({
   files: Yup.array(),
 });
@@ -93,8 +96,11 @@ const InnerForm = (props) => {
 
   const handleDelete = (index) => {
     const { id: fileId = "" } = files[index] || [];
-
-    dispatch(removeFile(id, fileId, index, onDeleteSuccess));
+    if (fileId.length !== 0) {
+      dispatch(removeFile(id, fileId, index, onDeleteSuccess));
+    } else {
+      onDeleteSuccess(index);
+    }
   };
   return (
     <ReportCard
@@ -126,7 +132,49 @@ const InnerForm = (props) => {
             value={files}
             maxFiles={10}
             Icon={() => <FileIcon src={"/static/img/fileIcon.png"} />}
-            onChange={(value) => setFieldValue("files", value)}
+            onChange={(value) => {
+              if (value.length > 0) {
+                // const removeDuplicates = value.map(
+                //   (item) => !files.some((myFile) => item.name !== myFile.name)
+                // );
+                const removeDuplicates = [
+                  ...new Map(
+                    [...value, ...files].map((item) => [item["name"], item])
+                  ).values(),
+                ];
+                // const duplicates = [
+                //   ...new Map(
+                //     [...values, ...files].map((item) => [item["name"], item])
+                //   ).values(),
+                // ];
+
+                // const duplicates = [
+                //   ...new Map(
+                //     [...files].map((item) => [item["name"], item])
+                //   ).values(),
+                // ];
+
+                // const duplicates = [
+                //   ...new Map(
+                //     [...files, ...value].map((item) => [item["name"], item])
+                //   ).values(),
+                // ];
+
+                // const moreDuplicates = [
+                //   ...new Map(
+                //     [...values, ...files].map((item) => [item["value"], item])
+                //   ).value(),
+                // ];
+                // const reducerFunction = (acc, item) => acc * item;
+                // const sum = value.reduce((acc, item) => acc + item, 0);
+                // const factorial = value.reduce(reducerFunction, 1);
+
+                setFieldValue("files", removeDuplicates);
+              }
+              // if (value.length > 0) {
+              //   setFieldValue("files", [value[0], ...files]);
+              // }
+            }}
             error={Boolean(touched.files && errors.files)}
             helperText={touched.files && errors.files}
             onBlur={handleBlur}
@@ -134,17 +182,16 @@ const InnerForm = (props) => {
           {hasFiles && (
             <div>
               <SectionHeading>UPLOADED FILES</SectionHeading>
-              {files.map(({ name }, i) => (
+              {files.map((item, i) => (
                 <FileChip
+                  item={item}
                   key={i}
-                  name={name}
+                  name={item.name}
                   handlePreview={() => {
                     const arr = files[i].filePath.split(".");
                     const length = arr.length;
                     const type = arr[length - 1];
-                    debugger;
                     setType(type);
-
                     setCurrentFile(files[i]);
                     setPreview(true);
                   }}
@@ -160,9 +207,11 @@ const InnerForm = (props) => {
         open={preview}
         handleClose={() => setPreview(false)}
         width="55%"
-        height="400px"
+        height="500px"
       >
-        <Viewer file={currentFile.filePath} type={type} />
+        <ImageWrapper>
+          <Viewer file={currentFile.filePath} type={type} />
+        </ImageWrapper>
       </Modal>
     </ReportCard>
   );
@@ -175,9 +224,6 @@ const FilesForm = (props) => {
   const { match = {} } = props || {};
   const { params = {} } = match;
   const { id } = params;
-  // const { match = {} } = props || {};
-  // const { params = {} } = match;
-  // const { id } = params;
   const dispatch = useDispatch();
 
   const initialValues = {
@@ -185,7 +231,8 @@ const FilesForm = (props) => {
   };
 
   const handleSave = (values) => {
-    dispatch(filesReport(values, id));
+    const moreImages = values.files.filter((item) => item.type && item);
+    dispatch(filesReport(moreImages, id));
   };
   useEffect(() => {
     if (id) {

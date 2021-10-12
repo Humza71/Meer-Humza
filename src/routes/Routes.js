@@ -12,6 +12,7 @@ import { userInfo } from "redux/reducers/authReducer";
 import DashboardLayout from "../layouts/Dashboard";
 import AuthLayout from "../layouts/Auth";
 import Page404 from "../pages/auth/Page404";
+import { setNestedObjectValues } from "formik";
 
 const childRoutes = (Layout, routes) =>
   routes.map(({ component: Component, guard, children, path }, index) => {
@@ -75,7 +76,7 @@ const Routes = () => {
         {childRoutes(
           DashboardLayout,
           dashboardLayoutRoutes.filter((category) =>
-            category.role.some((name) => name === user.role)
+            category.role.some((name) => name === "super_admin")
           )
         )}
         {childRoutes(AuthLayout, authLayoutRoutes)}

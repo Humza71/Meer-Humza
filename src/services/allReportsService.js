@@ -75,3 +75,11 @@ export const deleteReport = async (id) => {
       });
   });
 };
+
+// export const getHtml = () => {
+//   return new Promise((resolve, reject) => {
+//     fetch(`/api/delete/report`)
+//       .then((response) => resolve(response))
+//       .catch((error) => reject(error));
+//   });
+// };

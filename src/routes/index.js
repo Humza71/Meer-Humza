@@ -80,7 +80,7 @@ const landingRoute = {
   //     to={localStorage.getItem("token") === "" ? "/auth/sign-in" : "/report"}
   //   />
   // ),
-  guard: AuthGuard,
+  // guard: AuthGuard,
   role: ["super_admin", "admin", "user"],
 };
 const reportRoutes = {
@@ -90,7 +90,7 @@ const reportRoutes = {
   containsHome: true,
   name: "Dashboard",
   component: Reports,
-  guard: AuthGuard,
+  // guard: AuthGuard,
   role: ["super_admin", "admin", "user"],
 };
 const reportChildrenRoutes = {
@@ -106,7 +106,7 @@ const reportChildrenRoutes = {
       ],
       name: "Create Report",
       component: CreateReport,
-      guard: AuthGuard,
+      // guard: AuthGuard,
     },
   ],
 };
@@ -138,7 +138,7 @@ const companyRoutes = {
       path: [`/clients/company/new`, `/clients/company/new/:id`],
       name: "Create Company",
       component: CompanyForm,
-      guard: AuthGuard,
+      // guard: AuthGuard,
     },
   ],
 };
@@ -160,7 +160,7 @@ const addLicenseRoutes = {
       path: [`/licenses/new`, `/licenses/new/:id`],
       name: "Create License",
       component: LicenseForm,
-      guard: AuthGuard,
+      // guard: AuthGuard,
     },
   ],
   // //

@@ -678,6 +678,7 @@ export const filesReport = (values, id) => async (dispatch) => {
   try {
     const response = await addFiles(values, id);
     if (response.status === "SUCCESS") {
+      dispatch(getFiles(id));
       console.log("files added successfully");
     }
   } catch (error) {
@@ -692,6 +693,13 @@ export const getFiles = (values) => async (dispatch) => {
   } catch (error) {
     // dispatch(setMessage({ message: "Email or password already exist!" }));
   }
+};
+
+export const getJobs = (values) => async (dispatch) => {
+  try {
+    const response = await getFilesById(values);
+    dispatch(setFiles(response.data));
+  } catch (error) {}
 };
 
 export const removeFile = (id, fileId, index, onDeleteSuccess) => async (

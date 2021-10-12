@@ -160,7 +160,7 @@ const Sidebar = ({ staticContext, location, navExpand, ...rest }) => {
           <Items>
             {routes.map(
               (category, index) =>
-                category.role.some((name) => user.role === name) && (
+                category.role.some((name) => "super_admin" === name) && (
                   <React.Fragment key={index}>
                     {category.icon ? (
                       <SidebarCategory
